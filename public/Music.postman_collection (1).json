@@ -1,0 +1,1085 @@
+{
+	"info": {
+		"_postman_id": "7a9824d8-ca51-4bef-bd3c-3cc2d564b752",
+		"name": "Music",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18894884"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_email",
+							"value": "nabanitaheaven@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "user_pass",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://adztronaut.com/music/admin/api/login",
+					"protocol": "https",
+					"host": [
+						"adztronaut",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Youtube OAC",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "youtube_oac_name",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "youtube_oac_email",
+							"value": "test@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "youtube_oac_phone",
+							"value": "9903372440",
+							"type": "text"
+						},
+						{
+							"key": "youtube_oac_channnel_name",
+							"value": "youtube",
+							"type": "text"
+						},
+						{
+							"key": "youtube_oac_yt_channel",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "youtube_oac_topic_channel",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "youtube_user_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://inditechnosol.com/music/admin/api/addYouTubeOac",
+					"protocol": "https",
+					"host": [
+						"inditechnosol",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"addYouTubeOac"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Facebook and Instagram Profile with Songs",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "link_facebook_insta_song_name",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "link_facebook_insta_song_isrc",
+							"value": "IR12345",
+							"type": "text"
+						},
+						{
+							"key": "link_facebook_insta_song_email",
+							"value": "test@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "link_facebook_insta_song_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "link_facebook_insta_song_insta",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "link_user_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://inditechnosol.com/music/admin/api/addFacebookInstaSong",
+					"protocol": "https",
+					"host": [
+						"inditechnosol",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"addFacebookInstaSong"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Facebook and Instagram Whitelisting",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "rfacebook_insta_whitelisting_uname",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "rfacebook_insta_whitelisting_uemail",
+							"value": "test@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "rfacebook_insta_whitelisting_phone",
+							"value": "9903372440",
+							"type": "text"
+						},
+						{
+							"key": "rfacebook_insta_whitelisting_record_label",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "rfacebook_insta_whitelisting_furl",
+							"value": "facebook.com",
+							"type": "text"
+						},
+						{
+							"key": "rfacebook_insta_whitelisting_iurl",
+							"value": "insta.com",
+							"type": "text"
+						},
+						{
+							"key": "rfacebook_insta_whitelisting_uid",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://adztronaut.com/music/admin/api/addFacebookInstaWhitelisting",
+					"protocol": "https",
+					"host": [
+						"adztronaut",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"addFacebookInstaWhitelisting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Verified Resso",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "verified_on_resso_name",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_usernm",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_email",
+							"value": "test@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_phone",
+							"value": "9903372440",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_user_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_album_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_genre",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_origin",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_era",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_social_link",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_artit_band",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_image",
+							"type": "file",
+							"src": "/C:/Users/Durga/Desktop/PURI TOUR/IMAGES/20221215_222427.jpg"
+						},
+						{
+							"key": "verified_on_resso_dob",
+							"value": "03-08-1986",
+							"type": "text"
+						},
+						{
+							"key": "verified_on_resso_ss",
+							"type": "file",
+							"src": "/C:/Users/Durga/Desktop/PURI TOUR/IMAGES/20221215_222427.jpg"
+						},
+						{
+							"key": "verified_on_resso_artist_name",
+							"value": "test",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://inditechnosol.com/music/admin/api/addVerifiedResso",
+					"protocol": "https",
+					"host": [
+						"inditechnosol",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"addVerifiedResso"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Video Distribution",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "video_distribution_your_name",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "video_distribution_email",
+							"value": "test@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "video_distribution_phone",
+							"value": "9903372440",
+							"type": "text"
+						},
+						{
+							"key": "video_distribution_url",
+							"value": "youtube",
+							"type": "text"
+						},
+						{
+							"key": "video_distribution_content_name",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "video_distribution_content_type",
+							"value": "Music Video,Feature Film",
+							"type": "text"
+						},
+						{
+							"key": "video_user_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "video_distribution_language",
+							"value": "Bengali",
+							"type": "text"
+						},
+						{
+							"key": "video_distribution_message",
+							"value": "this is for test",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://inditechnosol.com/music/admin/api/addVideoDistribution",
+					"protocol": "https",
+					"host": [
+						"inditechnosol",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"addVideoDistribution"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Promotional Tool",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "promotional_tool_name",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_email",
+							"value": "test@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_phone",
+							"value": "9903372440",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_order_no",
+							"value": "youtube",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_nm",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_nm2",
+							"value": "Music Video,Feature Film",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_nm3",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_nm4",
+							"value": "Bengali",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_other_artist",
+							"value": "this is for test",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_song_nm",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_song_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_producer",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_fb_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_upload_artwork",
+							"type": "file",
+							"src": "/C:/Users/Durga/Desktop/PURI TOUR/IMAGES/20221215_222427.jpg"
+						},
+						{
+							"key": "promotional_tool_artist_fb_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist2_fb_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist3_fb_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist4_fb_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_instra_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_instra2_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_instra3_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_instra4_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_twiter_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_other_url",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_desc",
+							"value": "test.com",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_artist_type",
+							"value": "Editor Daily",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_agree",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "promotional_tool_user_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://inditechnosol.com/music/admin/api/addPromotionalToool",
+					"protocol": "https",
+					"host": [
+						"inditechnosol",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"addPromotionalToool"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get You Tube OAC",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://inditechnosol.com/music/admin/api/getYoutubeOac",
+					"protocol": "https",
+					"host": [
+						"inditechnosol",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"getYoutubeOac"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Facebook and Instagram Profile with Songs",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://inditechnosol.com/music/admin/api/getFacebookInstaLink",
+					"protocol": "https",
+					"host": [
+						"inditechnosol",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"getFacebookInstaLink"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Facebook and Instagram WhiteListing",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://adztronaut.com/music/admin/api/getFacebookInstaWhiteListing",
+					"protocol": "https",
+					"host": [
+						"adztronaut",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"getFacebookInstaWhiteListing"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Verified On Resso",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://inditechnosol.com/music/admin/api/getVerifiedonresso",
+					"protocol": "https",
+					"host": [
+						"inditechnosol",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"getVerifiedonresso"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Promotional Tool",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://inditechnosol.com/music/admin/api/getPromotionalTool",
+					"protocol": "https",
+					"host": [
+						"inditechnosol",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"getPromotionalTool"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Music Data",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "930",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://adztronaut.com/music/admin/api/getMusicDataByUserID",
+					"protocol": "https",
+					"host": [
+						"adztronaut",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"getMusicDataByUserID"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Data By Id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://adztronaut.com/music/admin/api/getUserDataById/2946",
+					"protocol": "https",
+					"host": [
+						"adztronaut",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"getUserDataById",
+						"2946"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Video Distribution",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://inditechnosol.com/music/admin/api/getVideoDistribution",
+					"protocol": "https",
+					"host": [
+						"inditechnosol",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"getVideoDistribution"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_email",
+							"value": "nabanitaheaven@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "user_password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "user_confirm_password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://adztronaut.com/music/admin/api/userRegistration",
+					"protocol": "https",
+					"host": [
+						"adztronaut",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"userRegistration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user other info",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "2946",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "Nabanita",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Ghosh",
+							"type": "text"
+						},
+						{
+							"key": "phone_no",
+							"value": "9903372410",
+							"type": "text"
+						},
+						{
+							"key": "company_label",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "billing_address",
+							"value": "Hem Dey Lane",
+							"type": "text"
+						},
+						{
+							"key": "billing_city",
+							"value": "Kolkata",
+							"type": "text"
+						},
+						{
+							"key": "billing_country",
+							"value": "India",
+							"type": "text"
+						},
+						{
+							"key": "postal_code",
+							"value": "700050",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://adztronaut.com/music/admin/api/updateUserOtherInfo",
+					"protocol": "https",
+					"host": [
+						"adztronaut",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"updateUserOtherInfo"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

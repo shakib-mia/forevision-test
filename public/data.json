@@ -1,0 +1,245 @@
+{
+  "info": {
+    "_postman_id": "7a9824d8-ca51-4bef-bd3c-3cc2d564b752",
+    "name": "Music",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18894884"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "user_email",
+              "value": "forevisiondigital@gmail.com",
+              "type": "text"
+            },
+            {
+              "key": "user_pass",
+              "value": "123456",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://adztronaut.com/music/admin/api/login",
+          "protocol": "https",
+          "host": ["inditechnosol", "com"],
+          "path": ["music", "admin", "api", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Youtube OAC",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "youtube_oac_name",
+              "value": "test",
+              "type": "text"
+            },
+            {
+              "key": "youtube_oac_email",
+              "value": "test@gmail.com",
+              "type": "text"
+            },
+            {
+              "key": "youtube_oac_phone",
+              "value": "9903372440",
+              "type": "text"
+            },
+            {
+              "key": "youtube_oac_channnel_name",
+              "value": "youtube",
+              "type": "text"
+            },
+            {
+              "key": "youtube_oac_yt_channel",
+              "value": "test",
+              "type": "text"
+            },
+            {
+              "key": "youtube_oac_topic_channel",
+              "value": "test",
+              "type": "text"
+            },
+            {
+              "key": "youtube_user_id",
+              "value": "1",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://adztronaut.com/music/admin/api/addYouTubeOac",
+          "protocol": "https",
+          "host": ["inditechnosol", "com"],
+          "path": ["music", "admin", "api", "addYouTubeOac"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Video Distribution",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "video_distribution_your_name",
+              "value": "test",
+              "type": "text"
+            },
+            {
+              "key": "video_distribution_email",
+              "value": "test@gmail.com",
+              "type": "text"
+            },
+            {
+              "key": "video_distribution_phone",
+              "value": "9903372440",
+              "type": "text"
+            },
+            {
+              "key": "video_distribution_url",
+              "value": "youtube",
+              "type": "text"
+            },
+            {
+              "key": "video_distribution_content_name",
+              "value": "test",
+              "type": "text"
+            },
+            {
+              "key": "video_distribution_content_type",
+              "value": "Music Video,Feature Film",
+              "type": "text"
+            },
+            {
+              "key": "video_user_id",
+              "value": "1",
+              "type": "text"
+            },
+            {
+              "key": "video_distribution_language",
+              "value": "Bengali",
+              "type": "text"
+            },
+            {
+              "key": "video_distribution_message",
+              "value": "this is for test",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://adztronaut.com/music/admin/api/addVideoDistribution",
+          "protocol": "https",
+          "host": ["inditechnosol", "com"],
+          "path": ["music", "admin", "api", "addVideoDistribution"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get You Tube OAC",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "userId",
+              "value": "1",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://adztronaut.com/music/admin/api/getYoutubeOac",
+          "protocol": "https",
+          "host": ["inditechnosol", "com"],
+          "path": ["music", "admin", "api", "getYoutubeOac"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Video Distribution",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "userId",
+              "value": "1",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://adztronaut.com/music/admin/api/getVideoDistribution",
+          "protocol": "https",
+          "host": ["inditechnosol", "com"],
+          "path": ["music", "admin", "api", "getVideoDistribution"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

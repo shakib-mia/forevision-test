@@ -1,0 +1,109 @@
+import React, { useState } from "react";
+import downArrow from "./../../assets/icons/down-arrow.webp";
+import { Link } from "react-router-dom";
+
+const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
+  const [itemHovered, setHovered] = useState(false);
+  //   console.log(dropdownItem);
+  return (
+    <>
+      {path ? (
+        <Link
+          to={path}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          <div
+            className={`flex justify-between items-center ${
+              text && "hover:bg-grey-light cursor-pointer"
+            } py-2 px-[10px] rounded-md`}
+          >
+            <div className="flex gap-[10px] items-center">
+              {icon && <img src={icon} alt={text} />}
+              {hovered && <h2>{text}</h2>}
+            </div>
+
+            {dropdownItem && hovered ? (
+              <img
+                src={downArrow}
+                alt="downarrow"
+                className={`w-[9px] h-[5px] ${
+                  itemHovered && "rotate-180"
+                } transition`}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+          {dropdownItem ? (
+            <ul
+              style={{ height: itemHovered ? "100%" : "0", overflow: "hidden" }}
+              className="transition duration-1000"
+            >
+              {dropdownItem.map(({ text, dropdownPath }, key) => (
+                <Link
+                  to={dropdownPath}
+                  key={key}
+                  className="py-2 hover:bg-grey-light pl-5 pr-2 rounded-md cursor-pointer block"
+                >
+                  {text}
+                </Link>
+              ))}
+            </ul>
+          ) : (
+            <></>
+          )}
+        </Link>
+      ) : (
+        <div
+          // to={path}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          <div
+            className={`flex justify-between items-center ${
+              text && "hover:bg-grey-light cursor-pointer"
+            } py-2 px-[10px] rounded-md`}
+          >
+            <div className="flex gap-[10px] items-center">
+              {icon && <img src={icon} alt={text} />}
+              {hovered && <h2>{text}</h2>}
+            </div>
+
+            {dropdownItem && hovered ? (
+              <img
+                src={downArrow}
+                alt="downarrow"
+                className={`w-[9px] h-[5px] ${
+                  itemHovered && "rotate-180"
+                } transition`}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+          {dropdownItem ? (
+            <ul
+              style={{ height: itemHovered ? "100%" : "0", overflow: "hidden" }}
+              className="transition duration-1000"
+            >
+              {dropdownItem.map(({ text, dropdownPath }, key) => (
+                <Link
+                  to={dropdownPath}
+                  key={key}
+                  className="py-2 hover:bg-grey-light pl-5 pr-2 rounded-md cursor-pointer block"
+                >
+                  {text}
+                </Link>
+              ))}
+            </ul>
+          ) : (
+            <></>
+          )}
+        </div>
+      )}
+    </>
+  );
+};
+
+export default NavItem;

@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+.card {
+  @apply bg-white shadow-lg py-2 px-4 rounded-[5px];
+}
+
+.fixed.h-screen::-webkit-scrollbar {
+  width: 0;
+}
+
+#chart path {
+  @apply rounded-t-[10px] w-4;
+}
+
+.form-bg {
+  background-image: url("./assets/images/background.webp");
+  background-position: top left;
+  background-size: cover;
+  /*background-attachment: fixed;*/
+
+  @apply py-5;
+}
+
+#album .owl-nav {
+  margin-top: 0 !important;
+  @apply text-white;
+}
+
+/* / {
+  margin-top: 0 !important;
+  @apply text-white;
+} */
+#album .owl-nav button {
+  margin: 0 !important;
+  @apply absolute top-0 bottom-0 m-auto;
+}
+
+#album .owl-prev {
+  left: -36px;
+  /* height: auto; */
+}
+
+#album .owl-next {
+  right: -36px;
+  /* height: auto; */
+}
+
+#album button span {
+  font-size: 65px;
+}
+
+#album button:hover {
+  @apply bg-transparent;
+}
+
+/*#suggestion .owl-stage {
+  height: 235px !important;
+}
+
+#suggestion .owl-item {
+  height: 100%;
+}*/
+
+/* .owl-item { */
+/* /* margin: 0 auto !important;
+  margin-right: 0 !important;
+  width: fit-content !important; */
+/* } */
+/* #profile-container {
+  @apply w-[95%];
+}
+
+aside:hover #profile-container {
+  @apply w-[84%];
+} */
+
+.swiper {
+  width: 100%;
+  height: 100px;
+}
+
+#album .owl-item img {
+  @apply mx-auto w-[225px] h-[225px];
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after,
+.swiper-button-disabled::after {
+  @apply hidden;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  @apply overflow-hidden;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
