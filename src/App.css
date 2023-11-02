@@ -121,6 +121,18 @@ a.active {
   @apply bg-interactive-light rounded-md;
 }
 
+#bottomBar a.active {
+  @apply bg-white text-interactive-light border-t border-interactive-light rounded-none;
+}
+
+#bottomBar a:not(.active) svg path {
+  fill: #202020cc;
+}
+
+#bottomBar a.active svg path {
+  @apply fill-interactive-light;
+}
+
 /* @keyframes drawPath {
   from {
     d: path("M0 128L0 128L0 128L0 128");
