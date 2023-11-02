@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import cover from "./../../assets/images/artist-cover.webp";
-import profile from "./../../assets/images/artist-profile.webp";
+// import profile from "./../../assets/images/artist-profile.webp";
 import userplus from "./../../assets/icons/user-plus.webp";
 import facebook from "./../../assets/icons/social/facebook.webp";
 import instagram from "./../../assets/icons/social/instagram.webp";
@@ -14,13 +14,13 @@ import Song from "../../components/Song/Song";
 import user from "./../../assets/images/user.webp";
 import VerticalCarousel from "../../components/VerticalCarousel/VerticalCarousel";
 import { SwiperSlide } from "swiper/react";
-import axios from "axios";
+// import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { useLocation } from "react-router-dom";
 import profileEdit from "./../../assets/icons/profile-edit.webp";
 import notification from "../../assets/icons/notification-white.webp"
 import settingsWhite from "../../assets/icons/settings-white.webp"
-import { imageDomain } from "../../constants";
+// import { imageDomain } from "../../constants";
 import LoadingPulse from "../../components/LoadingPulse/LoadingPulse";
 import EditProfile from "../../components/EditProfile/EditProfile";
 import ProfilePicture from "../../components/ProfilePicture/ProfilePicture";
@@ -62,37 +62,37 @@ const Profile = () => {
   // console.log(userData);
 
 
-  const handleProfilePictureUpload = (e) => {
-    const url = "https://adztronaut.com/music/admin/api/uploadProfilePhoto";
+  // const handleProfilePictureUpload = (e) => {
+  //   const url = "https://adztronaut.com/music/admin/api/uploadProfilePhoto";
 
-    const file = e.target.files[0];
+  //   const file = e.target.files[0];
 
-    if (file) {
-      const reader = new FileReader();
+  //   if (file) {
+  //     const reader = new FileReader();
 
-      reader.onload = (event) => {
-        const profile_pic = event.target.result;
-        const user_id = profileData.ID;
+  //     reader.onload = (event) => {
+  //       const profile_pic = event.target.result;
+  //       const user_id = profileData.ID;
 
 
-        const config = {
-          headers: {
-            'Authorization': localStorage.getItem('token')
-          }
-        }
+  //       const config = {
+  //         headers: {
+  //           'Authorization': localStorage.getItem('token')
+  //         }
+  //       }
 
-        // console.log({ profile_pic, user_id });
-        const formData = new FormData();
+  //       // console.log({ profile_pic, user_id });
+  //       const formData = new FormData();
 
-        formData.append("profile_pic", profile_pic)
-        formData.append("user_id", user_id)
+  //       formData.append("profile_pic", profile_pic)
+  //       formData.append("user_id", user_id)
 
-        axios.post(url, formData, config).then((res) => console.log(res))
-      };
+  //       axios.post(url, formData, config).then((res) => console.log(res))
+  //     };
 
-      reader.readAsDataURL(file);
-    }
-  };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handleFollow = () => {
     console.log('follow');

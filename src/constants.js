@@ -5,7 +5,7 @@ import tasks from "./assets/icons/navbar/checkbox.webp";
 import reports from "./assets/icons/navbar/pie-chart.webp";
 import plans from "./assets/icons/navbar/tag.webp";
 import Home from "./pages/Home/Home";
-import RequireAuth from "./RequireAuth";
+// import RequireAuth from "./RequireAuth";
 // import Dashboard from "./pages/Dashboard/Dashboard";
 import ProfileVerification from "./pages/ProfileVerification/ProfileVerification";
 import YoutubeOac from "./pages/YoutubeOac/YoutubeOac";

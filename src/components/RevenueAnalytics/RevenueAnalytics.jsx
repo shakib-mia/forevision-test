@@ -1,5 +1,5 @@
 import React from 'react';
-import background from "../../assets/icons/wave.webp";
+// import background from "../../assets/icons/wave.webp";
 import styles from "./RevenueAnalytics.module.css"
 
 const RevenueAnalytics = ({ heading, data, id }) => {
