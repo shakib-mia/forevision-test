@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import downArrow from "./../../assets/icons/down-arrow.webp";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
   const [itemHovered, setHovered] = useState(false);
@@ -8,15 +8,14 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
   return (
     <>
       {path ? (
-        <Link
+        <NavLink
           to={path}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
           <div
-            className={`flex justify-between items-center ${
-              text && "hover:bg-grey-light cursor-pointer"
-            } py-2 px-[10px] rounded-md`}
+            className={`flex justify-between items-center ${text && "hover:bg-grey-light cursor-pointer"
+              } py-2 px-[10px] rounded-md`}
           >
             <div className="flex gap-[10px] items-center">
               {icon && <img src={icon} alt={text} />}
@@ -27,9 +26,8 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
               <img
                 src={downArrow}
                 alt="downarrow"
-                className={`w-[9px] h-[5px] ${
-                  itemHovered && "rotate-180"
-                } transition`}
+                className={`w-[9px] h-[5px] ${itemHovered && "rotate-180"
+                  } transition`}
               />
             ) : (
               <></>
@@ -53,7 +51,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
           ) : (
             <></>
           )}
-        </Link>
+        </NavLink>
       ) : (
         <div
           // to={path}
@@ -61,9 +59,8 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
           onMouseLeave={() => setHovered(false)}
         >
           <div
-            className={`flex justify-between items-center ${
-              text && "hover:bg-grey-light cursor-pointer"
-            } py-2 px-[10px] rounded-md`}
+            className={`flex justify-between items-center ${text && "hover:bg-grey-light cursor-pointer"
+              } py-2 px-[10px] rounded-md`}
           >
             <div className="flex gap-[10px] items-center">
               {icon && <img src={icon} alt={text} />}
@@ -74,9 +71,8 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
               <img
                 src={downArrow}
                 alt="downarrow"
-                className={`w-[9px] h-[5px] ${
-                  itemHovered && "rotate-180"
-                } transition`}
+                className={`w-[9px] h-[5px] ${itemHovered && "rotate-180"
+                  } transition`}
               />
             ) : (
               <></>

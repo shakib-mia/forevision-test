@@ -135,7 +135,7 @@ const InputField = ({
         </div>
       )}
 
-      {badge.length ? <div className="absolute top-[14px] right-[40px] my-auto flex gap-[4px] items-center bg-surface-white-surface-2 px-1 py-[6px] h-4 cursor-pointer">
+      {badge?.length ? <div className="absolute top-[6px] right-[40px] my-auto flex gap-[4px] items-center bg-surface-white-surface-2 px-1 py-[6px] h-4 cursor-pointer">
         <div className="text-center text-interactive-light text-xs">{badge}</div>
         <div className="text-[21px]" onClick={() => setBadge("")}>
           &times;

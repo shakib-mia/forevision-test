@@ -19,6 +19,7 @@ function App() {
   const [profileData, setProfileData] = useState({});
 
   const store = { userData, setUserData, prevRoute, setPrevRoute, profileData };
+  console.log(location.pathname);
 
   useEffect(() => {
     const config = {
@@ -41,6 +42,7 @@ function App() {
     <ProfileContext.Provider value={store}>
       {location.pathname !== "/login" &&
         location.pathname !== "/signup" &&
+        location.pathname !== "/" &&
         !location.pathname.includes("/profile") &&
         location.pathname !== "/revenue" && <Navbar />}
       <BottomBar />

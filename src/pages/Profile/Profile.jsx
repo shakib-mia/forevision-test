@@ -94,12 +94,6 @@ const Profile = () => {
     }
   };
 
-
-  // const handleProfileEdit = () => {
-  //   console.log('profile edit');
-  // }
-
-
   const handleFollow = () => {
     console.log('follow');
   }
@@ -142,8 +136,7 @@ const Profile = () => {
               <div className="flex items-center gap-5">
                 <div className="flex items-center gap-2">
                   {profileData.first_name ? <h5 className="text-heading-5 underline">{profileData.first_name + " " + profileData.last_name}</h5> : <LoadingPulse className="w-[200px] h-[30px]" />}
-                  {/* {route[route.length - 1] !== 'profile' ? <img src={userplus} onClick={handleFollow} className="w-3 h-3 cursor-pointer" alt="follow" /> : <img src={profileEdit} onClick={() => setEdit(true)} className="w-3 h-3 cursor-pointer" alt="follow" />} */}
-                  {/* {route[route.length - 1] !== 'profile' && profileData.first_name ? <img src={userplus} onClick={handleFollow} className="w-3 h-3 cursor-pointer" alt="follow" /> : <LoadingPulse width={'30px'} height={'30px'} />} */}
+
                   {route[route.length - 1] === 'profile' && profileData.first_name ? <img src={profileEdit} onClick={() => setEdit(true)} className="w-3 h-3 cursor-pointer" alt="follow" /> : profileData.first_name ? <img src={userplus} onClick={handleFollow} className="w-3 h-3 cursor-pointer" alt="follow" /> : <LoadingPulse width={'30px'} height={'30px'} />}
                 </div>
 

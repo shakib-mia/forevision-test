@@ -116,3 +116,21 @@ aside:hover #profile-container {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+a.active {
+  @apply bg-interactive-light rounded-md;
+}
+
+/* @keyframes drawPath {
+  from {
+    d: path("M0 128L0 128L0 128L0 128");
+  }
+  to {
+    d: path(
+      "M194.638 114.274C302.771 53.8675 326.14 109.202 357.481 56.3654C359.178 53.5037 360 50.1731 360 46.8458V20.0001C360 8.95441 351.046 0.000106812 340 0.000106812L20 0.000106812C8.95432 0.000106812 0 8.95442 0 20.0001V45.4378C0 49.6487 1.27701 53.7618 3.9285 57.0331C37.9987 99.0668 125.207 153.06 194.638 114.274Z"
+    );
+  }
+}
+ path {
+  animation: drawPath 2s linear forwards;
+}  */

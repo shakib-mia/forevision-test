@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
-const Button = ({ text, type, disabled, onClick, className, leftIcon, rightIcon, small, paddingZero }) => {
+const Button = ({ text, type, disabled, onClick, leftIcon, rightIcon, small, paddingZero }) => {
   const [focus, setFocus] = useState(false);
-  console.log(className?.includes('px'));
+  // console.log(className?.includes('px'));
   return (
     <>
       {type !== "submit" && (
         <div
           className={`border-[2px] ${focus ? "border-interactive-light-focus" : "border-transparent"
-            } rounded-full ${paddingZero && 'p-[4px]'}`}
+            } rounded-full ${paddingZero ? 'p-0' : 'p-[4px]'}`}
         >
           <button
             className={`${small ? 'px-2 py-1' : 'px-3 py-2'} text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active font-bold rounded-full uppercase flex gap-1`}
