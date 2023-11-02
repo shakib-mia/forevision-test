@@ -71,7 +71,7 @@ const Home = () => {
       </div>
 
 
-      <div className="flex flex-col 2xl:flex-row mt-5 w-full gap-5 mb-7">
+      <div className="flex flex-col 2xl:flex-row mt-5 w-full gap-5 mb-7 2xl:mb-0">
         <div className="w-full 2xl:w-1/2 bg-grey-light 2xl:bg-white rounded-2xl p-4 h-[392px]"></div>
         <div className="w-full 2xl:w-1/2 bg-grey-light 2xl:bg-white rounded-2xl p-4 h-[392px]"></div>
       </div>
