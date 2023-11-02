@@ -37,11 +37,10 @@ const Home = () => {
                 <img src={facebook} className="w-fit h-fit" alt="" />
                 <img src={twitter} className="w-fit h-fit" alt="" />
               </div>
-
             </div>
             <p className="text-grey-dark my-1 text-center 2xl:text-left">99 Followers</p>
-            <p className="text-button text-grey-dark uppercase mb-1">Rock is my way of exploring music </p>
-            <p className="text-grey-dark text-subtitle-2">Archaeologists uncover the mythical city of Atlantis, but soon realize they are not alone in their discovery as supernatural forces threaten to destroy them ......</p>
+            <p className="text-button text-grey-dark uppercase mb-1 text-center 2xl:text-left">Rock is my way of exploring music </p>
+            <p className="text-grey-dark text-subtitle-2 text-center 2xl:text-left">Archaeologists uncover the mythical city of Atlantis, but soon realize they are not alone in their discovery as supernatural forces threaten to destroy them ......</p>
           </div>
         </div>
         <div className="bg-grey-light 2xl:bg-white px-4 py-2 2xl:py-4 rounded-2xl relative overflow-hidden h-[392px] 2xl:h-auto">
