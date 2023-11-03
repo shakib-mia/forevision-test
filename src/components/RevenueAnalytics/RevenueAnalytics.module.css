@@ -9,7 +9,7 @@
 .wave {
   background: url(../../assets/icons/wave.webp) repeat-x;
   position: absolute;
-  bottom: 0;
+  /* bottom: 0; */
   /* width: 6400px; */
   height: 63px;
   animation: wave 2s ease-out;

@@ -3,20 +3,32 @@ import React from 'react';
 import styles from "./RevenueAnalytics.module.css"
 
 const RevenueAnalytics = ({ heading, data, id }) => {
-    // console.log(id);
     return (
-        <div className='relative h-[148px] 3xl:h-[204px] text-grey-dark overflow-hidden rounded-[9px] bg-white'>
-            <div className={styles.ocean}>
-                <div className={styles.wave}></div>
-            </div>
-            <div className='z-10 absolute w-full h-full py-[13px] px-3'>
-                <h2 className='z-10'>{heading}</h2>
-                <div className='h-full flex items-center break-all'>
-                    <h5 className='text-heading-5-bold'>{data}</h5>
+        <>
+            <div className='relative 2xl:hidden h-[148px] 3xl:h-[204px] text-grey-dark overflow-hidden rounded-[9px] bg-white shadow 2xl:shadow-none'>
+                <div className={styles.ocean}>
+                    <div className={styles.wave} style={{ bottom: id === 0 ? 0 : id === 1 || id === 2 ? '58%' : 0, rotate: id === 0 ? 0 : id === 1 || id === 2 ? '180deg' : 0 }}></div>
+                </div>
+                <div className='z-10 absolute w-full h-full py-[13px] px-2'>
+                    <p className='z-10 text-paragraph-2'>{heading}</p>
+                    <div className='h-full flex items-center'>
+                        <h5 className='text-heading-5-bold w-full whitespace-normal'>{isNaN(parseFloat(data)) ? data : heading !== 'Total Uploads' ? data.toFixed(2) : data}</h5>
+                    </div>
                 </div>
             </div>
-            {/* {id % 2 === 0 ? <RevenueOddBG /> : <RevenueEvenBg />} */}
-        </div>
+
+            <div className='relative hidden 2xl:block h-[148px] 3xl:h-[204px] text-grey-dark overflow-hidden rounded-[9px] bg-white shadow 2xl:shadow-none'>
+                <div className={styles.ocean}>
+                    <div className={styles.wave} style={(id + 1) % 2 === 0 ? { bottom: 0 } : { top: 0, rotate: '180deg' }}></div>
+                </div>
+                <div className='z-10 absolute w-full h-full py-[13px] px-2'>
+                    <p className='z-10 text-paragraph-2'>{heading}</p>
+                    <div className='h-full flex items-center'>
+                        <h5 className='text-heading-5-bold w-full whitespace-normal'>{isNaN(parseFloat(data)) ? data : heading !== 'Total Uploads' ? data.toFixed(2) : data}</h5>
+                    </div>
+                </div>
+            </div>
+        </>
     );
 };
 

@@ -18,11 +18,10 @@ const Sorting = ({ text, options }) => {
                 </svg>
 
                 <input type="checkbox" name="" className='hidden' onChange={e => setChecked(e.target.checked)} />
-                {checked && <div className='w-full bg-white p-1 flex flex-col absolute top-5 left-0'>
-                    {options.map(item => <div onClick={() => setLabel(item.split("_").join(' '))} className='p-1 hover:bg-grey-light' key={item}>{item.split("_").join(" ")}</div>)}
+                {checked && <div className='w-full bg-white rounded shadow-2xl p-1 flex flex-col absolute top-5 left-0'>
+                    {options.map(item => <div onClick={() => setLabel(item.split("_").join(' '))} className={`p-1 hover:bg-grey-light ${label === item ? 'bg-grey-light' : ''}`} key={item}>{item.split("_").join(" ")}</div>)}
                 </div>}
             </label>
-
         </div>
     );
 };
