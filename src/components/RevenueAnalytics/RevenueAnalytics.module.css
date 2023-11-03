@@ -10,10 +10,11 @@
   background: url(../../assets/icons/wave.webp) repeat-x;
   position: absolute;
   bottom: 0;
-  width: 6400px;
+  /* width: 6400px; */
   height: 63px;
   animation: wave 2s ease-out;
   transform: translate3d(0, 0, 0);
+  @apply w-[6400px];
 }
 
 @keyframes waveAnim {

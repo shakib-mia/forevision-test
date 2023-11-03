@@ -31,59 +31,61 @@ const Revenue = () => {
 
   const songs = [
     {
-      Songname: "Je Jon Premer Vab Jane Na",
-      ProcessName: "Airtel Process",
+      Song_name: "Je Jon Premer Vab Jane Na",
+      Process_Name: "Airtel Process",
       Album: "Je Jon Premer Vab Jane Na",
       Artist: "Band Fusion",
       Label: "Band Fusion Official",
       ISRC: "INF232100006",
       Royalty: "0.00048254",
-      RevenueafterTDS: "22.99988937",
-      FinalRevenue: "20.69989967",
+      Revenue_after_TDS: "22.99988937",
+      Final_Revenue: "20.69989967",
     },
     {
-      Songname: "Je Jon Premer Vab Jane Na",
-      ProcessName: "Airtel Process",
+      Song_name: "Je Jon Premer Vab Jane Na",
+      Process_Name: "Airtel Process",
       Album: "Je Jon Premer Vab Jane Na",
       Artist: "Band Fusion",
       Label: "Band Fusion Official",
       ISRC: "INF232100006",
       Royalty: "0.00048254",
-      RevenueafterTDS: "22.99988937",
-      FinalRevenue: "20.69989967",
+      Revenue_after_TDS: "22.99988937",
+      Final_Revenue: "20.69989967",
     },
     {
-      Songname: "Je Jon Premer Vab Jane Na",
-      ProcessName: "Airtel Process",
+      Song_name: "Je Jon Premer Vab Jane Na",
+      Process_Name: "Airtel Process",
       Album: "Je Jon Premer Vab Jane Na",
       Artist: "Band Fusion",
       Label: "Band Fusion Official",
       ISRC: "INF232100006",
       Royalty: "0.00048254",
-      RevenueafterTDS: "22.99988937",
-      FinalRevenue: "20.69989967",
+      Revenue_after_TDS: "22.99988937",
+      Final_Revenue: "20.69989967",
     },
     {
-      Songname: "Je Jon Premer Vab Jane Na",
-      ProcessName: "Airtel Process",
+      Song_name: "Je Jon Premer Vab Jane Na",
+      Process_Name: "Airtel Process",
       Album: "Je Jon Premer Vab Jane Na",
       Artist: "Band Fusion",
       Label: "Band Fusion Official",
       ISRC: "INF232100006",
       Royalty: "0.00048254",
-      RevenueafterTDS: "22.99988937",
-      FinalRevenue: "20.69989967",
+      Revenue_after_TDS: "22.99988937",
+      Final_Revenue: "20.69989967",
     }
 
   ]
 
+  // console.log();
+
   return (
 
-    <div className='bg-[size:100%] bg-no-repeat p-4 pl-7' style={{ backgroundImage: `url(${background})` }}>
-      <div className='h-full w-full bg-grey-dark px-[60px] py-5 rounded-[20px] 3xl:px-[150px]'>
-        <div className="flex gap-3 items-end">
-          <div className='w-3/4'>
-            <h4 className='text-heading-4-bold text-white'>Good evening , <u>
+    <div className='bg-[size:100%] bg-no-repeat p-1 2xl:p-4 2xl:pl-7 mb-6 2xl:mb-0' style={{ backgroundImage: `url(${background})` }}>
+      <div className='h-full w-full bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px] 3xl:px-[150px]'>
+        <div className="flex flex-col 2xl:flex-row gap-3 items-end">
+          <div className='w-full 2xl:w-3/4'>
+            <h4 className='text-heading-4-bold text-white'>Good evening, <u>
               Band
             </u> Fusion</h4>
             <p className='text-subtitle-1 text-white tracking-[0.5px] mt-1'>Welcome to your revenue dashboard, Let’s see how much you’ve earned with us !</p>
@@ -92,11 +94,11 @@ const Revenue = () => {
               <Button className='px-2 py-1' text="Request Withdraw" />
             </div>
 
-            <div className='mt-[32px] grid grid-cols-4 gap-3'>
+            <div className='mt-[32px] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3'>
               {data.map((item, key) => <RevenueAnalytics {...item} id={key} />)}
             </div>
           </div>
-          <div className='w-1/4 h-full 3xl:h-[380px] relative bg-[length:100%_100%] bg-no-repeat rounded-[20px] px-[38px] py-[50px]' style={{ backgroundImage: `url(${balanceBG})` }}>
+          <div className='w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative bg-[length:100%_100%] bg-no-repeat rounded-[20px] p-2 2xl:px-[38px] 2xl:py-[50px]' style={{ backgroundImage: `url(${balanceBG})` }}>
             <h4 className='text-heading-4-bold text-grey'>Account Balance</h4>
             <h4 className='text-heading-4-bold text-grey-dark mt-5'>20.69989967</h4>
             <div className='mt-6 flex justify-center mb-0'>
@@ -105,43 +107,42 @@ const Revenue = () => {
           </div>
         </div>
 
-        <div className='mt-3 px-3 py-4 bg-grey-light rounded-[10px]'>
-          <div className="flex justify-between">
-            <div className="w-2/3">
+        <div className='mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-x-scroll relative'>
+          <div className="flex flex-col 2xl:flex-row justify-between sticky top-0 left-0">
+            <div className="w-full 2xl:w-2/3">
               {/* <input type="text" className='px-2 py-[12px]' placeholder='search here...' /> */}
-              <div className="flex gap-3 items-center">
-                <div className='w-7/12 relative'>
+              <div className="flex flex-col 2xl:flex-row gap-1 2xl:gap-3 items-center">
+                <div className='w-full 2xl:w-7/12 relative'>
                   <InputField icon={search} value={badge} onChange={e => setBadge(e.target.value)} containerClassName="w-full" badge={badge} setBadge={setBadge} placeholder="Search here..." />
                 </div>
-                <div className="w-5/12">
-                  <Sorting text="Sort by" />
+                <div className="w-full 2xl:w-5/12">
+                  <Sorting text="Sort by" options={Object.keys(songs[0])} />
                 </div>
               </div>
             </div>
 
-            <div className='w-1/3 bg-white p-[4px] rounded-full'>
-              <div className="flex justify-between">
+            <div className='w-full 2xl:w-1/3 bg-white p-[4px] mt-1 2xl:mt-0 rounded-full'>
+              <div className="hidden 2xl:flex justify-between">
                 <div className="flex gap-1">
                   <Button small text={'CSV'} />
                   <Button small text={'CSV'} />
                 </div>
                 <Button small text="DOWNLOAD REPORT" />
               </div>
+
+              <div className='flex 2xl:hidden'>
+                <Button small text={'CSV'} />
+                <Button small text={'CSV'} />
+                <Button small text="DOWNLOAD REPORT" />
+              </div>
             </div>
           </div>
-          <div className='mt-4 grid grid-cols-9'>
-            <h6 className='text-subtitle-1-bold text-grey-dark text-center'>Song name</h6>
-            <h6 className='text-subtitle-1-bold text-grey-dark text-center'>Process Name</h6>
-            <h6 className='text-subtitle-1-bold text-grey-dark text-center'>Album</h6>
-            <h6 className='text-subtitle-1-bold text-grey-dark text-center'>Artist</h6>
-            <h6 className='text-subtitle-1-bold text-grey-dark text-center'>Label</h6>
-            <h6 className='text-subtitle-1-bold text-grey-dark text-center'>ISRC</h6>
-            <h6 className='text-subtitle-1-bold text-grey-dark text-center'>Royalty</h6>
-            <h6 className='text-subtitle-1-bold text-grey-dark text-center'>Revenue after TDS</h6>
-            <h6 className='text-subtitle-1-bold text-grey-dark text-center'>Final Revenue</h6>
+          {/* <div className='bg-grey-light'> */}
+          <div className='mt-4 grid grid-cols-9 w-[1147px] 2xl:w-full'>
+            {Object.keys(songs[0]).map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center'>{item.split("_").join(" ")}</h6>)}
           </div>
 
-          {songs.map(item => <div className='grid grid-cols-9 hover:bg-white hover:rounded-[5px] hover:shadow-lg py-2 transition cursor-pointer'>
+          {songs.map(item => <div className='grid grid-cols-9 w-[1147px] 2xl:w-full hover:bg-white hover:rounded-[5px] hover:shadow-lg py-2 transition cursor-pointer'>
             {/* <h6 className='text-subtitle-1 text-grey-dark font-semibold'>Song name</h6>
             <h6 className='text-subtitle-1 text-grey-dark font-semibold'>Process Name</h6>
             <h6 className='text-subtitle-1 text-grey-dark font-semibold'>Album</h6>
@@ -153,6 +154,7 @@ const Revenue = () => {
             <h6 className='text-subtitle-1 text-grey-dark font-semibold'>Final Revenue</h6> */}
             {Object.keys(item).map(i => <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item[i]}</h6>)}
           </div>)}
+          {/* </div> */}
         </div>
 
       </div>

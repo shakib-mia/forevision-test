@@ -3,7 +3,7 @@ import React from 'react';
 import styles from "./RevenueAnalytics.module.css"
 
 const RevenueAnalytics = ({ heading, data, id }) => {
-    console.log(id);
+    // console.log(id);
     return (
         <div className='relative h-[148px] 3xl:h-[204px] text-grey-dark overflow-hidden rounded-[9px] bg-white'>
             <div className={styles.ocean}>
