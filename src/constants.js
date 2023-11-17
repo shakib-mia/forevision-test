@@ -262,7 +262,11 @@ export const user = JSON.parse(localStorage.getItem("user"));
 export const routes = [
   {
     path: "/",
-    page: <Home />,
+    page: (
+      <RequireAuth>
+        <Home />
+      </RequireAuth>
+    ),
   },
   {
     path: "/verified-on-resso",
@@ -275,31 +279,59 @@ export const routes = [
 
   {
     path: "/youtube-oac",
-    page: <YoutubeOac />,
+    page: (
+      <RequireAuth>
+        <YoutubeOac />
+      </RequireAuth>
+    ),
   },
   {
     path: "/youTube-claim-release",
-    page: <YoutubeClaimRelease />,
+    page: (
+      <RequireAuth>
+        <YoutubeClaimRelease />
+      </RequireAuth>
+    ),
   },
   {
     path: "/promotional-tool",
-    page: <PromotionalTool />,
+    page: (
+      <RequireAuth>
+        <PromotionalTool />
+      </RequireAuth>
+    ),
   },
   {
     path: "/video-distribution",
-    page: <VideoDistribution />,
+    page: (
+      <RequireAuth>
+        <VideoDistribution />
+      </RequireAuth>
+    ),
   },
   {
     path: "/link-facebook-and-instagram-profile-with-songs",
-    page: <LinkFacebookAndInstagramProfile />,
+    page: (
+      <RequireAuth>
+        <LinkFacebookAndInstagramProfile />
+      </RequireAuth>
+    ),
   },
   {
     path: "/facebook-insta-whitelisting",
-    page: <FbInstaWhitelisting />,
+    page: (
+      <RequireAuth>
+        <FbInstaWhitelisting />
+      </RequireAuth>
+    ),
   },
   {
     path: "/youtube-video-takedown",
-    page: <YoutubeVideoTakedown />,
+    page: (
+      <RequireAuth>
+        <YoutubeVideoTakedown />
+      </RequireAuth>
+    ),
   },
   {
     path: "/login",
