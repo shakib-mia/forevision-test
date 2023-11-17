@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import filter from "../../assets/icons/filter.svg"
+import { SongsContext } from '../../contexts/SongsContext';
 
 const Sorting = ({ text, options }) => {
     const [checked, setChecked] = useState(false);
     const [label, setLabel] = useState(text);
+    const { songs, setSongs } = useContext(SongsContext);
+
+    const handleSorting = (item) => {
+        setLabel(item)
+        console.log(songs);
+        // songs.sort(song => song[item])
+        songs.sort((song1, song2) => {
+            if (parseFloat(song1) && parseFloat(song2)) {
+                return console.log(song1[item] < song2[item])
+            }
+        });
+    }
 
     return (
         <div className='relative'>
             <label className="flex w-full justify-between items-center">
                 <div className='p-1 flex gap-1'>
                     <img src={filter} alt='sorting' />
-                    <p className='text-paragraph-1'>{label}</p>
+                    <p className='text-paragraph-1'>{label.split("_").join(' ')}</p>
                 </div>
 
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,8 +31,8 @@ const Sorting = ({ text, options }) => {
                 </svg>
 
                 <input type="checkbox" name="" className='hidden' onChange={e => setChecked(e.target.checked)} />
-                {checked && <div className='w-full bg-white rounded shadow-2xl p-1 flex flex-col absolute top-5 left-0'>
-                    {options.map(item => <div onClick={() => setLabel(item.split("_").join(' '))} className={`p-1 hover:bg-grey-light ${label === item ? 'bg-grey-light' : ''}`} key={item}>{item.split("_").join(" ")}</div>)}
+                {checked && <div className='w-full bg-white rounded shadow-2xl p-1 flex flex-col absolute top-5 left-0 h-[220px] overflow-y-auto'>
+                    {options.map(item => <div onClick={() => handleSorting(item)} className={`capitalize p-1 hover:bg-grey-light ${label === item ? 'bg-grey-light cursor-not-allowed' : ''}`} key={item}>{item.split("_").join(" ")}</div>)}
                 </div>}
             </label>
         </div>

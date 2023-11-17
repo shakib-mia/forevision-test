@@ -1,11 +1,7 @@
-import home from "./assets/icons/navbar/home.svg";
-import dashboard from "./assets/icons/navbar/layout.svg";
 import layer from "./assets/icons/navbar/layers.webp";
-import tasks from "./assets/icons/navbar/checkbox.webp";
-import reports from "./assets/icons/navbar/pie-chart.webp";
 import plans from "./assets/icons/navbar/tag.webp";
 import Home from "./pages/Home/Home";
-// import RequireAuth from "./RequireAuth";
+import RequireAuth from "./RequireAuth";
 // import Dashboard from "./pages/Dashboard/Dashboard";
 import ProfileVerification from "./pages/ProfileVerification/ProfileVerification";
 import YoutubeOac from "./pages/YoutubeOac/YoutubeOac";
@@ -23,16 +19,46 @@ import OngoingProjects from "./pages/OngoingProjects/OngoingProjects";
 import PreviousProjects from "./pages/PreviousProjects/PreviousProjects";
 import Profile from "./pages/Profile/Profile";
 import Revenue from "./pages/Revenue/Revenue";
-import settings from "./assets/icons/navbar/settings.webp";
+// import settings from "./assets/icons/navbar/settings.webp";
 
 export const navItem = [
   {
-    icon: home,
+    icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        // fill="#fff"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M11.3861 1.21065C11.7472 0.929784 12.2528 0.929784 12.6139 1.21065L21.6139 8.21065C21.8575 8.4001 22 8.69141 22 9V20C22 20.7957 21.6839 21.5587 21.1213 22.1213C20.5587 22.6839 19.7957 23 19 23H5C4.20435 23 3.44129 22.6839 2.87868 22.1213C2.31607 21.5587 2 20.7957 2 20V9C2 8.69141 2.14247 8.4001 2.38606 8.21065L11.3861 1.21065ZM10 21H14V13H10V21ZM16 21V12C16 11.4477 15.5523 11 15 11H9C8.44772 11 8 11.4477 8 12V21H5C4.73478 21 4.48043 20.8946 4.29289 20.7071C4.10536 20.5196 4 20.2652 4 20V9.48908L12 3.26686L20 9.48908V20C20 20.2652 19.8946 20.5196 19.7071 20.7071C19.5196 20.8946 19.2652 21 19 21H16Z"
+          // fill="black"
+        />
+      </svg>
+    ),
     text: "Home",
     path: "/",
   },
   {
-    icon: dashboard,
+    icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        // fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M5 4C4.44772 4 4 4.44772 4 5V8H20V5C20 4.44771 19.5523 4 19 4H5ZM22 5C22 3.34315 20.6569 2 19 2H5C3.34315 2 2 3.34315 2 5V19C2 20.6569 3.34315 22 5 22H19C20.6569 22 22 20.6569 22 19V5ZM20 10H10V20H19C19.5523 20 20 19.5523 20 19V10ZM8 20V10H4V19C4 19.5523 4.44771 20 5 20H8Z"
+          // fill="black"
+        />
+      </svg>
+    ),
     text: "Dashboard",
     path: "/dashboard",
   },
@@ -52,14 +78,44 @@ export const navItem = [
     ],
   },
   {
-    icon: tasks,
+    icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M5 4C4.73478 4 4.48043 4.10536 4.29289 4.29289C4.10536 4.48043 4 4.73478 4 5V19C4 19.2652 4.10536 19.5196 4.29289 19.7071C4.48043 19.8946 4.73478 20 5 20H19C19.2652 20 19.5196 19.8946 19.7071 19.7071C19.8946 19.5196 20 19.2652 20 19V12C20 11.4477 20.4477 11 21 11C21.5523 11 22 11.4477 22 12V19C22 19.7957 21.6839 20.5587 21.1213 21.1213C20.5587 21.6839 19.7957 22 19 22H5C4.20435 22 3.44129 21.6839 2.87868 21.1213C2.31607 20.5587 2 19.7957 2 19V5C2 4.20435 2.31607 3.44129 2.87868 2.87868C3.44129 2.31607 4.20435 2 5 2H16C16.5523 2 17 2.44772 17 3C17 3.55228 16.5523 4 16 4H5ZM21.2929 3.29289C21.6834 2.90237 22.3166 2.90237 22.7071 3.29289C23.0976 3.68342 23.0976 4.31658 22.7071 4.70711L12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L8.29289 11.7071C7.90237 11.3166 7.90237 10.6834 8.29289 10.2929C8.68342 9.90237 9.31658 9.90237 9.70711 10.2929L12 12.5858L21.2929 3.29289Z"
+          fill="black"
+        />
+      </svg>
+    ),
     text: "Tasks",
     path: "/tasks",
   },
   {
-    icon: reports,
-    text: "Reports",
-    path: "/reports",
+    icon: (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M11.2928 1.29289C11.4803 1.10536 11.7347 1 11.9999 1C13.4445 1 14.8749 1.28452 16.2094 1.83733C17.544 2.39013 18.7566 3.20038 19.7781 4.22183C20.7995 5.24327 21.6098 6.4559 22.1626 7.79048C22.7154 9.12506 22.9999 10.5555 22.9999 12C22.9999 12.5523 22.5522 13 21.9999 13H11.9999C11.4476 13 10.9999 12.5523 10.9999 12V2C10.9999 1.73478 11.1053 1.48043 11.2928 1.29289ZM12.9999 3.05573V11H20.9442C20.8504 10.1614 20.639 9.33849 20.3148 8.55585C19.8625 7.46392 19.1996 6.47177 18.3639 5.63604C17.5281 4.80031 16.536 4.13738 15.4441 3.68508C14.6614 3.3609 13.8385 3.14949 12.9999 3.05573ZM8.91645 2.43004C9.13734 2.93623 8.90606 3.52564 8.39988 3.74653C7.05247 4.33452 5.86961 5.24362 4.95472 6.39436C4.03982 7.5451 3.42075 8.90244 3.15161 10.3477C2.88248 11.793 2.97149 13.2822 3.41085 14.6851C3.85021 16.088 4.62655 17.3619 5.67199 18.3955C6.71744 19.4291 8.00016 20.1908 9.40801 20.6141C10.8159 21.0375 12.306 21.1095 13.7481 20.8238C15.1902 20.5382 16.5403 19.9037 17.6806 18.9757C18.8208 18.0477 19.7163 16.8546 20.2889 15.5005C20.504 14.9919 21.0907 14.7539 21.5994 14.969C22.1081 15.1841 22.3461 15.7708 22.131 16.2795C21.4312 17.9344 20.3366 19.3927 18.943 20.5269C17.5494 21.6611 15.8992 22.4366 14.1366 22.7857C12.3741 23.1348 10.5528 23.0468 8.83212 22.5294C7.11141 22.0121 5.54364 21.081 4.26588 19.8178C2.98811 18.5545 2.03925 16.9975 1.50225 15.2828C0.965257 13.5681 0.856473 11.748 1.18541 9.98156C1.51435 8.21513 2.271 6.55616 3.38921 5.1497C4.50741 3.74324 5.95313 2.63212 7.59996 1.91347C8.10614 1.69258 8.69556 1.92385 8.91645 2.43004Z"
+          fill="black"
+        />
+      </svg>
+    ),
+    text: "Revenue Reports",
+    path: "/revenue",
   },
   {
     icon: plans,
@@ -211,9 +267,9 @@ export const routes = [
   {
     path: "/verified-on-resso",
     page: (
-      // <RequireAuth>
-      <ProfileVerification />
-      // </RequireAuth>
+      <RequireAuth>
+        <ProfileVerification />
+      </RequireAuth>
     ),
   },
 
@@ -265,49 +321,43 @@ export const routes = [
   {
     path: "/projects/ongoing",
     page: (
-      // <RequireAuth>
-      <OngoingProjects />
-      // </RequireAuth>
+      <RequireAuth>
+        <OngoingProjects />
+      </RequireAuth>
     ),
   },
   {
     path: "/projects/previous",
     page: (
-      // <RequireAuth>
-      <PreviousProjects />
-      // </RequireAuth>
+      <RequireAuth>
+        <PreviousProjects />
+      </RequireAuth>
     ),
   },
 
   {
     path: "/profile",
     page: (
-      // <RequireAuth>
-      <Profile />
-      // </RequireAuth>
+      <RequireAuth>
+        <Profile />
+      </RequireAuth>
     ),
   },
 
   {
     path: "/profile/:id",
-    page: <Profile />,
+    page: (
+      <RequireAuth>
+        <Profile />
+      </RequireAuth>
+    ),
   },
   {
     path: "/revenue",
-    page: <Revenue />,
+    page: (
+      <RequireAuth>
+        <Revenue />
+      </RequireAuth>
+    ),
   },
 ];
-
-/**
-  
- Required apis
-
- 1. profile
-    a. 
- 
- 
- 
- 
- 
- 
- */

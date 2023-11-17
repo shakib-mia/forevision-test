@@ -18,7 +18,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
               } py-2 px-[10px] rounded-md`}
           >
             <div className="flex gap-[10px] items-center">
-              {icon && <img src={icon} alt={text} />}
+              {icon}
               {hovered && <h2>{text}</h2>}
             </div>
 

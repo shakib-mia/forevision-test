@@ -46,7 +46,8 @@ const Login = () => {
           prevRoute === '/signup' ? navigate("/signup-details") : navigate('/dashboard')
         }
       }).catch(err => {
-        toast.error(err.message, {
+        console.log(err);
+        toast.error(err.response.data.message, {
           position: 'bottom-center'
         })
       });
