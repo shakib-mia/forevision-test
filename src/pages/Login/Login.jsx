@@ -43,7 +43,7 @@ const Login = () => {
           localStorage.setItem("token", data.token);
           // window.history.back();
           setUserData(data.user)
-          prevRoute === '/signup' ? navigate("/signup-details") : navigate('/dashboard')
+          prevRoute === '/signup' ? navigate("/signup-details") : navigate('/profile')
         }
       }).catch(err => {
         console.log(err);
