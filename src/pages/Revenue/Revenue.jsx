@@ -119,15 +119,15 @@ const Revenue = () => {
 
             {songs.length > 0 ? songs.map(item => <div className='grid grid-cols-9 w-[1147px] 2xl:w-full hover:bg-white hover:rounded-[5px] hover:shadow-lg py-2 transition cursor-pointer'>
               {/* {Object.keys(item).map(i => console.log(i))} */}
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_catalogue}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_content_id}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_album}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_track_artist}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_label}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_isrc}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_royality}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_after_tds_revenue}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.final_revenue}</h6>
+              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_catalogue ? item.music_catalogue : '-'}</h6>
+              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_content_id ? item.music_content_id : '-'}</h6>
+              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_album ? item.music_album : '-'}</h6>
+              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_track_artist ? item.music_track_artist : '-'}</h6>
+              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_label ? item.music_label : '-'}</h6>
+              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_isrc ? item.music_isrc : '-'}</h6>
+              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_royality ? item.music_royality : '-'}</h6>
+              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_after_tds_revenue ? item.music_after_tds_revenue : '-'}</h6>
+              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.final_revenue ? item.final_revenue : '-'}</h6>
             </div>) : <></>}
           </div>
 
