@@ -146,7 +146,7 @@ const EditProfile = ({ handleClose }) => {
             // altLink="/login"
             onSubmit={edit}
             className="backdrop-blur fixed top-0 left-0 z-[9999]"
-            id="signup-page"
+            id="edit-profile"
             closeIcon={true}
             // handleClose={handleClose}
             whiteContainerClass="h-3/4 overflow-y-auto overflow-x-hidden relative"

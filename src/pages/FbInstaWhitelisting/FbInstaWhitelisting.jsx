@@ -8,42 +8,42 @@ const FbInstaWhitelisting = () => {
       label: "User Name",
       placeholder: "Name",
       type: "text",
-      name: "userName",
+      name: "rfacebook_insta_whitelisting_uname",
       required: true,
     },
     {
       label: "Email Address",
       placeholder: "Email",
       type: "email",
-      name: "email",
+      name: "rfacebook_insta_whitelisting_uemail",
       required: true,
     },
     {
       label: "Phone",
       placeholder: "Phone",
       type: "tel",
-      name: "phone",
+      name: "rfacebook_insta_whitelisting_phone",
       required: true,
     },
     {
       label: "Record Label",
       placeholder: "Record Label",
       type: "text",
-      name: "recordLabel",
+      name: "rfacebook_insta_whitelisting_record_label",
       required: true,
     },
     {
       label: "URL of the Facebook Page to be linked",
       placeholder: "E.g. https://www.facebook.com/Zs8LFaaLa/",
       type: "text",
-      name: "urlOfFbPage",
+      name: "rfacebook_insta_whitelisting_furl",
       required: false,
     },
     {
       label: "Please provide URL of Instagram handle to be whitelisted",
       placeholder: "E.g. https://www.instagram.com/Zs8LFaaLa/",
       type: "text",
-      name: "instaProfileUrl",
+      name: "rfacebook_insta_whitelisting_iurl",
       required: false,
     },
   ];
@@ -57,7 +57,7 @@ const FbInstaWhitelisting = () => {
         }
       />
 
-      <Form fields={fields} />
+      <Form fields={fields} uIdKey="rfacebook_insta_whitelisting_uid" backendUrl="https://adztronaut.com/music/admin/api/addFacebookInstaWhitelisting" />
     </div>
   );
 };
