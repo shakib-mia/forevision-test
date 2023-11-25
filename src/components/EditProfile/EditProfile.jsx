@@ -209,7 +209,7 @@ const EditProfile = ({ handleClose }) => {
             <div className="mt-3 mb-2 text-center">
                 <Button
                     type="submit"
-                    text="Sign Up"
+                    text="Submit"
                 // disabled={
                 //   !(email.length > 0 && password.length && password === confirmPass)
                 // }

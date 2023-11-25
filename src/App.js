@@ -19,7 +19,7 @@ function App() {
   const [profileData, setProfileData] = useState({});
 
   const store = { userData, setUserData, prevRoute, setPrevRoute, profileData };
-  console.log(location.pathname);
+  // console.log(location.pathname);
 
   useEffect(() => {
     const config = {

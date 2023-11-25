@@ -1,21 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import filter from "../../assets/icons/filter.svg"
-import { SongsContext } from '../../contexts/SongsContext';
+// import { SongsContext } from '../../contexts/SongsContext';
 
-const Sorting = ({ text, options }) => {
+const Sorting = ({ text, options, songs, handleSort }) => {
     const [checked, setChecked] = useState(false);
     const [label, setLabel] = useState(text);
-    const { songs, setSongs } = useContext(SongsContext);
+    // const { setSongs } = useContext(SongsContext);
 
     const handleSorting = (item) => {
-        setLabel(item)
-        console.log(songs);
-        // songs.sort(song => song[item])
+        setLabel(item);
+        handleSort(item)
+        // console.log(item);
         songs.sort((song1, song2) => {
-            if (parseFloat(song1) && parseFloat(song2)) {
-                return console.log(song1[item] < song2[item])
+            const value1 = parseFloat(song1[item]);
+            const value2 = parseFloat(song2[item]);
+
+            // Handle cases where the values are strings
+            if (isNaN(value1) || isNaN(value2)) {
+                // If one of the values is not a valid number, compare them as strings
+                return String(song1[item]).localeCompare(String(song2[item]));
             }
-        });
+
+            // Compare the values as numbers
+            return value1 - value2;
+        })
     }
 
     return (

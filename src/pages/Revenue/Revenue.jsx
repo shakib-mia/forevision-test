@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import background from "../../assets/images/background.png"
 import Button from '../../components/Button/Button';
 import RevenueAnalytics from '../../components/RevenueAnalytics/RevenueAnalytics';
@@ -11,36 +11,72 @@ import chevron from "../../assets/icons/chevron-secondary.svg"
 import axios from 'axios';
 import { SongsContext } from "./../../contexts/SongsContext"
 import { config } from '../../constants';
+import { ProfileContext } from '../../contexts/ProfileContext';
 
 const Revenue = () => {
   const [badge, setBadge] = useState("");
   const [item, setItem] = useState(8)
-  const [songs, setSongs] = useState([])
+  const [songs, setSongs] = useState([]);
+
+  const { profileData } = useContext(ProfileContext);
+  // console.log(profileData);
+
+  useEffect(() => {
+    const formData = new FormData();
+
+    formData.append('userId', JSON.parse(localStorage.getItem("user")).ID)
+
+    axios
+      .post("https://adztronaut.com/music/admin/api/getAllMusicData", formData, config)
+      .then(({ data }) => setSongs(data.data));
+  }, [])
+
+  const isrcTotals = {};
+
+  songs?.forEach(music => {
+    const isrc = music.music_isrc
+
+    if (isrcTotals.hasOwnProperty(isrc)) {
+      isrcTotals[isrc] += parseFloat(music.final_revenue);
+    } else {
+      isrcTotals[isrc] = parseFloat(music.final_revenue);
+    }
+  });
+
+  const aggregatedMusicData = Object.keys(isrcTotals).map((isrc) => ({
+    music_isrc: isrc,
+    // ...songs[]
+    ...songs.find(item => item.music_isrc === isrc),
+    final_revenue: isrcTotals[isrc].toFixed(8)
+  }));
+
+  const calculateTotal = (fieldName) => {
+    return aggregatedMusicData.reduce((accumulator, object) => {
+      return accumulator + parseFloat(object[fieldName]);
+    }, 0);
+  }
+  // console.log(aggregatedMusicData);
+  const [filteredSongs, setFilteredSongs] = useState(aggregatedMusicData)
 
   const data = [
     {
       heading: 'Total Uploads',
-      data: 16
+      data: aggregatedMusicData.length
     },
     {
       heading: 'Best Upload',
-      data: 'Je Jon Premer Vab'
+      data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name
     },
     {
       heading: 'Total revenue',
-      data: 20.69989967
+      data: calculateTotal('final_revenue')
     },
     {
       heading: 'After TDS Revenue',
-      data: 22.99988937
+      data: calculateTotal('music_after_tds_revenue')
     },
   ]
 
-  useEffect(() => {
-    axios
-      .get("https://adztronaut.com/music/admin/api/getAllMusicData", config)
-      .then(({ data }) => setSongs(data.data));
-  }, [])
   const options = [
     "Song_name",
     "Process_Name",
@@ -53,6 +89,18 @@ const Revenue = () => {
     "Final_Revenue",
   ]
 
+  useEffect(() => {
+    setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id));
+  }, [aggregatedMusicData])
+
+  // console.log(filteredSongs);
+
+  const handleSort = (field) => {
+    setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
+    // console.log(filteredSongs);
+    aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
+  }
+
   return (
 
     <SongsContext.Provider value={{ songs, setSongs }}>
@@ -61,8 +109,8 @@ const Revenue = () => {
           <div className="flex flex-col 2xl:flex-row gap-3 items-end">
             <div className='w-full 2xl:w-3/4'>
               <h4 className='text-heading-4-bold text-grey-dark 2xl:text-white'>Good evening, <br /> <span className='text-interactive-light 2xl:text-white'><u>
-                Band
-              </u> Fusion</span></h4>
+                {profileData.display_name ? profileData.display_name.split(" ")[0] : <></>}
+              </u> {profileData.display_name ? profileData.display_name.split(" ")[1] : <></>}</span></h4>
               <p className='text-subtitle-1 text-interactive-dark-active 2xl:text-white tracking-[0.5px] mt-1'>Welcome to your revenue dashboard, Let’s see how much you’ve earned with us !</p>
               <div className='mt-4 hidden 2xl:flex flex-col justify-center items-center w-fit'>
                 <h6 className='text-heading-6-bold text-white mb-1'>Revenue Analytics</h6>
@@ -91,7 +139,7 @@ const Revenue = () => {
                     <InputField icon={search} value={badge} onChange={e => setBadge(e.target.value)} containerClassName="w-full" badge={badge} setBadge={setBadge} placeholder="Search here..." />
                   </div>
                   <div className="w-full 2xl:w-5/12 h-full">
-                    {songs.length ? <Sorting setSongs={setSongs} songs={songs} text="Sort by" options={songs[0] && Object.keys(songs[0])} /> : ""}
+                    {songs && songs.length ? <Sorting handleSort={handleSort} setSongs={setSongs} songs={aggregatedMusicData} text="Sort by" options={songs[0] && Object.keys(songs[0])} /> : ""}
                   </div>
                 </div>
               </div>
@@ -100,14 +148,14 @@ const Revenue = () => {
                 <div className="hidden 2xl:flex justify-between">
                   <div className="flex gap-1">
                     <Button small text={'CSV'} />
-                    <Button small text={'CSV'} />
+                    <Button small text={'PDF'} />
                   </div>
                   <Button small text="DOWNLOAD REPORT" />
                 </div>
 
                 <div className='flex 2xl:hidden'>
                   <Button small text={'CSV'} />
-                  <Button small text={'CSV'} />
+                  <Button small text={'PDF'} />
                   <Button small text="DOWNLOAD REPORT" />
                 </div>
               </div>
@@ -117,9 +165,8 @@ const Revenue = () => {
               {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center'>{item.split("_").join(" ")}</h6>)}
             </div>
 
-            {songs.length > 0 ? songs.map(item => <div className='grid grid-cols-9 w-[1147px] 2xl:w-full hover:bg-white hover:rounded-[5px] hover:shadow-lg py-2 transition cursor-pointer'>
-              {/* {Object.keys(item).map(i => console.log(i))} */}
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_catalogue ? item.music_catalogue : '-'}</h6>
+            {filteredSongs.length > 0 ? filteredSongs.map(item => <div className='grid grid-cols-9 w-[1147px] 2xl:w-full hover:bg-white hover:rounded-[5px] hover:shadow-lg py-2 transition cursor-pointer'>
+              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_song_name ? item.music_song_name : '-'}</h6>
               <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_content_id ? item.music_content_id : '-'}</h6>
               <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_album ? item.music_album : '-'}</h6>
               <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_track_artist ? item.music_track_artist : '-'}</h6>
@@ -138,13 +185,13 @@ const Revenue = () => {
               <p className="text-paragraph-2 text-right font-medium">Final Revenue</p>
             </div>
 
-            {songs.length > 0 ? songs.slice(0, item).map((item, key) => <RevenueItem {...item} key={key} />) : <></>}
+            {aggregatedMusicData.length > 0 ? aggregatedMusicData.slice(0, item).map((item, key) => <RevenueItem {...item} key={key} />) : <></>}
             <img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />
           </div>
 
         </div>
       </div>
-    </SongsContext.Provider>
+    </SongsContext.Provider >
   );
 };
 

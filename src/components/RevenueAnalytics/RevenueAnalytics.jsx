@@ -3,6 +3,7 @@ import React from 'react';
 import styles from "./RevenueAnalytics.module.css"
 
 const RevenueAnalytics = ({ heading, data, id }) => {
+    // console.log(typeof data);
     return (
         <>
             <div className='relative 2xl:hidden h-[148px] 3xl:h-[204px] text-grey-dark overflow-hidden rounded-[9px] bg-white shadow 2xl:shadow-none'>

@@ -3,7 +3,8 @@ import downArrow from "../../assets/icons/down-arrow.webp";
 import whitePattern from "../../assets/images/white-pattern.svg"
 import gsap from 'gsap';
 
-const RevenueItem = ({ ISRC, Song_name, Final_Revenue }) => {
+const RevenueItem = ({ music_isrc, music_song_name, final_revenue }) => {
+    // console.log(object);
     const [details, setDetails] = useState(false);
     const containerRef = useRef(null);
     const itemRef = useRef(null)
@@ -29,9 +30,9 @@ const RevenueItem = ({ ISRC, Song_name, Final_Revenue }) => {
     return (
         <>
             <div className="grid grid-cols-3 gap-4 text-subtitle-2 font-medium text-grey-dark p-1 text-center">
-                <p>{ISRC}</p>
-                <p>{Song_name}</p>
-                <p className='flex items-center'>{Final_Revenue} <img className='ml-1 -rotate-90' onClick={() => setDetails(true)} src={downArrow} alt="" /></p>
+                <p>{music_isrc}</p>
+                <p>{music_song_name}</p>
+                <p className='flex items-center'>{final_revenue} <img className='ml-1 -rotate-90' onClick={() => setDetails(true)} src={downArrow} alt="" /></p>
             </div>
             <div className={`fixed z-[999999] h-screen w-screen top-0 left-0 backdrop-blur px-3 ${!details && 'hidden'} transition duration-1000`} ref={containerRef}>
                 <div className="relative left-[100vw] bg-no-repeat bg-contain px-3 py-5 mt-5 flex flex-col gap-2 bg-grey-light rounded-[20px]" style={{ backgroundImage: `url(${whitePattern})` }} ref={itemRef}>
@@ -42,15 +43,15 @@ const RevenueItem = ({ ISRC, Song_name, Final_Revenue }) => {
                     </button>
                     <div className="flex gap-4">
                         <h5 className='text-heading-5-bold text-grey-dark w-5/12'>Song Name</h5>
-                        <p className='w-7/12'>{Song_name}</p>
+                        <p className='w-7/12'>{music_song_name}</p>
                     </div>
                     <div className="flex gap-4">
                         <h5 className='text-heading-5-bold text-grey-dark w-5/12'>ISRC</h5>
-                        <p className='w-7/12'>{ISRC}</p>
+                        <p className='w-7/12'>{music_isrc}</p>
                     </div>
                     <div className="flex gap-4">
                         <h5 className='text-heading-5-bold text-grey-dark w-5/12'>Lifetime Revenue</h5>
-                        <p className='w-7/12'>{Song_name}</p>
+                        <p className='w-7/12'>{final_revenue}</p>
                     </div>
                     <div className='mt-5'>
                         <h5 className='text-heading-5-bold text-center text-grey-dark'>Platforms</h5>

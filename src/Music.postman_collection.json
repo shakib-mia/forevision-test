@@ -16,12 +16,12 @@
 					"formdata": [
 						{
 							"key": "user_email",
-							"value": "nabanitaheaven@gmail.com",
+							"value": "omshantiproduction7023@gmail.com",
 							"type": "text"
 						},
 						{
 							"key": "user_pass",
-							"value": "123456",
+							"value": "Osp@7023",
 							"type": "text"
 						}
 					]
@@ -860,7 +860,7 @@
 					"formdata": [
 						{
 							"key": "userId",
-							"value": "930",
+							"value": "565",
 							"type": "text"
 						}
 					]
@@ -877,6 +877,48 @@
 						"admin",
 						"api",
 						"getMusicDataByUserID"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Music Data By Isrc Code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "565",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://adztronaut.com/music/admin/api/getAllMusicData",
+					"protocol": "https",
+					"host": [
+						"adztronaut",
+						"com"
+					],
+					"path": [
+						"music",
+						"admin",
+						"api",
+						"getAllMusicData"
 					]
 				}
 			},

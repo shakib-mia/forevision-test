@@ -37,7 +37,7 @@ const Login = () => {
       .post("https://adztronaut.com/music/admin/api/login", userData)
       .then(({ data }) => {
         if (data.status === "Login successful") {
-          console.log(data);
+          // console.log(data);
           localStorage.setItem("user", JSON.stringify(data.user));
           localStorage.removeItem("token");
           localStorage.setItem("token", data.token);
