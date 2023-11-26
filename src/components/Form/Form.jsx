@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
 import axios from "axios";
@@ -6,10 +6,13 @@ import { toast } from "react-toastify";
 import Chat from "../Chat/Chat";
 import { config } from "../../constants";
 import SelectOptions from "../SelectOptions/SelectOptions";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const Form = ({ fields, instruction, backendUrl, uIdKey, id }) => {
   const [disabled, setDisabled] = useState(true);
   const toastId = React.useRef(null);
+
+  const { profileData } = useContext(ProfileContext);
 
   const formData = useMemo(() => {
     return {};
@@ -70,7 +73,11 @@ const Form = ({ fields, instruction, backendUrl, uIdKey, id }) => {
     });
 
     if (Object.entries(formData)) {
-      axios.post(backendUrl, formData, config).then(({ data }) => {
+      axios.post(backendUrl, formData, {
+        headers: {
+          Authorization: `Bearer ${profileData.user_token}`,
+        },
+      }).then(({ data }) => {
         if (data.success) {
           // console.log(data);
           toast.update(toastId.current, {

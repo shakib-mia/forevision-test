@@ -9,8 +9,8 @@ import { toast } from "react-toastify";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
-  const { userData } = useContext(ProfileContext)
-  console.log(userData);
+  const { userData, profileData } = useContext(ProfileContext)
+  // console.log(userData);
   const fields = [
     {
       id: "firstName",
@@ -122,7 +122,11 @@ const SignupDetails = () => {
     }
 
     // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
-    axios.post("https://adztronaut.com/music/admin/api/updateUserOtherInfo", formData, config).then(res => {
+    axios.post("https://adztronaut.com/music/admin/api/updateUserOtherInfo", formData, {
+      headers: {
+        Authorization: `Bearer ${profileData.user_token}`,
+      },
+    }).then(res => {
       if (res.data.success) {
         toast.success("Details are added successfully", {
           position: 'bottom-center'

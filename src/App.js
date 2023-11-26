@@ -17,9 +17,18 @@ function App() {
   const [prevRoute, setPrevRoute] = useState("");
   const location = useLocation();
   const [profileData, setProfileData] = useState({});
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
-  const store = { userData, setUserData, prevRoute, setPrevRoute, profileData };
-  // console.log(location.pathname);
+  const store = {
+    userData,
+    setUserData,
+    prevRoute,
+    setPrevRoute,
+    profileData,
+    setProfileData,
+    token,
+    setToken,
+  };
 
   useEffect(() => {
     const config = {
@@ -34,7 +43,7 @@ function App() {
           `https://adztronaut.com/music/admin/api/getUserDataById/${userData.ID}`,
           config
         )
-        .then(({ data }) => setProfileData(data.data[0]));
+        .then(({ data }) => setProfileData(data.data && data.data[0]));
     }
   }, [userData.ID]);
 
@@ -43,10 +52,14 @@ function App() {
       {location.pathname !== "/login" &&
         location.pathname !== "/signup" &&
         location.pathname !== "/" &&
+        location.pathname !== "/forgot-password" &&
         !location.pathname.includes("/profile") &&
         location.pathname !== "/revenue" && <Navbar />}
       <BottomBar />
-      <Sidebar />
+      {location.pathname !== "/login" &&
+        location.pathname !== "/signup" &&
+        location.pathname !== "/forgot-password" &&
+        location.pathname !== "/signup-details" && <Sidebar />}
       <Routes>
         {routes.map(({ page, path }, key) => (
           <Route key={key} path={path} element={page} />

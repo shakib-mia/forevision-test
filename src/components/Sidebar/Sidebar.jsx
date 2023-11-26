@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import logo from "./../../assets/images/logo2.webp";
 import search from "./../../assets/icons/navbar/search.webp";
-// import profile from "./../../assets/icons/navbar/profile-picture.webp";
-// import logout from "./../../assets/icons/navbar/logout.webp";
+import profile from "./../../assets/icons/navbar/profile-picture.webp";
+import logout from "./../../assets/icons/navbar/logout.webp";
 import NavItem from "../NavItem/NavItem";
 import { navItem } from "../../constants";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
+  const { userData, setProfileData } = useContext(ProfileContext);
+  // console.log(userData);
+  const navigate = useNavigate()
 
   const handleMouseEnter = () => {
     document
@@ -23,6 +28,16 @@ const Sidebar = () => {
 
     setHovered(false);
   };
+
+
+  const handleLogout = () => {
+    setProfileData({})
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+    navigate("/login")
+  }
+
+
   return (
     <aside
       className="fixed top-0 left-0 h-screen shadow-lg p-2 bg-white w-6 hover:w-[15%] transition-all duration-500 overflow-hidden overflow-y-auto hidden lg:flex lg:flex-col lg:justify-between z-10"
@@ -55,28 +70,24 @@ const Sidebar = () => {
         </div>
       </section>
 
-      {/* <div className="mb-0 border-t-[1px] border-surface-white-line pt-[20px] flex items-center gap-1">
+      <div className="mb-0 border-t-[1px] border-surface-white-line pt-[20px] flex items-center gap-1">
         <img src={profile} alt="" />
         {hovered && (
           <>
             <div className="overflow-hidden whitespace-nowrap">
-              <h1 className="text-subtitle-1-bold">USER</h1>
-              <p className="text-paragraph-1 text-black-tertiary">Email ID</p>
+              <h1 className="text-subtitle-1-bold">{userData.display_name}</h1>
+              <p className="text-button text-black-tertiary">{userData.user_email}</p>
             </div>
 
             <img
               src={logout}
               alt=""
               className="ml-auto cursor-pointer"
-              onClick={() => {
-                localStorage.removeItem("user");
-                localStorage.removeItem("token");
-                window.location.reload();
-              }}
+              onClick={handleLogout}
             />
           </>
         )}
-      </div> */}
+      </div>
     </aside>
   );
 };

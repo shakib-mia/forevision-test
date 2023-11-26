@@ -22,7 +22,7 @@ const Login = () => {
       placeholder: "Enter Password",
     },
   ];
-  const { setUserData, prevRoute } = useContext(ProfileContext)
+  const { setUserData, prevRoute, setToken } = useContext(ProfileContext)
   const navigate = useNavigate();
 
   const login = (e) => {
@@ -36,12 +36,14 @@ const Login = () => {
     axios
       .post("https://adztronaut.com/music/admin/api/login", userData)
       .then(({ data }) => {
+        // console.log(data);
         if (data.status === "Login successful") {
           // console.log(data);
           localStorage.setItem("user", JSON.stringify(data.user));
           localStorage.removeItem("token");
           localStorage.setItem("token", data.token);
           // window.history.back();
+          setToken(data.token)
           setUserData(data.user)
           prevRoute === '/signup' ? navigate("/signup-details") : navigate('/profile')
         }

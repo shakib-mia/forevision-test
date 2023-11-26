@@ -253,7 +253,7 @@ export const imageDomain = "https://adztronaut.com/music/admin/";
 
 export const config = {
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: localStorage.getItem("token"),
   },
 };
 

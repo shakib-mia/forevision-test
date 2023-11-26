@@ -17,18 +17,41 @@ const Revenue = () => {
   const [badge, setBadge] = useState("");
   const [item, setItem] = useState(8)
   const [songs, setSongs] = useState([]);
+  const [greeting, setGreeting] = useState("")
 
-  const { profileData } = useContext(ProfileContext);
-  // console.log(profileData);
+
+  const currentTime = new Date().getHours();
+
+
+  useEffect(() => {
+    if (currentTime >= 0 && currentTime < 12) {
+      setGreeting("Good morning !");
+    } else if (currentTime >= 12 && currentTime < 18) {
+      setGreeting("Good afternoon !");
+    } else {
+      setGreeting("Good evening !");
+    }
+  }, [currentTime])
+
+  const { profileData, userData, token } = useContext(ProfileContext);
+
+  // console.log(userData);
 
   useEffect(() => {
     const formData = new FormData();
 
-    formData.append('userId', JSON.parse(localStorage.getItem("user")).ID)
+    formData.append('userId', userData.ID)
 
     axios
-      .post("https://adztronaut.com/music/admin/api/getAllMusicData", formData, config)
-      .then(({ data }) => setSongs(data.data));
+      .post("https://adztronaut.com/music/admin/api/getAllMusicData", formData, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(({ data }) => {
+        setSongs(data.data);
+        console.log(data.data);
+      });
   }, [])
 
   const isrcTotals = {};
@@ -108,7 +131,7 @@ const Revenue = () => {
         <div className='h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px] 3xl:px-[150px]'>
           <div className="flex flex-col 2xl:flex-row gap-3 items-end">
             <div className='w-full 2xl:w-3/4'>
-              <h4 className='text-heading-4-bold text-grey-dark 2xl:text-white'>Good evening, <br /> <span className='text-interactive-light 2xl:text-white'><u>
+              <h4 className='text-heading-4-bold text-grey-dark 2xl:text-white'>{greeting} <br /> <span className='text-interactive-light 2xl:text-white'><u>
                 {profileData.display_name ? profileData.display_name.split(" ")[0] : <></>}
               </u> {profileData.display_name ? profileData.display_name.split(" ")[1] : <></>}</span></h4>
               <p className='text-subtitle-1 text-interactive-dark-active 2xl:text-white tracking-[0.5px] mt-1'>Welcome to your revenue dashboard, Let’s see how much you’ve earned with us !</p>
