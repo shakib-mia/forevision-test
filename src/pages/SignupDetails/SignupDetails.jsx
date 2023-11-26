@@ -117,16 +117,12 @@ const SignupDetails = () => {
     formData.append("user_id", userData.ID);
     const config = {
       headers: {
-        'Authorization': `${localStorage.getItem('token')}`
-      }
+        Authorization: `Bearer ${profileData.user_token}`,
+      },
     }
 
     // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
-    axios.post("https://adztronaut.com/music/admin/api/updateUserOtherInfo", formData, {
-      headers: {
-        Authorization: `Bearer ${profileData.user_token}`,
-      },
-    }).then(res => {
+    axios.post("https://adztronaut.com/music/admin/api/updateUserOtherInfo", formData, config).then(res => {
       if (res.data.success) {
         toast.success("Details are added successfully", {
           position: 'bottom-center'

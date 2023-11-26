@@ -187,7 +187,7 @@ export const navPhone = [
       </svg>
     ),
     text: "Reports",
-    path: "/reports",
+    path: "/revenue",
   },
   {
     icon: (

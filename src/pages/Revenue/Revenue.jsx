@@ -10,7 +10,7 @@ import RevenueItem from '../../components/RevenueItem/RevenueItem';
 import chevron from "../../assets/icons/chevron-secondary.svg"
 import axios from 'axios';
 import { SongsContext } from "./../../contexts/SongsContext"
-import { config } from '../../constants';
+// import { config } from '../../constants';
 import { ProfileContext } from '../../contexts/ProfileContext';
 
 const Revenue = () => {
@@ -120,7 +120,7 @@ const Revenue = () => {
 
   const handleSort = (field) => {
     setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
-    // console.log(filteredSongs);
+    console.log(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
     aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
   }
 
