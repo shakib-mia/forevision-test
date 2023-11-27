@@ -45,13 +45,13 @@ const RevenueItem = ({ item, option }) => {
             <div className='2xl:hidden grid grid-cols-3 gap-4 text-subtitle-2 font-medium text-grey-dark p-1 text-center'>
                 <h6 className='order-2 2xl:order-none 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item['music_' + option?.toLowerCase()] ? item['music_' + option?.toLowerCase()] : '-'}</h6>
                 <h6 className='order-1 2xl:order-none 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_isrc ? item.music_isrc : '-'}</h6>
-                <p className='order-3 2xl:order-none flex items-center 2xl:hidden'>{item.final_revenue} <img className='ml-1 -rotate-90' onClick={() => setDetails(true)} src={downArrow} alt="" /></p>
+                <p className='order-3 2xl:order-none flex items-center justify-between 2xl:hidden'>{item.final_revenue} <img className='ml-1 -rotate-90' onClick={() => setDetails(true)} src={downArrow} alt="" /></p>
             </div>
             <div className={`fixed z-[999999] h-screen w-screen top-0 left-0 backdrop-blur px-3 ${!details && 'hidden'} transition duration-1000`} ref={containerRef}>
                 <div className="relative left-[100vw] bg-no-repeat bg-contain px-3 py-5 mt-5 flex flex-col gap-2 bg-grey-light rounded-[20px]" style={{ backgroundImage: `url(${whitePattern})` }} ref={itemRef}>
                     <button className='absolute top-1 right-1' onClick={() => setDetails(false)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z" fill="#E5E7EB" />
+                            <path fillRule="evenodd" clipRule="evenodd" d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z" fill="#E5E7EB" />
                         </svg>
                     </button>
                     <div className="flex gap-4">

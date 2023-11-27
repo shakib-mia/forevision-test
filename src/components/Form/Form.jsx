@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Chat from "../Chat/Chat";
-import { config } from "../../constants";
+// import { config } from "../../constants";
 import SelectOptions from "../SelectOptions/SelectOptions";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
@@ -27,7 +27,7 @@ const Form = ({ fields, instruction, backendUrl, uIdKey, id }) => {
         formData[inputField.name] = "";
       }
     }, 0);
-  }, []);
+  }, [formData]);
 
   const user = JSON.parse(localStorage.getItem("user"));
 

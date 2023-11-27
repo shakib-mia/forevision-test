@@ -33,7 +33,7 @@ const Revenue = () => {
     } else {
       setGreeting("Good evening !");
     }
-  }, [])
+  }, [currentTime])
 
   const { profileData, userData, token } = useContext(ProfileContext);
 
@@ -54,7 +54,7 @@ const Revenue = () => {
         setSongs(data.data);
         // console.log(data.data);
       });
-  }, [])
+  }, [token, userData.ID])
 
   const isrcTotals = {};
 
@@ -143,7 +143,7 @@ const Revenue = () => {
               </div>
 
               <div className='mt-[32px] grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3'>
-                {data.map((item, key) => <RevenueAnalytics {...item} id={key} />)}
+                {data.map((item, key) => <RevenueAnalytics {...item} id={key} key={key} />)}
               </div>
             </div>
             <div className='w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative bg-[length:100%_100%] bg-grey-light 2xl:bg-white bg-[center_top_-140px] 2xl:bg-[center_top_-18vh] 3xl:bg-[center_top_-15vh] 2xl:bg-[length:100%_100%] bg-no-repeat rounded-[20px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px]' style={{ backgroundImage: `url(${balanceBG})` }}>
@@ -190,13 +190,13 @@ const Revenue = () => {
               {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center' onClick={() => console.log(item)}>{item.split("_").join(" ")}</h6>)}
             </div>
 
-            {aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id).length > 0 ? aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id).map(item => <RevenueItem item={item} />) : <></>}
+            {aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id).length > 0 ? aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id).map((item, key) => <RevenueItem item={item} key={key} />) : <></>}
           </div>
 
           <div className='2xl:hidden bg-grey-light p-2 rounded-[20px] mt-5'>
             <div className='border border-primary-light rounded-full px-3 text-primary-light py-1 grid grid-cols-3 relative'>
               <p className="text-paragraph-2 text-left font-medium">ISRC</p>
-              <label className="text-paragraph-2 text-center font-medium flex items-center justify-center">{phoneData.split("_").join(" ")} <img src={chevron} className={`transition ${showOptions ? 'rotate-180' : 'rotate-0'}`} alt="chevron" /> <input className="hidden" type="checkbox" onChange={e => setShowOptions(e.target.checked)} /></label>
+              <label className="text-paragraph-2 text-center font-medium flex items-center justify-center capitalize">{phoneData.split("_").join(" ")} <img src={chevron} className={`transition ${showOptions ? 'rotate-180' : 'rotate-0'}`} alt="chevron" /> <input className="hidden" type="checkbox" onChange={e => setShowOptions(e.target.checked)} /></label>
               {showOptions && <div className='w-fit h-[250px] overflow-y-auto flex flex-col items-center absolute left-0 right-0 m-auto bg-white top-[100%] shadow z-[9999]'>
                 {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center px-3 py-1' onClick={() => {
                   setShowOptions(false)
