@@ -18,6 +18,8 @@ const Revenue = () => {
   const [item, setItem] = useState(8)
   const [songs, setSongs] = useState([]);
   const [greeting, setGreeting] = useState("")
+  const [showOptions, setShowOptions] = useState(false);
+  const [phoneData, setPhoneData] = useState('Song_Name')
 
 
   const currentTime = new Date().getHours();
@@ -31,7 +33,7 @@ const Revenue = () => {
     } else {
       setGreeting("Good evening !");
     }
-  }, [currentTime])
+  }, [])
 
   const { profileData, userData, token } = useContext(ProfileContext);
 
@@ -50,7 +52,7 @@ const Revenue = () => {
       })
       .then(({ data }) => {
         setSongs(data.data);
-        console.log(data.data);
+        // console.log(data.data);
       });
   }, [])
 
@@ -79,7 +81,7 @@ const Revenue = () => {
     }, 0);
   }
   // console.log(aggregatedMusicData);
-  const [filteredSongs, setFilteredSongs] = useState(aggregatedMusicData)
+  // const [filteredSongs, setFilteredSongs] = useState(aggregatedMusicData)
 
   const data = [
     {
@@ -102,24 +104,24 @@ const Revenue = () => {
 
   const options = [
     "Song_name",
-    "Process_Name",
+    "Vendor Name",
     "Album",
     "Artist",
     "Label",
     "ISRC",
-    "Royalty",
-    "Revenue_after_TDS",
-    "Final_Revenue",
+    "View",
+    "Revenue",
+    "Revenue_After_Forevision_Deduction",
   ]
 
-  useEffect(() => {
-    setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id));
-  }, [aggregatedMusicData])
+  // useEffect(() => {
+  //   setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id));
+  // }, [aggregatedMusicData])
 
   // console.log(filteredSongs);
 
   const handleSort = (field) => {
-    setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
+    // setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
     console.log(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
     aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
   }
@@ -185,30 +187,26 @@ const Revenue = () => {
             </div>
             {/* <div className='bg-grey-light'> */}
             <div className='mt-4 grid grid-cols-9 w-[1147px] 2xl:w-full'>
-              {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center'>{item.split("_").join(" ")}</h6>)}
+              {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center' onClick={() => console.log(item)}>{item.split("_").join(" ")}</h6>)}
             </div>
 
-            {filteredSongs.length > 0 ? filteredSongs.map(item => <div className='grid grid-cols-9 w-[1147px] 2xl:w-full hover:bg-white hover:rounded-[5px] hover:shadow-lg py-2 transition cursor-pointer'>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_song_name ? item.music_song_name : '-'}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_content_id ? item.music_content_id : '-'}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_album ? item.music_album : '-'}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_track_artist ? item.music_track_artist : '-'}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_label ? item.music_label : '-'}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_isrc ? item.music_isrc : '-'}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_royality ? item.music_royality : '-'}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.music_after_tds_revenue ? item.music_after_tds_revenue : '-'}</h6>
-              <h6 className='text-paragraph-2 text-grey-dark font-normal text-center'>{item.final_revenue ? item.final_revenue : '-'}</h6>
-            </div>) : <></>}
+            {aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id).length > 0 ? aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id).map(item => <RevenueItem item={item} />) : <></>}
           </div>
 
           <div className='2xl:hidden bg-grey-light p-2 rounded-[20px] mt-5'>
-            <div className='border border-primary-light rounded-full px-3 text-primary-light py-1 grid grid-cols-3'>
+            <div className='border border-primary-light rounded-full px-3 text-primary-light py-1 grid grid-cols-3 relative'>
               <p className="text-paragraph-2 text-left font-medium">ISRC</p>
-              <p className="text-paragraph-2 text-center font-medium flex items-center">Song Name <img src={chevron} alt="chevron" /></p>
+              <label className="text-paragraph-2 text-center font-medium flex items-center justify-center">{phoneData.split("_").join(" ")} <img src={chevron} className={`transition ${showOptions ? 'rotate-180' : 'rotate-0'}`} alt="chevron" /> <input className="hidden" type="checkbox" onChange={e => setShowOptions(e.target.checked)} /></label>
+              {showOptions && <div className='w-fit h-[250px] overflow-y-auto flex flex-col items-center absolute left-0 right-0 m-auto bg-white top-[100%] shadow z-[9999]'>
+                {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center px-3 py-1' onClick={() => {
+                  setShowOptions(false)
+                  setPhoneData(item)
+                }}>{item.split("_").join(" ")}</h6>)}
+              </div>}
               <p className="text-paragraph-2 text-right font-medium">Final Revenue</p>
             </div>
 
-            {aggregatedMusicData.length > 0 ? aggregatedMusicData.slice(0, item).map((item, key) => <RevenueItem {...item} key={key} />) : <></>}
+            {aggregatedMusicData.length > 0 ? aggregatedMusicData.slice(0, item).map((item, key) => <RevenueItem option={phoneData} item={item} key={key} />) : <></>}
             <img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />
           </div>
 

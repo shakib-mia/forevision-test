@@ -14,7 +14,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
           onMouseLeave={() => setHovered(false)}
         >
           <div
-            className={`flex justify-between items-center ${text && "hover:bg-grey-light cursor-pointer"
+            className={`flex justify-between items-center ${text && "hover:bg-grey-light hover:text-black cursor-pointer"
               } py-2 px-[10px] rounded-md`}
           >
             <div className="flex gap-[10px] items-center">
