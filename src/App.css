@@ -150,3 +150,7 @@ a.active svg path {
  path {
   animation: drawPath 2s linear forwards;
 }  */
+
+a.active:hover svg path {
+  @apply fill-black;
+}

@@ -56,23 +56,23 @@ const Revenue = () => {
       });
   }, [token, userData.ID])
 
-  const isrcTotals = {};
+  const final_revenue_total = {};
 
   songs?.forEach(music => {
     const isrc = music.music_isrc
 
-    if (isrcTotals.hasOwnProperty(isrc)) {
-      isrcTotals[isrc] += parseFloat(music.final_revenue);
+    if (final_revenue_total.hasOwnProperty(isrc)) {
+      final_revenue_total[isrc] += parseFloat(music.final_revenue);
     } else {
-      isrcTotals[isrc] = parseFloat(music.final_revenue);
+      final_revenue_total[isrc] = parseFloat(music.final_revenue);
     }
   });
 
-  const aggregatedMusicData = Object.keys(isrcTotals).map((isrc) => ({
+  const aggregatedMusicData = Object.keys(final_revenue_total).map((isrc) => ({
     music_isrc: isrc,
     // ...songs[]
     ...songs.find(item => item.music_isrc === isrc),
-    final_revenue: isrcTotals[isrc].toFixed(8)
+    final_revenue: final_revenue_total[isrc].toFixed(8)
   }));
 
   const calculateTotal = (fieldName) => {
@@ -155,7 +155,7 @@ const Revenue = () => {
             </div>
           </div>
 
-          <div className='hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-x-scroll relative'>
+          <div className='hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] relative'>
             <div className="flex flex-col 2xl:flex-row justify-between sticky top-0 left-0">
               <div className="w-full 2xl:w-2/3">
                 {/* <input type="text" className='px-2 py-[12px]' placeholder='search here...' /> */}
@@ -207,7 +207,7 @@ const Revenue = () => {
             </div>
 
             {aggregatedMusicData.length > 0 ? aggregatedMusicData.slice(0, item).map((item, key) => <RevenueItem option={phoneData} item={item} key={key} />) : <></>}
-            <img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />
+            {<img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />}
           </div>
 
         </div>

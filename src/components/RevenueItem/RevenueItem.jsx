@@ -4,7 +4,7 @@ import whitePattern from "../../assets/images/white-pattern.svg"
 import gsap from 'gsap';
 
 const RevenueItem = ({ item, option }) => {
-    // console.log();
+    // console.log(item);
     const [details, setDetails] = useState(false);
     const containerRef = useRef(null);
     const itemRef = useRef(null)
@@ -29,9 +29,9 @@ const RevenueItem = ({ item, option }) => {
 
     return (
         <>
-            <div className="hidden 2xl:grid grid-cols-9 gap-4 text-subtitle-2 font-medium text-grey-dark p-1 text-center">
+            <div className="hidden 2xl:grid grid-cols-9 gap-4 text-subtitle-2 font-medium text-grey-dark p-1 text-center hover:bg-white hover:shadow cursor-pointer">
                 <h6 className='order-2 2xl:order-none 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_song_name ? item.music_song_name : '-'}</h6>
-                <h6 className='hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_content_id ? item.music_content_id : '-'}</h6>
+                <h6 className='hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>Click For Details</h6>
                 <h6 className='hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_album ? item.music_album : '-'}</h6>
                 <h6 className='hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_track_artist ? item.music_track_artist : '-'}</h6>
                 <h6 className='hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_label ? item.music_label : '-'}</h6>
