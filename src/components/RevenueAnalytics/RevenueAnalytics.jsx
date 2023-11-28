@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from "./RevenueAnalytics.module.css"
+// import CountUp from 'react-countup/build/CountUp';
 
 const RevenueAnalytics = ({ heading, data, id }) => {
     return (
@@ -8,8 +9,8 @@ const RevenueAnalytics = ({ heading, data, id }) => {
                 <div className={styles.ocean}>
                     <div className={styles.wave} style={{ bottom: id === 0 ? 0 : id === 1 || id === 2 ? '58%' : 0, rotate: id === 0 ? 0 : id === 1 || id === 2 ? '180deg' : 0 }}></div>
                 </div>
-                <div className='z-10 absolute w-full h-full py-[13px] px-2'>
-                    <p className='z-10 text-paragraph-2'>{heading}</p>
+                <div className='absolute w-full h-full py-[13px] px-2'>
+                    <p className='text-paragraph-2'>{heading}</p>
                     <div className='h-full flex items-center'>
                         <h5 className='text-heading-5-bold w-full whitespace-normal'>{isNaN(parseFloat(data)) ? data : heading !== 'Total Uploads' ? data.toFixed(2) : data}</h5>
                     </div>
@@ -20,8 +21,8 @@ const RevenueAnalytics = ({ heading, data, id }) => {
                 <div className={styles.ocean}>
                     <div className={styles.wave} style={(id + 1) % 2 === 0 ? { bottom: 0 } : { top: 0, rotate: '180deg' }}></div>
                 </div>
-                <div className='z-10 absolute w-full h-full py-[13px] px-2'>
-                    <p className='z-10 text-paragraph-2'>{heading}</p>
+                <div className='absolute w-full h-full py-[13px] px-2'>
+                    <p className='text-paragraph-2'>{heading}</p>
                     <div className='h-full flex items-center'>
                         <h5 className='text-heading-5-bold w-full whitespace-normal'>{isNaN(parseFloat(data)) ? data : heading !== 'Total Uploads' ? data.toFixed(2) : data}</h5>
                     </div>

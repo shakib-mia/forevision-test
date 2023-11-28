@@ -38,8 +38,8 @@ const RevenueItem = ({ item, option }) => {
                 <h6 className='order-1 2xl:order-none 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_isrc ? item.music_isrc : '-'}</h6>
                 <h6 className='hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_royality ? item.music_royality : '-'}</h6>
                 <h6 className='hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_after_tds_revenue ? item.music_after_tds_revenue : '-'}</h6>
-                <h6 className='hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.final_revenue ? item.final_revenue : '-'}</h6>
-                <p className='order-3 2xl:order-none flex items-center 2xl:hidden'>{item.final_revenue} <img className='ml-1 -rotate-90' onClick={() => setDetails(true)} src={downArrow} alt="" /></p>
+                <h6 className='hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_after_tds_revenue ? parseFloat(item.music_after_tds_revenue) - parseFloat(item.music_after_tds_revenue) * (parseFloat(item.forevision_cut) / 100) : '-'}</h6>
+                {/* <p className='order-3 2xl:order-none flex items-center 2xl:hidden'>{item.final_revenue} <img className='ml-1 -rotate-90' onClick={() => setDetails(true)} src={downArrow} alt="" /></p> */}
             </div>
 
             <div className='2xl:hidden grid grid-cols-3 gap-4 text-subtitle-2 font-medium text-grey-dark p-1 text-center'>

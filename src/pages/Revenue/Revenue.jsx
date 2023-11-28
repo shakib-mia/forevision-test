@@ -37,7 +37,6 @@ const Revenue = () => {
 
   const { profileData, userData, token } = useContext(ProfileContext);
 
-  // console.log(userData);
 
   useEffect(() => {
     const formData = new FormData();
@@ -52,37 +51,89 @@ const Revenue = () => {
       })
       .then(({ data }) => {
         setSongs(data.data);
-        // console.log(data.data);
       });
   }, [token, userData.ID])
 
-  const final_revenue_total = {};
+  const calculateAggregatedTotals = (songs) => {
+    const final_revenue_total = {};
+    const final_revenue = {};
 
-  songs?.forEach(music => {
-    const isrc = music.music_isrc
+    songs?.forEach((music) => {
+      const isrc = music.music_isrc;
 
-    if (final_revenue_total.hasOwnProperty(isrc)) {
-      final_revenue_total[isrc] += parseFloat(music.final_revenue);
-    } else {
-      final_revenue_total[isrc] = parseFloat(music.final_revenue);
-    }
+      // Calculate final_revenue total
+      if (final_revenue_total.hasOwnProperty(isrc)) {
+        final_revenue_total[isrc] += parseFloat(music.final_revenue);
+      } else {
+        final_revenue_total[isrc] = parseFloat(music.final_revenue);
+      }
+
+      // Calculate music_after_tds_revenue total
+      if (final_revenue.hasOwnProperty(isrc)) {
+        final_revenue[isrc] += parseFloat(music.music_after_tds_revenue);
+      } else {
+        final_revenue[isrc] = parseFloat(music.music_after_tds_revenue);
+      }
+    });
+
+    // Create aggregated arrays with calculated totals
+    const aggregatedMusicData = Object.keys(final_revenue_total).map((isrc) => ({
+      music_isrc: isrc,
+      ...songs.find((item) => item.music_isrc === isrc),
+      final_revenue: final_revenue_total[isrc],
+    }));
+
+    const aggregatedRevenueTotal = Object.keys(final_revenue).map((isrc) => ({
+      music_isrc: isrc,
+      ...songs.find((item) => item.music_isrc === isrc),
+      music_after_tds_revenue: final_revenue[isrc],
+    }));
+
+    return { aggregatedMusicData, aggregatedRevenueTotal };
+  };
+
+  // Example usage
+  const { aggregatedMusicData, aggregatedRevenueTotal } = calculateAggregatedTotals(songs);
+
+  const mergedArray = aggregatedMusicData.map((item1) => {
+    // Find the corresponding item in the second array
+    const item2 = aggregatedRevenueTotal.find((item) => item.music_isrc === item1.music_isrc);
+
+    // Merge properties from both arrays
+    return {
+      ...item1,
+      music_after_tds_revenue: item2 ? item2.music_after_tds_revenue : 0, // Use 0 if not found
+    };
   });
 
-  const aggregatedMusicData = Object.keys(final_revenue_total).map((isrc) => ({
-    music_isrc: isrc,
-    // ...songs[]
-    ...songs.find(item => item.music_isrc === isrc),
-    final_revenue: final_revenue_total[isrc].toFixed(8)
-  }));
+  // console.log(mergedArray);
+
+  const filtered = mergedArray.filter(item => item.music_isrc !== "21");
+  // console.log(filtered);
+
+
+  /**
+   * 
+   * 
+   * 
+   * 
+   * calculation of total for header
+   * 
+   * 
+   * 
+  */
 
   const calculateTotal = (fieldName) => {
     return aggregatedMusicData.reduce((accumulator, object) => {
       return accumulator + parseFloat(object[fieldName]);
     }, 0);
   }
-  // console.log(aggregatedMusicData);
-  // const [filteredSongs, setFilteredSongs] = useState(aggregatedMusicData)
 
+
+  /**
+   * 
+  header Data 
+  */
   const data = [
     {
       heading: 'Total Uploads',
@@ -114,17 +165,14 @@ const Revenue = () => {
     "Revenue_After_Forevision_Deduction",
   ]
 
-  // useEffect(() => {
-  //   setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id));
-  // }, [aggregatedMusicData])
-
-  // console.log(filteredSongs);
-
   const handleSort = (field) => {
     // setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
     console.log(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
     aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
   }
+
+  // console.log(filtered);
+  // const listData = [...agg]
 
   return (
 
@@ -134,8 +182,8 @@ const Revenue = () => {
           <div className="flex flex-col 2xl:flex-row gap-3 items-end">
             <div className='w-full 2xl:w-3/4'>
               <h4 className='text-heading-4-bold text-grey-dark 2xl:text-white'>{greeting} <br /> <span className='text-interactive-light 2xl:text-white'><u>
-                {profileData.display_name ? profileData.display_name.split(" ")[0] : <></>}
-              </u> {profileData.display_name ? profileData.display_name.split(" ")[1] : <></>}</span></h4>
+                {profileData.first_name ? profileData.first_name : <></>}
+              </u> {profileData.last_name ? profileData.last_name : <></>}</span></h4>
               <p className='text-subtitle-1 text-interactive-dark-active 2xl:text-white tracking-[0.5px] mt-1'>Welcome to your revenue dashboard, Let’s see how much you’ve earned with us !</p>
               <div className='mt-4 hidden 2xl:flex flex-col justify-center items-center w-fit'>
                 <h6 className='text-heading-6-bold text-white mb-1'>Revenue Analytics</h6>
@@ -190,7 +238,7 @@ const Revenue = () => {
               {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center' onClick={() => console.log(item)}>{item.split("_").join(" ")}</h6>)}
             </div>
 
-            {aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id).length > 0 ? aggregatedMusicData.sort((i1, i2) => i1.music_id - i2.music_id).map((item, key) => <RevenueItem item={item} key={key} />) : <></>}
+            {filtered.sort((i1, i2) => i1.music_id - i2.music_id).length > 0 ? filtered.sort((i1, i2) => i1.music_id - i2.music_id).map((item, key) => <RevenueItem item={item} key={key} />) : <></>}
           </div>
 
           <div className='2xl:hidden bg-grey-light p-2 rounded-[20px] mt-5'>
@@ -206,7 +254,7 @@ const Revenue = () => {
               <p className="text-paragraph-2 text-right font-medium">Final Revenue</p>
             </div>
 
-            {aggregatedMusicData.length > 0 ? aggregatedMusicData.slice(0, item).map((item, key) => <RevenueItem option={phoneData} item={item} key={key} />) : <></>}
+            {filtered.length > 0 ? filtered.slice(0, item).map((item, key) => <RevenueItem option={phoneData} item={item} key={key} />) : <></>}
             {<img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />}
           </div>
 
