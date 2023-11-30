@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import logo from "./../../assets/images/logo2.webp";
 import search from "./../../assets/icons/navbar/search.webp";
-import profile from "./../../assets/icons/navbar/profile-picture.webp";
 import logout from "./../../assets/icons/navbar/logout.webp";
 import NavItem from "../NavItem/NavItem";
 import { imageDomain, navItem } from "../../constants";
@@ -10,8 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
-  const { userData, setProfileData, profileData } = useContext(ProfileContext);
-  // console.log(userData.display_name, profileData.first_name);
+  const { setProfileData, profileData } = useContext(ProfileContext);
   const navigate = useNavigate()
 
   const handleMouseEnter = () => {
