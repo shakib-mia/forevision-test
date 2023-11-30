@@ -33,7 +33,7 @@ const SignupDetails = () => {
       name: "company_label",
       label: "Company/Record label",
       type: "text",
-      placeholder: "Example: Forevision Digital",
+      placeholder: "Example: ForeVision Digital",
       required: false,
     },
     {

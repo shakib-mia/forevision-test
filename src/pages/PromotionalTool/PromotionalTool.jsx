@@ -207,14 +207,14 @@ const PromotionalTool = () => {
         //     Yes, I agree with the{" "}
         //     <a
         //       className="text-primary underline hover:no-underline"
-        //       href="https://forevisiondigital.com/privacy-policy/"
+        //       href="https://ForeVision Digital.com/privacy-policy/"
         //     >
         //       privacy policy
         //     </a>{" "}
         //     and{" "}
         //     <a
         //       className="text-primary underline hover:no-underline"
-        //       href="https://forevisiondigital.com/digital-distribution-agreement/"
+        //       href="https://ForeVision Digital.com/digital-distribution-agreement/"
         //     >
         //       terms and conditions
         //     </a>
@@ -248,11 +248,11 @@ const PromotionalTool = () => {
     //   label: (
     //     <>
     //       Yes, I agree with the{" "}
-    //       <a href="https://forevisiondigital.com/privacy-policy/">
+    //       <a href="https://ForeVision Digital.com/privacy-policy/">
     //         privacy policy
     //       </a>{" "}
     //       and{" "}
-    //       <a href="https://forevisiondigital.com/digital-distribution-agreement/">
+    //       <a href="https://ForeVision Digital.com/digital-distribution-agreement/">
     //         terms and conditions
     //       </a>
     //       .{" "}
@@ -274,8 +274,8 @@ const PromotionalTool = () => {
   return (
     <div className="bg-no-repeat form-bg">
       <Header
-        header="ForeVision Promotions"
-        subheader={<>Submit your song for Forevision Promotions</>}
+        header="ForeVisionPromotions"
+        subheader={<>Submit your song for ForeVisionPromotions</>}
       />
 
       <Form

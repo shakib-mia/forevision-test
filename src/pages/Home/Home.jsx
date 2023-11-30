@@ -9,6 +9,7 @@ import SongListItem from "../../components/SongListItem/SongListItem";
 // import bg from "./../../assets/images/dashboard-bg.webp";
 
 const Home = () => {
+
   return (
     <div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7">
       <div className="grid grid-cols-1 2xl:grid-cols-3 justify-between space-y-4 2xl:space-y-0 2xl:space-x-5">

@@ -11,8 +11,9 @@ const Button = ({ text, type, disabled, onClick, leftIcon, rightIcon, small, pad
             } rounded-full ${paddingZero ? 'p-0' : 'p-[4px]'}`}
         >
           <button
-            className={`${small ? 'px-2 py-1' : 'px-3 py-2'} text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active font-bold rounded-full uppercase flex gap-1`}
+            className={`${small ? 'px-2 py-1' : 'px-3 py-2'} disabled:bg-interactive-light-disabled disabled:cursor-not-allowed text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active font-bold rounded-full uppercase flex gap-1`}
             onClick={onClick}
+            disabled={disabled}
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
           >
