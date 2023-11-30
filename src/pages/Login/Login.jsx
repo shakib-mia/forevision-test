@@ -54,7 +54,8 @@ const Login = () => {
             navigate("/signup-details")
           } else {
             setShowMessage(true);
-            setTimeout(() => navigate('/revenue'), 10000)
+            // Navigation will be /revenue on full version
+            setTimeout(() => navigate('/'), 10000)
           }
         }
       }).catch(err => {

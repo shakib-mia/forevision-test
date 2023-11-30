@@ -3,6 +3,7 @@ import AuthBody from "../../components/AuthBody/AuthBody";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import axios from "axios";
+import { toast } from "react-toastify";
 // import { Link } from "react-router-dom";
 
 const ForgetPassword = () => {
@@ -13,7 +14,9 @@ const ForgetPassword = () => {
     const formData = new FormData();
     formData.append("emailId", e.target["forgot-email"].value);
 
-    axios.post('http://adztronaut.com/music/admin/api/forgotPassword', formData).then(({ data }) => console.log(data))
+    axios.post('http://adztronaut.com/music/admin/api/forgotPassword', formData).then(({ data }) => {
+      toast.success(data.message)
+    })
   };
   return (
     <AuthBody

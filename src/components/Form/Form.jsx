@@ -63,10 +63,6 @@ const Form = ({ fields, instruction, backendUrl, uIdKey, id }) => {
       );
     }
 
-    for (const value of formData.entries()) {
-      console.log(value);
-    }
-
     toastId.current = toast("Loading...", {
       autoClose: false,
       position: "bottom-right",
@@ -122,7 +118,7 @@ const Form = ({ fields, instruction, backendUrl, uIdKey, id }) => {
     }
 
     const entries = Object.values(formData).every((value) => value.length > 0);
-    console.log(Object.values(formData));
+    // console.log(Object.values(formData));
     setDisabled(!entries);
   };
 

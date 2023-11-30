@@ -129,10 +129,10 @@ const EditProfile = ({ handleClose }) => {
 
     const edit = (e) => {
         e.preventDefault();
-        console.log(profileData.Id);
+        // console.log(profileData.Id);
 
-        const formData = new FormData(e.target);
-        console.log(Object.entries(formData));
+        // const formData = new FormData(e.target);
+        // console.log(Object.entries(formData));
         // console.log(phoneValidity.test(e.target.phone.value));
     };
 

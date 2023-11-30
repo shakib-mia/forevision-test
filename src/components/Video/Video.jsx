@@ -54,8 +54,8 @@ const Video = () => {
   setTimeout(() => {
     setDuration(
       Math.floor(videoRef.current?.duration / 60) +
-        ":" +
-        Math.floor(videoRef.current?.duration % 60)
+      ":" +
+      Math.floor(videoRef.current?.duration % 60)
     );
   }, 100);
 
@@ -91,7 +91,7 @@ const Video = () => {
   };
 
   return (
-    <div className="w-1/2 mx-auto relative" onKeyUp={(e) => console.log(e)}>
+    <div className="w-1/2 mx-auto relative">
       <video
         src={video}
         className="w-full mb-4 rounded-lg cursor-pointer"
@@ -145,9 +145,8 @@ const Video = () => {
             )}
             {/* {showVolume && ( */}
             <div
-              className={`${
-                showVolume ? "w-7" : "w-0"
-              } bg-white transition-all`}
+              className={`${showVolume ? "w-7" : "w-0"
+                } bg-white transition-all`}
             >
               <div
                 className="relative w-full h-[4px] bg-grey-light cursor-pointer"
@@ -172,8 +171,8 @@ const Video = () => {
             {Math.ceil(currentTime % 60) === 60
               ? "00"
               : Math.ceil(currentTime % 60) >= 10
-              ? Math.ceil(currentTime % 60)
-              : "0" + Math.ceil(currentTime % 60)}
+                ? Math.ceil(currentTime % 60)
+                : "0" + Math.ceil(currentTime % 60)}
           </h6>
 
           {/* ===================== Progress Section =========================*/}

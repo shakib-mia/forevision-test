@@ -4,7 +4,7 @@ import profile from "./../../assets/images/artist-profile.webp";
 
 const ProfilePicture = ({ imageUrl, editable }) => {
     const handleProfilePictureUpload = e => {
-        console.log(e.target.files[0]);
+        // console.log(e.target.files[0]);
     }
 
     return <div className="relative h-[245px] w-fit mx-auto">

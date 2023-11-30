@@ -3,7 +3,7 @@ import React from 'react';
 const RevenueDetails = ({ item, raw, detailsRef }) => {
     // if (raw) {
     const items = raw?.filter(i => i.music_isrc === item.music_isrc)
-    console.log(items);
+    // console.log(items);
     // items.map(i => console.log(i.music_isrc))
     // }
 
