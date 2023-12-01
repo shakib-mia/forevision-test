@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import arrow from "../../assets/icons/arrow.svg"
 
 const Button = ({ text, type, disabled, onClick, leftIcon, rightIcon, small, paddingZero }) => {
   const [focus, setFocus] = useState(false);
@@ -12,14 +13,17 @@ const Button = ({ text, type, disabled, onClick, leftIcon, rightIcon, small, pad
         >
           <button
             className={`${small ? 'px-2 py-1' : 'px-3 py-2'} disabled:bg-interactive-light-disabled disabled:cursor-not-allowed text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active font-bold rounded-full uppercase flex gap-1`}
-            onClick={onClick}
+            onClick={() => {
+              onClick && onClick()
+              setFocus(true)
+            }}
             disabled={disabled}
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
           >
-            {leftIcon ? <img src={leftIcon} alt="left-icon" /> : <></>}
-            <div>{text}</div>
-            {rightIcon ? <img src={rightIcon} alt="right-icon" /> : <></>}
+            {leftIcon ? <img src={arrow} className="rotate-180" alt="left-icon" /> : <></>}
+            {text && <div>{text}</div>}
+            {rightIcon ? <img src={arrow} alt="right-icon" /> : <></>}
           </button>
         </div>
       )}

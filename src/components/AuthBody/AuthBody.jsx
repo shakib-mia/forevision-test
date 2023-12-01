@@ -26,12 +26,12 @@ const AuthBody = ({
       id={id}
       style={{ backgroundImage: location.pathname === '/profile' || `url(${bg})` }}
     >
-      <div className={`w-1/2 shadow-xl p-2 rounded-[22px] bg-white relative ${whiteContainerClass}`}>
+      <div className={`w-11/12 xl:w-1/2 shadow-md xl:shadow-xl p-2 rounded-[22px] bg-white relative ${whiteContainerClass}`}>
 
         {closeIcon && <button className="absolute -right-3 -top-3 text-heading-5 bg-white w-4 h-4 rounded-full flex items-center justify-center" onClick={handleClose}>&times;</button>}
         <div className="w-full flex justify-between items-center">
           <h5 className="text-heading-5-bold">{heading}</h5>
-          <p className="text-paragraph-1">
+          <p className="text-paragraph-1 hidden xl:block">
             {altDescription}{" "}
             <Link
               to={altLink}
@@ -42,6 +42,16 @@ const AuthBody = ({
           </p>
         </div>
         {children}
+
+        <p className="text-paragraph-1 xl:hidden text-center xl:text-left">
+          {altDescription}{" "}
+          <Link
+            to={altLink}
+            className="text-interactive-light hover:text-interactive-light-hover"
+          >
+            {altText}
+          </Link>
+        </p>
       </div>
     </form>
     // </div>

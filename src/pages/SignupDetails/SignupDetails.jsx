@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
   const { userData, profileData } = useContext(ProfileContext)
+  const [selectedCode, setSelectedCode] = useState('91');
+  const [screen, setScreen] = useState("name");
   // console.log(userData);
   const fields = [
     {
@@ -87,7 +89,7 @@ const SignupDetails = () => {
       id: "phone",
       name: "phone_no",
       label: "Phone",
-      type: "text",
+      type: "tel",
       placeholder: "+91",
       required: true,
       // pattern: /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g,
@@ -108,12 +110,21 @@ const SignupDetails = () => {
       .map((i, key) => key % 2 === 0 && i.classList.add("pr-2"));
   }, []);
 
+  const signupDetailsData = {}
+
   const signup = (e) => {
     e.preventDefault();
-    console.log(userData.Id);
+    // console.log(userData.Id);
 
-    const formData = new FormData(e.target);
+    const formData = new FormData();
+    // console.log(signupDetailsData);
+    for (const key in signupDetailsData) {
+      formData.append(key, signupDetailsData[key])
+    }
 
+    // for (const value of formData.values()) {
+    //   console.log(value);
+    // }
     formData.append("user_id", userData.ID);
     const config = {
       headers: {
@@ -134,73 +145,235 @@ const SignupDetails = () => {
   };
 
   return (
-    <AuthBody
-      heading="Sign Up"
-      altDescription="Already Have an Account?"
-      altText="Log in"
-      altLink="/login"
-      onSubmit={signup}
-      id="signup-page"
-    >
-      <div className="flex flex-wrap" id="form">
-        {fields.map((props, id) =>
-          (id + 1) % 3 === 0 ? (
-            <>
-              {props.name === "phone" && (
-                <div className="flex w-fit gap-[8px] items-center mt-3 -mb-3">
-                  <input
-                    type="checkbox"
-                    required={true}
-                    id={id}
-                    className="hidden"
-                    onChange={(e) => setChecked(e.target.checked)}
-                  />
+    <>
+      <AuthBody
+        heading="We need a few more details"
+        onSubmit={signup}
+        id="signup-page"
+        className="hidden xl:flex"
+      >
+        <div className="flex flex-wrap" id="form">
+          {fields.map((props, id) =>
+            (id + 1) % 3 === 0 ? (
+              <>
+                {props.name === "phone" && (
+                  <div className="flex w-fit gap-[8px] items-center mt-3 -mb-3">
+                    <input
+                      type="checkbox"
+                      required={true}
+                      id={id}
+                      className="hidden"
+                      onChange={(e) => setChecked(e.target.checked)}
+                    />
 
-                  <div
-                    className={`${!checked &&
-                      "border-[1px]  border-surface-white-line text-[12px]"
-                      } rounded-[4px] w-[16px] h-[16px]`}
-                  >
-                    {checked && <img src={check} alt="checkbox" />}
+                    <div
+                      className={`${!checked &&
+                        "border-[1px]  border-surface-white-line text-[12px]"
+                        } rounded-[4px] w-[16px] h-[16px]`}
+                    >
+                      {checked && <img src={check} alt="checkbox" />}
+                    </div>
+
+                    <label
+                      htmlFor={id}
+                      className="text-black-primary text-subtitle-2 font-medium"
+                    >
+                      Save this information for next time
+                    </label>
                   </div>
-
-                  <label
-                    htmlFor={id}
-                    className="text-black-primary text-subtitle-2 font-medium"
-                  >
-                    Save this information for next time
-                  </label>
-                </div>
-              )}
+                )}
+                <InputField
+                  {...fields[id]}
+                  key={id}
+                  containerId={id}
+                  containerClassName={`mt-3 w-full`}
+                />
+              </>
+            ) : (
               <InputField
-                {...fields[id]}
-                key={id}
+                {...props}
                 containerId={id}
-                containerClassName={`mt-3 w-full`}
+                key={id}
+                containerClassName={`mt-3 w-1/2`}
+              // fieldClassName="mr-2"
               />
-            </>
-          ) : (
+            )
+          )}
+        </div>
+        {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
+        <div className="mt-3 mb-2 text-center">
+          <Button
+            type="submit"
+            text="Submit"
+            onClick={() => setScreen("contact")}
+          // disabled={
+          //   !(email.length > 0 && password.length && password === confirmPass)
+          // }
+          />
+        </div>
+      </AuthBody>
+
+
+      {/* <ReactOwlCarousel items={1} mouseDrag={false} touchDrag={false} id="signup-details-slider"> */}
+      {screen === 'name' && <AuthBody
+        heading="We need a few more details"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setScreen("contact");
+        }}
+        id="signup-page"
+        className="xl:hidden flex"
+      >
+        <div className="flex flex-wrap" id="form">
+          {fields.slice(0, 3).map((props, id) =>
+          (
             <InputField
               {...props}
               containerId={id}
               key={id}
-              containerClassName={`mt-3 w-1/2`}
+              onChange={e => signupDetailsData[props.name] = e.target.value}
+              containerClassName={`mt-3 w-full`}
             // fieldClassName="mr-2"
             />
           )
-        )}
-      </div>
-      {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
-      <div className="mt-3 mb-2 text-center">
-        <Button
-          type="submit"
-          text="Sign Up"
-        // disabled={
-        //   !(email.length > 0 && password.length && password === confirmPass)
-        // }
-        />
-      </div>
-    </AuthBody>
+          )}"
+
+
+        </div>
+        {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
+        <div className="mt-3 mb-2 text-center">
+          <Button
+            type="submit"
+            text="SignUp"
+            onClick={(e) => {
+              e.preventDefault();
+              setScreen("contact");
+            }}
+          />
+        </div>
+      </AuthBody>}
+
+      {screen === "contact" && <AuthBody
+        heading="We need a few more details"
+
+        id="signup-page"
+        className="xl:hidden flex"
+      >
+        <div className="flex flex-wrap" id="form">
+          {/* Email */}
+          <InputField
+            {...fields[4]}
+            containerId={fields[4].id}
+            key={fields[4].id}
+            onChange={e => signupDetailsData[fields[4].name] = e.target.value}
+            containerClassName={`mt-3 w-full`}
+          // fieldClassName="mr-2"
+          />
+          {/* phone number */}
+          <InputField
+            {...fields[8]}
+            containerId={fields[8].id}
+            key={fields[8].id}
+            onChange={e => signupDetailsData[fields[8].name] = e.target.value}
+            containerClassName={`mt-3 w-full`}
+            selectedCode={selectedCode}
+            setSelectedCode={setSelectedCode}
+          />
+
+
+        </div>
+        {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
+        <div className="mt-3 mb-2 text-center flex justify-center">
+          <Button
+            onClick={() => setScreen("small-address")}
+            rightIcon={true}
+          />
+        </div>
+      </AuthBody>}
+
+      {screen === "small-address" && <AuthBody
+        heading="We need a few more details"
+
+        id="signup-page"
+        className="xl:hidden flex"
+      >
+        <div className="flex flex-wrap" id="form">
+          {/* {fields.slice(9, 10).map((props, id) => */}
+
+          <InputField
+            {...fields[3]}
+            containerId={fields[3].id}
+            key={fields[3].id}
+            onChange={e => signupDetailsData[fields[3].name] = e.target.value}
+            containerClassName={`mt-3 w-full`}
+          />
+          <InputField
+            {...fields[5]}
+            containerId={fields[5].id}
+            key={fields[5].id}
+            onChange={e => signupDetailsData[fields[5].name] = e.target.value}
+            containerClassName={`mt-3 w-full`}
+          // fieldClassName="mr-2"
+          />
+
+
+        </div>
+        {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
+        <div className="mt-3 mb-2 text-center">
+          <Button
+            type="submit"
+            text="Submit"
+            onClick={(e) => {
+              e.preventDefault()
+              setScreen("large-address")
+            }}
+          // disabled={
+          //   !(email.length > 0 && password.length && password === confirmPass)
+          // }
+          />
+        </div>
+      </AuthBody>}
+
+      {screen === "large-address" && <AuthBody
+        heading="We need a few more details"
+        onSubmit={signup}
+        id="signup-page"
+        className="xl:hidden flex"
+      >
+        <div className="flex flex-wrap" id="form">
+          <InputField
+            {...fields[6]}
+            containerId={fields[6].id}
+            key={fields[6].id}
+            onChange={e => signupDetailsData[fields[6].name] = e.target.value}
+            containerClassName={`mt-3 w-full`}
+          // fieldClassName="mr-2"
+          />
+          <InputField
+            {...fields[7]}
+            containerId={fields[7].id}
+            key={fields[7].id}
+            onChange={e => signupDetailsData[fields[7].name] = e.target.value}
+            containerClassName={`mt-3 w-full`}
+          // fieldClassName="mr-2"
+          />
+
+
+        </div>
+
+        <div className="mt-3 mb-2 text-center">
+          <Button
+            type="submit"
+            text="Submit"
+
+          />
+        </div>
+      </AuthBody>}
+      {/* </ReactOwlCarousel> */}
+
+
+
+    </>
   );
 };
 

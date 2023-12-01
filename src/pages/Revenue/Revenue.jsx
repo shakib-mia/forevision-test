@@ -256,7 +256,7 @@ const Revenue = () => {
               <RevenueList options={options} filtered={filtered} containerRef={containerRef} raw={songs} />
             </> : <div className='flex flex-col items-center'>
               <img src={notFound} className='w-1/3 mx-autor' alt="not found" />
-              <p className='w-2/3 text-heading-6-bold mx-auto text-grey'>Ooopps!! There is Nothing to show yet !! Upload your content and let it shine ! If you’ve uploaded already , let it perform in the various platforms . </p>
+              <p className='w-2/3 text-heading-6-bold mx-auto text-grey text-center'>Ooopps!! There is Nothing to show yet !! Upload your content and let it shine ! If you’ve uploaded already , let it perform in the various platforms . </p>
               <h4 className='text-heading-4-bold text-grey'>See you soon.</h4>
             </div>}
           </div>
