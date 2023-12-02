@@ -49,12 +49,13 @@ function App() {
 
   return (
     <ProfileContext.Provider value={store}>
-      {location.pathname !== "/login" &&
+      {/* {location.pathname !== "/login" &&
         location.pathname !== "/signup" &&
         location.pathname !== "/" &&
         location.pathname !== "/forgot-password" &&
         !location.pathname.includes("/profile") &&
-        location.pathname !== "/revenue" && <Navbar />}
+        location.pathname !== "/revenue" &&
+        location.pathname !== "/signup-details" && <Navbar />} */}
       <BottomBar />
       {location.pathname !== "/login" &&
         location.pathname !== "/signup" &&

@@ -61,7 +61,7 @@ const Sidebar = () => {
           </div>
         </div>
 
-        <div className="mt-[48px] flex flex-col">
+        <div className="mt-[48px] flex flex-col whitespace-nowrap">
           {navItem.map((props, key) => (
             <NavItem {...props} key={key} hovered={hovered} />
           ))}

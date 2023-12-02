@@ -36,6 +36,7 @@ const Login = () => {
 
     userData.append("user_email", e.target.email.value);
     userData.append("user_pass", e.target.password.value);
+    console.log(prevRoute);
 
     axios
       .post("https://adztronaut.com/music/admin/api/login", userData)

@@ -47,20 +47,20 @@ const SignUp = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
-    navigate("/signup-details")
 
 
 
-    // axios.post("https://adztronaut.com/music/admin/api/userRegistration", formData).then(res => {
-    //   if (res.data.success) {
-    //     console.log(res.data);
-    //     setUserData({ ...userData, email: e.target.user_email.value, userId: res.data.data })
-    //     navigate("/login");
-    //     setPrevRoute(location.pathname)
-    //   } else {
-    //     toast.error(res.data.message)
-    //   }
-    // })
+    axios.post("https://adztronaut.com/music/admin/api/userRegistration", formData).then(res => {
+      if (res.data.success) {
+        console.log(res.data);
+        setUserData({ ...userData, email: e.target.user_email.value, userId: res.data.data })
+        navigate("/login");
+        setPrevRoute(location.pathname)
+        navigate("/signup-details")
+      } else {
+        toast.error(res.data.message)
+      }
+    })
   };
 
   return (
