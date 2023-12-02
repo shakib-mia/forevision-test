@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
-  const { userData, profileData } = useContext(ProfileContext)
+  const { userData, token } = useContext(ProfileContext)
   const [selectedCode, setSelectedCode] = useState('91');
   const [screen, setScreen] = useState("name");
   const navigate = useNavigate()
@@ -131,9 +131,11 @@ const SignupDetails = () => {
     formData.append("user_id", userData.ID);
     const config = {
       headers: {
-        Authorization: `Bearer ${profileData.user_token}`,
+        Authorization: `Bearer ${token}`,
       },
     }
+
+    console.log(token);
 
     // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
     axios.post("https://adztronaut.com/music/admin/api/updateUserOtherInfo", formData, config).then(res => {
@@ -141,7 +143,7 @@ const SignupDetails = () => {
         toast.success("Details are added successfully", {
           position: 'bottom-center'
         })
-        navigate("/revenue")
+        navigate("/")
       } else {
         console.log(res.data);
       }

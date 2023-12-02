@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import AuthBody from "../../components/AuthBody/AuthBody";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { toast } from "react-toastify";
@@ -56,7 +56,7 @@ const SignUp = () => {
         setUserData({ ...userData, email: e.target.user_email.value, userId: res.data.data })
         navigate("/login");
         setPrevRoute(location.pathname)
-        navigate("/signup-details")
+        // navigate("/signup-details")
       } else {
         toast.error(res.data.message)
       }
