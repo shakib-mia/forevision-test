@@ -39,7 +39,7 @@ const Login = () => {
     console.log(prevRoute);
 
     axios
-      .post("https://adztronaut.com/music/admin/api/login", userData)
+      .post("https://beta.forevisiondigital.com/admin/api/login", userData)
       .then(({ data }) => {
         // console.log(data);
         if (data.status === "Login successful") {

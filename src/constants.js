@@ -245,7 +245,7 @@ export const getVideoDistributions =
 export const getYoutubeOac =
   "http://adztronaut.com/music/admin/api/getYoutubeOac";
 
-export const imageDomain = "https://adztronaut.com/music/admin/";
+export const imageDomain = "https://beta.forevisiondigital.com/admin/";
 
 export const config = {
   headers: {

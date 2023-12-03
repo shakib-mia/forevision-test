@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { routes } from "./constants";
 import BottomBar from "./components/BottomBar/BottomBar";
-import Navbar from "./components/Navbar/Navbar";
+// import Navbar from "./components/Navbar/Navbar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -40,7 +40,7 @@ function App() {
     if (userData.ID) {
       axios
         .get(
-          `https://adztronaut.com/music/admin/api/getUserDataById/${userData.ID}`,
+          `https://beta.forevisiondigital.com/admin/api/getUserDataById/${userData.ID}`,
           config
         )
         .then(({ data }) => setProfileData(data.data && data.data[0]));

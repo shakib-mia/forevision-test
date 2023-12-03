@@ -49,7 +49,7 @@ const Revenue = () => {
     formData.append('userId', userData.ID)
 
     axios
-      .post("https://adztronaut.com/music/admin/api/getAllMusicData", formData, {
+      .post("https://beta.forevisiondigital.com/admin/api/getAllMusicData", formData, {
         headers: {
           Authorization: token,
         },

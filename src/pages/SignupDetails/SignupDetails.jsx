@@ -138,7 +138,7 @@ const SignupDetails = () => {
     console.log(token);
 
     // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
-    axios.post("https://adztronaut.com/music/admin/api/updateUserOtherInfo", formData, config).then(res => {
+    axios.post("https://beta.forevisiondigital.com/admin/api/updateUserOtherInfo", formData, config).then(res => {
       if (res.data.success) {
         toast.success("Details are added successfully", {
           position: 'bottom-center'

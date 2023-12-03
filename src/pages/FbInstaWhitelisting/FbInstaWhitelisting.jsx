@@ -57,7 +57,7 @@ const FbInstaWhitelisting = () => {
         }
       />
 
-      <Form fields={fields} uIdKey="rfacebook_insta_whitelisting_uid" backendUrl="https://adztronaut.com/music/admin/api/addFacebookInstaWhitelisting" />
+      <Form fields={fields} uIdKey="rfacebook_insta_whitelisting_uid" backendUrl="https://beta.forevisiondigital.com/admin/api/addFacebookInstaWhitelisting" />
     </div>
   );
 };
