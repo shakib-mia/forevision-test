@@ -282,7 +282,7 @@ const Revenue = () => {
           {filtered.length === 0 && <div className='text-grey text-center 2xl:hidden'>
             <img src={notFound} className='w-full mx-auto' alt="" />
             <h6 className='text-heading-6-bold mb-2'>
-              Ooopps!! There is Nothing to show yet !! Upload your content and let it shine !
+              Ooopps.. There is Nothing to show yet !! Upload your content and let it shine !
               If you’ve uploaded already , let it perform in the various platforms .
             </h6>
 
