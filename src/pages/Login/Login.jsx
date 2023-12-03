@@ -49,7 +49,7 @@ const Login = () => {
           localStorage.setItem("token", data.token);
           // window.history.back();
           setToken(data.token)
-          setUserData(data.user)
+          setUserData(data.user);
           // prevRoute === '/signup' ? navigate("/signup-details") : navigate('/profile')
           if (prevRoute === '/signup') {
             navigate("/signup-details")

@@ -33,7 +33,7 @@ function App() {
   useEffect(() => {
     const config = {
       headers: {
-        Authorization: localStorage.getItem("token"),
+        Authorization: localStorage.getItem("token") || token,
       },
     };
 
@@ -45,7 +45,7 @@ function App() {
         )
         .then(({ data }) => setProfileData(data.data && data.data[0]));
     }
-  }, [userData.ID]);
+  }, [userData.ID, token]);
 
   return (
     <ProfileContext.Provider value={store}>
