@@ -5,7 +5,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { routes } from "./constants";
 import BottomBar from "./components/BottomBar/BottomBar";
-// import Navbar from "./components/Navbar/Navbar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
