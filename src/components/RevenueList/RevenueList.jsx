@@ -2,6 +2,7 @@ import React from 'react';
 import RevenueItem from '../RevenueItem/RevenueItem';
 
 const RevenueList = ({ options, filtered, containerRef, raw }) => {
+    // console.log(raw);
 
 
     return (

@@ -24,7 +24,11 @@ const Revenue = () => {
   const [greeting, setGreeting] = useState("")
   const [showOptions, setShowOptions] = useState(false);
   const [phoneData, setPhoneData] = useState('Song_Name');
-  const containerRef = useRef(null)
+  const containerRef = useRef(null);
+  const [total, setTotal] = useState({
+    revenue: 0,
+    view: 0
+  })
 
 
   const currentTime = new Date().getHours();
@@ -56,7 +60,7 @@ const Revenue = () => {
       })
       .then(({ data }) => {
         setSongs(data.data);
-      });
+      }).catch(error => console.log(error));
   }, [token, userData.ID])
 
   const calculateAggregatedTotals = (songs) => {
@@ -134,29 +138,46 @@ const Revenue = () => {
     }, 0);
   }
 
+  // const calculateTotalForHeader = (fieldName) => {
+  //   // return 0
+  //   // console.log(filtered );
+  //   return aggregatedMusicData.reduce((accumulator, object) => {
+  //     return accumulator + parseFloat(object[fieldName]);
+  //   }, 0);
+  // }
+
+
+  // console.log(calculateTotalForHeader('music_total'));
 
   /**
    * 
   header Data 
   */
-  const data = [
-    {
-      heading: 'Total Uploads',
-      data: aggregatedMusicData.length
-    },
-    {
-      heading: 'Best Upload',
-      data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || '-'
-    },
-    {
-      heading: 'Total revenue',
-      data: calculateTotal('final_revenue')
-    },
-    {
-      heading: 'View',
-      data: parseInt(calculateTotal('music_total'))
-    },
-  ]
+
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    if (total.view && total.revenue) {
+      setData([
+        {
+          heading: 'Total Uploads',
+          data: aggregatedMusicData.length
+        },
+        {
+          heading: 'Best Upload',
+          data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || '-'
+        },
+        {
+          heading: 'Total revenue',
+          data: total.revenue
+        },
+        {
+          heading: 'View',
+          data: total.view
+        },
+      ])
+    }
+  }, [aggregatedMusicData, total.view, total.revenue])
 
   const options = [
     "Song_name",
@@ -197,7 +218,7 @@ const Revenue = () => {
 
   return (
 
-    <SongsContext.Provider value={{ songs, setSongs }}>
+    <SongsContext.Provider value={{ songs, setSongs, total, setTotal }}>
       <div className='bg-[size:100%] bg-no-repeat 2xl:p-4 2xl:pl-7 mb-6 2xl:mb-0' style={{ backgroundImage: `url(${background})` }}>
         <div className='h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px] 3xl:px-[150px]'>
           <div className="flex flex-col 2xl:flex-row gap-3 items-end">
@@ -206,16 +227,20 @@ const Revenue = () => {
                 {profileData.first_name ? profileData.first_name : <></>}
               </u> {profileData.last_name ? profileData.last_name : <></>}</span></h4>
               <p className='text-subtitle-1 text-interactive-dark-active 2xl:text-white tracking-[0.5px] mt-1'>Welcome to your revenue dashboard, Let’s see how much you’ve earned with us !</p>
-              {filtered.length > 0 && <>
-                <div className='mt-4 hidden 2xl:flex flex-col justify-center items-center w-fit'>
-                  <h6 className='text-heading-6-bold text-white mb-1'>Revenue Analytics</h6>
-                  <Button className='px-2 py-1' disabled={calculateTotal('final_revenue') === 0} text="Request Withdraw" />
-                </div>
+              {/* {filtered.length > 0 && <> */}
+              <div className='mt-4 hidden 2xl:flex flex-col justify-center items-center w-fit'>
+                <h6 className='text-heading-6-bold text-white mb-1'>Revenue Analytics</h6>
+                <Button className='px-2 py-1' disabled={calculateTotal('final_revenue') === 0} text="Request Withdraw" />
+              </div>
 
-                <div className='mt-[32px] grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3'>
-                  {data.map((item, key) => <RevenueAnalytics {...item} id={key} key={key} />)}
-                </div>
-              </>}
+              <div className='mt-[32px] grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3'>
+                {/* {data.map((item, key) => <RevenueAnalytics {...item} id={key} key={key} />)} */}
+                {<RevenueAnalytics heading={data[0]?.heading} data={data[0]?.data} />}
+                {<RevenueAnalytics heading={data[1]?.heading} data={data[1]?.data} />}
+                {<RevenueAnalytics heading={data[2]?.heading} data={data[2]?.data} />}
+                {<RevenueAnalytics heading={data[3]?.heading} data={data[3]?.data} />}
+              </div>
+              {/* </>} */}
             </div>
             {filtered.length > 0 && <div className='w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative bg-[length:100%_100%] bg-grey-light 2xl:bg-white bg-[center_top_-140px] 2xl:bg-[center_top_-18vh] 3xl:bg-[center_top_-15vh] 2xl:bg-[length:100%_100%] bg-no-repeat rounded-[20px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px]' style={{ backgroundImage: `url(${balanceBG})` }}>
               <h4 className='text-heading-4-bold text-white 2xl:text-grey'>Account <br className='2xl:hidden' /> Balance</h4>
