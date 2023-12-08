@@ -10,7 +10,7 @@ const RevenueItem = ({ item, option, raw }) => {
     const containerRef = useRef(null);
     const itemRef = useRef(null);
 
-    const detailsRef = useRef(null)
+    const detailsRef = useRef(null);
 
 
     useEffect(() => {
@@ -45,7 +45,14 @@ const RevenueItem = ({ item, option, raw }) => {
                 duration: 1
             })
         }
-    }, [pcDetails])
+    }, [pcDetails]);
+
+    const items = raw?.filter(i => i.music_isrc === item.music_isrc)
+    // console.log(items);
+
+    const totalMusicTotal = items?.reduce((sum, entry) => sum + parseInt(entry.music_total), 0);
+
+    // console.log(totalMusicTotal);
 
     return (
         <>
@@ -57,9 +64,9 @@ const RevenueItem = ({ item, option, raw }) => {
                     <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_track_artist ? item.music_track_artist : '-'}</h6>
                     <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_label ? item.music_label : '-'}</h6>
                     <h6 className='order-1 2xl:order-none 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_isrc ? item.music_isrc : '-'}</h6>
-                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_total ? item.music_total : '-'}</h6>
-                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_after_tds_revenue ? item.music_after_tds_revenue : '-'}</h6>
-                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_after_tds_revenue ? parseFloat(item.music_after_tds_revenue) - parseFloat(item.music_after_tds_revenue) * (parseFloat(item.forevision_cut) / 100) : '-'}</h6>
+                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{totalMusicTotal ? totalMusicTotal : '-'}</h6>
+                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_after_tds_revenue ? item.music_after_tds_revenue.toFixed(8) : '-'}</h6>
+                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_after_tds_revenue ? (parseFloat(item.music_after_tds_revenue) - parseFloat(item.music_after_tds_revenue) * (parseFloat(item.forevision_cut) / 100)).toFixed(8) : '-'}</h6>
                     {/* <p className='order-3 2xl:order-none flex items-center 2xl:hidden'>{item.final_revenue} <img className='ml-1 -rotate-90' onClick={() => setDetails(true)} src={downArrow} alt="" /></p> */}
                 </div>
 
