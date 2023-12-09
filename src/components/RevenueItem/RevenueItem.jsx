@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import downArrow from "../../assets/icons/down-arrow.webp";
 import whitePattern from "../../assets/images/white-pattern.svg"
 import gsap from 'gsap';
 import RevenueDetails from '../RevenueDetails/RevenueDetails';
@@ -10,7 +9,7 @@ const RevenueItem = ({ item, option, raw }) => {
     const [pcDetails, setPcDetails] = useState(false)
     const containerRef = useRef(null);
     const itemRef = useRef(null);
-    const { total, setTotal } = useContext(SongsContext)
+    const { setTotal } = useContext(SongsContext)
     // const [total, setTotal] = useState([])
 
     const detailsRef = useRef(null);
@@ -56,7 +55,12 @@ const RevenueItem = ({ item, option, raw }) => {
     const totalView = raw?.reduce((sum, entry) => sum + parseInt(entry.music_total), 0)
     const totalRevenue = raw?.reduce((sum, entry) => sum + parseFloat(entry.final_revenue), 0);
 
-    useEffect(() => setTotal({ revenue: totalRevenue, view: totalView }), [raw, totalRevenue, totalView])
+
+    useEffect(() => {
+        if (totalView && totalRevenue) {
+            setTotal({ revenue: totalRevenue, view: totalView })
+        }
+    }, [raw, totalRevenue, totalView, setTotal])
     // useEffect(() => setTotal({ ...total, revenue: raw?.reduce((sum, entry) => sum + parseInt(entry.music_total), 0) }), [raw])
 
     return (

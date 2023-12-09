@@ -148,42 +148,43 @@ const Revenue = () => {
     },
     {
       heading: 'Best Upload',
-      data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || '---'
+      data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || 'Loading...'
     },
     {
       heading: 'Total revenue',
-      data: total.revenue
+      data: total.revenue || 0
     },
     {
       heading: 'View',
-      data: total.view
+      data: total.view || 0
     },
   ])
 
   // console.log(aggregatedMusicData.length);
 
   useEffect(() => {
-    if (total.view && total.revenue) {
-      setData([
-        {
-          heading: 'Total Uploads',
-          data: aggregatedMusicData.length
-        },
-        {
-          heading: 'Best Upload',
-          data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || '-'
-        },
-        {
-          heading: 'Total revenue',
-          data: total.revenue
-        },
-        {
-          heading: 'View',
-          data: total.view
-        },
-      ])
-    }
-  }, [aggregatedMusicData, total.view, total.revenue])
+    // if (total.view && total.revenue) {
+    // console.log(total);
+    setData([
+      {
+        heading: 'Total Uploads',
+        data: aggregatedMusicData.length
+      },
+      {
+        heading: 'Best Upload',
+        data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || 'Loading...'
+      },
+      {
+        heading: 'Total revenue',
+        data: total.revenue || 0
+      },
+      {
+        heading: 'View',
+        data: total.view || 0
+      },
+    ])
+    // }
+  }, [aggregatedMusicData, aggregatedMusicData.length, total.revenue, total.view])
 
   const options = [
     "Song_name",
