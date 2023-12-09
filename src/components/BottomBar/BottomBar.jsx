@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { navPhone } from "../../constants";
 // import { nav } from "../../constants";
-import more from './../../assets/icons/more.webp'
-import { NavLink } from "react-router-dom";
+import logout from './../../assets/icons/navbar/logout.webp'
+import { NavLink, useNavigate } from "react-router-dom";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const BottomBar = () => {
-  // alert(navPhone.length)
+  const { setProfileData } = useContext(ProfileContext);
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    setProfileData({})
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+    navigate("/login")
+  }
+
   return (
     <nav className="fixed bottom-0 z-[99999] px-1 shadow w-screen bg-white flex justify-center lg:hidden" id="bottomBar">
       {navPhone.slice(0, navPhone.length).map(({ icon, text, path }, key) => (
@@ -15,9 +24,9 @@ const BottomBar = () => {
         </NavLink>
       ))}
 
-      <div className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px]">
-        <img src={more} className="w-3 h-3" alt={'text'} key={'key'} />
-        <h2 className="text-paragraph-2">{'More'}</h2>
+      <div className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px]" onClick={handleLogout}>
+        <img src={logout} className="w-2 h-2" alt={'text'} key={'key'} />
+        <h2 className="text-paragraph-2">{'Logout'}</h2>
       </div>
     </nav>
   );

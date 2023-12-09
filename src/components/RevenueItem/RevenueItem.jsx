@@ -71,7 +71,7 @@ const RevenueItem = ({ item, option, raw }) => {
                     <h6 className='order-1 2xl:order-none 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_isrc ? item.music_isrc : '-'}</h6>
                     <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{totalMusicTotal ? totalMusicTotal : '-'}</h6>
                     <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_after_tds_revenue ? item.music_after_tds_revenue.toFixed(8) : '-'}</h6>
-                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.final_revenue ? item.final_revenue : '-'}</h6>
+                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.final_revenue ? item.final_revenue.toFixed(8) : '-'}</h6>
                     {/* <p className='order-3 2xl:order-none flex items-center 2xl:hidden'>{item.final_revenue} <img className='ml-1 -rotate-90' onClick={() => setDetails(true)} src={downArrow} alt="" /></p> */}
                 </div>
 
@@ -81,7 +81,7 @@ const RevenueItem = ({ item, option, raw }) => {
             <div className='2xl:hidden grid grid-cols-3 gap-4 text-subtitle-2 font-medium text-grey-dark p-1 text-center'>
                 <h6 className='order-2 2xl:order-none 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item['music_' + option?.toLowerCase()] ? item['music_' + option?.toLowerCase()] : '-'}</h6>
                 <h6 className='order-1 2xl:order-none 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{item.music_isrc ? item.music_isrc : '-'}</h6>
-                {/* <p className='order-3 2xl:order-none flex items-center justify-between 2xl:hidden'><p className='w-full text-right'>{parseFloat(item.final_revenue).toFixed(3)}</p> <img className='ml-1 -rotate-90' onClick={() => setDetails(true)} src={downArrow} alt="" /></p> */}
+                <p className='order-3 2xl:order-none flex items-center justify-between 2xl:hidden'>{item.final_revenue ? item.final_revenue.toFixed(8) : '-'}</p>
             </div>
             <div className={`fixed z-[999999] h-screen w-screen top-0 left-0 backdrop-blur px-3 ${!details && 'hidden'} transition duration-1000`} ref={containerRef}>
                 <div className="relative left-[100vw] bg-no-repeat bg-contain px-3 py-5 mt-5 flex flex-col gap-2 bg-grey-light rounded-[20px]" style={{ backgroundImage: `url(${whitePattern})` }} ref={itemRef}>

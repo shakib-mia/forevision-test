@@ -36,8 +36,6 @@ const Login = () => {
 
     userData.append("user_email", e.target.email.value);
     userData.append("user_pass", e.target.password.value);
-    console.log(prevRoute);
-
     axios
       .post("https://beta.forevisiondigital.com/admin/api/login", userData)
       .then(({ data }) => {
@@ -93,10 +91,10 @@ const Login = () => {
       </div>
 
       {showMessage && <div className="fixed left-0 top-0 backdrop-blur w-screen h-screen flex justify-center items-center">
-        <div className="w-1/2 h-1/2 bg-white p-3 flex flex-col justify-center items-center gap-2">
+        <div className="w-11/12 xl:w-1/2 xl:h-1/2 bg-white p-3 flex flex-col justify-center items-center gap-2">
           {/* <div className="flex items-center justify-center gap-3"> */}
           <img src={image} alt="" />
-          <p className="w-9/12 mx-auto text-center text-paragraph-1 text-grey-dark">This is a new system for you to see that how much you've earned from your music. We are constantly working for better user experience. Any inconvenience is deeply regretted. You can Notify us if you are having any trouble. We will fix it within approximately 7(seven) working days .</p>
+          <p className="w-full xl:w-9/12 mx-auto text-center text-paragraph-1 text-grey-dark">This is a new system for you to see that how much you've earned from your music. We are constantly working for better user experience. Any inconvenience is deeply regretted. You can Notify us if you are having any trouble. We will fix it within approximately 7(seven) working days .</p>
           {/* </div> */}
           <CountdownCircleTimer
             isPlaying

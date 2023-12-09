@@ -69,7 +69,7 @@ const Sidebar = () => {
       </section>
 
       <div className="mb-0 border-t-[1px] border-surface-white-line pt-[20px] flex items-center gap-1">
-        <img src={imageDomain + profileData?.display_image} className="rounded-full w-[40px] h-[40px]" alt="profile" />
+        <img src={profileData?.display_image ? imageDomain + profileData?.display_image : ""} className="rounded-full w-[40px] h-[40px]" alt="profile" />
         {hovered && (
           <>
             <div className="overflow-hidden whitespace-nowrap">

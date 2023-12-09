@@ -27,7 +27,7 @@ const Sorting = ({ text, options, songs, handleSort }) => {
     }
 
     return (
-        <div className='relative'>
+        <div className='relative z-[9999999]'>
             <label className="flex w-full justify-between items-center">
                 <div className='p-1 flex gap-1'>
                     <img src={filter} alt='sorting' />

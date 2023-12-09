@@ -115,10 +115,7 @@ const Revenue = () => {
     };
   });
 
-  // console.log(mergedArray);
-
   const filtered = mergedArray.filter(item => item.music_isrc !== "21");
-  // console.log(filtered);
 
 
   /**
@@ -137,24 +134,33 @@ const Revenue = () => {
       return accumulator + parseFloat(object[fieldName]);
     }, 0);
   }
-
-  // const calculateTotalForHeader = (fieldName) => {
-  //   // return 0
-  //   // console.log(filtered );
-  //   return aggregatedMusicData.reduce((accumulator, object) => {
-  //     return accumulator + parseFloat(object[fieldName]);
-  //   }, 0);
-  // }
-
-
-  // console.log(calculateTotalForHeader('music_total'));
-
   /**
    * 
   header Data 
   */
 
-  const [data, setData] = useState([])
+  // console.log(aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || '-');
+
+  const [data, setData] = useState([
+    {
+      heading: 'Total Uploads',
+      data: 0
+    },
+    {
+      heading: 'Best Upload',
+      data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || '---'
+    },
+    {
+      heading: 'Total revenue',
+      data: total.revenue
+    },
+    {
+      heading: 'View',
+      data: total.view
+    },
+  ])
+
+  // console.log(aggregatedMusicData.length);
 
   useEffect(() => {
     if (total.view && total.revenue) {
@@ -220,7 +226,7 @@ const Revenue = () => {
 
     <SongsContext.Provider value={{ songs, setSongs, total, setTotal }}>
       <div className='bg-[size:100%] bg-no-repeat 2xl:p-4 2xl:pl-7 mb-6 2xl:mb-0' style={{ backgroundImage: `url(${background})` }}>
-        <div className='h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px] 3xl:px-[150px]'>
+        <div className='h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px]'>
           <div className="flex flex-col 2xl:flex-row gap-3 items-end">
             <div className='w-full 2xl:w-3/4'>
               <h4 className='text-heading-4-bold text-grey-dark 2xl:text-white'>{greeting} <br /> <span className='text-interactive-light 2xl:text-white'><u>
@@ -235,10 +241,10 @@ const Revenue = () => {
 
               <div className='mt-[32px] grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3'>
                 {/* {data.map((item, key) => <RevenueAnalytics {...item} id={key} key={key} />)} */}
-                {<RevenueAnalytics heading={data[0]?.heading} data={data[0]?.data} />}
-                {<RevenueAnalytics heading={data[1]?.heading} data={data[1]?.data} />}
-                {<RevenueAnalytics heading={data[2]?.heading} data={data[2]?.data} />}
-                {<RevenueAnalytics heading={data[3]?.heading} data={data[3]?.data} />}
+                {<RevenueAnalytics heading={data[0].heading} data={data[0].data} />}
+                {<RevenueAnalytics heading={data[1].heading} data={data[1].data} />}
+                {<RevenueAnalytics heading={data[2].heading} data={data[2].data} />}
+                {<RevenueAnalytics heading={data[3].heading} data={data[3].data} />}
               </div>
               {/* </>} */}
             </div>
@@ -253,7 +259,7 @@ const Revenue = () => {
 
           <div className='hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] relative'>
             {filtered.length > 0 ? <>
-              <div className="flex flex-col 2xl:flex-row justify-between sticky top-0 left-0 bg-grey-light">
+              <div className="flex flex-col 2xl:flex-row justify-between bg-grey-light">
                 <div className="w-full 2xl:w-2/3">
                   <div className="flex flex-row gap-1 2xl:gap-3 items-center">
                     <div className='w-full 2xl:w-7/12 relative'>
