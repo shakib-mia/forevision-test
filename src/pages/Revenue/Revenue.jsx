@@ -13,8 +13,7 @@ import { SongsContext } from "./../../contexts/SongsContext"
 import notFound from "../../assets/images/not-found.svg"
 import { ProfileContext } from '../../contexts/ProfileContext';
 import RevenueList from '../../components/RevenueList/RevenueList';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import DemoPDF from '../../components/DemoPDF/DemoPDF';
 // import notFound from "../../assets/images/not-found.svg"
 
 const Revenue = () => {
@@ -28,7 +27,9 @@ const Revenue = () => {
   const [total, setTotal] = useState({
     revenue: 0,
     view: 0
-  })
+  });
+
+  const [demoVisible, setDemoVisible] = useState(false)
 
 
   const currentTime = new Date().getHours();
@@ -204,25 +205,6 @@ const Revenue = () => {
     aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
   }
 
-  const handleConvertToPdf = async () => {
-
-    // Use html2canvas to convert the React component to an image
-    const canvas = await html2canvas(containerRef.current);
-
-    // Create a new jsPDF instance
-    const pdf = new jsPDF({
-      unit: 'mm', // or 'in', 'pt', etc.
-      format: [1920, 1080],
-      orientation: 'landscape'
-    });
-
-    // Add the image to the PDF
-    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
-
-    // Save the PDF with a specific filename
-    pdf.save('output.pdf');
-  };
-
   return (
 
     <SongsContext.Provider value={{ songs, setSongs, total, setTotal }}>
@@ -274,13 +256,13 @@ const Revenue = () => {
 
                 <div className='w-full 2xl:w-fit bg-white p-[4px] mt-1 2xl:mt-0 rounded-full'>
                   <div className="hidden 2xl:flex justify-between">
-                    <Button small text="DOWNLOAD REPORT" onClick={handleConvertToPdf} />
+                    <Button small text="DOWNLOAD REPORT" onClick={() => setDemoVisible(true)} />
                   </div>
 
                   <div className='flex 2xl:hidden'>
                     {/* <Button small text={'CSV'} onClick={() => setFileType("CSV")} />
                     <Button small text={'PDF'} onClick={() => setFileType("PDF")} /> */}
-                    <Button small text="DOWNLOAD REPORT" />
+                    <Button small text="DOWNLOAD REPORT" onClick={() => setDemoVisible(true)} />
                   </div>
                 </div>
               </div>
@@ -323,6 +305,8 @@ const Revenue = () => {
 
         </div>
       </div>
+
+      {demoVisible && <DemoPDF containerRef={containerRef} data={filtered} setDemoVisible={setDemoVisible} />}
     </SongsContext.Provider >
   );
 };

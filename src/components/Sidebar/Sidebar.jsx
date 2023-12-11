@@ -80,7 +80,7 @@ const Sidebar = () => {
             <img
               src={logout}
               alt=""
-              className="ml-auto cursor-pointer"
+              className="ml-auto cursor-pointer w-2 h-2"
               onClick={handleLogout}
             />
           </>
