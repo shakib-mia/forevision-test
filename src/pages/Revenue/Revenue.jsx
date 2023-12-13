@@ -14,6 +14,7 @@ import notFound from "../../assets/images/not-found.svg"
 import { ProfileContext } from '../../contexts/ProfileContext';
 import RevenueList from '../../components/RevenueList/RevenueList';
 import DemoPDF from '../../components/DemoPDF/DemoPDF';
+import { toast } from 'react-toastify';
 // import notFound from "../../assets/images/not-found.svg"
 
 const Revenue = () => {
@@ -189,7 +190,7 @@ const Revenue = () => {
 
   const options = [
     "Song_name",
-    "Vendor Name",
+    "Platform Name",
     "Album",
     "Artist",
     "Label",
@@ -242,8 +243,8 @@ const Revenue = () => {
 
           <div className='hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] relative'>
             {filtered.length > 0 ? <>
-              <div className="flex flex-col 2xl:flex-row justify-between bg-grey-light">
-                <div className="w-full 2xl:w-2/3">
+              <div className="flex flex-col 2xl:flex-row justify-end bg-grey-light">
+                {/* <div className="w-full 2xl:w-2/3">
                   <div className="flex flex-row gap-1 2xl:gap-3 items-center">
                     <div className='w-full 2xl:w-7/12 relative'>
                       <InputField icon={search} value={badge} onChange={e => setBadge(e.target.value)} containerClassName="w-full" badge={badge} setBadge={setBadge} placeholder="Search here..." />
@@ -252,17 +253,21 @@ const Revenue = () => {
                       {songs && songs.length ? <Sorting handleSort={handleSort} setSongs={setSongs} songs={aggregatedMusicData} text="Sort by" options={songs[0] && Object.keys(songs[0])} /> : ""}
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div className='w-full 2xl:w-fit bg-white p-[4px] mt-1 2xl:mt-0 rounded-full'>
                   <div className="hidden 2xl:flex justify-between">
-                    <Button small text="DOWNLOAD REPORT" onClick={() => setDemoVisible(true)} />
+                    <Button small text="DOWNLOAD REPORT" onClick={() => toast.error("This Feature is Coming Soon", {
+                      position: 'bottom-center'
+                    })} />
                   </div>
 
                   <div className='flex 2xl:hidden'>
                     {/* <Button small text={'CSV'} onClick={() => setFileType("CSV")} />
                     <Button small text={'PDF'} onClick={() => setFileType("PDF")} /> */}
-                    <Button small text="DOWNLOAD REPORT" onClick={() => setDemoVisible(true)} />
+                    <Button small text="DOWNLOAD REPORT" onClick={() => toast.error("This Feature is Coming Soon", {
+                      position: 'bottom-center'
+                    })} />
                   </div>
                 </div>
               </div>
@@ -306,7 +311,13 @@ const Revenue = () => {
         </div>
       </div>
 
-      {demoVisible && <DemoPDF containerRef={containerRef} data={filtered} setDemoVisible={setDemoVisible} />}
+      {/* {demoVisible && <div className='w-screen h-screen backdrop-blur-lg flex justify-center items-center absolute left-0 top-0 overflow-x-hidden z-[999999999]'>
+        <div className='bg-white w-1/2 h-1/2 relative flex items-center justify-center'>
+          <button className='absolute -top-4 -right-4 text-heading-4 text-white' onClick={() => setDemoVisible(false)}>&times;</button>
+
+          <h1 className='text-heading-1 text-center'>Coming Soon!!!</h1>
+        </div>
+      </div>} */}
     </SongsContext.Provider >
   );
 };
