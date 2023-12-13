@@ -7,14 +7,6 @@ import settings from "./../../assets/icons/settings.webp";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  // const text = localStorage.getItem("token") ? "LOGOUT" : "LOGIN";
-
-  // const navigate = useNavigate();
-  // const handleLogout = () => {
-  //   navigate("/login");
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("user");
-  // };
 
   return (
     <nav className="flex pl-[30px] pr-[60px] py-[6px] items-center justify-end fixed top-0 w-full">

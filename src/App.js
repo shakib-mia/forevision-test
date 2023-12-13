@@ -11,12 +11,12 @@ import axios from "axios";
 
 function App() {
   const [userData, setUserData] = useState(
-    JSON.parse(localStorage.getItem("user")) || {}
+    JSON.parse(sessionStorage.getItem("user")) || {}
   );
   const [prevRoute, setPrevRoute] = useState("");
   const location = useLocation();
   const [profileData, setProfileData] = useState({});
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [token, setToken] = useState(sessionStorage.getItem("token"));
 
   const store = {
     userData,
@@ -32,7 +32,7 @@ function App() {
   useEffect(() => {
     const config = {
       headers: {
-        Authorization: localStorage.getItem("token") || token,
+        Authorization: sessionStorage.getItem("token") || token,
       },
     };
 

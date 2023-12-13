@@ -249,11 +249,11 @@ export const imageDomain = "https://beta.forevisiondigital.com/admin/";
 
 export const config = {
   headers: {
-    Authorization: localStorage.getItem("token"),
+    Authorization: sessionStorage.getItem("token"),
   },
 };
 
-export const user = JSON.parse(localStorage.getItem("user"));
+export const user = JSON.parse(sessionStorage.getItem("user"));
 
 export const routes = [
   // {

@@ -12,7 +12,7 @@ const ProfileVerification = () => {
    * TO BACKEND FIELDS REQUIREMENTS
    *
    * *****/
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(sessionStorage.getItem("user"));
   // console.log(user);
 
   const fields = [

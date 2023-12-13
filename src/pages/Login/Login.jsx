@@ -42,9 +42,9 @@ const Login = () => {
         // console.log(data);
         if (data.status === "Login successful") {
           // console.log(data);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          localStorage.removeItem("token");
-          localStorage.setItem("token", data.token);
+          sessionStorage.setItem("user", JSON.stringify(data.user));
+          // sessionStorage.removeItem("token");
+          sessionStorage.setItem("token", data.token);
           // window.history.back();
           setToken(data.token)
           setUserData(data.user);
