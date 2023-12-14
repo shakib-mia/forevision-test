@@ -1,9 +1,8 @@
 import React from 'react';
 import styles from "./RevenueAnalytics.module.css"
-import CountUp from 'react-countup';
 
 const RevenueAnalytics = ({ heading, data, id }) => {
-    // console.log(data);
+    console.log(data);
     return (
         <>
             <div className='relative 2xl:hidden h-[148px] 3xl:h-[204px] text-grey-dark overflow-hidden rounded-[9px] bg-white shadow 2xl:shadow-none'>
@@ -13,12 +12,14 @@ const RevenueAnalytics = ({ heading, data, id }) => {
                 <div className='absolute w-full h-full py-[13px] px-2'>
                     <p className='text-paragraph-2'>{heading}</p>
                     <div className='h-full flex items-center'>
-                        {<h5 className='text-heading-5-bold w-full whitespace-normal'>{
-                            isNaN(parseFloat(data))
-                                ? data // string
-                                : heading !== 'Total Uploads' && heading !== 'View'
-                                    ? <CountUp end={data.toFixed(2)} duration={1} decimals={2} />
-                                    : data}</h5>}
+                        {<h5 className={`${isNaN(parseFloat(data)) ? "text-heading-6-bold" : 'text-heading-5-bold'} w-full whitespace-normal`}>
+
+                            {heading === "Best Upload" ? data :
+                                heading === 'Total revenue'
+                                    ?
+                                    data.toFixed(2)
+                                    : data}
+                        </h5>}
                     </div>
                 </div>
             </div>
@@ -31,11 +32,13 @@ const RevenueAnalytics = ({ heading, data, id }) => {
                     <p className='text-paragraph-2'>{heading}</p>
                     <div className='h-full flex items-center'>
                         {<h5 className={`${isNaN(parseFloat(data)) ? "text-heading-6-bold" : 'text-heading-5-bold'} w-full whitespace-normal`}>
-                            {isNaN(parseFloat(data))
-                                ? data // string
-                                : heading !== 'Total Uploads' && heading !== 'View'
-                                    ? <CountUp end={data.toFixed(2)} duration={1} decimals={2} />
-                                    : <CountUp end={data} duration={data < 10 ? 0.5 : 2} />}</h5>}
+
+                            {heading === "Best Upload" ? data :
+                                heading === 'Total revenue'
+                                    ?
+                                    data.toFixed(2)
+                                    : data}
+                        </h5>}
                     </div>
                 </div>
             </div>
