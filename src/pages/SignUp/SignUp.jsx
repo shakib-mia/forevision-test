@@ -11,9 +11,9 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
-  const location = useLocation();
+  // const location = useLocation();
   const navigate = useNavigate();
-  const { userData, setUserData, setPrevRoute } = useContext(ProfileContext);
+  const { setUId, setUserData, userData } = useContext(ProfileContext);
   // console.log(location.pathname);
 
   const fields = [
@@ -45,22 +45,33 @@ const SignUp = () => {
 
   const signup = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
 
+    const signupData = {
+      email: e.target['user_email'].value,
+      password: e.target['user_password'].value
+    }
 
-
-
-    axios.post("https://beta.forevisiondigital.com/admin/api/userRegistration", formData).then(res => {
-      if (res.data.success) {
-        console.log(res.data);
-        setUserData({ ...userData, email: e.target.user_email.value, userId: res.data.data })
-        navigate("/login");
-        setPrevRoute(location.pathname)
-        // navigate("/signup-details")
-      } else {
-        toast.error(res.data.message)
+    axios.post("http://localhost:4000/user-signup", signupData).then(({ data }) => {
+      if (data.acknowledged) {
+        setUId(data.insertedId)
+        setUserData({ ...userData, user_email: signupData.email })
+        navigate("/signup-details")
       }
     })
+
+    // const formData = new FormData(e.target);
+
+    // axios.post("https://beta.forevisiondigital.com/admin/api/userRegistration", formData).then(res => {
+    //   if (res.data.success) {
+    //     console.log(res.data);
+    //     setUserData({ ...userData, email: e.target.user_email.value, userId: res.data.data })
+    //     navigate("/login");
+    //     setPrevRoute(location.pathname)
+    //     // navigate("/signup-details")
+    //   } else {
+    //     toast.error(res.data.message)
+    //   }
+    // })
   };
 
   return (

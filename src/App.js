@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { ToastContainer } from "react-toastify";
@@ -10,13 +10,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function App() {
-  const [userData, setUserData] = useState(
-    JSON.parse(sessionStorage.getItem("user")) || {}
-  );
+  const [userData, setUserData] = useState({});
+  // const [userData, setUserData] = useState(
+  //   JSON.parse(sessionStorage.getItem("user")) || {}
+  // );
   const [prevRoute, setPrevRoute] = useState("");
   const location = useLocation();
   const [profileData, setProfileData] = useState({});
+  const [uId, setUId] = useState("");
   const [token, setToken] = useState(sessionStorage.getItem("token"));
+  const navigate = useNavigate();
 
   const store = {
     userData,
@@ -27,24 +30,30 @@ function App() {
     setProfileData,
     token,
     setToken,
+    uId,
+    setUId,
   };
+
+  // console.log(userData);
 
   useEffect(() => {
     const config = {
       headers: {
-        Authorization: sessionStorage.getItem("token") || token,
+        token: sessionStorage.getItem("token") || token,
       },
     };
 
-    if (userData.ID) {
-      axios
-        .get(
-          `https://beta.forevisiondigital.com/admin/api/getUserDataById/${userData.ID}`,
-          config
-        )
-        .then(({ data }) => setProfileData(data.data && data.data[0]));
-    }
-  }, [userData.ID, token]);
+    axios.get(`http://localhost:4000/getUserData`, config).then(({ data }) => {
+      if (data.data !== null) {
+        setUserData(data.data);
+      }
+      // if (location.pathname === "/" && data.length === 0) {
+      // navigate("/signup-details");
+      // }
+    });
+  }, [token]);
+
+  // if(userData._id === );
 
   return (
     <ProfileContext.Provider value={store}>

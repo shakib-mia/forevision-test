@@ -1,13 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import AuthBody from "../../components/AuthBody/AuthBody";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import image from "../../assets/images/not-found.svg"
+// import image from "../../assets/images/not-found.svg"
 import { toast } from "react-toastify";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
+// import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 const Login = () => {
   const fields = [
@@ -24,37 +24,56 @@ const Login = () => {
       placeholder: "Enter Password",
     },
   ];
-  const { setUserData, prevRoute, setToken } = useContext(ProfileContext)
+  const { /*setUserData*/ prevRoute, setToken, setUserData, userData } = useContext(ProfileContext)
+  // const {  } = useContext(ProfileContext);
+
   const navigate = useNavigate();
 
-  const [showMessage, setShowMessage] = useState(false)
+  // const [showMessage, setShowMessage] = useState(false)
 
   const login = (e) => {
     e.preventDefault();
     // console.log(e.target.password.value);
-    const userData = new FormData();
+    // const userData = new FormData();
 
-    userData.append("user_email", e.target.email.value);
-    userData.append("user_pass", e.target.password.value);
+    // userData.append("user_email", e.target.email.value);
+    // userData.append("user_pass", e.target.password.value);
     axios
-      .post("https://beta.forevisiondigital.com/admin/api/login", userData)
+      .post("http://localhost:4000/user-login", {
+        email: e.target.email.value,
+        password: e.target.password.value
+      })
       .then(({ data }) => {
-        // console.log(data);
-        if (data.status === "Login successful") {
-          // console.log(data);
-          sessionStorage.setItem("user", JSON.stringify(data.user));
-          // sessionStorage.removeItem("token");
+        if (data.token.length) {
           sessionStorage.setItem("token", data.token);
           // window.history.back();
-          setToken(data.token)
-          setUserData(data.user);
+          setToken(data.token);
           // prevRoute === '/signup' ? navigate("/signup-details") : navigate('/profile')
           if (prevRoute === '/signup') {
             navigate("/signup-details")
           } else {
-            setShowMessage(true);
+            // setShowMessage(true);
             // Navigation will be /revenue on full version
-            setTimeout(() => navigate('/'), 10000)
+            // setTimeout(() => navigate('/'), 10000)
+            // navigate("/");
+            const config = {
+              headers: {
+                token: data.token
+              }
+            }
+            axios.get("http://localhost:4000/getUserData", config).then(({ data }) => {
+              // console.log(data.data);
+              if (data.data === null) {
+                console.log(userData);
+
+                setUserData({ ...userData, user_email: e.target.email.value })
+
+                navigate("/signup-details")
+              } else {
+                navigate("/")
+              }
+              // console.log(data);
+            })
           }
         }
       }).catch(err => {
@@ -90,12 +109,12 @@ const Login = () => {
         </Link>
       </div>
 
-      {showMessage && <div className="fixed left-0 top-0 backdrop-blur w-screen h-screen flex justify-center items-center">
+      {/* {showMessage && <div className="fixed left-0 top-0 backdrop-blur w-screen h-screen flex justify-center items-center">
         <div className="w-11/12 xl:w-1/2 xl:h-1/2 bg-white p-3 flex flex-col justify-center items-center gap-2">
-          {/* <div className="flex items-center justify-center gap-3"> */}
+        
           <img src={image} alt="" />
           <p className="w-full xl:w-9/12 mx-auto text-center text-paragraph-1 text-grey-dark">This is a new system for you to see that how much you've earned from your music. We are constantly working for better user experience. Any inconvenience is deeply regretted. You can Notify us if you are having any trouble. We will fix it within approximately 7(seven) working days .</p>
-          {/* </div> */}
+  
           <CountdownCircleTimer
             isPlaying
             duration={10}
@@ -107,7 +126,7 @@ const Login = () => {
             {({ remainingTime }) => <span className="text-heading-4-bold text-grey-dark">{remainingTime}</span>}
           </CountdownCircleTimer>
         </div>
-      </div>}
+      </div>} */}
     </AuthBody>
   );
 };

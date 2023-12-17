@@ -14,7 +14,7 @@ const SignupDetails = () => {
   const [selectedCode, setSelectedCode] = useState('91');
   const [screen, setScreen] = useState("name");
   const navigate = useNavigate()
-  // console.log(profileData);
+
   const fields = [
     {
       id: "firstName",
@@ -49,12 +49,12 @@ const SignupDetails = () => {
       required: true,
     },
     {
-      id: "alternateEmail",
-      name: "alternateEmail",
-      label: "Alternate Email",
+      id: "email",
+      name: "email",
+      label: "Email",
       type: "email",
-      placeholder: "abc@example.com",
-      value: userData.user_email,
+      // placeholder: "abc@example.com",
+      value: userData?.user_email,
       disabled: true,
       required: true,
     },
@@ -113,41 +113,40 @@ const SignupDetails = () => {
   }, []);
 
   const [signupDetailsData, setSignupDetailsData] = useState({})
-
   const signup = (e) => {
     e.preventDefault();
     // console.log(userData.Id);
-    console.log(signupDetailsData);
+    const userDetailsData = { ...signupDetailsData, phone_no: selectedCode + signupDetailsData.phone_no, user_email: userData?.user_email };
 
-    const formData = new FormData();
-    // console.log(signupDetailsData);
-    for (const key in signupDetailsData) {
-      formData.append(key, signupDetailsData[key])
-    }
 
-    // for (const value of formData.values()) {
-    //   console.log(value);
+    // const formData = new FormData();
+    // // console.log(signupDetailsData);
+    // for (const key in signupDetailsData) {
+    //   formData.append(key, signupDetailsData[key])
     // }
-    formData.append("user_id", userData.ID);
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
 
-    console.log(token);
+    // // for (const value of formData.values()) {
+    // //   console.log(value);
+    // // }
+    // formData.append("user_id", userData.ID);
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // }
 
-    // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
-    axios.post("https://beta.forevisiondigital.com/admin/api/updateUserOtherInfo", formData, config).then(res => {
-      if (res.data.success) {
-        toast.success("Details are added successfully", {
-          position: 'bottom-center'
-        })
-        navigate("/")
-      } else {
-        console.log(res.data);
+
+    // // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
+    axios.post("http://localhost:4000/post-user-details", userDetailsData).then(res => {
+      if (res.data.acknowledged) {
+        // console.log(res.data);
+
+        navigate("/");
+        window.location.reload()
       }
     }).catch(err => console.log(err))
+
+    // console.log(userDetailsData);
 
     // console.log(phoneValidity.test(e.target.phone.value));
   };

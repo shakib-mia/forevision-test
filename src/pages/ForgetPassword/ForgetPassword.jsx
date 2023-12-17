@@ -14,9 +14,11 @@ const ForgetPassword = () => {
     const formData = new FormData();
     formData.append("emailId", e.target["forgot-email"].value);
 
-    axios.post('http://adztronaut.com/music/admin/api/forgotPassword', formData).then(({ data }) => {
-      toast.success(data.message)
-    })
+    // axios.post('http://adztronaut.com/music/admin/api/forgotPassword', formData).then(({ data }) => {
+    //   toast.success(data.message)
+    // })
+
+    axios.post("http://localhost:4000/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => console.log(data))
   };
   return (
     <AuthBody

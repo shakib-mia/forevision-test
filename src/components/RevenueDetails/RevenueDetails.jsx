@@ -10,8 +10,8 @@ const RevenueDetails = ({ item, raw, detailsRef }) => {
 
     // items?.map(item => console.log(item.music_total))
 
-
-
+    // console.log(raw);
+    // console.log(items);
 
     return (
         <>
@@ -20,7 +20,7 @@ const RevenueDetails = ({ item, raw, detailsRef }) => {
                 {items?.map((i, key) => <Fragment key={key}>
                     <h6 className='py-2 order-2 2xl:order-none 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center pl-1'>{i.music_song_name ? i.music_song_name : '-'}</h6>
                     <h6 className='py-2 hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center cursor-pointer'>{i.music_data_type}</h6>
-                    <h6 className='py-2 hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{i.music_album ? i.music_album : '-'}</h6>
+                    <h6 className='py-2 hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{i.album ? i.album : '-'}</h6>
                     <h6 className='py-2 hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{i.music_track_artist ? i.music_track_artist : '-'}</h6>
                     <h6 className='py-2 hidden 2xl:block 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{i.music_label ? i.music_label : '-'}</h6>
                     <h6 className='py-2 order-1 2xl:order-none 2xl:text-paragraph-2 2xl:text-grey-dark font-normal 2xl:text-center'>{i.music_isrc ? i.music_isrc : '-'}</h6>

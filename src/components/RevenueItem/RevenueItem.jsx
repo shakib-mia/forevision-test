@@ -13,6 +13,7 @@ const RevenueItem = ({ item, option, raw }) => {
     // const [total, setTotal] = useState([])
 
     const detailsRef = useRef(null);
+    console.log(raw);
 
 
     useEffect(() => {
@@ -49,10 +50,10 @@ const RevenueItem = ({ item, option, raw }) => {
         }
     }, [pcDetails]);
 
-    const items = raw?.filter(i => i.music_isrc === item.music_isrc)
+    const items = raw?.filter(i => i.isrc === item.isrc)
 
-    const totalMusicTotal = items?.reduce((sum, entry) => sum + parseInt(entry.music_total), 0);
-    const totalView = raw?.reduce((sum, entry) => sum + parseInt(entry.music_total), 0)
+    const totalMusicTotal = items?.reduce((sum, entry) => sum + parseInt(entry.total), 0);
+    const totalView = raw?.reduce((sum, entry) => sum + parseInt(entry.total), 0)
     const totalRevenue = raw?.reduce((sum, entry) => sum + parseFloat(entry.final_revenue), 0);
 
 
@@ -67,15 +68,15 @@ const RevenueItem = ({ item, option, raw }) => {
         <>
             <div className={pcDetails ? 'bg-white shadow' : 'hover:bg-white hover:shadow'}>
                 <div className={`hidden 2xl:grid grid-cols-9 gap-4 text-subtitle-2 font-medium ${pcDetails ? "text-interactive-light" : "text-grey-dark"} p-1 text-center`}>
-                    <h6 className='order-2 2xl:order-none 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_song_name ? item.music_song_name : '-'}</h6>
+                    <h6 className='order-2 2xl:order-none 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.song_name ? item.song_name : '-'}</h6>
                     <h6 className='hidden 2xl:block 2xl:text-paragraph-2 text-interactive-light-confirmation font-normal 2xl:text-center cursor-pointer' onClick={() => setPcDetails(!pcDetails)}>{pcDetails ? 'Collapse' : "Click For Details"}</h6>
-                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_album ? item.music_album : '-'}</h6>
-                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_track_artist ? item.music_track_artist : '-'}</h6>
-                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_label ? item.music_label : '-'}</h6>
-                    <h6 className='order-1 2xl:order-none 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_isrc ? item.music_isrc : '-'}</h6>
+                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.album ? item.album : '-'}</h6>
+                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.track_artist ? item.track_artist : '-'}</h6>
+                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.label ? item.label : '-'}</h6>
+                    <h6 className='order-1 2xl:order-none 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.isrc ? item.isrc : '-'}</h6>
                     <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{totalMusicTotal ? totalMusicTotal : '-'}</h6>
-                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.music_after_tds_revenue ? item.music_after_tds_revenue.toFixed(8) : '-'}</h6>
-                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item.final_revenue ? item.final_revenue.toFixed(8) : '-'}</h6>
+                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item['after tds revenue'] ? item['after tds revenue'].toFixed(8) : '-'}</h6>
+                    <h6 className='hidden 2xl:block 2xl:text-paragraph-2 font-normal 2xl:text-center'>{item['final revenue'] ? item['final revenue'].toFixed(8) : '-'}</h6>
                     {/* <p className='order-3 2xl:order-none flex items-center 2xl:hidden'>{item.final_revenue} <img className='ml-1 -rotate-90' onClick={() => setDetails(true)} src={downArrow} alt="" /></p> */}
                 </div>
 

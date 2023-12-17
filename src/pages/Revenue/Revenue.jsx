@@ -47,23 +47,45 @@ const Revenue = () => {
   }, [currentTime])
 
   const { profileData, userData, token } = useContext(ProfileContext);
-
-
+  const songData = []
+  // console.log(userData);
   useEffect(() => {
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    formData.append('userId', userData.ID)
+    // formData.append('userId', userData !== null ? userData?.ID : "")
+
 
     axios
-      .post("https://beta.forevisiondigital.com/admin/api/getAllMusicData", formData, {
+      .get("http://localhost:4000/user-revenue", {
         headers: {
-          Authorization: token,
+          token,
         },
       })
       .then(({ data }) => {
-        setSongs(data.data);
+        if (data.length > 0) {
+          data.map(isrc => axios.get(`http://localhost:4000/user-revenue/${isrc}`).then(({ data }) => {
+            if (data.revenues) {
+              const newData = []
+              const allSongs = data.revenues
+              for (const song of allSongs) {
+                for (const key of Object.keys(song)) {
+                  if (!key.includes('EMPTY')) {
+                    const newObject = {}
+                    newObject[key] = song[key];
+                  }
+                }
+                // console.log(song);
+                newData.push(song)
+              }
+
+              setSongs(newData);
+            }
+          }))
+        }
+        // setSongs(data.data);
       }).catch(error => console.log(error));
-  }, [token, userData.ID])
+  }, [token])
+  // console.log(songData);
 
   const calculateAggregatedTotals = (songs) => {
     const final_revenue_total = {};
@@ -146,7 +168,7 @@ const Revenue = () => {
   const [data, setData] = useState([
     {
       heading: 'Total Uploads',
-      data: 0
+      data: userData?.isrc?.split(",").length
     },
     {
       heading: 'Best Upload',
@@ -186,7 +208,7 @@ const Revenue = () => {
       },
     ])
     // }
-  }, [aggregatedMusicData, aggregatedMusicData.length, total.revenue, total.view])
+  }, [])
 
   const options = [
     "Song_name",
@@ -206,6 +228,8 @@ const Revenue = () => {
     aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
   }
 
+  // console.log(profileData);
+
   return (
 
     <SongsContext.Provider value={{ songs, setSongs, total, setTotal }}>
@@ -214,8 +238,8 @@ const Revenue = () => {
           <div className="flex flex-col 2xl:flex-row gap-3 items-end">
             <div className='w-full 2xl:w-3/4'>
               <h4 className='text-heading-4-bold text-grey-dark 2xl:text-white'>{greeting} <br /> <span className='text-interactive-light 2xl:text-white'><u>
-                {profileData?.first_name ? profileData?.first_name : <></>}
-              </u> {profileData?.last_name ? profileData?.last_name : <></>}</span></h4>
+                {userData?.first_name ? userData?.first_name : <></>}
+              </u> {userData?.last_name ? userData?.last_name : <></>}</span></h4>
               <p className='text-subtitle-1 text-interactive-dark-active 2xl:text-white tracking-[0.5px] mt-1'>Welcome to your revenue dashboard, Let’s see how much you’ve earned with us !</p>
               {/* {filtered.length > 0 && <> */}
               <div className='mt-4 hidden 2xl:flex flex-col justify-center items-center w-fit'>
