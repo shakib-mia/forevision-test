@@ -39,7 +39,7 @@ const Login = () => {
     // userData.append("user_email", e.target.email.value);
     // userData.append("user_pass", e.target.password.value);
     axios
-      .post("http://localhost:4000/user-login", {
+      .post("https://forevision-digital.onrender.com/user-login", {
         email: e.target.email.value,
         password: e.target.password.value
       })
@@ -61,7 +61,7 @@ const Login = () => {
                 token: data.token
               }
             }
-            axios.get("http://localhost:4000/getUserData", config).then(({ data }) => {
+            axios.get("https://forevision-digital.onrender.com/getUserData", config).then(({ data }) => {
               // console.log(data.data);
               if (data.data === null) {
                 console.log(userData);

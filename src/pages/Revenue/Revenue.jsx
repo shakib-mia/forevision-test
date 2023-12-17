@@ -56,14 +56,14 @@ const Revenue = () => {
 
 
     axios
-      .get("http://localhost:4000/user-revenue", {
+      .get("https://forevision-digital.onrender.com/user-revenue", {
         headers: {
           token,
         },
       })
       .then(({ data }) => {
         if (data.length > 0) {
-          data.map(isrc => axios.get(`http://localhost:4000/user-revenue/${isrc}`).then(({ data }) => {
+          data.map(isrc => axios.get(`https://forevision-digital.onrender.com/user-revenue/${isrc}`).then(({ data }) => {
             if (data.revenues) {
               const newData = []
               const allSongs = data.revenues
