@@ -52,7 +52,7 @@ const Revenue = () => {
   // console.log(userData);
   useEffect(() => {
     axios
-      .get("http://localhost:4000/user-revenue", {
+      .get("https://forevision-digital.onrender.com/user-revenue", {
         headers: {
           token,
         },
@@ -65,7 +65,7 @@ const Revenue = () => {
 
   useEffect(() => {
     if (isrcs.length > 0) {
-      axios.post(`http://localhost:4000/songs-for-isrc`, { isrcs }).then(({ data }) => {
+      axios.post(`https://forevision-digital.onrender.com/songs-for-isrc`, { isrcs }).then(({ data }) => {
         setSongs(data);
         // console.log(data);
       }).catch(error => toast.error(error.data.message))
