@@ -154,3 +154,7 @@ a.active svg path {
 a.active:hover svg path {
   @apply fill-black;
 }
+
+::-webkit-scrollbar {
+  width: 0;
+}

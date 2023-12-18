@@ -6,13 +6,12 @@ import balanceBG from '../../assets/images/balance-bg.svg';
 import InputField from "../../components/InputField/InputField";
 import search from "../../assets/icons/navbar/search.webp"
 import Sorting from '../../components/Sorting/Sorting';
-import RevenueItem from '../../components/RevenueItem/RevenueItem';
+// import RevenueItem from '../../components/RevenueItem/RevenueItem';
 import chevron from "../../assets/icons/chevron-secondary.svg"
 import axios from 'axios';
 import { SongsContext } from "./../../contexts/SongsContext"
 import notFound from "../../assets/images/not-found.svg"
 import { ProfileContext } from '../../contexts/ProfileContext';
-import RevenueList from '../../components/RevenueList/RevenueList';
 import DemoPDF from '../../components/DemoPDF/DemoPDF';
 import { toast } from 'react-toastify';
 // import notFound from "../../assets/images/not-found.svg"
@@ -25,12 +24,15 @@ const Revenue = () => {
   const [showOptions, setShowOptions] = useState(false);
   const [phoneData, setPhoneData] = useState('Song_Name');
   const containerRef = useRef(null);
+  const [isrcs, setIsrcs] = useState([])
   const [total, setTotal] = useState({
     revenue: 0,
     view: 0
   });
+  // const [songs, setSongs] = useState([])
 
-  const [demoVisible, setDemoVisible] = useState(false)
+  const [demoVisible, setDemoVisible] = useState(false);
+  const [details, setDetails] = useState([])
 
 
   const currentTime = new Date().getHours();
@@ -46,59 +48,42 @@ const Revenue = () => {
     }
   }, [currentTime])
 
-  const { profileData, userData, token } = useContext(ProfileContext);
-  const songData = []
+  const { userData, token } = useContext(ProfileContext);
   // console.log(userData);
   useEffect(() => {
-    // const formData = new FormData();
-
-    // formData.append('userId', userData !== null ? userData?.ID : "")
-
-
     axios
-      .get("https://forevision-digital.onrender.com/user-revenue", {
+      .get("http://localhost:4000/user-revenue", {
         headers: {
           token,
         },
       })
       .then(({ data }) => {
-        if (data.length > 0) {
-          data.map(isrc => axios.get(`https://forevision-digital.onrender.com/user-revenue/${isrc}`).then(({ data }) => {
-            if (data.revenues) {
-              const newData = []
-              const allSongs = data.revenues
-              for (const song of allSongs) {
-                for (const key of Object.keys(song)) {
-                  if (!key.includes('EMPTY')) {
-                    const newObject = {}
-                    newObject[key] = song[key];
-                  }
-                }
-                // console.log(song);
-                newData.push(song)
-              }
-
-              setSongs(newData);
-            }
-          }))
-        }
+        setIsrcs(data);
         // setSongs(data.data);
       }).catch(error => console.log(error));
   }, [token])
-  // console.log(songData);
+
+  useEffect(() => {
+    if (isrcs.length > 0) {
+      axios.post(`http://localhost:4000/songs-for-isrc`, { isrcs }).then(({ data }) => {
+        setSongs(data);
+        // console.log(data);
+      }).catch(error => toast.error(error.data.message))
+    }
+  }, [isrcs, isrcs.length])
 
   const calculateAggregatedTotals = (songs) => {
-    const final_revenue_total = {};
+    const grand_total = {};
     const final_revenue = {};
-
+    // console.log(songs);
     songs?.forEach((music) => {
-      const isrc = music.music_isrc;
+      const { isrc } = music;
 
       // Calculate final_revenue total
-      if (final_revenue_total.hasOwnProperty(isrc)) {
-        final_revenue_total[isrc] += parseFloat(music.final_revenue);
+      if (grand_total.hasOwnProperty(isrc)) {
+        grand_total[isrc] += parseFloat(music['final revenue']);
       } else {
-        final_revenue_total[isrc] = parseFloat(music.final_revenue);
+        grand_total[isrc] = parseFloat(music['final revenue']);
       }
 
       // Calculate music_after_tds_revenue total
@@ -108,25 +93,25 @@ const Revenue = () => {
         final_revenue[isrc] = parseFloat(music.music_after_tds_revenue);
       }
     });
-
+    // console.log(grand_total);
     // Create aggregated arrays with calculated totals
-    const aggregatedMusicData = Object.keys(final_revenue_total).map((isrc) => ({
-      music_isrc: isrc,
-      ...songs.find((item) => item.music_isrc === isrc),
-      final_revenue: final_revenue_total[isrc],
+    const aggregatedMusicData = Object.keys(grand_total).map((isrc) => ({
+      isrc,
+      ...songs.find((item) => item.isrc === isrc),
+      total_revenue_against_isrc: grand_total[isrc],
     }));
 
     const aggregatedRevenueTotal = Object.keys(final_revenue).map((isrc) => ({
-      music_isrc: isrc,
-      ...songs.find((item) => item.music_isrc === isrc),
+      isrc,
+      ...songs.find((item) => item.isrc === isrc),
       music_after_tds_revenue: final_revenue[isrc],
     }));
 
     return { aggregatedMusicData, aggregatedRevenueTotal };
   };
-
   // Example usage
   const { aggregatedMusicData, aggregatedRevenueTotal } = calculateAggregatedTotals(songs);
+  // aggregatedMusicData.map(item => console.log(item))
 
   const mergedArray = aggregatedMusicData.map((item1) => {
     // Find the corresponding item in the second array
@@ -164,6 +149,25 @@ const Revenue = () => {
   */
 
   // console.log(aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || '-');
+  function calculateTotalFinalRevenue(data) {
+    // console.log(data);
+    if (data.length > 0) {
+      let totalFinalRevenue = 0;
+
+      // Iterate over the array of objects
+      for (let i = 0; i < data.length; i++) {
+        // Add the FinalRevenue of the current object to the total
+        totalFinalRevenue += data[i]['final revenue'];
+      }
+
+      return totalFinalRevenue;
+    }
+  }
+
+  // Assuming your data is stored in a variable named 'songData'
+  const totalFinalRevenue = calculateTotalFinalRevenue(aggregatedMusicData);
+
+  console.log('Total Final Revenue:', totalFinalRevenue);
 
   const [data, setData] = useState([
     {
@@ -188,7 +192,6 @@ const Revenue = () => {
 
   useEffect(() => {
     // if (total.view && total.revenue) {
-    // console.log(total);
     setData([
       {
         heading: 'Total Uploads',
@@ -196,7 +199,7 @@ const Revenue = () => {
       },
       {
         heading: 'Best Upload',
-        data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || 'Loading...'
+        data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.song_name || 'Loading...'
       },
       {
         heading: 'Total revenue',
@@ -204,23 +207,50 @@ const Revenue = () => {
       },
       {
         heading: 'View',
-        data: total.view || 0
+        data: total.total || 0
       },
     ])
     // }
   }, [])
+  // console.log(aggregatedMusicData);
+
+  // const options = [
+  //   "Song_name",
+  //   "Platform Name",
+  //   "Album",
+  //   "Artist",
+  //   "Label",
+  //   "ISRC",
+  //   "View",
+  //   "Revenue",
+  //   "Revenue_After_Forevision_Deduction",
+  // ]
 
   const options = [
-    "Song_name",
-    "Platform Name",
-    "Album",
-    "Artist",
-    "Label",
-    "ISRC",
-    "View",
-    "Revenue",
-    "Revenue_After_Forevision_Deduction",
+    "song_name",
+    "platformName",
+    "album",
+    "track_artist",
+    "label",
+    "isrc",
+    "total",
+    "after tds revenue",
+    "total_revenue_against_isrc",
   ]
+
+  const options2 = [
+    "song_name",
+    "platformName",
+    // "album",
+    "track_artist",
+    // "label",
+    "isrc",
+    "total",
+    'final revenue'
+    // "after tds revenue",
+    // "total_revenue_against_isrc",
+  ]
+
 
   const handleSort = (field) => {
     // setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
@@ -228,11 +258,15 @@ const Revenue = () => {
     aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
   }
 
-  // console.log(profileData);
+  const handleExpand = (song_isrc) => {
+    setDetails(songs.filter(({ isrc }) => isrc === song_isrc));
+  }
+
+  // console.log(details);
 
   return (
 
-    <SongsContext.Provider value={{ songs, setSongs, total, setTotal }}>
+    <SongsContext.Provider value={{ songs, setSongs }}>
       <div className='bg-[size:100%] bg-no-repeat 2xl:p-4 2xl:pl-7 mb-6 2xl:mb-0' style={{ backgroundImage: `url(${background})` }}>
         <div className='h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px]'>
           <div className="flex flex-col 2xl:flex-row gap-3 items-end">
@@ -265,10 +299,10 @@ const Revenue = () => {
             </div>}
           </div>
 
-          <div className='hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] relative'>
-            {filtered.length > 0 ? <>
+          <div className='hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto'>
+            {/* {filtered.length > 0 ? <>
               <div className="flex flex-col 2xl:flex-row justify-end bg-grey-light">
-                {/* <div className="w-full 2xl:w-2/3">
+                <div className="w-full 2xl:w-2/3">
                   <div className="flex flex-row gap-1 2xl:gap-3 items-center">
                     <div className='w-full 2xl:w-7/12 relative'>
                       <InputField icon={search} value={badge} onChange={e => setBadge(e.target.value)} containerClassName="w-full" badge={badge} setBadge={setBadge} placeholder="Search here..." />
@@ -277,7 +311,7 @@ const Revenue = () => {
                       {songs && songs.length ? <Sorting handleSort={handleSort} setSongs={setSongs} songs={aggregatedMusicData} text="Sort by" options={songs[0] && Object.keys(songs[0])} /> : ""}
                     </div>
                   </div>
-                </div> */}
+                </div>
 
                 <div className='w-full 2xl:w-fit bg-white p-[4px] mt-1 2xl:mt-0 rounded-full'>
                   <div className="hidden 2xl:flex justify-between">
@@ -287,24 +321,43 @@ const Revenue = () => {
                   </div>
 
                   <div className='flex 2xl:hidden'>
-                    {/* <Button small text={'CSV'} onClick={() => setFileType("CSV")} />
-                    <Button small text={'PDF'} onClick={() => setFileType("PDF")} /> */}
+                    <Button small text={'CSV'} onClick={() => setFileType("CSV")} />
+                    <Button small text={'PDF'} onClick={() => setFileType("PDF")} />
                     <Button small text="DOWNLOAD REPORT" onClick={() => toast.error("This Feature is Coming Soon", {
                       position: 'bottom-center'
                     })} />
                   </div>
                 </div>
               </div>
-
-              <RevenueList options={options} filtered={filtered} containerRef={containerRef} raw={songs} />
             </> : <div className='flex flex-col items-center'>
               <img src={notFound} className='w-1/3 mx-autor' alt="not found" />
               <p className='w-2/3 text-heading-6-bold mx-auto text-grey text-center'>Ooopps!! There is Nothing to show yet !! Upload your content and let it shine ! If you’ve uploaded already , let it perform in the various platforms . </p>
               <h4 className='text-heading-4-bold text-grey'>See you soon.</h4>
-            </div>}
+            </div>} */}
+
+            <ul className="grid grid-cols-9 gap-3">
+              {options.map((item, key) => <li key={key} className='capitalize text-center'>{item.includes("_") ? item.split("_").join(" ") : item}</li>)}
+            </ul>
+
+            {aggregatedMusicData.map(song => <ul className="grid grid-cols-9 gap-3">
+
+              {options.map(item => <li className='text-center'>{typeof song[item] === 'number' && song[item].toString().split(".").length > 1 ? song[item].toFixed(8) : item === 'platformName' ? <button onClick={() => handleExpand(song.isrc)}>See Details</button> : song[item]}</li>)}
+              {details[0] && <div className='w-screen h-screen bg-[#00000011] shadow-xl absolute top-0 left-0 z-[9999] flex justify-center items-center'>
+                <div className='w-5/6 h-[80vh] bg-white relative overflow-x-visible rounded-2xl overflow-y-auto p-3'>
+                  <button onClick={() => handleExpand("")} className='sticky text-interactive-light-destructive-focus text-heading-3 top-0'>&times;</button>
+                  <ul className="grid grid-cols-6 gap-3">
+                    {options2.map((item, key) => <li key={key} className='capitalize text-center'>{item.includes("_") ? item.split("_").join(" ") : item}</li>)}
+                  </ul>
+                  {details.map(song2 => <ul className='grid grid-cols-6 justify-between'>
+                    {options2.map(item => <li className='text-center'>{song2[item]}</li>)}
+                  </ul>)}
+                </div>
+              </div>}
+            </ul>)}
+            {/* {aggregatedMusicData.map(item )} */}
           </div>
 
-          {filtered.length > 0 && <div className='2xl:hidden bg-grey-light p-2 rounded-[20px] mt-5'>
+          {/* {filtered.length > 0 && <div className='2xl:hidden bg-grey-light p-2 rounded-[20px] mt-5'>
             <div className='border border-primary-light rounded-full px-3 text-primary-light py-1 grid grid-cols-3 relative'>
               <p className="text-paragraph-2 text-left font-medium">ISRC</p>
               <label className="text-paragraph-2 text-center font-medium flex items-center justify-center capitalize">{phoneData.split("_").join(" ")} <img src={chevron} className={`transition ${showOptions ? 'rotate-180' : 'rotate-0'}`} alt="chevron" /> <input className="hidden" type="checkbox" onChange={e => setShowOptions(e.target.checked)} /></label>
@@ -330,7 +383,7 @@ const Revenue = () => {
             </h6>
 
             <h4 className='text-heading-4-bold'>See you soon.</h4>
-          </div>}
+          </div>} */}
 
         </div>
       </div>

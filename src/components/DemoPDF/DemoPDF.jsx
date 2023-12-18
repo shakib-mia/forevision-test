@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import RevenueItem from '../RevenueItem/RevenueItem';
+// import RevenueItem from '../RevenueItem/RevenueItem';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import Button from '../Button/Button';
@@ -40,7 +40,7 @@ const DemoPDF = ({ data, setDemoVisible }) => {
         <div className='h-screen w-screen backdrop-blur-md absolute top-0 left-0 z-[9999999] flex flex-col justify-center items-center gap-1'>
             <div className='w-10/12 h-5/6 bg-grey-light p-2 rounded relative' ref={containerRef}>
                 <button className='absolute -top-2 -right-2 text-white'>&times;</button>
-                {data.map(item => <RevenueItem item={item} />)}
+                {/* {data.map(item => <RevenueItem item={item} />)} */}
             </div>
 
             <Button onClick={handleConvertToPdf} text="DOWNLOAD" />

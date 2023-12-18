@@ -51,7 +51,7 @@ const SignUp = () => {
       password: e.target['user_password'].value
     }
 
-    axios.post("https://forevision-digital.onrender.com/user-signup", signupData).then(({ data }) => {
+    axios.post("http://localhost:4000/user-signup", signupData).then(({ data }) => {
       if (data.acknowledged) {
         setUId(data.insertedId)
         setUserData({ ...userData, user_email: signupData.email })
