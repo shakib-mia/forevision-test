@@ -228,15 +228,16 @@ const Revenue = () => {
     "total_revenue_against_isrc",
   ]
 
-  const options2 = [
-    // "song_name",
-    "platformName",
-    "uploadTime",
-    // "track_artist",
-    // "label",
-    // "isrc",
-    "total",
-    'final revenue',
+  const labels = [
+    "Song Name",
+    "Platform Name",
+    "Album",
+    "Artist",
+    "Label",
+    "ISRC",
+    "View",
+    'Revenue',
+    'Revenue After Forevision Deduction',
   ]
 
 
@@ -285,7 +286,7 @@ const Revenue = () => {
               {/* {filtered.length > 0 && <> */}
               <div className='mt-4 hidden 2xl:flex flex-col justify-center items-center w-fit'>
                 <h6 className='text-heading-6-bold text-white mb-1'>Revenue Analytics</h6>
-                <Button className='px-2 py-1' disabled={calculateTotal('final revenue') === 0} text="Request Withdraw" />
+                <Button className='px-2 py-1' disabled={true} text="Request Withdraw" />
               </div>
 
               <div className='mt-[32px] grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3'>
@@ -306,11 +307,11 @@ const Revenue = () => {
 
           <div className='hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto'>
 
-            <ul className="grid grid-cols-9 gap-3">
-              {options.map((item, key) => <li key={key} className='capitalize text-center'>{item.includes("_") ? item.split("_").join(" ") : item}</li>)}
+            <ul className="grid grid-cols-9 gap-3 sticky top-0 mb-2">
+              {labels.map((item, key) => <li key={key} className='capitalize text-center font-semibold'>{item}</li>)}
             </ul>
 
-            {aggregatedMusicData.map(song => <ul className="grid grid-cols-9 gap-3">
+            {aggregatedMusicData.map(song => <ul className="grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
               {/* list item */}
               {options.map(item => {
                 return <li className='text-center'>{
@@ -318,7 +319,7 @@ const Revenue = () => {
                     ? item === 'after tds revenue' ? final_after_tds[song.isrc].toFixed(8) : song[item].toFixed(8)
                     : item === 'total' ? total_lifetime_views[song.isrc]
                       : item === 'platformName'
-                        ? <button onClick={() => toast.error("This Feature is Coming Soon", {
+                        ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
                           position: "bottom-center"
                         })}>See Details</button>
                         // ? <button onClick={() => handleExpand(song.isrc)}>See Details</button>
