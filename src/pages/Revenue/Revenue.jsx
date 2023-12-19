@@ -17,13 +17,13 @@ import { toast } from 'react-toastify';
 // import notFound from "../../assets/images/not-found.svg"
 
 const Revenue = () => {
-  const [badge, setBadge] = useState("");
-  const [item, setItem] = useState(8)
+  // const [badge, setBadge] = useState("");
+  // const [item, setItem] = useState(8)
   const [songs, setSongs] = useState([]);
   const [greeting, setGreeting] = useState("")
-  const [showOptions, setShowOptions] = useState(false);
-  const [phoneData, setPhoneData] = useState('Song_Name');
-  const containerRef = useRef(null);
+  // const [showOptions, setShowOptions] = useState(false);
+  // const [phoneData, setPhoneData] = useState('Song_Name');
+  // const containerRef = useRef(null);
   const [isrcs, setIsrcs] = useState([])
   const [total, setTotal] = useState({
     revenue: 0,
@@ -51,6 +51,7 @@ const Revenue = () => {
   const { userData, token } = useContext(ProfileContext);
   // console.log(userData);
   useEffect(() => {
+
     axios
       .get("https://forevision-digital.onrender.com/user-revenue", {
         headers: {
@@ -63,23 +64,24 @@ const Revenue = () => {
       }).catch(error => console.log(error));
   }, [token])
 
+  // console.log(isrcs);
   useEffect(() => {
     if (isrcs.length > 0) {
       axios.post(`https://forevision-digital.onrender.com/songs-for-isrc`, { isrcs }).then(({ data }) => {
         setSongs(data);
         // console.log(data);
-      }).catch(error => toast.error(error.data.message))
+      }).catch(error => toast.error(error?.data?.message))
     }
   }, [isrcs, isrcs.length])
 
   const calculateAggregatedTotals = (songs) => {
     const grand_total = {};
     const final_revenue = {};
-    // console.log(songs);
+    const final_after_tds = {};
+    const total_lifetime_views = {}
+
     songs?.forEach((music) => {
       const { isrc } = music;
-
-      // Calculate final_revenue total
       if (grand_total.hasOwnProperty(isrc)) {
         grand_total[isrc] += parseFloat(music['final revenue']);
       } else {
@@ -88,13 +90,14 @@ const Revenue = () => {
 
       // Calculate music_after_tds_revenue total
       if (final_revenue.hasOwnProperty(isrc)) {
-        final_revenue[isrc] += parseFloat(music.music_after_tds_revenue);
+        final_after_tds[isrc] = parseFloat(final_after_tds[isrc]) ? parseFloat(final_after_tds[isrc]) + parseFloat(music['after tds revenue']) : 0 + parseFloat(music['after tds revenue']);
+        total_lifetime_views[isrc] = parseFloat(total_lifetime_views[isrc]) ? parseFloat(total_lifetime_views[isrc]) + parseFloat(music['total']) : 0 + parseFloat(music['total']);
       } else {
-        final_revenue[isrc] = parseFloat(music.music_after_tds_revenue);
+        final_after_tds[isrc] = parseFloat(final_after_tds[isrc]) ? parseFloat(final_after_tds[isrc]) + parseFloat(music['after tds revenue']) : 0 + parseFloat(music['after tds revenue']);
+        total_lifetime_views[isrc] = parseFloat(total_lifetime_views[isrc]) ? parseFloat(total_lifetime_views[isrc]) + parseFloat(music['total']) : 0 + parseFloat(music['total']);
       }
     });
-    // console.log(grand_total);
-    // Create aggregated arrays with calculated totals
+
     const aggregatedMusicData = Object.keys(grand_total).map((isrc) => ({
       isrc,
       ...songs.find((item) => item.isrc === isrc),
@@ -104,14 +107,25 @@ const Revenue = () => {
     const aggregatedRevenueTotal = Object.keys(final_revenue).map((isrc) => ({
       isrc,
       ...songs.find((item) => item.isrc === isrc),
-      music_after_tds_revenue: final_revenue[isrc],
+      "after tds revenue": final_revenue[isrc],
     }));
 
-    return { aggregatedMusicData, aggregatedRevenueTotal };
+    return { aggregatedMusicData, aggregatedRevenueTotal, final_after_tds, total_lifetime_views };
   };
   // Example usage
-  const { aggregatedMusicData, aggregatedRevenueTotal } = calculateAggregatedTotals(songs);
-  // aggregatedMusicData.map(item => console.log(item))
+  const { aggregatedMusicData, aggregatedRevenueTotal, final_after_tds, total_lifetime_views } = calculateAggregatedTotals(songs);
+  console.log(total_lifetime_views);
+
+  var totalView = 0;
+
+  // Iterate through the values and sum them up
+  for (const key in total_lifetime_views) {
+    if (total_lifetime_views.hasOwnProperty(key)) {
+      totalView += total_lifetime_views[key];
+    }
+  }
+
+  // console.log(totalView);
 
   const mergedArray = aggregatedMusicData.map((item1) => {
     // Find the corresponding item in the second array
@@ -143,31 +157,9 @@ const Revenue = () => {
       return accumulator + parseFloat(object[fieldName]);
     }, 0);
   }
-  /**
-   * 
-  header Data 
-  */
 
-  // console.log(aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || '-');
-  function calculateTotalFinalRevenue(data) {
-    // console.log(data);
-    if (data.length > 0) {
-      let totalFinalRevenue = 0;
-
-      // Iterate over the array of objects
-      for (let i = 0; i < data.length; i++) {
-        // Add the FinalRevenue of the current object to the total
-        totalFinalRevenue += data[i]['final revenue'];
-      }
-
-      return totalFinalRevenue;
-    }
-  }
-
-  // Assuming your data is stored in a variable named 'songData'
-  const totalFinalRevenue = calculateTotalFinalRevenue(aggregatedMusicData);
-
-  console.log('Total Final Revenue:', totalFinalRevenue);
+  // console.log(calculateTotal('final revenue'));
+  // console.log(total);
 
   const [data, setData] = useState([
     {
@@ -187,8 +179,18 @@ const Revenue = () => {
       data: total.view || 0
     },
   ])
+  // console.log(aggregatedMusicData);
 
-  // console.log(aggregatedMusicData.length);
+  let totalFinalRevenue = 0;
+  let totalTotal = 0;
+
+  for (const entry of aggregatedMusicData) {
+    console.log(entry);
+    totalFinalRevenue += entry["total_revenue_against_isrc"];
+    totalTotal += entry["total"];
+  }
+
+
 
   useEffect(() => {
     // if (total.view && total.revenue) {
@@ -203,28 +205,16 @@ const Revenue = () => {
       },
       {
         heading: 'Total revenue',
-        data: total.revenue || 0
+        data: totalFinalRevenue || 0
       },
       {
         heading: 'View',
-        data: total.total || 0
+        data: totalView || 0
       },
     ])
     // }
-  }, [])
-  // console.log(aggregatedMusicData);
+  }, [aggregatedMusicData, aggregatedMusicData.length, total.revenue, total.total])
 
-  // const options = [
-  //   "Song_name",
-  //   "Platform Name",
-  //   "Album",
-  //   "Artist",
-  //   "Label",
-  //   "ISRC",
-  //   "View",
-  //   "Revenue",
-  //   "Revenue_After_Forevision_Deduction",
-  // ]
 
   const options = [
     "song_name",
@@ -239,30 +229,47 @@ const Revenue = () => {
   ]
 
   const options2 = [
-    "song_name",
+    // "song_name",
     "platformName",
-    // "album",
-    "track_artist",
+    "uploadTime",
+    // "track_artist",
     // "label",
-    "isrc",
+    // "isrc",
     "total",
-    'final revenue'
-    // "after tds revenue",
-    // "total_revenue_against_isrc",
+    'final revenue',
   ]
 
 
-  const handleSort = (field) => {
-    // setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
-    console.log(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
-    aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
-  }
+  // const handleSort = (field) => {
+  //   // setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
+  //   console.log(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
+  //   aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
+  // }
 
   const handleExpand = (song_isrc) => {
     setDetails(songs.filter(({ isrc }) => isrc === song_isrc));
   }
 
   // console.log(details);
+  const month = ["January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"];
+
+
+
+  // Function to filter the array based on month and platform
+  // function filterSongs(data, selectedMonth) {
+  //   return data
+  // }
+
+  // Example: Filter songs for December 2023 on Facebook platform
+  // const selectedMonth = "2023-12-18";
+  // const filteredSongs = filterSongs(songs, selectedMonth);
+
+  // console.log(songs);
+
+  // console.log("Total Final Revenue:", totalFinalRevenue);
+  // console.log("Total Total:", totalTotal);
+
 
   return (
 
@@ -278,7 +285,7 @@ const Revenue = () => {
               {/* {filtered.length > 0 && <> */}
               <div className='mt-4 hidden 2xl:flex flex-col justify-center items-center w-fit'>
                 <h6 className='text-heading-6-bold text-white mb-1'>Revenue Analytics</h6>
-                <Button className='px-2 py-1' disabled={calculateTotal('final_revenue') === 0} text="Request Withdraw" />
+                <Button className='px-2 py-1' disabled={calculateTotal('final revenue') === 0} text="Request Withdraw" />
               </div>
 
               <div className='mt-[32px] grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3'>
@@ -293,108 +300,53 @@ const Revenue = () => {
             {filtered.length > 0 && <div className='w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative bg-[length:100%_100%] bg-grey-light 2xl:bg-white bg-[center_top_-140px] 2xl:bg-[center_top_-18vh] 3xl:bg-[center_top_-15vh] 2xl:bg-[length:100%_100%] bg-no-repeat rounded-[20px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px]' style={{ backgroundImage: `url(${balanceBG})` }}>
               <h4 className='text-heading-4-bold text-white 2xl:text-grey'>Account <br className='2xl:hidden' /> Balance</h4>
               <h4 className='text-heading-4-bold text-grey mt-5'>Coming soon!!!</h4>
-              {/* <div className='mt-6 flex justify-center mb-0'>
-                <Button text="Request Withdraw" disabled={true} className="px-[24px]" />
-              </div> */}
+
             </div>}
           </div>
 
           <div className='hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto'>
-            {/* {filtered.length > 0 ? <>
-              <div className="flex flex-col 2xl:flex-row justify-end bg-grey-light">
-                <div className="w-full 2xl:w-2/3">
-                  <div className="flex flex-row gap-1 2xl:gap-3 items-center">
-                    <div className='w-full 2xl:w-7/12 relative'>
-                      <InputField icon={search} value={badge} onChange={e => setBadge(e.target.value)} containerClassName="w-full" badge={badge} setBadge={setBadge} placeholder="Search here..." />
-                    </div>
-                    <div className="w-full 2xl:w-5/12 h-full">
-                      {songs && songs.length ? <Sorting handleSort={handleSort} setSongs={setSongs} songs={aggregatedMusicData} text="Sort by" options={songs[0] && Object.keys(songs[0])} /> : ""}
-                    </div>
-                  </div>
-                </div>
-
-                <div className='w-full 2xl:w-fit bg-white p-[4px] mt-1 2xl:mt-0 rounded-full'>
-                  <div className="hidden 2xl:flex justify-between">
-                    <Button small text="DOWNLOAD REPORT" onClick={() => toast.error("This Feature is Coming Soon", {
-                      position: 'bottom-center'
-                    })} />
-                  </div>
-
-                  <div className='flex 2xl:hidden'>
-                    <Button small text={'CSV'} onClick={() => setFileType("CSV")} />
-                    <Button small text={'PDF'} onClick={() => setFileType("PDF")} />
-                    <Button small text="DOWNLOAD REPORT" onClick={() => toast.error("This Feature is Coming Soon", {
-                      position: 'bottom-center'
-                    })} />
-                  </div>
-                </div>
-              </div>
-            </> : <div className='flex flex-col items-center'>
-              <img src={notFound} className='w-1/3 mx-autor' alt="not found" />
-              <p className='w-2/3 text-heading-6-bold mx-auto text-grey text-center'>Ooopps!! There is Nothing to show yet !! Upload your content and let it shine ! If you’ve uploaded already , let it perform in the various platforms . </p>
-              <h4 className='text-heading-4-bold text-grey'>See you soon.</h4>
-            </div>} */}
 
             <ul className="grid grid-cols-9 gap-3">
               {options.map((item, key) => <li key={key} className='capitalize text-center'>{item.includes("_") ? item.split("_").join(" ") : item}</li>)}
             </ul>
 
             {aggregatedMusicData.map(song => <ul className="grid grid-cols-9 gap-3">
-
-              {options.map(item => <li className='text-center'>{typeof song[item] === 'number' && song[item].toString().split(".").length > 1 ? song[item].toFixed(8) : item === 'platformName' ? <button onClick={() => handleExpand(song.isrc)}>See Details</button> : song[item]}</li>)}
-              {details[0] && <div className='w-screen h-screen bg-[#00000011] shadow-xl absolute top-0 left-0 z-[9999] flex justify-center items-center'>
+              {/* list item */}
+              {options.map(item => {
+                return <li className='text-center'>{
+                  typeof song[item] === 'number' && song[item].toString().split(".").length > 1
+                    ? item === 'after tds revenue' ? final_after_tds[song.isrc].toFixed(8) : song[item].toFixed(8)
+                    : item === 'total' ? total_lifetime_views[song.isrc]
+                      : item === 'platformName'
+                        ? <button onClick={() => toast.error("This Feature is Coming Soon", {
+                          position: "bottom-center"
+                        })}>See Details</button>
+                        // ? <button onClick={() => handleExpand(song.isrc)}>See Details</button>
+                        : song[item]}</li>
+              })}
+              {/* details item */}
+              {/*{details[0] && <div className='w-screen h-screen bg-[#00000011] shadow-xl fixed top-0 left-0 z-[9999] flex justify-center items-center'>
                 <div className='w-5/6 h-[80vh] bg-white relative overflow-x-visible rounded-2xl overflow-y-auto p-3'>
                   <button onClick={() => handleExpand("")} className='sticky text-interactive-light-destructive-focus text-heading-3 top-0'>&times;</button>
-                  <ul className="grid grid-cols-6 gap-3">
-                    {options2.map((item, key) => <li key={key} className='capitalize text-center'>{item.includes("_") ? item.split("_").join(" ") : item}</li>)}
+                  //  list heading 
+                  <ul className="grid grid-cols-4 gap-3">
+                    {options2.map((item, key) => <li key={key} className='capitalize text-center'>{item === "uploadTime" ? "Month" : item.includes("_") ? item.split("_").join(" ") : item}</li>)}
                   </ul>
-                  {details.map(song2 => <ul className='grid grid-cols-6 justify-between'>
-                    {options2.map(item => <li className='text-center'>{song2[item]}</li>)}
+
+                //list 
+                  {details.map(song2 => <ul className='grid grid-cols-4 justify-between'>
+                    // list item 
+                    {options2.map(item => <li className='text-center'>{item === "uploadTime" ? month[new Date(song2[item]).getMonth()] : song2[item]}</li>)}
                   </ul>)}
                 </div>
-              </div>}
+              </div>} */}
             </ul>)}
-            {/* {aggregatedMusicData.map(item )} */}
           </div>
 
-          {/* {filtered.length > 0 && <div className='2xl:hidden bg-grey-light p-2 rounded-[20px] mt-5'>
-            <div className='border border-primary-light rounded-full px-3 text-primary-light py-1 grid grid-cols-3 relative'>
-              <p className="text-paragraph-2 text-left font-medium">ISRC</p>
-              <label className="text-paragraph-2 text-center font-medium flex items-center justify-center capitalize">{phoneData.split("_").join(" ")} <img src={chevron} className={`transition ${showOptions ? 'rotate-180' : 'rotate-0'}`} alt="chevron" /> <input className="hidden" type="checkbox" onChange={e => setShowOptions(e.target.checked)} /></label>
-              {showOptions && <div className='w-fit h-[250px] overflow-y-auto flex flex-col items-center absolute left-0 right-0 m-auto bg-white top-[100%] shadow z-[9999]'>
-                {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center px-3 py-1' onClick={() => {
-                  setShowOptions(false)
-                  setPhoneData(item)
-                }}>{item.split("_").join(" ")}</h6>)}
-              </div>}
-              <p className="text-paragraph-2 text-right font-medium">Final Revenue</p>
-            </div>
 
-            {filtered.length > 0 ? filtered.slice(0, item).map((item, key) => <RevenueItem option={phoneData} item={item} key={key} />) : <></>}
-            {<img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />}
-          </div>}
-
-
-          {filtered.length === 0 && <div className='text-grey text-center 2xl:hidden'>
-            <img src={notFound} className='w-full mx-auto' alt="" />
-            <h6 className='text-heading-6-bold mb-2'>
-              Ooopps.. There is Nothing to show yet !! Upload your content and let it shine !
-              If you’ve uploaded already , let it perform in the various platforms .
-            </h6>
-
-            <h4 className='text-heading-4-bold'>See you soon.</h4>
-          </div>} */}
 
         </div>
-      </div>
-
-      {/* {demoVisible && <div className='w-screen h-screen backdrop-blur-lg flex justify-center items-center absolute left-0 top-0 overflow-x-hidden z-[999999999]'>
-        <div className='bg-white w-1/2 h-1/2 relative flex items-center justify-center'>
-          <button className='absolute -top-4 -right-4 text-heading-4 text-white' onClick={() => setDemoVisible(false)}>&times;</button>
-
-          <h1 className='text-heading-1 text-center'>Coming Soon!!!</h1>
-        </div>
-      </div>} */}
+      </div >
     </SongsContext.Provider >
   );
 };

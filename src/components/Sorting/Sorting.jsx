@@ -5,7 +5,6 @@ import filter from "../../assets/icons/filter.svg"
 const Sorting = ({ text, options, songs, handleSort }) => {
     const [checked, setChecked] = useState(false);
     const [label, setLabel] = useState(text);
-    // const { setSongs } = useContext(SongsContext);
 
     const handleSorting = (item) => {
         setLabel(item);
