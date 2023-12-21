@@ -66,7 +66,7 @@ function App() {
         !location.pathname.includes("/profile") &&
         location.pathname !== "/revenue" &&
         location.pathname !== "/signup-details" && <Navbar />} */}
-      <BottomBar />
+      {token && <BottomBar />}
       {location.pathname !== "/login" &&
         location.pathname !== "/signup" &&
         location.pathname !== "/forgot-password" &&
