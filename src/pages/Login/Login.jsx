@@ -52,6 +52,7 @@ const Login = () => {
           if (prevRoute === '/signup') {
             navigate("/signup-details")
           } else {
+            navigate("/signup-details")
             // setShowMessage(true);
             // Navigation will be /revenue on full version
             // setTimeout(() => navigate('/'), 10000)
@@ -67,8 +68,6 @@ const Login = () => {
                 console.log(userData);
 
                 setUserData({ ...userData, user_email: e.target.email.value })
-
-                navigate("/signup-details")
               } else {
                 navigate("/")
               }

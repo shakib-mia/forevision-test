@@ -18,7 +18,12 @@ const ForgetPassword = () => {
     //   toast.success(data.message)
     // })
 
-    axios.post("https://forevision-digital.onrender.com/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => console.log(data))
+    // axios.post("https://forevision-digital.onrender.com/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => console.log(data))
+    axios.post("https://forevision-digital.onrender.com/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => {
+      if (data.modifiedCount) {
+        toast.success("Password Set is Successful. Check your Email for Your Password")
+      }
+    })
   };
   return (
     <AuthBody
