@@ -1,13 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import AuthBody from "../../components/AuthBody/AuthBody";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
-// import image from "../../assets/images/not-found.svg"
+import image from "../../assets/images/not-found.svg"
 import { toast } from "react-toastify";
-// import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import caution from "./../../assets/icons/caution.svg"
 
 const Login = () => {
   const fields = [
@@ -29,7 +30,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  // const [showMessage, setShowMessage] = useState(false)
+  const [showMessage, setShowMessage] = useState(false)
 
   const login = (e) => {
     e.preventDefault();
@@ -38,41 +39,43 @@ const Login = () => {
 
     // userData.append("user_email", e.target.email.value);
     // userData.append("user_pass", e.target.password.value);
+    // https://forevision-digital.onrender.com/
     axios
       .post("https://forevision-digital.onrender.com/user-login", {
         email: e.target.email.value,
         password: e.target.password.value
       })
       .then(({ data }) => {
+        console.log(data);
         if (data.token.length) {
           sessionStorage.setItem("token", data.token);
+
           // window.history.back();
           setToken(data.token);
           // prevRoute === '/signup' ? navigate("/signup-details") : navigate('/profile')
-          if (prevRoute === '/signup') {
+          if (prevRoute === '/signup' || data.details === null) {
             navigate("/signup-details")
           } else {
-            navigate("/signup-details")
-            // setShowMessage(true);
-            // Navigation will be /revenue on full version
-            // setTimeout(() => navigate('/'), 10000)
-            // navigate("/");
-            const config = {
-              headers: {
-                token: data.token
-              }
-            }
-            axios.get("https://forevision-digital.onrender.com/getUserData", config).then(({ data }) => {
-              // console.log(data.data);
-              if (data.data === null) {
-                console.log(userData);
+            // navigate("/signup-details")
+            setShowMessage(true)
+            setTimeout(() => navigate("/"), 10000)
 
-                setUserData({ ...userData, user_email: e.target.email.value })
-              } else {
-                navigate("/")
-              }
-              // console.log(data);
-            })
+            // const config = {
+            //   headers: {
+            //     token: data.token
+            //   }
+            // }
+            // axios.get("https://forevision-digital.onrender.com/getUserData", config).then(({ data }) => {
+            //   // console.log(data.data);
+            //   if (data.data === null) {
+            //     console.log(userData);
+
+            //     setUserData({ ...userData, user_email: e.target.email.value })
+            //   } else {
+            //     navigate("/")
+            //   }
+            //   // console.log(data);
+            // })
           }
         }
       }).catch(err => {
@@ -108,12 +111,13 @@ const Login = () => {
         </Link>
       </div>
 
-      {/* {showMessage && <div className="fixed left-0 top-0 backdrop-blur w-screen h-screen flex justify-center items-center">
+      {showMessage && <div className="fixed left-0 top-0 backdrop-blur w-screen h-screen flex justify-center items-center">
         <div className="w-11/12 xl:w-1/2 xl:h-1/2 bg-white p-3 flex flex-col justify-center items-center gap-2">
-        
-          <img src={image} alt="" />
-          <p className="w-full xl:w-9/12 mx-auto text-center text-paragraph-1 text-grey-dark">This is a new system for you to see that how much you've earned from your music. We are constantly working for better user experience. Any inconvenience is deeply regretted. You can Notify us if you are having any trouble. We will fix it within approximately 7(seven) working days .</p>
-  
+
+          {/* <img src={image} alt="" /> */}
+          <p className="text-interactive-light-destructive-focus text-heading-6 text-center flex gap-1 flex-col justify-center items-center"><img src={caution} className="w-1/2" alt="caution" /> It may Take some times to load your data. Be Patient.</p>
+          <p className="w-full xl:w-9/12 mx-auto text-center text-paragraph-1 text-grey-dark">Check out our new music earnings system! If you hit a snag, let us know, and we'll fix it in around a week. Thanks!</p>
+
           <CountdownCircleTimer
             isPlaying
             duration={10}
@@ -125,7 +129,7 @@ const Login = () => {
             {({ remainingTime }) => <span className="text-heading-4-bold text-grey-dark">{remainingTime}</span>}
           </CountdownCircleTimer>
         </div>
-      </div>} */}
+      </div>}
     </AuthBody>
   );
 };

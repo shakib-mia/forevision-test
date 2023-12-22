@@ -1,38 +1,39 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import background from "../../assets/images/background.png"
 import Button from '../../components/Button/Button';
 import RevenueAnalytics from '../../components/RevenueAnalytics/RevenueAnalytics';
 import balanceBG from '../../assets/images/balance-bg.svg';
-import InputField from "../../components/InputField/InputField";
-import search from "../../assets/icons/navbar/search.webp"
-import Sorting from '../../components/Sorting/Sorting';
+// import InputField from "../../components/InputField/InputField";
+// import search from "../../assets/icons/navbar/search.webp"
+// import Sorting from '../../components/Sorting/Sorting';
 // import RevenueItem from '../../components/RevenueItem/RevenueItem';
-import chevron from "../../assets/icons/chevron-secondary.svg"
+import chevron from "../../assets/icons/chevron-secondary.svg";
 import axios from 'axios';
 import { SongsContext } from "./../../contexts/SongsContext"
-import notFound from "../../assets/images/not-found.svg"
-import { ProfileContext } from '../../contexts/ProfileContext';
-import DemoPDF from '../../components/DemoPDF/DemoPDF';
-import { toast } from 'react-toastify';
 // import notFound from "../../assets/images/not-found.svg"
+import { ProfileContext } from '../../contexts/ProfileContext';
+// import DemoPDF from '../../components/DemoPDF/DemoPDF';
+import { toast } from 'react-toastify';
+import notFound from "../../assets/images/not-found.svg"
 
 const Revenue = () => {
   // const [badge, setBadge] = useState("");
   // const [item, setItem] = useState(8)
   const [songs, setSongs] = useState([]);
+  // const songs = [];
   const [greeting, setGreeting] = useState("")
-  // const [showOptions, setShowOptions] = useState(false);
-  // const [phoneData, setPhoneData] = useState('Song_Name');
+  const [showOptions, setShowOptions] = useState(false);
+  const [phoneData, setPhoneData] = useState('Song_Name');
   // const containerRef = useRef(null);
   const [isrcs, setIsrcs] = useState([])
-  const [total, setTotal] = useState({
-    revenue: 0,
-    view: 0
-  });
+  // const [total, setTotal] = useState({
+  //   revenue: 0,
+  //   view: 0
+  // });
   // const [songs, setSongs] = useState([])
 
-  const [demoVisible, setDemoVisible] = useState(false);
-  const [details, setDetails] = useState([])
+  // const [demoVisible, setDemoVisible] = useState(false);
+  // const [details, setDetails] = useState([])
 
 
   const currentTime = new Date().getHours();
@@ -59,20 +60,37 @@ const Revenue = () => {
         },
       })
       .then(({ data }) => {
-        setIsrcs(data);
+        // console.log(data);
+
+        for (const item of data) {
+          axios.get(`https://forevision-digital.onrender.com/user-revenue/${item}`).then(({ data }) => {
+            if (data.revenues) {
+              // console.log(data.revenues)
+              // songs.push()
+              for (const song of data.revenues) {
+                // setSongs([...songs, song])
+                songs.push(song)
+              }
+              // setSongs([...songs, data.revenues]);
+              // songs.concat(data.revenues)
+              // console.log([...songs, data.revenues])
+            }
+          }).catch(error => console.log(error))
+        }
+
         // setSongs(data.data);
       }).catch(error => console.log(error));
   }, [token])
 
   // console.log(isrcs);
-  useEffect(() => {
-    if (isrcs.length > 0) {
-      axios.post(`https://forevision-digital.onrender.com/songs-for-isrc`, { isrcs }).then(({ data }) => {
-        setSongs(data);
-        // console.log(data);
-      }).catch(error => toast.error(error?.data?.message))
-    }
-  }, [isrcs, isrcs.length])
+  // useEffect(() => {
+  //   if (isrcs.length > 0) {
+  //     axios.post(`http://localhost:5000/songs-for-isrc`, { isrcs }).then(({ data }) => {
+  //       setSongs(data);
+  //       // console.log(data);
+  //     }).catch(error => toast.error(error?.data?.message))
+  //   }
+  // }, [isrcs, isrcs.length])
 
   const calculateAggregatedTotals = (songs) => {
     const grand_total = {};
@@ -114,7 +132,8 @@ const Revenue = () => {
   };
   // Example usage
   const { aggregatedMusicData, aggregatedRevenueTotal, final_after_tds, total_lifetime_views } = calculateAggregatedTotals(songs);
-  console.log(total_lifetime_views);
+
+  // console.log(aggregatedMusicData);
 
   var totalView = 0;
 
@@ -152,14 +171,21 @@ const Revenue = () => {
    * 
   */
 
-  const calculateTotal = (fieldName) => {
-    return aggregatedMusicData.reduce((accumulator, object) => {
-      return accumulator + parseFloat(object[fieldName]);
-    }, 0);
-  }
+  // const calculateTotal = (fieldName) => {
+  //   return aggregatedMusicData.reduce((accumulator, object) => {
+  //     return accumulator + parseFloat(object[fieldName]);
+  //   }, 0);
+  // }
 
   // console.log(calculateTotal('final revenue'));
   // console.log(total);
+  let totalFinalRevenue = 0;
+  for (const entry of aggregatedMusicData) {
+    if (entry['total_revenue_against_isrc'] !== NaN) {
+      totalFinalRevenue += entry["total_revenue_against_isrc"];
+    }
+    // totalTotal += entry["total"];
+  }
 
   const [data, setData] = useState([
     {
@@ -172,23 +198,17 @@ const Revenue = () => {
     },
     {
       heading: 'Total revenue',
-      data: total.revenue || 0
+      data: totalFinalRevenue || 0
     },
     {
       heading: 'View',
-      data: total.view || 0
+      data: totalView || 0
     },
   ])
   // console.log(aggregatedMusicData);
 
-  let totalFinalRevenue = 0;
-  let totalTotal = 0;
+  // let totalTotal = 0;
 
-  for (const entry of aggregatedMusicData) {
-    console.log(entry);
-    totalFinalRevenue += entry["total_revenue_against_isrc"];
-    totalTotal += entry["total"];
-  }
 
 
 
@@ -213,7 +233,7 @@ const Revenue = () => {
       },
     ])
     // }
-  }, [aggregatedMusicData, aggregatedMusicData.length, total.revenue, total.total])
+  }, [aggregatedMusicData, aggregatedMusicData.length, totalFinalRevenue, totalView])
 
 
   const options = [
@@ -247,13 +267,13 @@ const Revenue = () => {
   //   aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
   // }
 
-  const handleExpand = (song_isrc) => {
-    setDetails(songs.filter(({ isrc }) => isrc === song_isrc));
-  }
+  // const handleExpand = (song_isrc) => {
+  //   setDetails(songs.filter(({ isrc }) => isrc === song_isrc));
+  // }
 
   // console.log(details);
-  const month = ["January", "February", "March", "April", "May", "June", "July",
-    "August", "September", "October", "November", "December"];
+  // const month = ["January", "February", "March", "April", "May", "June", "July",
+  //   "August", "September", "October", "November", "December"];
 
 
 
@@ -271,10 +291,12 @@ const Revenue = () => {
   // console.log("Total Final Revenue:", totalFinalRevenue);
   // console.log("Total Total:", totalTotal);
 
+  const phoneOptions = ["isrc", 'song_name', 'total_revenue_against_isrc']
+
 
   return (
 
-    <SongsContext.Provider value={{ songs, setSongs }}>
+    <SongsContext.Provider value={{ songs }}>
       <div className='bg-[size:100%] bg-no-repeat 2xl:p-4 2xl:pl-7 mb-6 2xl:mb-0' style={{ backgroundImage: `url(${background})` }}>
         <div className='h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px]'>
           <div className="flex flex-col 2xl:flex-row gap-3 items-end">
@@ -344,11 +366,68 @@ const Revenue = () => {
             </ul>)}
           </div>
 
+          {filtered.length > 0 && <div className='2xl:hidden bg-grey-light p-2 rounded-[20px] mt-5'>
+            <div className='border border-primary-light rounded-full px-3 text-primary-light py-1 grid grid-cols-3 relative'>
+              {phoneOptions.map((item, key) => <p className={`text-paragraph-2 ${key === 0 ? 'text-left' : key === 1 ? 'text-center' : "text-right"} font-medium capitalize`}>{item.includes("_") ? item.split("_").join(" ") : item.split("_").join(" ")}</p>)}
+              {/* <p className="text-paragraph-2 font-medium text-center">Song Name</p> */}
+              {/* <label className="text-paragraph-2 text-center font-medium flex items-center justify-center capitalize">{phoneData.split("_").join(" ")} <img src={chevron} className={`transition ${showOptions ? 'rotate-180' : 'rotate-0'}`} alt="chevron" /> <input className="hidden" type="checkbox" onChange={e => setShowOptions(e.target.checked)} /></label>
+              {showOptions && <div className='w-fit h-[250px] overflow-y-auto flex flex-col items-center absolute left-0 right-0 m-auto bg-white top-[100%] shadow z-[9999]'>
+                {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center px-3 py-1' onClick={() => {
+                  setShowOptions(false)
+                  setPhoneData(item)
+                }}>{item.split("_").join(" ")}</h6>)}
+              </div>} */}
+              {/* <p className="text-paragraph-2 text-right font-medium">Final Revenue</p> */}
+            </div>
 
+            {aggregatedMusicData.map(song => <ul className="grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+              {/* list item */}
+              {phoneOptions.map(item => {
+                return <li className='text-center'>{
+                  typeof song[item] === 'number' && song[item].toString().split(".").length > 1
+                    ? item === 'after tds revenue' ? final_after_tds[song.isrc].toFixed(8) : song[item].toFixed(8)
+                    : item === 'total' ? total_lifetime_views[song.isrc]
+                      : item === 'platformName'
+                        ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
+                          position: "bottom-center"
+                        })}>See Details</button>
+                        // ? <button onClick={() => handleExpand(song.isrc)}>See Details</button>
+                        : song[item]}</li>
+              })}
+              {/* details item */}
+              {/*{details[0] && <div className='w-screen h-screen bg-[#00000011] shadow-xl fixed top-0 left-0 z-[9999] flex justify-center items-center'>
+                <div className='w-5/6 h-[80vh] bg-white relative overflow-x-visible rounded-2xl overflow-y-auto p-3'>
+                  <button onClick={() => handleExpand("")} className='sticky text-interactive-light-destructive-focus text-heading-3 top-0'>&times;</button>
+                  //  list heading 
+                  <ul className="grid grid-cols-4 gap-3">
+                    {options2.map((item, key) => <li key={key} className='capitalize text-center'>{item === "uploadTime" ? "Month" : item.includes("_") ? item.split("_").join(" ") : item}</li>)}
+                  </ul>
+
+                //list 
+                  {details.map(song2 => <ul className='grid grid-cols-4 justify-between'>
+                    // list item 
+                    {options2.map(item => <li className='text-center'>{item === "uploadTime" ? month[new Date(song2[item]).getMonth()] : song2[item]}</li>)}
+                  </ul>)}
+                </div>
+              </div>} */}
+            </ul>)}
+            {/* {<img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />} */}
+          </div>}
+
+
+          {filtered.length === 0 && <div className='text-grey text-center 2xl:hidden'>
+            <img src={notFound} className='w-full mx-auto' alt="" />
+            <h6 className='text-heading-6-bold mb-2'>
+              Ooopps.. There is Nothing to show yet !! Upload your content and let it shine !
+              If you’ve uploaded already , let it perform in the various platforms .
+            </h6>
+
+            <h4 className='text-heading-4-bold'>See you soon.</h4>
+          </div>}
 
         </div>
-      </div >
-    </SongsContext.Provider >
+      </div>
+    </SongsContext.Provider>
   );
 };
 
