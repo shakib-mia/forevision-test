@@ -50,7 +50,7 @@ const Revenue = () => {
   }, [currentTime])
 
   const { userData, token } = useContext(ProfileContext);
-  // console.log(userData);
+
   useEffect(() => {
     if (userData?.first_name) {
       axios
@@ -81,7 +81,7 @@ const Revenue = () => {
           // setSongs(data.data);
         }).catch(error => console.log(error));
     }
-  }, [token])
+  }, [token, userData, userData?.first_name])
 
   // console.log(isrcs);
   // useEffect(() => {

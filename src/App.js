@@ -47,6 +47,7 @@ function App() {
       axios
         .get(`https://forevision-digital.onrender.com/getUserData`, config)
         .then(({ data }) => {
+          console.log(data.data);
           if (data.data !== null) {
             setUserData(data.data);
           } else {
