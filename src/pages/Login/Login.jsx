@@ -46,36 +46,34 @@ const Login = () => {
         password: e.target.password.value
       })
       .then(({ data }) => {
-        console.log(data);
         if (data.token.length) {
           sessionStorage.setItem("token", data.token);
 
           // window.history.back();
           setToken(data.token);
+          setUserData({ user_email: e.target.email.value })
           // prevRoute === '/signup' ? navigate("/signup-details") : navigate('/profile')
           if (prevRoute === '/signup' || data.details === null) {
             navigate("/signup-details")
           } else {
             // navigate("/signup-details")
             setShowMessage(true)
-            setTimeout(() => navigate("/"), 10000)
 
-            // const config = {
-            //   headers: {
-            //     token: data.token
-            //   }
-            // }
-            // axios.get("https://forevision-digital.onrender.com/getUserData", config).then(({ data }) => {
-            //   // console.log(data.data);
-            //   if (data.data === null) {
-            //     console.log(userData);
+            const config = {
+              headers: {
+                token: data.token
+              }
+            }
+            axios.get("https://forevision-digital.onrender.com/getUserData", config).then(({ data }) => {
+              // console.log(data.data);
+              if (data.data === null) {
 
-            //     setUserData({ ...userData, user_email: e.target.email.value })
-            //   } else {
-            //     navigate("/")
-            //   }
-            //   // console.log(data);
-            // })
+                setUserData({ ...userData, user_email: e.target.email.value })
+              } else {
+                navigate("/")
+              }
+              // console.log(data);
+            })
           }
         }
       }).catch(err => {

@@ -43,16 +43,20 @@ function App() {
       },
     };
 
-    axios
-      .get(`https://forevision-digital.onrender.com/getUserData`, config)
-      .then(({ data }) => {
-        if (data.data !== null) {
-          setUserData(data.data);
-        }
-        // if (location.pathname === "/" && data.length === 0) {
-        // navigate("/signup-details");
-        // }
-      });
+    if (token) {
+      axios
+        .get(`https://forevision-digital.onrender.com/getUserData`, config)
+        .then(({ data }) => {
+          if (data.data !== null) {
+            setUserData(data.data);
+          } else {
+            navigate("/signup-details");
+          }
+          // if (location.pathname === "/" && data.length === 0) {
+          // navigate("/signup-details");
+          // }
+        });
+    }
   }, [token]);
 
   // if(userData._id === );

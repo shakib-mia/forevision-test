@@ -52,40 +52,41 @@ const Revenue = () => {
   const { userData, token } = useContext(ProfileContext);
   // console.log(userData);
   useEffect(() => {
+    if (userData?.first_name) {
+      axios
+        .get("https://forevision-digital.onrender.com/user-revenue", {
+          headers: {
+            token,
+          },
+        })
+        .then(({ data }) => {
+          // console.log(data);
 
-    axios
-      .get("https://forevision-digital.onrender.com/user-revenue", {
-        headers: {
-          token,
-        },
-      })
-      .then(({ data }) => {
-        // console.log(data);
-
-        for (const item of data) {
-          axios.get(`https://forevision-digital.onrender.com/user-revenue/${item}`).then(({ data }) => {
-            if (data.revenues) {
-              // console.log(data.revenues)
-              // songs.push()
-              for (const song of data.revenues) {
-                // setSongs([...songs, song])
-                songs.push(song)
+          for (const item of data) {
+            axios.get(`https://forevision-digital.onrender.com/user-revenue/${item}`).then(({ data }) => {
+              if (data.revenues) {
+                // console.log(data.revenues)
+                // songs.push()
+                for (const song of data.revenues) {
+                  // setSongs([...songs, song])
+                  songs.push(song)
+                }
+                // setSongs([...songs, data.revenues]);
+                // songs.concat(data.revenues)
+                // console.log([...songs, data.revenues])
               }
-              // setSongs([...songs, data.revenues]);
-              // songs.concat(data.revenues)
-              // console.log([...songs, data.revenues])
-            }
-          }).catch(error => console.log(error))
-        }
+            }).catch(error => console.log(error))
+          }
 
-        // setSongs(data.data);
-      }).catch(error => console.log(error));
+          // setSongs(data.data);
+        }).catch(error => console.log(error));
+    }
   }, [token])
 
   // console.log(isrcs);
   // useEffect(() => {
   //   if (isrcs.length > 0) {
-  //     axios.post(`http://localhost:5000/songs-for-isrc`, { isrcs }).then(({ data }) => {
+  //     axios.post(`https://forevision-digital.onrender.com/songs-for-isrc`, { isrcs }).then(({ data }) => {
   //       setSongs(data);
   //       // console.log(data);
   //     }).catch(error => toast.error(error?.data?.message))
