@@ -3,12 +3,13 @@ import arrow from "../../assets/icons/arrow.svg"
 
 const Button = ({ text, type, disabled, onClick, leftIcon, rightIcon, small, paddingZero }) => {
   const [focus, setFocus] = useState(false);
+  // console.log(disabled);
   // console.log(className?.includes('px'));
   return (
     <>
       {type !== "submit" && (
         <div
-          className={`border-[2px] ${focus ? "border-interactive-light-focus" : "border-transparent"
+          className={`border-[2px] ${focus && !disabled ? "border-interactive-light-focus" : "border-transparent"
             } rounded-full ${paddingZero ? 'p-0' : 'p-[4px]'}`}
         >
           <button
@@ -30,7 +31,7 @@ const Button = ({ text, type, disabled, onClick, leftIcon, rightIcon, small, pad
 
       {type === "submit" && (
         <div
-          className={`border-[2px] inline-block ${focus ? "border-interactive-light-focus" : "border-transparent"
+          className={`border-[2px] inline-block ${focus && !disabled ? "border-interactive-light-focus" : "border-transparent"
             } rounded-full p-[4px]`}
         >
           <input
