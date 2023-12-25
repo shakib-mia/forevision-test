@@ -11,6 +11,8 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import caution from "./../../assets/icons/caution.svg"
 
 const Login = () => {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const fields = [
     {
       name: "email",
@@ -30,10 +32,12 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const [showMessage, setShowMessage] = useState(false)
+  const [showMessage, setShowMessage] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const login = (e) => {
     e.preventDefault();
+    setLoading(true)
     // console.log(e.target.password.value);
     // const userData = new FormData();
 
@@ -59,6 +63,8 @@ const Login = () => {
             // navigate("/signup-details")
             setShowMessage(true)
 
+            setLoading(false)
+
             const config = {
               headers: {
                 token: data.token
@@ -70,14 +76,14 @@ const Login = () => {
 
                 setUserData({ ...userData, user_email: e.target.email.value })
               } else {
-                navigate("/")
+                setTimeout(() => navigate('/'), 9500)
               }
               // console.log(data);
             })
           }
         }
       }).catch(err => {
-        console.log(err);
+        setLoading(false)
         toast.error(err.response.data.message, {
           position: 'bottom-center'
         })
@@ -93,11 +99,11 @@ const Login = () => {
       onSubmit={login}
     >
       {fields.map((props, id) => (
-        <InputField {...props} key={id} containerClassName="mt-3" />
+        <InputField {...props} key={id} containerClassName="mt-3" onChange={e => props.name === 'email' ? setEmail(e.target.value) : setPassword(e.target.value)} />
       ))}
 
       <div className="mt-3 mb-2 text-center">
-        <Button type="submit" text="Login" />
+        <Button type="submit" text={loading ? 'Logging in' : "Login"} disabled={loading || !email.length || !password.length} />
       </div>
 
       <div className="text-center">

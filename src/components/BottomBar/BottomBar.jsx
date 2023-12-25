@@ -6,10 +6,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const BottomBar = () => {
-  const { setProfileData } = useContext(ProfileContext);
+  const { setProfileData, setToken } = useContext(ProfileContext);
   const navigate = useNavigate()
   const handleLogout = () => {
-    setProfileData({})
+    setProfileData({});
+    setToken('')
     sessionStorage.removeItem("token")
     sessionStorage.removeItem("user")
     navigate("/login")
@@ -24,7 +25,7 @@ const BottomBar = () => {
         </NavLink>
       ))}
 
-      <div className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px]" onClick={handleLogout}>
+      <div className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px] cursor-pointer" onClick={handleLogout}>
         <img src={logout} className="w-2 h-2" alt={'text'} key={'key'} />
         <h2 className="text-paragraph-2">{'Logout'}</h2>
       </div>

@@ -47,15 +47,11 @@ function App() {
       axios
         .get(`https://forevision-digital.onrender.com/getUserData`, config)
         .then(({ data }) => {
-          console.log(data.data);
           if (data.data !== null) {
             setUserData(data.data);
           } else {
             navigate("/signup-details");
           }
-          // if (location.pathname === "/" && data.length === 0) {
-          // navigate("/signup-details");
-          // }
         });
     }
   }, [token]);
@@ -71,7 +67,7 @@ function App() {
         !location.pathname.includes("/profile") &&
         location.pathname !== "/revenue" &&
         location.pathname !== "/signup-details" && <Navbar />} */}
-      {token && <BottomBar />}
+      {token?.length && <BottomBar />}
       {location.pathname !== "/login" &&
         location.pathname !== "/signup" &&
         location.pathname !== "/forgot-password" &&
