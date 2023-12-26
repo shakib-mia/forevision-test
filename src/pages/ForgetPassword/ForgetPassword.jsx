@@ -23,8 +23,8 @@ const ForgetPassword = () => {
     //   toast.success(data.message)
     // })
 
-    // axios.post("https://forevision-digital.onrender.com/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => console.log(data))
-    axios.post("https://forevision-digital.onrender.com/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => {
+    // axios.post("http://193.203.162.180:5000/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => console.log(data))
+    axios.post("http://193.203.162.180:5000/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => {
       if (data.modifiedCount) {
         setSending(false);
         setSent(true)

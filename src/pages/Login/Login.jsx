@@ -43,9 +43,9 @@ const Login = () => {
 
     // userData.append("user_email", e.target.email.value);
     // userData.append("user_pass", e.target.password.value);
-    // https://forevision-digital.onrender.com/
+    // http://193.203.162.180:5000/
     axios
-      .post("https://forevision-digital.onrender.com/user-login", {
+      .post("http://193.203.162.180:5000/user-login", {
         email: e.target.email.value,
         password: e.target.password.value
       })
@@ -70,7 +70,7 @@ const Login = () => {
                 token: data.token
               }
             }
-            axios.get("https://forevision-digital.onrender.com/getUserData", config).then(({ data }) => {
+            axios.get("http://193.203.162.180:5000/getUserData", config).then(({ data }) => {
               // console.log(data.data);
               if (data.data === null) {
 
@@ -115,10 +115,10 @@ const Login = () => {
         </Link>
       </div>
 
-      {showMessage && <div className="fixed left-0 top-0 backdrop-blur w-screen h-screen flex justify-center items-center">
+      {showMessage ? <div className="fixed left-0 top-0 backdrop-blur w-screen h-screen flex justify-center items-center">
         <div className="w-11/12 xl:w-1/2 xl:h-1/2 bg-white p-3 flex flex-col justify-center items-center gap-2">
 
-          {/* <img src={image} alt="" /> */}
+
           <p className="text-interactive-light-destructive-focus text-heading-6 text-center flex gap-1 flex-col justify-center items-center"><img src={caution} className="w-1/2" alt="caution" /> It may Take some times to load your data. Be Patient.</p>
           <p className="w-full xl:w-9/12 mx-auto text-center text-paragraph-1 text-grey-dark">Check out our new music earnings system! If you hit a snag, let us know, and we'll fix it in around a week. Thanks!</p>
 
@@ -133,7 +133,7 @@ const Login = () => {
             {({ remainingTime }) => <span className="text-heading-4-bold text-grey-dark">{remainingTime}</span>}
           </CountdownCircleTimer>
         </div>
-      </div>}
+      </div> : <></>}
     </AuthBody>
   );
 };

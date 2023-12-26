@@ -3,40 +3,18 @@ import background from "../../assets/images/background.png"
 import Button from '../../components/Button/Button';
 import RevenueAnalytics from '../../components/RevenueAnalytics/RevenueAnalytics';
 import balanceBG from '../../assets/images/balance-bg.svg';
-// import InputField from "../../components/InputField/InputField";
-// import search from "../../assets/icons/navbar/search.webp"
-// import Sorting from '../../components/Sorting/Sorting';
-// import RevenueItem from '../../components/RevenueItem/RevenueItem';
-import chevron from "../../assets/icons/chevron-secondary.svg";
 import axios from 'axios';
 import { SongsContext } from "./../../contexts/SongsContext"
-// import notFound from "../../assets/images/not-found.svg"
 import { ProfileContext } from '../../contexts/ProfileContext';
-// import DemoPDF from '../../components/DemoPDF/DemoPDF';
 import { toast } from 'react-toastify';
 import notFound from "../../assets/images/not-found.svg"
 
 const Revenue = () => {
-  // const [badge, setBadge] = useState("");
-  // const [item, setItem] = useState(8)
   const [songs, setSongs] = useState([]);
-  // const songs = [];
   const [greeting, setGreeting] = useState("")
-  const [showOptions, setShowOptions] = useState(false);
-  const [phoneData, setPhoneData] = useState('Song_Name');
-  // const containerRef = useRef(null);
   const [isrcs, setIsrcs] = useState([])
-  // const [total, setTotal] = useState({
-  //   revenue: 0,
-  //   view: 0
-  // });
-  // const [songs, setSongs] = useState([])
-
-  // const [demoVisible, setDemoVisible] = useState(false);
-  // const [details, setDetails] = useState([])
-
-
   const currentTime = new Date().getHours();
+  const [items, setItems] = useState(0)
 
 
   useEffect(() => {
@@ -54,44 +32,20 @@ const Revenue = () => {
   useEffect(() => {
     if (userData?.first_name) {
       axios
-        .get("https://forevision-digital.onrender.com/user-revenue", {
+        .get("http://193.203.162.180:5000/user-revenue", {
           headers: {
             token,
           },
         })
         .then(({ data }) => {
-          // console.log(data);
+          setIsrcs(data);
 
-          for (const item of data) {
-            axios.get(`https://forevision-digital.onrender.com/user-revenue/${item}`).then(({ data }) => {
-              if (data.revenues) {
-                // console.log(data.revenues)
-                // songs.push()
-                for (const song of data.revenues) {
-                  // setSongs([...songs, song])
-                  songs.push(song)
-                }
-                // setSongs([...songs, data.revenues]);
-                // songs.concat(data.revenues)
-                // console.log([...songs, data.revenues])
-              }
-            }).catch(error => console.log(error))
-          }
 
           // setSongs(data.data);
         }).catch(error => console.log(error));
     }
-  }, [token, userData, userData?.first_name])
+  }, [userData?.first_name])
 
-  // console.log(isrcs);
-  // useEffect(() => {
-  //   if (isrcs.length > 0) {
-  //     axios.post(`https://forevision-digital.onrender.com/songs-for-isrc`, { isrcs }).then(({ data }) => {
-  //       setSongs(data);
-  //       // console.log(data);
-  //     }).catch(error => toast.error(error?.data?.message))
-  //   }
-  // }, [isrcs, isrcs.length])
 
   const calculateAggregatedTotals = (songs) => {
     const grand_total = {};
@@ -133,6 +87,31 @@ const Revenue = () => {
   };
   // Example usage
   const { aggregatedMusicData, aggregatedRevenueTotal, final_after_tds, total_lifetime_views } = calculateAggregatedTotals(songs);
+
+
+
+  useEffect(() => {
+    if (isrcs.length > 0) {
+      for (const item of isrcs) {
+        axios.get(`http://193.203.162.180:5000/user-revenue/${item}`).then(({ data }) => {
+          if (data.revenues) {
+
+            for (const [index, song] of data.revenues.entries()) {
+              songs.push(song);
+
+              // Check if the current song is the last element
+              const isLastSong = index === aggregatedMusicData.length - 1;
+
+              console.log(songs.length, data.revenues.length, isLastSong);
+            }
+          }
+        }).catch(error => console.log(error))
+      }
+    }
+  }, [isrcs, isrcs.length]);
+
+
+
 
   // console.log(aggregatedMusicData);
 
@@ -191,7 +170,7 @@ const Revenue = () => {
   const [data, setData] = useState([
     {
       heading: 'Total Uploads',
-      data: userData?.isrc?.split(",").length
+      data: isrcs.length
     },
     {
       heading: 'Best Upload',
@@ -206,20 +185,13 @@ const Revenue = () => {
       data: totalView || 0
     },
   ])
-  // console.log(aggregatedMusicData);
-
-  // let totalTotal = 0;
 
 
 
 
   useEffect(() => {
-    // if (total.view && total.revenue) {
     setData([
-      {
-        heading: 'Total Uploads',
-        data: aggregatedMusicData.length
-      },
+      {},
       {
         heading: 'Best Upload',
         data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.song_name || 'Loading...'
@@ -234,7 +206,7 @@ const Revenue = () => {
       },
     ])
     // }
-  }, [aggregatedMusicData, aggregatedMusicData.length, totalFinalRevenue, totalView])
+  }, [aggregatedMusicData, aggregatedMusicData.length, totalFinalRevenue, totalView, isrcs])
 
 
   const options = [
@@ -259,38 +231,7 @@ const Revenue = () => {
     "View",
     'Revenue',
     'Revenue After Forevision Deduction',
-  ]
-
-
-  // const handleSort = (field) => {
-  //   // setFilteredSongs(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
-  //   console.log(aggregatedMusicData.sort((i1, i2) => i1[field] - i2[field]));
-  //   aggregatedMusicData.sort((i1, i2) => i1[field] > i2[field]).map(item => console.log(item[field]))
-  // }
-
-  // const handleExpand = (song_isrc) => {
-  //   setDetails(songs.filter(({ isrc }) => isrc === song_isrc));
-  // }
-
-  // console.log(details);
-  // const month = ["January", "February", "March", "April", "May", "June", "July",
-  //   "August", "September", "October", "November", "December"];
-
-
-
-  // Function to filter the array based on month and platform
-  // function filterSongs(data, selectedMonth) {
-  //   return data
-  // }
-
-  // Example: Filter songs for December 2023 on Facebook platform
-  // const selectedMonth = "2023-12-18";
-  // const filteredSongs = filterSongs(songs, selectedMonth);
-
-  // console.log(songs);
-
-  // console.log("Total Final Revenue:", totalFinalRevenue);
-  // console.log("Total Total:", totalTotal);
+  ];
 
   const phoneOptions = ["isrc", 'song_name', 'total_revenue_against_isrc']
 
@@ -314,7 +255,7 @@ const Revenue = () => {
 
               <div className='mt-[32px] grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3'>
                 {/* {data.map((item, key) => <RevenueAnalytics {...item} id={key} key={key} />)} */}
-                {<RevenueAnalytics heading={data[0].heading} data={data[0].data} />}
+                {<RevenueAnalytics heading={'Total Uploads'} data={isrcs.length} />}
                 {<RevenueAnalytics heading={data[1].heading} data={data[1].data} />}
                 {<RevenueAnalytics heading={data[2].heading} data={data[2].data} />}
                 {<RevenueAnalytics heading={data[3].heading} data={data[3].data} />}
