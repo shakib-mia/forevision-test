@@ -19,11 +19,11 @@ const Revenue = () => {
 
   useEffect(() => {
     if (currentTime >= 0 && currentTime < 12) {
-      setGreeting("Good morning !");
+      setGreeting("Good morning");
     } else if (currentTime >= 12 && currentTime < 18) {
-      setGreeting("Good afternoon !");
+      setGreeting("Good afternoon");
     } else {
-      setGreeting("Good evening !");
+      setGreeting("Good evening");
     }
   }, [currentTime])
 
@@ -243,9 +243,8 @@ const Revenue = () => {
         <div className='h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px]'>
           <div className="flex flex-col 2xl:flex-row gap-3 items-end">
             <div className='w-full 2xl:w-3/4'>
-              <h4 className='text-heading-4-bold text-grey-dark 2xl:text-white'>{greeting} <br /> <span className='text-interactive-light 2xl:text-white'><u>
-                {userData?.first_name ? userData?.first_name : <></>}
-              </u> {userData?.last_name ? userData?.last_name : <></>}</span></h4>
+              <h4 className='text-heading-4-bold text-grey-dark 2xl:text-white'>{greeting} <br /> <span className='text-interactive-light 2xl:text-white'>
+                <u>{userData?.first_name ? userData?.first_name : <></>}</u> {userData?.last_name ? userData?.last_name : <></>}!</span></h4>
               <p className='text-subtitle-1 text-interactive-dark-active 2xl:text-white tracking-[0.5px] mt-1'>Welcome to your revenue dashboard, Let’s see how much you’ve earned with us !</p>
               {/* {filtered.length > 0 && <> */}
               <div className='mt-4 hidden 2xl:flex flex-col justify-center items-center w-fit'>
