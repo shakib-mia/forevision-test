@@ -32,7 +32,7 @@ const Revenue = () => {
   useEffect(() => {
     if (userData?.first_name) {
       axios
-        .get("http://193.203.162.180:5000/user-revenue", {
+        .get("https://api.forevisiondigital.in/user-revenue", {
           headers: {
             token,
           },
@@ -93,7 +93,7 @@ const Revenue = () => {
   useEffect(() => {
     if (isrcs.length > 0) {
       for (const item of isrcs) {
-        axios.get(`http://193.203.162.180:5000/user-revenue/${item}`).then(({ data }) => {
+        axios.get(`https://api.forevisiondigital.in/user-revenue/${item}`).then(({ data }) => {
           if (data.revenues) {
 
             for (const [index, song] of data.revenues.entries()) {

@@ -45,7 +45,7 @@ function App() {
 
     if (token) {
       axios
-        .get(`http://193.203.162.180:5000/getUserData`, config)
+        .get(`https://api.forevisiondigital.in/getUserData`, config)
         .then(({ data }) => {
           if (data.data !== null) {
             setUserData(data.data);

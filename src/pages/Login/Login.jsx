@@ -43,9 +43,9 @@ const Login = () => {
 
     // userData.append("user_email", e.target.email.value);
     // userData.append("user_pass", e.target.password.value);
-    // http://193.203.162.180:5000/
+    // https://api.forevisiondigital.in/
     axios
-      .post("http://193.203.162.180:5000/user-login", {
+      .post("https://api.forevisiondigital.in/user-login", {
         email: e.target.email.value,
         password: e.target.password.value
       })
@@ -70,7 +70,7 @@ const Login = () => {
                 token: data.token
               }
             }
-            axios.get("http://193.203.162.180:5000/getUserData", config).then(({ data }) => {
+            axios.get("https://api.forevisiondigital.in/getUserData", config).then(({ data }) => {
               // console.log(data.data);
               if (data.data === null) {
 

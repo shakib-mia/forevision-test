@@ -137,7 +137,7 @@ const SignupDetails = () => {
 
 
     // // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
-    axios.post("http://193.203.162.180:5000/post-user-details", userDetailsData).then(res => {
+    axios.post("https://api.forevisiondigital.in/post-user-details", userDetailsData).then(res => {
       if (res.data.acknowledged) {
         // console.log(res.data);
 
