@@ -116,7 +116,7 @@ const Login = () => {
       </div>
 
       {showMessage ? <div className="fixed left-0 top-0 backdrop-blur w-screen h-screen flex justify-center items-center">
-        <div className="w-11/12 xl:w-1/2 xl:h-1/2 bg-white p-3 flex flex-col justify-center items-center gap-2">
+        <div className="w-11/12 xl:w-1/2 bg-white p-5 rounded shadow-xl flex flex-col justify-center items-center gap-2">
 
 
           <p className="text-interactive-light-destructive-focus text-heading-6 text-center flex gap-1 flex-col justify-center items-center"><img src={caution} className="w-1/2" alt="caution" /> It may Take some times to load your data. Be Patient.</p>
