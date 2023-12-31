@@ -97,7 +97,7 @@ const Revenue = () => {
   useEffect(() => {
     if (isrcs.length > 0) {
       // Show the loading toast
-      const loadingToast = toast.loading("Loading...", { position: 'bottom-center' });
+      const loadingToast = toast.loading("Loading...", { position: 'top-center' });
 
       // Array to store promises
       const promises = [];
@@ -136,7 +136,7 @@ const Revenue = () => {
           // Dismiss the loading toast after all promises are resolved
           toast.dismiss(loadingToast);
           // Display the success toast
-          toast.success("Success", { position: 'bottom-center' });
+          toast.success("Success", { position: 'top-center' });
           const { aggregatedMusicData } = calculateAggregatedTotals(songs);
 
           const finalRevenueValues = aggregatedMusicData.map(item => item['total_revenue_against_isrc']);
