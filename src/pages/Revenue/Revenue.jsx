@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import background from "../../assets/images/background.png"
 import Button from '../../components/Button/Button';
 import RevenueAnalytics from '../../components/RevenueAnalytics/RevenueAnalytics';
@@ -8,13 +8,16 @@ import { SongsContext } from "./../../contexts/SongsContext"
 import { ProfileContext } from '../../contexts/ProfileContext';
 import { toast } from 'react-toastify';
 import notFound from "../../assets/images/not-found.svg"
+import { useNavigate } from 'react-router-dom';
 
 const Revenue = () => {
   const [songs, setSongs] = useState([]);
   const [greeting, setGreeting] = useState("")
   const [isrcs, setIsrcs] = useState([])
   const currentTime = new Date().getHours();
-  const [items, setItems] = useState(0)
+  // const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+  const [bestSong, setBestSong] = useState("Loading...")
 
 
   useEffect(() => {
@@ -37,12 +40,14 @@ const Revenue = () => {
             token,
           },
         })
-        .then(({ data }) => {
-          setIsrcs(data);
-
-
-          // setSongs(data.data);
-        }).catch(error => console.log(error));
+        .then(({ data }) => setIsrcs(data))
+        .catch(error => {
+          console.log(error);
+          if (error.response.status === 401) {
+            sessionStorage.removeItem('token');
+            navigate("/login")
+          }
+        })
     }
   }, [userData?.first_name])
 
@@ -89,26 +94,64 @@ const Revenue = () => {
   const { aggregatedMusicData, aggregatedRevenueTotal, final_after_tds, total_lifetime_views } = calculateAggregatedTotals(songs);
 
 
-
   useEffect(() => {
     if (isrcs.length > 0) {
-      for (const item of isrcs) {
-        axios.get(`https://api.forevisiondigital.in/user-revenue/${item}`).then(({ data }) => {
-          if (data.revenues) {
+      // Show the loading toast
+      const loadingToast = toast.loading("Loading...", { position: 'bottom-center' });
 
-            for (const [index, song] of data.revenues.entries()) {
-              songs.push(song);
+      // Array to store promises
+      const promises = [];
 
-              // Check if the current song is the last element
-              const isLastSong = index === aggregatedMusicData.length - 1;
+      for (const [isrcIndex, item] of isrcs.entries()) {
+        // Create a promise for each axios.get call
+        const promise = axios.get(`https://api.forevisiondigital.in/user-revenue/${item}`)
+          .then(({ data }) => {
+            if (data) {
+              data.revenues.forEach((song, index) => {
+                songs.push(song);
 
-              console.log(songs.length, data.revenues.length, isLastSong);
+                const isLastSong = index === data.revenues.length - 1;
+
+                if (isLastSong && isrcIndex === isrcs.length - 1) {
+                  // Resolve the promise when the last song is processed
+                  return Promise.resolve();
+                }
+              });
             }
-          }
-        }).catch(error => console.log(error))
+          })
+          .catch(error => {
+            if (error.status === 401) {
+              sessionStorage.removeItem('token');
+              navigate("/login");
+            }
+          });
+
+        // Add the promise to the array
+        promises.push(promise);
       }
+
+      // Use Promise.all to wait for all promises to complete
+      Promise.all(promises)
+        .then(() => {
+          // Dismiss the loading toast after all promises are resolved
+          toast.dismiss(loadingToast);
+          // Display the success toast
+          toast.success("Success", { position: 'bottom-center' });
+          const { aggregatedMusicData } = calculateAggregatedTotals(songs);
+
+          const finalRevenueValues = aggregatedMusicData.map(item => item['total_revenue_against_isrc']);
+
+          // Find the maximum value
+          const maxFinalRevenue = Math.max(...finalRevenueValues);
+          const maxRevenueEarner = aggregatedMusicData.find(item => item.total_revenue_against_isrc === maxFinalRevenue)
+
+
+
+          // console.log(maxRevenueEarner);
+          setBestSong(maxRevenueEarner.song_name)
+        });
     }
-  }, [isrcs, isrcs.length]);
+  }, [isrcs.length]);
 
 
 
@@ -174,14 +217,14 @@ const Revenue = () => {
     },
     {
       heading: 'Best Upload',
-      data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.music_song_name || 'Loading...'
+      data: bestSong
     },
     {
       heading: 'Total revenue',
       data: totalFinalRevenue || 0
     },
     {
-      heading: 'View',
+      heading: 'Total Views',
       data: totalView || 0
     },
   ])
@@ -194,19 +237,19 @@ const Revenue = () => {
       {},
       {
         heading: 'Best Upload',
-        data: aggregatedMusicData.sort((a, b) => parseFloat(b.final_revenue) - parseFloat(a.final_revenue))[0]?.song_name || 'Loading...'
+        data: bestSong
       },
       {
         heading: 'Total revenue',
         data: totalFinalRevenue || 0
       },
       {
-        heading: 'View',
+        heading: 'Total Views',
         data: totalView || 0
       },
     ])
     // }
-  }, [aggregatedMusicData, aggregatedMusicData.length, totalFinalRevenue, totalView, isrcs])
+  }, [aggregatedMusicData, aggregatedMusicData.length, totalFinalRevenue, totalView, isrcs, bestSong])
 
 
   const options = [
@@ -268,6 +311,7 @@ const Revenue = () => {
             </div>}
           </div>
 
+          {/* PC VIEW */}
           <div className='hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto'>
 
             <ul className="grid grid-cols-9 gap-3 sticky top-0 mb-2">
