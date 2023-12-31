@@ -5,7 +5,6 @@ import Button from "../../components/Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import image from "../../assets/images/not-found.svg"
 import { toast } from "react-toastify";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import caution from "./../../assets/icons/caution.svg"
