@@ -45,7 +45,7 @@ const Login = () => {
     // https://api.forevisiondigital.in/
     axios
       .post("https://api.forevisiondigital.in/user-login", {
-        email: e.target.email.value,
+        email: e.target.email.value.toLowerCase(),
         password: e.target.password.value
       })
       .then(({ data }) => {

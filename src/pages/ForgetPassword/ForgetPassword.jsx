@@ -24,7 +24,7 @@ const ForgetPassword = () => {
     // })
 
     // axios.post("https://api.forevisiondigital.in/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => console.log(data))
-    axios.post("https://api.forevisiondigital.in/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => {
+    axios.post("http://localhost:4000/reset-password", { user_email: e.target["forgot-email"].value.toLowerCase() }).then(({ data }) => {
       if (data.modifiedCount) {
         setSending(false);
         setSent(true)
@@ -32,6 +32,9 @@ const ForgetPassword = () => {
           position: 'bottom-center'
         })
       }
+    }).catch(err => {
+      toast.error(err.response.data.message)
+      setSending(false)
     })
   };
   return (
