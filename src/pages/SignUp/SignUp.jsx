@@ -57,7 +57,9 @@ const SignUp = () => {
         setUserData({ ...userData, user_email: signupData.email })
         navigate("/signup-details")
       }
-    })
+    }).catch(err => toast.error(err.response.data, {
+      position: 'bottom-center'
+    }))
 
     // const formData = new FormData(e.target);
 
