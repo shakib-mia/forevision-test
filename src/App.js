@@ -20,7 +20,6 @@ function App() {
   const [uId, setUId] = useState("");
   const [token, setToken] = useState(sessionStorage.getItem("token"));
   const navigate = useNavigate();
-  useEffect(() => navigate("/under-construction"), []);
 
   const store = {
     userData,

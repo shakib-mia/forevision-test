@@ -389,22 +389,10 @@ export const routes = [
   {
     path: "/",
     page: (
-      <Construction />
-      // <RequireAuth>
-      //   <Revenue />
-      // </RequireAuth>
-    ),
-  },
-  {
-    path: "/under-construction",
-    page: (
-      <div className="w-screen h-screen flex items-center justify-center">
-        <img
-          src={underConstruction}
-          alt="This is site is under maintenance"
-          className="xl:w-1/2"
-        />
-      </div>
+      // <Construction />
+      <RequireAuth>
+        <Revenue />
+      </RequireAuth>
     ),
   },
 ];
