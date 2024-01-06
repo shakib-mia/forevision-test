@@ -389,9 +389,10 @@ export const routes = [
   {
     path: "/",
     page: (
-      <RequireAuth>
-        <Revenue />
-      </RequireAuth>
+      <Construction />
+      // <RequireAuth>
+      //   <Revenue />
+      // </RequireAuth>
     ),
   },
   {
