@@ -45,7 +45,7 @@ const Revenue = () => {
           console.log(error);
           if (error.response.status === 401) {
             sessionStorage.removeItem('token');
-            navigate("/login")
+            // navigate("/login")
           }
         })
     }
@@ -122,7 +122,7 @@ const Revenue = () => {
           .catch(error => {
             if (error.status === 401) {
               sessionStorage.removeItem('token');
-              navigate("/login");
+              // navigate("/login");
             }
           });
 

@@ -34,9 +34,6 @@ const Login = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [loading, setLoading] = useState(false)
 
-  /********************************====================Temp=====================************************************/
-
-  useEffect(() => window.location.reload(), [])
 
   const login = (e) => {
     e.preventDefault();
