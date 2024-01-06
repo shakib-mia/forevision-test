@@ -7,6 +7,7 @@ import { routes } from "./constants";
 import BottomBar from "./components/BottomBar/BottomBar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
+import underConstruction from "./assets/images/under-construction.webp";
 import axios from "axios";
 
 function App() {
@@ -60,14 +61,15 @@ function App() {
 
   return (
     <ProfileContext.Provider value={store}>
-      {/* {location.pathname !== "/login" &&
-        location.pathname !== "/signup" &&
-        location.pathname !== "/" &&
-        location.pathname !== "/forgot-password" &&
-        !location.pathname.includes("/profile") &&
-        location.pathname !== "/revenue" &&
-        location.pathname !== "/signup-details" && <Navbar />} */}
-      {token?.length && <BottomBar />}
+      <div className="w-screen h-screen flex items-center justify-center">
+        <img
+          src={underConstruction}
+          alt="This is site is under maintenance"
+          className="xl:w-1/2"
+        />
+      </div>
+
+      {/* {token?.length && <BottomBar />}
       {location.pathname !== "/login" &&
         location.pathname !== "/signup" &&
         location.pathname !== "/forgot-password" &&
@@ -76,7 +78,7 @@ function App() {
         {routes.map(({ page, path }, key) => (
           <Route key={key} path={path} element={page} />
         ))}
-      </Routes>
+      </Routes> */}
 
       <ToastContainer />
     </ProfileContext.Provider>
