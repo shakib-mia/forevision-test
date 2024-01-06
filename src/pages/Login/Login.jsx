@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AuthBody from "../../components/AuthBody/AuthBody";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
@@ -33,6 +33,10 @@ const Login = () => {
 
   const [showMessage, setShowMessage] = useState(false);
   const [loading, setLoading] = useState(false)
+
+  /********************************====================Temp=====================************************************/
+
+  useEffect(() => window.location.reload(), [])
 
   const login = (e) => {
     e.preventDefault();
