@@ -3,11 +3,10 @@ import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import { routes } from "./constants";
+import { routes } from "./constants";
 import BottomBar from "./components/BottomBar/BottomBar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
-import underConstruction from "./assets/images/under-construction.webp";
 import axios from "axios";
 
 function App() {
@@ -21,6 +20,7 @@ function App() {
   const [uId, setUId] = useState("");
   const [token, setToken] = useState(sessionStorage.getItem("token"));
   const navigate = useNavigate();
+  useEffect(() => navigate("/under-construction"), []);
 
   const store = {
     userData,
@@ -61,28 +61,20 @@ function App() {
 
   return (
     <>
-      <div className="w-screen h-screen flex items-center justify-center">
-        <img
-          src={underConstruction}
-          alt="This is site is under maintenance"
-          className="xl:w-1/2"
-        />
-      </div>
-      {/* <ProfileContext.Provider value={store}>
+      <ProfileContext.Provider value={store}>
+        {token?.length && <BottomBar />}
+        {location.pathname !== "/login" &&
+          location.pathname !== "/signup" &&
+          location.pathname !== "/forgot-password" &&
+          location.pathname !== "/signup-details" && <Sidebar />}
+        <Routes>
+          {routes.map(({ page, path }, key) => (
+            <Route key={key} path={path} element={page} />
+          ))}
+        </Routes>
 
-      {token?.length && <BottomBar />}
-      {location.pathname !== "/login" &&
-        location.pathname !== "/signup" &&
-        location.pathname !== "/forgot-password" &&
-        location.pathname !== "/signup-details" && <Sidebar />}
-      <Routes>
-        {routes.map(({ page, path }, key) => (
-          <Route key={key} path={path} element={page} />
-        ))}
-      </Routes>
-
-      <ToastContainer />
-    </ProfileContext.Provider> */}
+        <ToastContainer />
+      </ProfileContext.Provider>
     </>
   );
 }

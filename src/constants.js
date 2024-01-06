@@ -16,7 +16,8 @@ import OngoingProjects from "./pages/OngoingProjects/OngoingProjects";
 import PreviousProjects from "./pages/PreviousProjects/PreviousProjects";
 import Profile from "./pages/Profile/Profile";
 import Revenue from "./pages/Revenue/Revenue";
-// import settings from "./assets/icons/navbar/settings.webp";
+import Construction from "./pages/Construction/Construction";
+import underConstruction from "./assets/images/under-construction.webp";
 
 export const navItem = [
   {
@@ -391,6 +392,18 @@ export const routes = [
       <RequireAuth>
         <Revenue />
       </RequireAuth>
+    ),
+  },
+  {
+    path: "/under-construction",
+    page: (
+      <div className="w-screen h-screen flex items-center justify-center">
+        <img
+          src={underConstruction}
+          alt="This is site is under maintenance"
+          className="xl:w-1/2"
+        />
+      </div>
     ),
   },
 ];
