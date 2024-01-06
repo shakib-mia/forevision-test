@@ -3,7 +3,7 @@ import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { routes } from "./constants";
+// import { routes } from "./constants";
 import BottomBar from "./components/BottomBar/BottomBar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
@@ -60,7 +60,7 @@ function App() {
   // if(userData._id === );
 
   return (
-    <ProfileContext.Provider value={store}>
+    <>
       <div className="w-screen h-screen flex items-center justify-center">
         <img
           src={underConstruction}
@@ -68,8 +68,9 @@ function App() {
           className="xl:w-1/2"
         />
       </div>
+      {/* <ProfileContext.Provider value={store}>
 
-      {/* {token?.length && <BottomBar />}
+      {token?.length && <BottomBar />}
       {location.pathname !== "/login" &&
         location.pathname !== "/signup" &&
         location.pathname !== "/forgot-password" &&
@@ -78,10 +79,11 @@ function App() {
         {routes.map(({ page, path }, key) => (
           <Route key={key} path={path} element={page} />
         ))}
-      </Routes> */}
+      </Routes>
 
       <ToastContainer />
-    </ProfileContext.Provider>
+    </ProfileContext.Provider> */}
+    </>
   );
 }
 
