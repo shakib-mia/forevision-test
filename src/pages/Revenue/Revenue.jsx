@@ -7,7 +7,8 @@ import axios from 'axios';
 import { SongsContext } from "./../../contexts/SongsContext"
 import { ProfileContext } from '../../contexts/ProfileContext';
 import { toast } from 'react-toastify';
-import notFound from "../../assets/images/not-found.svg"
+import notFound from "../../assets/images/not-found.svg";
+import rupee from "../../assets/icons/rupee.svg"
 import { useNavigate } from 'react-router-dom';
 
 const Revenue = () => {
@@ -309,8 +310,7 @@ const Revenue = () => {
             </div>
             {filtered.length > 0 && <div className='w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative bg-[length:100%_100%] bg-grey-light 2xl:bg-white bg-[center_top_-140px] 2xl:bg-[center_top_-18vh] 3xl:bg-[center_top_-15vh] 2xl:bg-[length:100%_100%] bg-no-repeat rounded-[20px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px]' style={{ backgroundImage: `url(${balanceBG})` }}>
               <h4 className='text-heading-4-bold text-white 2xl:text-grey'>Account <br className='2xl:hidden' /> Balance</h4>
-              <h4 className='text-heading-4-bold text-grey mt-5'>Coming soon!!!</h4>
-
+              <h4 className='text-heading-4-bold text-grey mt-5 flex items-center gap-2'><img src={rupee} className='h-4' alt="rupee" /> {data[2].data.toFixed(2)}</h4>
             </div>}
           </div>
 
