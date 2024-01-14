@@ -34,7 +34,7 @@ const Revenue = () => {
   const { userData, token } = useContext(ProfileContext);
 
   useEffect(() => {
-    if (userData?.first_name) {
+    if (userData?.first_name || userData?.partner_name) {
       axios
         .get("https://api.forevisiondigital.in/user-revenue", {
           headers: {
@@ -50,7 +50,7 @@ const Revenue = () => {
           }
         })
     }
-  }, [userData?.first_name])
+  }, [userData?.first_name, userData?.partner_name])
 
 
   const calculateAggregatedTotals = (songs) => {
@@ -287,8 +287,16 @@ const Revenue = () => {
         <div className='h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px]'>
           <div className="flex flex-col 2xl:flex-row gap-3 items-end">
             <div className='w-full 2xl:w-3/4'>
-              <h4 className='text-heading-4-bold text-grey-dark 2xl:text-white'>{greeting} <br /> <span className='text-interactive-light 2xl:text-white'>
-                <u>{userData?.first_name ? userData?.first_name : <></>}</u> {userData?.last_name ? userData?.last_name : <></>}!</span></h4>
+              <h4 className='text-heading-4-bold text-grey-dark 2xl:text-white'>{greeting} <br />
+                {userData?.first_name ?
+                  <span className='text-interactive-light 2xl:text-white'>
+                    <u>{userData?.first_name ? userData?.first_name : <></>}</u> {userData?.last_name ? userData?.last_name : <></>}!</span>
+                  : <span className='text-interactive-light 2xl:text-white'>
+                    <u>{userData?.partner_name ? userData?.partner_name?.split(" ")[0] : <></>}</u> {userData?.partner_name ? userData?.partner_name.split(" ")[1] : <></>}!
+                  </span>
+                }
+
+              </h4>
               <p className='text-subtitle-1 text-interactive-dark-active 2xl:text-white tracking-[0.5px] mt-1'>Welcome to your revenue dashboard, Let’s see how much you’ve earned with us !</p>
               {/* {filtered.length > 0 && <> */}
               <div className="flex justify-between items-end">
@@ -310,7 +318,7 @@ const Revenue = () => {
             </div>
             {filtered.length > 0 && <div className='w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative bg-[length:100%_100%] bg-grey-light 2xl:bg-white bg-[center_top_-140px] 2xl:bg-[center_top_-18vh] 3xl:bg-[center_top_-15vh] 2xl:bg-[length:100%_100%] bg-no-repeat rounded-[20px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px]' style={{ backgroundImage: `url(${balanceBG})` }}>
               <h4 className='text-heading-4-bold text-white 2xl:text-grey'>Account <br className='2xl:hidden' /> Balance</h4>
-              <h4 className='text-heading-4-bold text-grey mt-5 flex items-center gap-2'><img src={rupee} className='h-4' alt="rupee" /> {data[2].data.toFixed(2)}</h4>
+              <h4 className='text-heading-4-bold text-grey mt-5 flex items-center gap-2'>&#8377; {data[2].data.toFixed(2)}</h4>
             </div>}
           </div>
 

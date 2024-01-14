@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "./RevenueAnalytics.module.css";
-import rupee from "../../assets/icons/rupee.svg"
+// import rupee from "../../assets/icons/rupee.svg"
 
 const RevenueAnalytics = ({ heading, data, id }) => {
     // console.log(data);
@@ -13,7 +13,7 @@ const RevenueAnalytics = ({ heading, data, id }) => {
                 <div className='absolute w-full h-full py-[13px] px-2'>
                     <p className='text-paragraph-2'>{heading}</p>
                     <div className='h-full flex items-center gap-[5px]'>
-                        {heading === 'Total revenue' ? <img src={rupee} className='h-[18px] w-auto' alt='rupee' /> : <></>}
+                        {heading === 'Total revenue' ? <>&#8377; </> : <></>}
                         {<h5 className={`${isNaN(parseFloat(data)) ? "text-heading-6-bold" : 'text-heading-5-bold'} w-full whitespace-normal`}>
 
                             {heading === "Best Upload" ? data :
@@ -33,13 +33,13 @@ const RevenueAnalytics = ({ heading, data, id }) => {
                 <div className='absolute w-full h-full py-[13px] px-2'>
                     <p className='text-paragraph-2'>{heading}</p>
                     <div className='h-full flex items-center gap-[5px]'>
-                        {heading === 'Total revenue' ? <img src={rupee} className='h-[18px] w-auto' alt='rupee' /> : <></>}
+                        {/* {heading === 'Total revenue' ? <span className='text-heading-6'>&#8377; </span> : <></>} */}
                         {<h5 className={`${isNaN(parseFloat(data)) ? "text-heading-6-bold" : 'text-heading-5-bold'} w-full whitespace-normal`}>
 
                             {heading === "Best Upload" ? data :
                                 heading === 'Total revenue'
                                     ?
-                                    data.toFixed(2)
+                                    <>&#8377; {data.toFixed(2)}</>
                                     : data}
                         </h5>}
                     </div>

@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { ToastContainer } from "react-toastify";
@@ -19,7 +19,7 @@ function App() {
   const [profileData, setProfileData] = useState({});
   const [uId, setUId] = useState("");
   const [token, setToken] = useState(sessionStorage.getItem("token"));
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const store = {
     userData,
@@ -50,7 +50,7 @@ function App() {
           if (data.data !== null) {
             setUserData(data.data);
           } else {
-            navigate("/signup-details");
+            // navigate("/signup-details");
           }
         });
     }

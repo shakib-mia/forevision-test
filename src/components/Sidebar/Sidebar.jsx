@@ -76,8 +76,8 @@ const Sidebar = () => {
         {hovered && (
           <>
             <div className="overflow-hidden whitespace-nowrap">
-              <h1 className="text-subtitle-1-bold">{userData?.first_name + " " + userData?.last_name}</h1>
-              <p className="text-button text-black-tertiary">{userData?.user_email}</p>
+              <h1 className="text-subtitle-1-bold">{userData?.partner_name || userData?.first_name + " " + userData?.last_name}</h1>
+              <p className="text-button text-black-tertiary">{userData?.user_email || userData?.emailId}</p>
             </div>
 
             <img
