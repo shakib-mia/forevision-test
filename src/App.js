@@ -8,6 +8,8 @@ import BottomBar from "./components/BottomBar/BottomBar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Button from "./components/Button/Button";
+import Construction from "./pages/Construction/Construction";
 
 function App() {
   const [userData, setUserData] = useState({});
@@ -36,30 +38,48 @@ function App() {
 
   // console.log(userData);
 
-  useEffect(() => {
-    const config = {
-      headers: {
-        token: sessionStorage.getItem("token") || token,
-      },
-    };
+  // useEffect(() => {
+  //   const config = {
+  //     headers: {
+  //       token: sessionStorage.getItem("token") || token,
+  //     },
+  //   };
 
-    if (token) {
-      axios
-        .get(`https://api.forevisiondigital.in/getUserData`, config)
-        .then(({ data }) => {
-          if (data.data !== null) {
-            setUserData(data.data);
-          } else {
-            // navigate("/signup-details");
-          }
-        });
-    }
-  }, [token]);
+  //   if (token) {
+  //     axios
+  //       .get(`https://api.forevisiondigital.in/getUserData`, config)
+  //       .then(({ data }) => {
+  //         if (data.data !== null) {
+  //           setUserData(data.data);
+  //         } else {
+  //           // navigate("/signup-details");
+  //         }
+  //       });
+  //   }
+  // }, [token]);
 
   // if(userData._id === );
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // console.log(e.target.file.files[0]);
+    const formData = new FormData();
+
+    formData.append("file", e.target.file.files[0]);
+
+    axios
+      .post("https://api.forevisiondigital.in/upload", formData)
+      .then(({ data }) => console.log(data));
+  };
+
   return (
     <>
+      <Construction />
+      {/* <form onSubmit={handleSubmit}>
+        <input type="file" name="file" />
+        <Button type="submit">Upload</Button>
+      </form>
       <ProfileContext.Provider value={store}>
         {token?.length && <BottomBar />}
         {location.pathname !== "/login" &&
@@ -73,7 +93,7 @@ function App() {
         </Routes>
 
         <ToastContainer />
-      </ProfileContext.Provider>
+      </ProfileContext.Provider> */}
     </>
   );
 }

@@ -45,7 +45,7 @@ const Login = () => {
     // userData.append("user_pass", e.target.password.value);
     // https://api.forevisiondigital.in/
     axios
-      .post("https://api.forevisiondigital.in/user-login", {
+      .post("https://forevision-digital-be.onrender.com/user-login", {
         email: e.target.email.value.toLowerCase(),
         password: e.target.password.value
       })
