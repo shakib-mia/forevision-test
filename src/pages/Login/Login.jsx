@@ -84,7 +84,7 @@ const Login = () => {
 
   return (
     <AuthBody
-      heading="Logins"
+      heading="Login"
       altDescription="New in ForeVision Digital?"
       altText="Sign Up"
       altLink="/signup"
