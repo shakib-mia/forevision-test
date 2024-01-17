@@ -8,6 +8,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import { toast } from "react-toastify";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import caution from "./../../assets/icons/caution.svg"
+import { backendUrl } from "../../constants";
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -26,8 +27,7 @@ const Login = () => {
       placeholder: "Enter Password",
     },
   ];
-  const { /*setUserData*/ prevRoute, setToken, setUserData, userData } = useContext(ProfileContext)
-  // const {  } = useContext(ProfileContext);
+  const { prevRoute, setToken, setUserData, userData } = useContext(ProfileContext)
 
   const navigate = useNavigate();
 
@@ -38,14 +38,9 @@ const Login = () => {
   const login = (e) => {
     e.preventDefault();
     setLoading(true)
-    // console.log(e.target.password.value);
-    // const userData = new FormData();
 
-    // userData.append("user_email", e.target.email.value);
-    // userData.append("user_pass", e.target.password.value);
-    // https://api.forevisiondigital.in/
     axios
-      .post("https://forevision-digital-be.onrender.com/user-login", {
+      .post(backendUrl + "user-login", {
         email: e.target.email.value.toLowerCase(),
         password: e.target.password.value
       })
@@ -53,14 +48,11 @@ const Login = () => {
         if (data.token.length) {
           sessionStorage.setItem("token", data.token);
 
-          // window.history.back();
           setToken(data.token);
           setUserData({ user_email: e.target.email.value })
-          // prevRoute === '/signup' ? navigate("/signup-details") : navigate('/profile')
           if (prevRoute === '/signup' || data.details === null) {
             navigate("/signup-details")
           } else {
-            // navigate("/signup-details")
             setShowMessage(true)
 
             setLoading(false)
@@ -70,7 +62,7 @@ const Login = () => {
                 token: data.token
               }
             }
-            axios.get("https://api.forevisiondigital.in/getUserData", config).then(({ data }) => {
+            axios.get(backendUrl + "getUserData", config).then(({ data }) => {
               // console.log(data.data);
               if (data.data === null) {
 

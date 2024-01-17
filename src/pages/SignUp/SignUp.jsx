@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { toast } from "react-toastify";
+import { backendUrl } from "../../constants";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -51,7 +52,7 @@ const SignUp = () => {
       password: e.target['user_password'].value
     }
 
-    axios.post("https://api.forevisiondigital.in/user-signup", signupData).then(({ data }) => {
+    axios.post(backendUrl + "user-signup", signupData).then(({ data }) => {
       if (data.acknowledged) {
         setUId(data.insertedId)
         setUserData({ ...userData, user_email: signupData.email })

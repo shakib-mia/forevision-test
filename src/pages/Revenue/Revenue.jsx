@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import background from "../../assets/images/background.png"
 import Button from '../../components/Button/Button';
 import RevenueAnalytics from '../../components/RevenueAnalytics/RevenueAnalytics';
@@ -8,8 +8,9 @@ import { SongsContext } from "./../../contexts/SongsContext"
 import { ProfileContext } from '../../contexts/ProfileContext';
 import { toast } from 'react-toastify';
 import notFound from "../../assets/images/not-found.svg";
-import rupee from "../../assets/icons/rupee.svg"
-import { useNavigate } from 'react-router-dom';
+// import rupee from "../../assets/icons/rupee.svg"
+// import { useNavigate } from 'react-router-dom';
+import { backendUrl } from '../../constants';
 
 const Revenue = () => {
   const [songs, setSongs] = useState([]);
@@ -17,7 +18,7 @@ const Revenue = () => {
   const [isrcs, setIsrcs] = useState([])
   const currentTime = new Date().getHours();
   // const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [bestSong, setBestSong] = useState("Loading...")
 
 
@@ -36,7 +37,7 @@ const Revenue = () => {
   useEffect(() => {
     if (userData?.first_name || userData?.partner_name) {
       axios
-        .get("https://api.forevisiondigital.in/user-revenue", {
+        .get(backendUrl + "user-revenue", {
           headers: {
             token,
           },
@@ -105,7 +106,7 @@ const Revenue = () => {
 
       for (const [isrcIndex, item] of isrcs.entries()) {
         // Create a promise for each axios.get call
-        const promise = axios.get(`https://api.forevisiondigital.in/user-revenue/${item}`)
+        const promise = axios.get(`${backendUrl}user-revenue/${item}`)
           .then(({ data }) => {
             if (data) {
               data.revenues.forEach((song, index) => {
@@ -205,7 +206,7 @@ const Revenue = () => {
   // console.log(total);
   let totalFinalRevenue = 0;
   for (const entry of aggregatedMusicData) {
-    if (entry['total_revenue_against_isrc'] !== NaN) {
+    if (!isNaN(entry['total_revenue_against_isrc'])) {
       totalFinalRevenue += entry["total_revenue_against_isrc"];
     }
     // totalTotal += entry["total"];

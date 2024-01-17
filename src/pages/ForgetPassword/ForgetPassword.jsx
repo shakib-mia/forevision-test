@@ -4,6 +4,7 @@ import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { backendUrl } from "../../constants";
 // import { Link } from "react-router-dom";
 
 const ForgetPassword = () => {
@@ -19,12 +20,7 @@ const ForgetPassword = () => {
     const formData = new FormData();
     formData.append("emailId", e.target["forgot-email"].value);
 
-    // axios.post('http://adztronaut.com/music/admin/api/forgotPassword', formData).then(({ data }) => {
-    //   toast.success(data.message)
-    // })
-
-    // axios.post("https://api.forevisiondigital.in/reset-password", { user_email: e.target["forgot-email"].value }).then(({ data }) => console.log(data))
-    axios.post("https://api.forevisiondigital.in/reset-password", { user_email: e.target["forgot-email"].value.toLowerCase() }).then(({ data }) => {
+    axios.post(backendUrl + "reset-password", { user_email: e.target["forgot-email"].value.toLowerCase() }).then(({ data }) => {
       if (data.modifiedCount) {
         setSending(false);
         setSent(true)

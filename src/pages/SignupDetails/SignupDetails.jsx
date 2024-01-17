@@ -7,6 +7,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { backendUrl } from "../../constants";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
@@ -137,7 +138,7 @@ const SignupDetails = () => {
 
 
     // // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
-    axios.post("https://api.forevisiondigital.in/post-user-details", userDetailsData).then(res => {
+    axios.post(backendUrl + "post-user-details", userDetailsData).then(res => {
       if (res.data.acknowledged) {
         // console.log(res.data);
 

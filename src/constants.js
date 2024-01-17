@@ -16,8 +16,9 @@ import OngoingProjects from "./pages/OngoingProjects/OngoingProjects";
 import PreviousProjects from "./pages/PreviousProjects/PreviousProjects";
 import Profile from "./pages/Profile/Profile";
 import Revenue from "./pages/Revenue/Revenue";
-import Construction from "./pages/Construction/Construction";
-import underConstruction from "./assets/images/under-construction.webp";
+
+// export const backendUrl = "http://localhost:4000/";
+export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   {
