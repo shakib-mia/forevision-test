@@ -5,13 +5,13 @@ import Button from "../../components/Button/Button";
 import check from "./../../assets/icons/checkbox.webp";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import axios from "axios";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { backendUrl } from "../../constants";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
-  const { userData, token } = useContext(ProfileContext)
+  const { userData } = useContext(ProfileContext)
   const [selectedCode, setSelectedCode] = useState('91');
   const [screen, setScreen] = useState("name");
   const navigate = useNavigate()
@@ -117,7 +117,7 @@ const SignupDetails = () => {
   const signup = (e) => {
     e.preventDefault();
     // console.log(userData.Id);
-    const userDetailsData = { ...signupDetailsData, phone_no: selectedCode + signupDetailsData.phone_no, user_email: userData?.user_email };
+    const userDetailsData = { ...signupDetailsData, phone_no: selectedCode + signupDetailsData.phone_no, user_email: userData?.emailId };
 
 
     // const formData = new FormData();
@@ -134,11 +134,16 @@ const SignupDetails = () => {
     //   headers: {
     //     Authorization: `Bearer ${token}`,
     //   },
+
+
     // }
 
 
+
+    // console.log(userDetailsData);
     // // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
     axios.post(backendUrl + "post-user-details", userDetailsData).then(res => {
+
       if (res.data.acknowledged) {
         // console.log(res.data);
 
@@ -226,6 +231,7 @@ const SignupDetails = () => {
       </AuthBody>
 
 
+      {/* ========== Phone View ========== */}
       {/* <ReactOwlCarousel items={1} mouseDrag={false} touchDrag={false} id="signup-details-slider"> */}
       <AuthBody
         heading="We need a few more details"

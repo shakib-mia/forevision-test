@@ -8,7 +8,6 @@ import BottomBar from "./components/BottomBar/BottomBar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Button from "./components/Button/Button";
 
 function App() {
   const [userData, setUserData] = useState({});
@@ -57,26 +56,10 @@ function App() {
 
   // if(userData._id === );
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   // console.log(e.target.file.files[0]);
-  //   const formData = new FormData();
-
-  //   formData.append("file", e.target.file.files[0]);
-
-  //   axios
-  //     .post(backendUrl + "upload", formData)
-  //     .then(({ data }) => console.log(data));
-  // };
-
   return (
     <>
       {/* <Construction /> */}
-      {/* <form onSubmit={handleSubmit}>
-        <input type="file" name="file" />
-        <Button type="submit">Upload</Button>
-      </form> */}
+
       <ProfileContext.Provider value={store}>
         {token ? token.length && <BottomBar /> : <></>}
         {location.pathname !== "/login" &&
