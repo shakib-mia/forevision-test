@@ -305,7 +305,7 @@ const Revenue = () => {
                   <h6 className='text-heading-6-bold text-white mb-1'>Revenue Analytics</h6>
                   <Button className='px-2 py-1' disabled={true} text="Request Withdraw" />
                 </div>
-                <p className='text-subtitle-1 text-interactive-dark-destructive-active tracking-[0.5px] mt-1 italic'>* Updated Till September, 2023</p>
+                <p className='text-subtitle-1 text-interactive-dark-destructive-active tracking-[0.5px] mt-1 italic'>* Updated Till December, 2023</p>
               </div>
 
               <div className='mt-[32px] grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3'>
