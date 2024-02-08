@@ -17,6 +17,7 @@ const Revenue = () => {
   const [greeting, setGreeting] = useState("")
   const [isrcs, setIsrcs] = useState([])
   const currentTime = new Date().getHours();
+  const [details, setDetails] = useState("")
   // const [success, setSuccess] = useState(false);
   // const navigate = useNavigate();
   const [bestSong, setBestSong] = useState("Loading...")
@@ -281,6 +282,7 @@ const Revenue = () => {
 
   const phoneOptions = ["isrc", 'song_name', 'total_revenue_against_isrc']
 
+  // console.log(songs.filter(item => item.isrc === 'INF232100090'));
 
   return (
 
@@ -339,28 +341,37 @@ const Revenue = () => {
                     ? item === 'after tds revenue' ? final_after_tds[song.isrc].toFixed(8) : song[item].toFixed(8)
                     : item === 'total' ? total_lifetime_views[song.isrc]
                       : item === 'platformName'
-                        ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
-                          position: "bottom-center"
-                        })}>See Details</button>
-                        // ? <button onClick={() => handleExpand(song.isrc)}>See Details</button>
+                        // ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
+                        //   position: "bottom-center"
+                        // })}>See Details</button>
+                        ? <button onClick={() => setDetails(song.isrc)}>See Details</button>
                         : song[item]}</li>
               })}
               {/* details item */}
-              {/*{details[0] && <div className='w-screen h-screen bg-[#00000011] shadow-xl fixed top-0 left-0 z-[9999] flex justify-center items-center'>
+              {details.length ? <div className='w-screen h-screen bg-[#00000007] shadow-xl fixed top-0 left-0 z-[9999] flex justify-center items-center'>
                 <div className='w-5/6 h-[80vh] bg-white relative overflow-x-visible rounded-2xl overflow-y-auto p-3'>
-                  <button onClick={() => handleExpand("")} className='sticky text-interactive-light-destructive-focus text-heading-3 top-0'>&times;</button>
-                  //  list heading 
-                  <ul className="grid grid-cols-4 gap-3">
-                    {options2.map((item, key) => <li key={key} className='capitalize text-center'>{item === "uploadTime" ? "Month" : item.includes("_") ? item.split("_").join(" ") : item}</li>)}
+                  <button onClick={() => setDetails("")} className='sticky text-interactive-light-destructive-focus text-heading-3 top-0'>&times;</button>
+                  {/* //  list heading  */}
+                  <ul className="grid grid-cols-9 gap-3">
+                    {options.map((item, key) => <li key={key} className='capitalize text-center'>{item === "uploadTime" ? "Month" : item.includes("_") ? item.split("_").join(" ") : item}</li>)}
                   </ul>
 
-                //list 
-                  {details.map(song2 => <ul className='grid grid-cols-4 justify-between'>
-                    // list item 
-                    {options2.map(item => <li className='text-center'>{item === "uploadTime" ? month[new Date(song2[item]).getMonth()] : song2[item]}</li>)}
+                  {/* <ul >
+                    {options.map((i, key) => <li className='grid grid-cols-9 gap-3' key={key}>
+                      {songs.filter(song => song.isrc === details).map(item => <li>{item[i]}</li>)}
+                    </li>)}
+                  </ul> */}
+
+                  {songs.filter(song => song.isrc === details).map(item => <ul className='grid grid-cols-9 gap-3 text-center'>
+                    {options.map((i, key) => <li>{item[i]}</li>)}
                   </ul>)}
+
+                  {/* //list  */}
+                  {/* {details.map(song2 => <ul className='grid grid-cols-4 justify-between'>
+                    {options.map(item => <li className='text-center'>{song2[item]}</li>)}
+                  </ul>)} */}
                 </div>
-              </div>} */}
+              </div> : <></>}
             </ul>)}
           </div>
 
