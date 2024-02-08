@@ -63,7 +63,7 @@ const Login = () => {
               }
             }
             axios.get(backendUrl + "getUserData", config).then(({ data }) => {
-              // console.log(data.data);
+              console.log(data.data);
               if (data.data === null) {
 
                 setUserData({ ...userData, user_email: e.target.email.value })

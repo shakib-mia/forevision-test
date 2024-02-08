@@ -117,7 +117,9 @@ const SignupDetails = () => {
   const signup = (e) => {
     e.preventDefault();
     // console.log(userData.Id);
-    const userDetailsData = { ...signupDetailsData, phone_no: selectedCode + signupDetailsData.phone_no, user_email: userData?.emailId };
+    const userDetailsData = { ...signupDetailsData, phone_no: selectedCode + signupDetailsData.phone_no, user_email: userData?.user_email };
+    console.log(userData);
+
 
 
     // const formData = new FormData();

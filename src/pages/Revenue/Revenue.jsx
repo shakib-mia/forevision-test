@@ -33,15 +33,16 @@ const Revenue = () => {
   }, [currentTime])
 
   const { userData, token } = useContext(ProfileContext);
-
+  // console.log(token);
   useEffect(() => {
     if (userData?.first_name || userData?.partner_name) {
+      const config = {
+        headers: {
+          token
+        }
+      }
       axios
-        .get(backendUrl + "user-revenue", {
-          headers: {
-            token,
-          },
-        })
+        .get(backendUrl + "user-revenue", config)
         .then(({ data }) => setIsrcs(data))
         .catch(error => {
           console.log(error);
