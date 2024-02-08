@@ -320,8 +320,9 @@ const Revenue = () => {
               </div>
               {/* </>} */}
             </div>
-            {filtered.length > 0 && <div className='w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative bg-[length:100%_100%] bg-grey-light 2xl:bg-white bg-[center_top_-140px] 2xl:bg-[center_top_-18vh] 3xl:bg-[center_top_-15vh] 2xl:bg-[length:100%_100%] bg-no-repeat rounded-[20px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px]' style={{ backgroundImage: `url(${balanceBG})` }}>
-              <h4 className='text-heading-4-bold text-white 2xl:text-grey'>Account <br className='2xl:hidden' /> Balance</h4>
+            {filtered.length > 0 && <div className='w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative bg-[length:100%_100%] bg-grey-light 2xl:bg-white rounded-[24px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px]'>
+              <img src={balanceBG} className='absolute w-full h-auto left-0 top-0 z-0' alt="" />
+              <h4 className='text-heading-4-bold text-white 2xl:text-grey relative'>Account <br className='2xl:hidden' /> Balance</h4>
               <h4 className='text-heading-4-bold text-grey mt-5 flex items-center gap-2'>&#8377; {data[2].data.toFixed(2)}</h4>
             </div>}
           </div>
