@@ -342,10 +342,10 @@ const Revenue = () => {
                     ? item === 'after tds revenue' ? final_after_tds[song.isrc].toFixed(8) : song[item].toFixed(8)
                     : item === 'total' ? total_lifetime_views[song.isrc]
                       : item === 'platformName'
-                        // ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
-                        //   position: "bottom-center"
-                        // })}>See Details</button>
-                        ? <button onClick={() => setDetails(song.isrc)}>See Details</button>
+                        ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
+                          position: "bottom-center"
+                        })}>See Details</button>
+                        // ? <button onClick={() => setDetails(song.isrc)}>See Details</button>
                         : song[item]}</li>
               })}
               {/* details item */}
