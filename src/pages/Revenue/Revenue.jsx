@@ -254,7 +254,7 @@ const Revenue = () => {
       },
     ])
     // }
-  }, [totalFinalRevenue, totalView, bestSong])
+  }, [totalFinalRevenue, totalView, bestSong, isrcs])
 
 
   const options = [
