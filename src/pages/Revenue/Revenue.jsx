@@ -11,6 +11,7 @@ import notFound from "../../assets/images/not-found.svg";
 // import rupee from "../../assets/icons/rupee.svg"
 // import { useNavigate } from 'react-router-dom';
 import { backendUrl } from '../../constants';
+import RevenueDetails from '../../components/RevenueDetails/RevenueDetails';
 
 const Revenue = () => {
   const [songs, setSongs] = useState([]);
@@ -280,7 +281,24 @@ const Revenue = () => {
     'Revenue After Forevision Deduction',
   ];
 
-  const phoneOptions = ["isrc", 'song_name', 'total_revenue_against_isrc']
+  const phoneOptions = ['isrc', 'song_name', 'total_revenue_against_isrc']
+  const phoneOptionsDetailsHeading = ['Platform Name', 'Revenue']
+  const phoneOptionsDetails = ['platformName', 'final revenue']
+
+  const items = songs.filter(song => song.isrc === details).sort((item1, item2) => item1.platformName.localeCompare(item2.platformName))
+
+
+  let groupedData = items.reduce((acc, cur) => {
+    if (!acc[cur.platformName]) {
+      acc[cur.platformName] = { ...cur, 'final revenue': 0, total: 0 };
+    }
+    acc[cur.platformName]['final revenue'] += cur['final revenue'];
+    acc[cur.platformName].total += cur.total;
+    return acc;
+  }, {});
+
+  // Convert the groupedData object back to an array if needed
+  let result = Object.values(groupedData);
 
   // console.log(songs.filter(item => item.isrc === 'INF232100090'));
 
@@ -301,7 +319,7 @@ const Revenue = () => {
                 }
 
               </h4>
-              <p className='text-subtitle-1 text-interactive-dark-active 2xl:text-white tracking-[0.5px] mt-1'>Welcome to your revenue dashboard, Let’s see how much you’ve earned with us !</p>
+              <p className='text-subtitle-1 text-interactive-dark-active 2xl:text-white tracking-[0.5px] mt-1'>Welcome to your revenue dashboard, Let’s see how much you’ve earned with us ! <p className='2xl:hidden text-interactive-light-destructive'>To see the detailed version of the dashboard, please log in from a desktop.</p></p>
               {/* {filtered.length > 0 && <> */}
               <div className="flex justify-between items-end">
                 <div className='mt-4 hidden 2xl:flex flex-col justify-center items-center w-fit'>
@@ -324,6 +342,7 @@ const Revenue = () => {
               <img src={balanceBG} className='absolute w-full h-auto left-0 top-0 z-0' alt="" />
               <h4 className='text-heading-4-bold text-white 2xl:text-grey relative'>Account <br className='2xl:hidden' /> Balance</h4>
               <h4 className='text-heading-4-bold text-grey mt-5 flex items-center gap-2'>&#8377; {data[2].data.toFixed(2)}</h4>
+
             </div>}
           </div>
 
@@ -342,37 +361,14 @@ const Revenue = () => {
                     ? item === 'after tds revenue' ? final_after_tds[song.isrc].toFixed(8) : song[item].toFixed(8)
                     : item === 'total' ? total_lifetime_views[song.isrc]
                       : item === 'platformName'
-                        ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
-                          position: "bottom-center"
-                        })}>See Details</button>
-                        // ? <button onClick={() => setDetails(song.isrc)}>See Details</button>
+                        // ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
+                        //   position: "bottom-center"
+                        // })}>See Details</button>
+                        ? <button onClick={() => setDetails(song.isrc)}>See Details</button>
                         : song[item]}</li>
               })}
               {/* details item */}
-              {details.length ? <div className='w-screen h-screen bg-[#00000007] shadow-xl fixed top-0 left-0 z-[9999] flex justify-center items-center'>
-                <div className='w-5/6 h-[80vh] bg-white relative overflow-x-visible rounded-2xl overflow-y-auto p-3'>
-                  <button onClick={() => setDetails("")} className='sticky text-interactive-light-destructive-focus text-heading-3 top-0'>&times;</button>
-                  {/* //  list heading  */}
-                  <ul className="grid grid-cols-9 gap-3">
-                    {options.map((item, key) => <li key={key} className='capitalize text-center'>{item === "uploadTime" ? "Month" : item.includes("_") ? item.split("_").join(" ") : item}</li>)}
-                  </ul>
-
-                  {/* <ul >
-                    {options.map((i, key) => <li className='grid grid-cols-9 gap-3' key={key}>
-                      {songs.filter(song => song.isrc === details).map(item => <li>{item[i]}</li>)}
-                    </li>)}
-                  </ul> */}
-
-                  {songs.filter(song => song.isrc === details).map(item => <ul className='grid grid-cols-9 gap-3 text-center'>
-                    {options.map((i, key) => <li>{item[i]}</li>)}
-                  </ul>)}
-
-                  {/* //list  */}
-                  {/* {details.map(song2 => <ul className='grid grid-cols-4 justify-between'>
-                    {options.map(item => <li className='text-center'>{song2[item]}</li>)}
-                  </ul>)} */}
-                </div>
-              </div> : <></>}
+              {details.length ? <RevenueDetails setDetails={setDetails} options={options} songs={songs} details={details} /> : <></>}
             </ul>)}
           </div>
 
@@ -393,9 +389,9 @@ const Revenue = () => {
             {aggregatedMusicData.map(song => <ul className="grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
               {/* list item */}
               {phoneOptions.map(item => {
-                return <li className='text-center'>{
+                return <li className='text-center' onClick={() => setDetails(song.isrc)}>{
                   typeof song[item] === 'number' && song[item].toString().split(".").length > 1
-                    ? item === 'after tds revenue' ? final_after_tds[song.isrc].toFixed(8) : song[item].toFixed(8)
+                    ? item === 'after tds revenue' ? final_after_tds[song.isrc].toFixed(8) : song[item].toFixed(2)
                     : item === 'total' ? total_lifetime_views[song.isrc]
                       : item === 'platformName'
                         ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
@@ -405,21 +401,21 @@ const Revenue = () => {
                         : song[item]}</li>
               })}
               {/* details item */}
-              {/*{details[0] && <div className='w-screen h-screen bg-[#00000011] shadow-xl fixed top-0 left-0 z-[9999] flex justify-center items-center'>
+              {details && <div className='w-screen h-screen bg-[#00000011] shadow-xl fixed top-0 left-0 z-[9999] flex justify-center items-center'>
                 <div className='w-5/6 h-[80vh] bg-white relative overflow-x-visible rounded-2xl overflow-y-auto p-3'>
-                  <button onClick={() => handleExpand("")} className='sticky text-interactive-light-destructive-focus text-heading-3 top-0'>&times;</button>
-                  //  list heading 
-                  <ul className="grid grid-cols-4 gap-3">
-                    {options2.map((item, key) => <li key={key} className='capitalize text-center'>{item === "uploadTime" ? "Month" : item.includes("_") ? item.split("_").join(" ") : item}</li>)}
+                  <button onClick={() => setDetails("")} className='sticky text-interactive-light-destructive-focus text-heading-3 top-0'>&times;</button>
+                  {/* //  list heading  */}
+                  <ul className="grid grid-cols-2 gap-3">
+                    {phoneOptionsDetailsHeading.map((item, key) => <li key={key} className='capitalize text-center'>{item === "uploadTime" ? "Month" : item.includes("_") ? item.split("_").join(" ") : item}</li>)}
                   </ul>
 
-                //list 
-                  {details.map(song2 => <ul className='grid grid-cols-4 justify-between'>
-                    // list item 
-                    {options2.map(item => <li className='text-center'>{item === "uploadTime" ? month[new Date(song2[item]).getMonth()] : song2[item]}</li>)}
+                  {/* //list  */}
+                  {result.map(song2 => <ul className='grid grid-cols-2 justify-between'>
+                    {/* // list item  */}
+                    {phoneOptionsDetails.map(item => <li className='text-center'>{item === 'final revenue' ? song2[item].toFixed(4) : song2[item]}</li>)}
                   </ul>)}
                 </div>
-              </div>} */}
+              </div>}
             </ul>)}
             {/* {<img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />} */}
           </div>}
