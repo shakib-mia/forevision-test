@@ -33,7 +33,7 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
 
     return (
         <>
-            <div className='w-screen h-screen fixed top-0 left-0 z-[9999] flex justify-center items-center' style={{ backgroundColor: '#00000080' }}>
+            <div className='w-screen h-screen fixed top-0 left-0 z-[9999] flex justify-center items-center backdrop-blur-[1px]'>
                 <div className='w-3/5 h-[80vh] relative overflow-x-visible rounded-2xl overflow-y-auto p-3 px-5' style={{ backgroundColor: '#ffffffd9' }}>
                     <button onClick={() => setDetails("")} className='absolute text-interactive-light-destructive-focus text-heading-3 top-2 right-2 opacity-50'>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
