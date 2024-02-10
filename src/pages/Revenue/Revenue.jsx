@@ -254,7 +254,7 @@ const Revenue = () => {
       },
     ])
     // }
-  }, [aggregatedMusicData, aggregatedMusicData.length, totalFinalRevenue, totalView, isrcs, bestSong])
+  }, [totalFinalRevenue, totalView, bestSong, isrcs])
 
 
   const options = [
@@ -367,10 +367,10 @@ const Revenue = () => {
                         ? <button onClick={() => setDetails(song.isrc)}>See Details</button>
                         : song[item]}</li>
               })}
-              {/* details item */}
-              {details.length ? <RevenueDetails setDetails={setDetails} options={options} songs={songs} details={details} /> : <></>}
             </ul>)}
           </div>
+          {/* details item modal */}
+          {details.length ? <RevenueDetails setDetails={setDetails} options={options} songs={songs} details={details} /> : <></>}
 
           {filtered.length > 0 && <div className='2xl:hidden bg-grey-light p-2 rounded-[20px] mt-5'>
             <div className='border border-primary-light rounded-full px-3 text-primary-light py-1 grid grid-cols-3 relative'>
