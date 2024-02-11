@@ -2,6 +2,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { ToastContainer } from "react-toastify";
+import Construction from "./pages/Construction/Construction";
 import "react-toastify/dist/ReactToastify.css";
 import { backendUrl, routes } from "./constants";
 import BottomBar from "./components/BottomBar/BottomBar";
@@ -58,9 +59,9 @@ function App() {
 
   return (
     <>
-      {/* <Construction /> */}
+      <Construction />
 
-      <ProfileContext.Provider value={store}>
+      {/* <ProfileContext.Provider value={store}>
         {token ? token.length && <BottomBar /> : <></>}
         {location.pathname !== "/login" &&
           location.pathname !== "/signup" &&
@@ -73,7 +74,7 @@ function App() {
         </Routes>
 
         <ToastContainer />
-      </ProfileContext.Provider>
+      </ProfileContext.Provider> */}
     </>
   );
 }
