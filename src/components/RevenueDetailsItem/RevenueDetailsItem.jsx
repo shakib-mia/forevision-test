@@ -17,13 +17,17 @@ const RevenueDetailsItem = ({ result, details, songs }) => {
   let countByMonth = [];
   const check = songsByUniqueDate.forEach(s => {
     let count = 0;
+    let revenue = 0;
     songsByPlatform.forEach(songs => {
       if (s.date === songs.date) {
         count = count + songs.total;
+        revenue = revenue + songs["final revenue"]
       }
     })
-    countByMonth.push({ count, date: s.date })
+    countByMonth.push({ count, date: s.date, revenue })
   })
+
+  console.log(countByMonth);
 
   const months = ["January", "February", "March", "April", "May", "June", "July",
     "August", "September", "October", "November", "December"];
@@ -47,13 +51,6 @@ const RevenueDetailsItem = ({ result, details, songs }) => {
             </summary>
             <div className='w-full flex justify-end'>
               <table className='w-11/12 text-center my-1'>
-                {/* <thead className='font-bold'>
-                  <tr>
-                    <td>Month Name</td>
-                    <td>Total Streams</td>
-                    <td>Revenue</td>
-                  </tr>
-                </thead> */}
                 {
                   countByMonth.map(d =>
                     <tr style={{ color: "#78B0FD" }}>
@@ -61,7 +58,7 @@ const RevenueDetailsItem = ({ result, details, songs }) => {
                         months[new Date(d.date).getMonth()]
                       } {new Date(d.date).getFullYear()}</td>
                       <td className='w-1/3'>{d.count}</td>
-                      <td className='w-1/3'>{i["final revenue"]}</td>
+                      <td className='w-1/3'>{d.revenue}</td>
                     </tr>
                   )
                 }
