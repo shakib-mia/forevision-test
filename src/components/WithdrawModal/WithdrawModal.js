@@ -66,11 +66,11 @@ const WithdrawModal = ({ setWithdrawModal }) => {
             <div className='my-4 block'>
               <button className='disabled:bg-interactive-light-disabled disabled:cursor-not-allowed text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active font-bold rounded-full uppercase flex gap-1 px-3 py-2'>Save and Next</button>
             </div>
-            {
-              showGSTModal ? <GSTModal setShowGstModal={setShowGstModal} /> : showIndianModal ? <IndianModal setShowIndianModal={setShowIndianModal} /> : showForeignerModal ? <ForeignerModal setShowForeignerModal={setShowForeignerModal} /> : ""
-            }
           </div>
         </form>
+        {
+          showGSTModal ? <GSTModal setShowGstModal={setShowGstModal} /> : showIndianModal ? <IndianModal setShowIndianModal={setShowIndianModal} /> : showForeignerModal ? <ForeignerModal setShowForeignerModal={setShowForeignerModal} /> : ""
+        }
       </div>
     </div>
   )

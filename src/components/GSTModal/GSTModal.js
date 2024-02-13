@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
 import "./GSTModal.css"
+import IndianModal from '../IndianModal/IndianModal';
 
 const GSTModal = ({ setShowGstModal }) => {
   const [fileName, setFileName] = useState("");
+  const [showIndianModal, setShowIndianModal] = useState(false);
 
-  console.log(fileName.split("\\"));
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setShowIndianModal(true);
+  }
+
   return (
     <div className='w-screen h-screen fixed top-0 left-0 z-[9999] flex justify-center items-center backdrop-blur-[1px]'>
       <div className='md:w-3/5 w-11/12 h-[80vh] relative overflow-x-visible rounded-2xl overflow-y-auto p-3 px-5' style={{ backgroundColor: '#ffffffd9' }}>
@@ -18,7 +24,7 @@ const GSTModal = ({ setShowGstModal }) => {
           <p style={{ fontSize: "21.33px", lineheight: "24px" }} className='md:ml-3 text-heading-6-bold text-grey-dark'>Please fill the form out to initiate the request</p>
         </div>
         <p style={{ color: "#78B0FD" }} className='text-heading-6 md:ml-3 my-2 mt-5'>Submit your GST Details</p>
-        <form className=''>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <div className='md:grid grid-cols-2'>
             <div className='my-4'>
               <input className='bg-gray-50 text-black text-sm shadow-md rounded-lg block md:w-5/6 w-full p-2' type="text" name="gst" id="" placeholder='Eg. :22AAAAA0000A1Z5' />
@@ -52,9 +58,13 @@ const GSTModal = ({ setShowGstModal }) => {
             </div>
           </div>
           <div className='my-4 flex justify-center'>
-            <button className='disabled:bg-interactive-light-disabled disabled:cursor-not-allowed text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active font-bold rounded-full uppercase flex gap-1 px-3 py-2'>Save and Next</button>
+            <input type='submit' value={"Save and Next"} className='disabled:bg-interactive-light-disabled disabled:cursor-not-allowed text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active font-bold rounded-full uppercase flex gap-1 px-3 py-2' />
           </div>
         </form>
+        {
+          showIndianModal ? <IndianModal setShowIndianModal={setShowIndianModal} /> : ""
+        }
+
       </div>
     </div>
   )
