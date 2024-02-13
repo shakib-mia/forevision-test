@@ -1,7 +1,26 @@
-import React from 'react'
-import Button from '../Button/Button'
+import React, { useState } from 'react'
+import "./WithdrawModal.css"
+import { toast } from 'react-toastify';
 
 const WithdrawModal = ({ setWithdrawModal }) => {
+  const [isIndian, setIsIndian] = useState("");
+  const [haveGST, setHaveGST] = useState("");
+  const [amount, setAmount] = useState(0);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isIndian === "" && haveGST === "" && amount === 0) {
+      toast.error("Please fill the form properly.", { toastId: "formError", position: 'top-center' })
+    } else if (isIndian === "Yes" && haveGST === "Yes") {
+      // gst and indian
+    } else if (isIndian === "Yes" && haveGST === "No") {
+      // indian
+    } else {
+      // foreigner
+    }
+
+  }
+
   return (
     <div className='w-screen h-screen fixed top-0 left-0 z-[9999] flex justify-center items-center backdrop-blur-[1px]'>
       <div className='md:w-3/5 w-11/12 h-[80vh] relative overflow-x-visible rounded-2xl overflow-y-auto p-3 px-5' style={{ backgroundColor: '#ffffffd9' }}>
@@ -11,13 +30,13 @@ const WithdrawModal = ({ setWithdrawModal }) => {
           </svg>
         </button>
         <div className='mt-4'>
-          <p style={{ fontSize: "50.52px", lineheight: "24px" }} className='md:ml-3 mb-3 text-heading-6-bold text-grey-dark my-1'>Revenue Withdraw</p>
+          <p className='md:ml-3 mb-3 text-heading-6-bold title text-grey-dark my-1'>Revenue Withdraw</p>
           <p style={{ fontSize: "21.33px", lineheight: "24px" }} className='md:ml-3 text-heading-6-bold text-grey-dark'>Please fill the form out to initiate the request</p>
         </div>
-        <div className='mt-5'>
+        <form onSubmit={handleSubmit} className='mt-5'>
           <div className='md:grid grid-cols-2'>
             <div className='my-4'>
-              <select id="countries" class="bg-gray-50 text-black text-sm shadow-md rounded-lg block md:w-5/6 w-full p-2">
+              <select onChange={(e) => setIsIndian(e.target.value)} id="countries" class="bg-gray-50 text-black text-sm shadow-md rounded-lg block md:w-5/6 w-full p-2">
                 <option selected>Select</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
@@ -25,7 +44,7 @@ const WithdrawModal = ({ setWithdrawModal }) => {
               <label for="countries" class="block text-sm text-black mt-1">Are you an Indian citizen?</label>
             </div>
             <div className='my-4'>
-              <select id="countries" class="bg-gray-50 text-black text-sm shadow-md rounded-lg block md:w-5/6 w-full p-2">
+              <select id="countries" class="bg-gray-50 text-black text-sm shadow-md rounded-lg block md:w-5/6 w-full p-2" onChange={(e) => setHaveGST(e.target.value)}>
                 <option selected>Select</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
@@ -33,11 +52,7 @@ const WithdrawModal = ({ setWithdrawModal }) => {
               <label for="countries" class="block text-sm text-black mt-1">Do you have a GST number?</label>
             </div>
             <div className='my-4'>
-              <select id="countries" class="bg-gray-50 text-black text-sm shadow-md rounded-lg block md:w-5/6 w-full p-2">
-                <option selected>&#8377;</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
+              <input type="number" value={amount === 0 ? "" : amount} onChange={(e) => setAmount(e.target.value)} className='bg-gray-50 text-black text-sm shadow-md rounded-lg block md:w-5/6 w-full p-2' placeholder='&#8377;' name="amount" id="" />
               <label for="countries" class="block text-sm text-black mt-1">Enter amount</label>
             </div>
             <div className='my-4 block'>
@@ -45,7 +60,7 @@ const WithdrawModal = ({ setWithdrawModal }) => {
             </div>
 
           </div>
-        </div>
+        </form>
       </div>
     </div>
   )
