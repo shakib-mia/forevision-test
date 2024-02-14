@@ -326,7 +326,11 @@ const Revenue = () => {
               <div className="flex justify-between items-end">
                 <div className='mt-4 hidden 2xl:flex flex-col justify-center items-center w-fit'>
                   <h6 className='text-heading-6-bold text-white mb-1'>Revenue Analytics</h6>
-                  <Button onClick={() => { data[2].data.toFixed(2) > 2000 ? setWithdrawModal(true) : toast.error(<><p>Request Error</p> <p>You need atleast INR 1000 in your account to Request for withdrawal</p></>, { toastId: "error", position: 'top-center' }) }} className='px-2 py-1' text="Request Withdraw" />
+                  <Button
+                    disabled={true}
+                    // onClick={() => { data[2].data.toFixed(2) > 2000 ? setWithdrawModal(true) : toast.error(<><p>Request Error</p> <p>You need atleast INR 1000 in your account to Request for withdrawal</p></>, { toastId: "error", position: 'top-center' }) }}
+                    className='px-2 py-1'
+                    text="Request Withdraw" />
                 </div>
                 <p className='text-subtitle-1 text-interactive-dark-destructive-active tracking-[0.5px] mt-1 italic'>* Updated Till December, 2023</p>
               </div>
@@ -345,7 +349,11 @@ const Revenue = () => {
               <h4 className='text-heading-4-bold text-white 2xl:text-grey relative'>Account <br className='2xl:hidden' /> Balance</h4>
               <h4 className='text-heading-4-bold text-grey mt-5 flex items-center gap-2'>&#8377; {data[2].data.toFixed(2)}</h4>
               <div className='flex justify-center mt-5'>
-                <Button className='px-2 py-1' onClick={() => { data[2].data.toFixed(2) > 2000 ? setWithdrawModal(true) : toast.error(<><p className='font-bold'>Request Error</p> <p>You need atleast INR 1000 in your account to Request for withdrawal</p></>, { toastId: "error", position: 'top-center' }) }} text="Request Withdraw" />
+                <Button
+                  className='px-2 py-1'
+                  disabled={true}
+                  // onClick={() => { data[2].data.toFixed(2) > 2000 ? setWithdrawModal(true) : toast.error(<><p className='font-bold'>Request Error</p> <p>You need atleast INR 1000 in your account to Request for withdrawal</p></>, { toastId: "error", position: 'top-center' }) }}
+                  text="Request Withdraw" />
               </div>
             </div>}
           </div>
