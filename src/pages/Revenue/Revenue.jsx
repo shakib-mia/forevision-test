@@ -366,10 +366,10 @@ const Revenue = () => {
               {labels.map((item, key) => <li key={key} className='capitalize text-center font-semibold'>{item}</li>)}
             </ul>
 
-            {aggregatedMusicData.map(song => <ul className="grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+            {aggregatedMusicData.map((song, key) => <ul key={key} className="grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
               {/* list item */}
-              {options.map(item => {
-                return <li className='text-center'>{
+              {options.map((item, key) => {
+                return <li key={key} className='text-center'>{
                   typeof song[item] === 'number' && song[item].toString().split(".").length > 1
                     ? item === 'after tds revenue' ? final_after_tds[song.isrc].toFixed(8) : song[item].toFixed(8)
                     : item === 'total' ? total_lifetime_views[song.isrc]
@@ -401,8 +401,8 @@ const Revenue = () => {
 
             {aggregatedMusicData.map(song => <ul className="grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
               {/* list item */}
-              {phoneOptions.map(item => {
-                return <li className='text-center' onClick={() => setDetails(song.isrc)}>{
+              {phoneOptions.map((item, key) => {
+                return <li className='text-center' onClick={() => setDetails(song.isrc)} key={key}>{
                   typeof song[item] === 'number' && song[item].toString().split(".").length > 1
                     ? item === 'after tds revenue' ? final_after_tds[song.isrc].toFixed(8) : song[item].toFixed(2)
                     : item === 'total' ? total_lifetime_views[song.isrc]

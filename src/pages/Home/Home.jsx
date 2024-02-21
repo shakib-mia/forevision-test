@@ -6,9 +6,11 @@ import instagram from "./../../assets/icons/social/insta-black.webp";
 import twitter from "./../../assets/icons/social/twitter-black.webp";
 import accountBg from "./../../assets/images/account-bg.svg"
 import SongListItem from "../../components/SongListItem/SongListItem";
+import { useNavigate } from "react-router-dom";
 // import bg from "./../../assets/images/dashboard-bg.webp";
 
 const Home = () => {
+  const navigate = useNavigate()
 
   return (
     <div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7">
@@ -61,11 +63,11 @@ const Home = () => {
             <SongListItem name="peja meghe borsha" />
           </div>
 
-          <div className="flex mt-5 items-end">
+          <div className="flex mt-5 items-center justify-between">
             <h4 className="text-heading-4-bold text-grey">Your Uploads</h4>
-            <div className="w-full">
-              <Button text="Visit Profile"></Button>
-            </div>
+            {/* <div> */}
+            <Button onClick={() => navigate("/")} text="Visit Dashboard"></Button>
+            {/* </div> */}
           </div>
         </div>
       </div>

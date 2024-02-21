@@ -16,6 +16,7 @@ import OngoingProjects from "./pages/OngoingProjects/OngoingProjects";
 import PreviousProjects from "./pages/PreviousProjects/PreviousProjects";
 import Profile from "./pages/Profile/Profile";
 import Revenue from "./pages/Revenue/Revenue";
+import Home from "./pages/Home/Home";
 
 // export const backendUrl = "http://localhost:4000/";
 export const backendUrl = "https://api.forevisiondigital.in/";
@@ -39,7 +40,7 @@ export const navItem = [
       </svg>
     ),
     text: "Home",
-    path: "http://forevisiondigital.com/",
+    path: "/home",
   },
   // {
   //   icon: (
@@ -259,14 +260,14 @@ export const config = {
 export const user = JSON.parse(sessionStorage.getItem("user"));
 
 export const routes = [
-  // {
-  //   path: "/",
-  //   page: (
-  //     <RequireAuth>
-  //       <Home />
-  //     </RequireAuth>
-  //   ),
-  // },
+  {
+    path: "/home",
+    page: (
+      <RequireAuth>
+        <Home />
+      </RequireAuth>
+    ),
+  },
   {
     path: "/verified-on-resso",
     page: (

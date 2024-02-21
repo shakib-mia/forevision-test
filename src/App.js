@@ -8,6 +8,7 @@ import BottomBar from "./components/BottomBar/BottomBar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Construction from "./pages/Construction/Construction";
 
 function App() {
   const [userData, setUserData] = useState({});
@@ -58,9 +59,9 @@ function App() {
 
   return (
     <>
-      {/* <Construction /> */}
+      <Construction />
 
-      <ProfileContext.Provider value={store}>
+      {/* <ProfileContext.Provider value={store}>
         {token ? token.length && <BottomBar /> : <></>}
         {location.pathname !== "/login" &&
           location.pathname !== "/signup" &&
@@ -73,7 +74,7 @@ function App() {
         </Routes>
 
         <ToastContainer />
-      </ProfileContext.Provider>
+      </ProfileContext.Provider> */}
     </>
   );
 }
