@@ -18,7 +18,7 @@ import Profile from "./pages/Profile/Profile";
 import Revenue from "./pages/Revenue/Revenue";
 import Home from "./pages/Home/Home";
 
-// export const backendUrl = "http://localhost:4000/";
+// export const backendUrl = "http://localhost:5000/";
 export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
