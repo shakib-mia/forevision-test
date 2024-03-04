@@ -371,7 +371,7 @@ const Revenue = () => {
                     Revenue Analytics
                   </h6>
                   <Button
-                    disabled={true}
+                    // disabled={true}
                     onClick={() => {
                       data[2].data.toFixed(2) > 2000
                         ? setWithdrawModal(true)
@@ -440,8 +440,21 @@ const Revenue = () => {
                 <div className="flex justify-center mt-5">
                   <Button
                     className="px-2 py-1"
-                    disabled={true}
-                    // onClick={() => { data[2].data.toFixed(2) > 2000 ? setWithdrawModal(true) : toast.error(<><p className='font-bold'>Request Error</p> <p>You need atleast INR 1000 in your account to Request for withdrawal</p></>, { toastId: "error", position: 'top-center' }) }}
+                    // disabled={true}
+                    onClick={() => {
+                      data[2].data.toFixed(2) > 2000
+                        ? setWithdrawModal(true)
+                        : toast.error(
+                            <>
+                              <p className="font-bold">Request Error</p>{" "}
+                              <p>
+                                You need atleast INR 1000 in your account to
+                                Request for withdrawal
+                              </p>
+                            </>,
+                            { toastId: "error", position: "top-center" }
+                          );
+                    }}
                     text="Request Withdraw"
                   />
                 </div>
