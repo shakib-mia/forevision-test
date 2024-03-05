@@ -38,10 +38,13 @@ const ForeignerModal = ({ setShowForeignerModal }) => {
 
     if (accountNumber.value === accountNumberCheck.value) {
       const uploadPromises = [
-        axios.post("http://localhost:5000/upload-govt-id", govtData),
-        axios.post("http://localhost:5000/upload-secondary-uid", secondaryData),
+        axios.post("http://api.forevisiondigital.in/upload-govt-id", govtData),
         axios.post(
-          "http://localhost:5000/upload-cancelled-cheques",
+          "http://api.forevisiondigital.in/upload-secondary-uid",
+          secondaryData
+        ),
+        axios.post(
+          "http://api.forevisiondigital.in/upload-cancelled-cheques",
           cancelledData
         ),
       ];
