@@ -371,7 +371,7 @@ const Revenue = () => {
                     Revenue Analytics
                   </h6>
                   <Button
-                    // disabled={true}
+                    disabled={true}
                     onClick={() => {
                       data[2].data.toFixed(2) > 2000
                         ? setWithdrawModal(true)
@@ -440,7 +440,7 @@ const Revenue = () => {
                 <div className="flex justify-center mt-5">
                   <Button
                     className="px-2 py-1"
-                    // disabled={true}
+                    disabled={true}
                     onClick={() => {
                       data[2].data.toFixed(2) > 2000
                         ? setWithdrawModal(true)
