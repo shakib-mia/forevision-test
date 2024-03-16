@@ -40,7 +40,7 @@ export const navItem = [
       </svg>
     ),
     text: "Home",
-    path: "/home",
+    path: "https://forevisiondigital.com/",
   },
   // {
   //   icon: (
