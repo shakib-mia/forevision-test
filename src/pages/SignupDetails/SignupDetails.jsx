@@ -11,10 +11,10 @@ import { backendUrl } from "../../constants";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
-  const { userData } = useContext(ProfileContext)
-  const [selectedCode, setSelectedCode] = useState('91');
+  const { userData } = useContext(ProfileContext);
+  const [selectedCode, setSelectedCode] = useState("91");
   const [screen, setScreen] = useState("name");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const fields = [
     {
@@ -113,14 +113,16 @@ const SignupDetails = () => {
       .map((i, key) => key % 2 === 0 && i.classList.add("pr-2"));
   }, []);
 
-  const [signupDetailsData, setSignupDetailsData] = useState({})
+  const [signupDetailsData, setSignupDetailsData] = useState({});
   const signup = (e) => {
     e.preventDefault();
     // console.log(userData.Id);
-    const userDetailsData = { ...signupDetailsData, phone_no: selectedCode + signupDetailsData.phone_no, user_email: userData?.user_email };
-    console.log(userData);
-
-
+    const userDetailsData = {
+      ...signupDetailsData,
+      phone_no: selectedCode + signupDetailsData.phone_no,
+      user_email: userData?.user_email,
+    };
+    console.log({ userData, userDetailsData });
 
     // const formData = new FormData();
     // // console.log(signupDetailsData);
@@ -137,22 +139,21 @@ const SignupDetails = () => {
     //     Authorization: `Bearer ${token}`,
     //   },
 
-
     // }
-
-
 
     // console.log(userDetailsData);
     // // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
-    axios.post(backendUrl + "post-user-details", userDetailsData).then(res => {
+    axios
+      .post(backendUrl + "post-user-details", userDetailsData)
+      .then((res) => {
+        if (res.data.acknowledged) {
+          // console.log(res.data);
 
-      if (res.data.acknowledged) {
-        // console.log(res.data);
-
-        navigate("/");
-        window.location.reload()
-      }
-    }).catch(err => console.log(err))
+          navigate("/");
+          window.location.reload();
+        }
+      })
+      .catch((err) => console.log(err));
 
     // console.log(userDetailsData);
 
@@ -182,9 +183,10 @@ const SignupDetails = () => {
                     />
 
                     <div
-                      className={`${!checked &&
+                      className={`${
+                        !checked &&
                         "border-[1px]  border-surface-white-line text-[12px]"
-                        } rounded-[4px] w-[16px] h-[16px]`}
+                      } rounded-[4px] w-[16px] h-[16px]`}
                     >
                       {checked && <img src={check} alt="checkbox" />}
                     </div>
@@ -201,7 +203,9 @@ const SignupDetails = () => {
                   {...fields[id]}
                   selectedCode={selectedCode}
                   setSelectedCode={setSelectedCode}
-                  onChange={e => signupDetailsData[props.name] = e.target.value}
+                  onChange={(e) =>
+                    (signupDetailsData[props.name] = e.target.value)
+                  }
                   key={id}
                   containerId={id}
                   containerClassName={`mt-3 w-full`}
@@ -211,10 +215,12 @@ const SignupDetails = () => {
               <InputField
                 {...props}
                 containerId={id}
-                onChange={e => signupDetailsData[props.name] = e.target.value}
+                onChange={(e) =>
+                  (signupDetailsData[props.name] = e.target.value)
+                }
                 key={id}
                 containerClassName={`mt-3 w-1/2`}
-              // fieldClassName="mr-2"
+                // fieldClassName="mr-2"
               />
             )
           )}
@@ -225,13 +231,12 @@ const SignupDetails = () => {
             type="submit"
             text="Submit"
             onClick={() => setScreen("contact")}
-          // disabled={
-          //   !(email.length > 0 && password.length && password === confirmPass)
-          // }
+            // disabled={
+            //   !(email.length > 0 && password.length && password === confirmPass)
+            // }
           />
         </div>
       </AuthBody>
-
 
       {/* ========== Phone View ========== */}
       {/* <ReactOwlCarousel items={1} mouseDrag={false} touchDrag={false} id="signup-details-slider"> */}
@@ -245,20 +250,22 @@ const SignupDetails = () => {
         className={`xl:hidden ${screen === "name" ? "flex" : "hidden"}`}
       >
         <div className="flex flex-wrap" id="form">
-          {fields.slice(0, 3).map((props, id) =>
-          (
+          {fields.slice(0, 3).map((props, id) => (
             <InputField
               {...props}
               containerId={id}
               key={id}
-              onChange={e => setSignupDetailsData({ ...signupDetailsData, [props.name]: e.target.value })}
+              onChange={(e) =>
+                setSignupDetailsData({
+                  ...signupDetailsData,
+                  [props.name]: e.target.value,
+                })
+              }
               containerClassName={`mt-3 w-full`}
-            // fieldClassName="mr-2"
+              // fieldClassName="mr-2"
             />
-          )
-          )}"
-
-
+          ))}
+          "
         </div>
         {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
         <div className="mt-3 mb-2 text-center">
@@ -288,28 +295,34 @@ const SignupDetails = () => {
             {...fields[4]}
             containerId={fields[4].id}
             key={fields[4].id}
-            onChange={e => setSignupDetailsData({ ...signupDetailsData, [fields[4].name]: e.target.value })}
+            onChange={(e) =>
+              setSignupDetailsData({
+                ...signupDetailsData,
+                [fields[4].name]: e.target.value,
+              })
+            }
             containerClassName={`mt-3 w-full`}
-          // fieldClassName="mr-2"
+            // fieldClassName="mr-2"
           />
           {/* phone number */}
           <InputField
             {...fields[8]}
             containerId={fields[8].id}
             key={fields[8].id}
-            onChange={e => setSignupDetailsData({ ...signupDetailsData, [fields[8].name]: e.target.value })}
+            onChange={(e) =>
+              setSignupDetailsData({
+                ...signupDetailsData,
+                [fields[8].name]: e.target.value,
+              })
+            }
             containerClassName={`mt-3 w-full`}
             selectedCode={selectedCode}
             setSelectedCode={setSelectedCode}
           />
-
-
         </div>
         {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
         <div className="mt-3 mb-2 text-center flex justify-center">
-          <Button
-            rightIcon={true}
-          />
+          <Button rightIcon={true} />
         </div>
       </AuthBody>
 
@@ -320,7 +333,9 @@ const SignupDetails = () => {
           setScreen("large-address");
         }}
         id="signup-page"
-        className={`xl:hidden ${screen === "small-address" ? "flex" : "hidden"}`}
+        className={`xl:hidden ${
+          screen === "small-address" ? "flex" : "hidden"
+        }`}
       >
         <div className="flex flex-wrap" id="form">
           {/* {fields.slice(9, 10).map((props, id) => */}
@@ -329,18 +344,26 @@ const SignupDetails = () => {
             {...fields[3]}
             containerId={fields[3].id}
             key={fields[3].id}
-            onChange={e => setSignupDetailsData({ ...signupDetailsData, [fields[3].name]: e.target.value })}
+            onChange={(e) =>
+              setSignupDetailsData({
+                ...signupDetailsData,
+                [fields[3].name]: e.target.value,
+              })
+            }
             containerClassName={`mt-3 w-full`}
           />
           <InputField
             {...fields[5]}
             containerId={fields[5].id}
             key={fields[5].id}
-            onChange={e => setSignupDetailsData({ ...signupDetailsData, [fields[5].name]: e.target.value })}
+            onChange={(e) =>
+              setSignupDetailsData({
+                ...signupDetailsData,
+                [fields[5].name]: e.target.value,
+              })
+            }
             containerClassName={`mt-3 w-full`}
           />
-
-
         </div>
 
         <div className="mt-3 mb-2 text-center">
@@ -348,8 +371,8 @@ const SignupDetails = () => {
             type="submit"
             text="Submit"
             onClick={(e) => {
-              e.preventDefault()
-              setScreen("large-address")
+              e.preventDefault();
+              setScreen("large-address");
             }}
           />
         </div>
@@ -359,40 +382,38 @@ const SignupDetails = () => {
         heading="We need a few more details"
         onSubmit={signup}
         id="signup-page"
-        className={`xl:hidden ${screen === "large-address" ? "flex" : "hidden"}`}
+        className={`xl:hidden ${
+          screen === "large-address" ? "flex" : "hidden"
+        }`}
       >
         <div className="flex flex-wrap" id="form">
           <InputField
             {...fields[6]}
             containerId={fields[6].id}
             key={fields[6].id}
-            onChange={e => signupDetailsData[fields[6].name] = e.target.value}
+            onChange={(e) =>
+              (signupDetailsData[fields[6].name] = e.target.value)
+            }
             containerClassName={`mt-3 w-full`}
-          // fieldClassName="mr-2"
+            // fieldClassName="mr-2"
           />
           <InputField
             {...fields[7]}
             containerId={fields[7].id}
             key={fields[7].id}
-            onChange={e => signupDetailsData[fields[7].name] = e.target.value}
+            onChange={(e) =>
+              (signupDetailsData[fields[7].name] = e.target.value)
+            }
             containerClassName={`mt-3 w-full`}
-          // fieldClassName="mr-2"
+            // fieldClassName="mr-2"
           />
-
-
         </div>
 
         <div className="mt-3 mb-2 text-center">
-          <Button
-            type="submit"
-            text="Submit"
-          />
+          <Button type="submit" text="Submit" />
         </div>
       </AuthBody>
       {/* </ReactOwlCarousel> */}
-
-
-
     </>
   );
 };

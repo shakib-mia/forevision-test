@@ -46,7 +46,7 @@ function App() {
 
     if (token) {
       axios.get(`${backendUrl}getUserData`, config).then(({ data }) => {
-        if (data.data !== null) {
+        if (data?.data !== null) {
           setUserData(data.data);
         } else {
           // navigate("/signup-details");
@@ -59,22 +59,20 @@ function App() {
 
   return (
     <>
-       <Construction /> 
-
-      {/*<ProfileContext.Provider value={store}>
+      {/* <Construction /> */}
+      <ProfileContext.Provider value={store}>
         {token ? token.length && <BottomBar /> : <></>}
-        {/*location.pathname !== "/login" &&
+        {location.pathname !== "/login" &&
           location.pathname !== "/signup" &&
           location.pathname !== "/forgot-password" &&
-          location.pathname !== "/signup-details" && <Sidebar />*/}
+          location.pathname !== "/signup-details" && <Sidebar />}
         <Routes>
           {routes.map(({ page, path }, key) => (
             <Route key={key} path={path} element={page} />
           ))}
         </Routes>
-
         <ToastContainer />
-      </ProfileContext.Provider>*/}
+      </ProfileContext.Provider>
     </>
   );
 }
