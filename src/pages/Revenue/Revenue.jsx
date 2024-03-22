@@ -34,7 +34,7 @@ const Revenue = () => {
   }, [currentTime]);
 
   const { userData, token } = useContext(ProfileContext);
-  console.log(userData);
+  // console.log(userData);
   useEffect(() => {
     if (userData?.first_name || userData?.partner_name) {
       const config = {
@@ -419,7 +419,10 @@ const Revenue = () => {
                   Account <br className="2xl:hidden" /> Balance
                 </h4>
                 <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2">
-                  &#8377; {data[2].data.toFixed(2)}
+                  &#8377;{" "}
+                  {(
+                    userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                  ).toFixed(2)}
                 </h4>
               </div>
             )}
