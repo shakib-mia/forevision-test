@@ -61,8 +61,8 @@ function RevenueFrom() {
     const confirmAccountNumber = form.confirmAccountNumber.value;
     const img1 = form.img1.files[0];
     const img2 = form.img2.files[0];
-    const img3 = form.img3.files[0];
-    const img4 = form.img4.files[0];
+    const govetID = form.govetID.files[0];
+    const cancelledCheque = form.cancelledCheque.files[0];
 
     console.log({
       vendorName,
@@ -94,8 +94,8 @@ function RevenueFrom() {
       confirmAccountNumber,
       img1,
       img2,
-      img3,
-      img4,
+      govetID,
+      cancelledCheque,
     });
   };
   return (
