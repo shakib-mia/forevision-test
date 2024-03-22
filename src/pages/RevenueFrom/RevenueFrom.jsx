@@ -1,31 +1,91 @@
 import React, { useState } from "react";
 import InputField from "../../components/InputField/InputField";
+import axios from "axios";
 
 function RevenueFrom() {
   const [cgst, setCgst] = useState(false);
   const [ruIndian, setRuIndian] = useState(false);
-  const [img1, setImg1] = useState("");
-  const [img2, setImg2] = useState("");
+  const [aadharCard, setAadharCard] = useState("");
+  const [panCard, setPanCard] = useState("");
   const [govetID, setGovetID] = useState("");
   const [cancelledCheque, setCancelledCheque] = useState("");
 
-  const imghandle1 = (e) => {
+  const aadharCardhandle = (e) => {
     e.preventDefault();
-    e.target.files[0] && setImg1(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.files[0]);
+    e.target.files[0] && setAadharCard(URL.createObjectURL(e.target.files[0]));
+    // console.log(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    e.target.files[0] &&
+      axios
+        .post(`https://api.forevisiondigital.in/upload-aadhar-cards`, formData)
+        .then(({ data }) => {
+          console.log(data.url);
+          if (data.url) {
+            setAadharCard(data.url);
+          }
+        })
+        .catch((err) => console.log(err.message));
   };
-  const imghandle2 = (e) => {
+  const panCardhandle = (e) => {
     e.preventDefault();
-    e.target.files[0] && setImg2(URL.createObjectURL(e.target.files[0]));
+    e.target.files[0] && setPanCard(URL.createObjectURL(e.target.files[0]));
+    // console.log(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    e.target.files[0] &&
+      axios
+        .post(`https://api.forevisiondigital.in/upload-pan-cards`, formData)
+        .then(({ data }) => {
+          console.log(data.url);
+          if (data.url) {
+            setPanCard(data.url);
+          }
+        })
+        .catch((err) => console.log(err.message));
   };
   const govetIDhandle = (e) => {
     e.preventDefault();
     e.target.files[0] && setGovetID(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0]);
+
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    e.target.files[0] &&
+      axios
+        .post(
+          `https://api.forevisiondigital.in/upload-gst-certificate`,
+          formData
+        )
+        .then(({ data }) => {
+          console.log(data.url);
+          if (data.url) {
+            setGovetID(data.url);
+          }
+        })
+        .catch((err) => console.log(err.message));
+    console.log(govetID);
   };
   const cancelledChequehandle = (e) => {
     e.preventDefault();
     e.target.files[0] &&
       setCancelledCheque(URL.createObjectURL(e.target.files[0]));
+    // console.log(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    e.target.files[0] &&
+      axios
+        .post(
+          `https://api.forevisiondigital.in/upload-cancelled-cheques`,
+          formData
+        )
+        .then(({ data }) => {
+          console.log(data.url);
+          if (data.url) {
+            setCancelledCheque(data.url);
+          }
+        })
+        .catch((err) => console.log(err.message));
   };
 
   const FormHandle = (e) => {
@@ -59,12 +119,8 @@ function RevenueFrom() {
     const beneficiaryName = form.beneficiaryName.value;
     const accountNumber = form.accountNumber.value;
     const confirmAccountNumber = form.confirmAccountNumber.value;
-    const img1 = form.img1.files[0];
-    const img2 = form.img2.files[0];
-    const govetID = form.govetID.files[0];
-    const cancelledCheque = form.cancelledCheque.files[0];
 
-    console.log({
+    const body = {
       vendorName,
       invoiceNumber,
       invoiceDate,
@@ -92,11 +148,24 @@ function RevenueFrom() {
       beneficiaryName,
       accountNumber,
       confirmAccountNumber,
-      img1,
-      img2,
+      aadharCard,
+      panCard,
       govetID,
       cancelledCheque,
-    });
+    };
+    console.log(body);
+    // const config = {
+    //   headers: {
+    //     token: sessionStorage.getItem("token") || token,
+    //   },
+    // };
+
+    // axios
+    //   .get(`https://api.forevisiondigital.in/withdrawal-request`, body, config)
+    //   .then(({ data }) => {
+    //     console.log(data);
+    //   })
+    //   .catch((e) => console.log(e.message));
   };
   return (
     <>
@@ -380,11 +449,11 @@ function RevenueFrom() {
               />
               <div className="w-2/5">
                 <div className="w-full h-[6rem] border-dashed border-4 borderg-gray-400 rounded-[5px]">
-                  <label htmlFor="img1">
-                    {img1.length ? (
+                  <label htmlFor="aadharCard">
+                    {aadharCard.length ? (
                       <img
                         className="w-full h-[5rem] mx-auto rounded-xl"
-                        src={img1}
+                        src={aadharCard}
                         alt=""
                       />
                     ) : (
@@ -392,22 +461,22 @@ function RevenueFrom() {
                     )}
                     <input
                       className="hidden"
-                      name="img1"
-                      id="img1"
+                      name="aadharCard"
+                      id="aadharCard"
                       type="file"
-                      onChange={imghandle1}
+                      onChange={aadharCardhandle}
                     />{" "}
                   </label>
                 </div>
-                <label htmlFor="img2">img2</label>
+                <label htmlFor="aadharCard">Aadhar Card</label>
               </div>
               <div className="w-2/5">
                 <div className="w-full h-[6rem] border-dashed border-4 borderg-gray-400 rounded-[5px] ">
-                  <label htmlFor="img2">
-                    {img2.length ? (
+                  <label htmlFor="panCard">
+                    {panCard.length ? (
                       <img
                         className="w-full h-[5rem] mx-auto rounded-xl"
-                        src={img2}
+                        src={panCard}
                         alt=""
                       />
                     ) : (
@@ -415,14 +484,14 @@ function RevenueFrom() {
                     )}
                     <input
                       className="hidden"
-                      name="img2"
-                      id="img2"
+                      name="panCard"
+                      id="panCard"
                       type="file"
-                      onChange={imghandle2}
+                      onChange={panCardhandle}
                     />{" "}
                   </label>
                 </div>
-                <label htmlFor="img2">img2</label>
+                <label htmlFor="panCard">PAN Card</label>
               </div>
               <div className="w-2/5">
                 <div className="w-full h-[6rem] border-dashed border-4 borderg-gray-400 rounded-[5px]">
@@ -447,9 +516,9 @@ function RevenueFrom() {
                   </label>
                 </div>
                 <label htmlFor="govetID">
+                  <p>Govet ID</p>
                   {ruIndian && (
                     <>
-                      <p>Govet ID</p>
                       <p className="text-interactive-light-destructive pt-1 text-[12px]">
                         Please fill on the field with Govet ID
                       </p>
@@ -480,13 +549,11 @@ function RevenueFrom() {
                   </label>
                 </div>
                 <label htmlFor="cancelledCheque">
+                  <p>Cancelled Cheque</p>
                   {ruIndian && (
-                    <>
-                      <p>Cancelled Cheque</p>
-                      <p className="text-interactive-light-destructive pt-1 text-[12px]">
-                        Please fill on the field with Cancelled Cheque
-                      </p>
-                    </>
+                    <p className="text-interactive-light-destructive pt-1 text-[12px]">
+                      Please fill on the field with Cancelled Cheque
+                    </p>
                   )}
                 </label>
               </div>
