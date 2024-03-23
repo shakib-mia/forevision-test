@@ -9,7 +9,7 @@ import BottomBar from "./components/BottomBar/BottomBar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Construction from "./pages/Construction/Construction";
+// import Construction from "./pages/Construction/Construction";
 
 function App() {
   const [userData, setUserData] = useState({});

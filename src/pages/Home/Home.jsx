@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const navigate = useNavigate();
 
-  return (
-    {/*<div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7">
+  return {
+    /*<div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7">
       <div className="grid grid-cols-1 2xl:grid-cols-3 justify-between space-y-4 2xl:space-y-0 2xl:space-x-5">
         <div className="bg-white p-0 2xl:p-4 rounded-2xl">
           <div className="flex flex-col 2xl:flex-row items-center 2xl:items-end justify-center 2xl:justify-between">
@@ -93,12 +93,11 @@ const Home = () => {
 
           <div className="flex mt-5 items-center justify-between">
             <h4 className="text-heading-4-bold text-grey">Your Uploads</h4>
-            {/* <div> */}
+        
             <Button
               onClick={() => navigate("/")}
               text="Visit Dashboard"
             ></Button>
-            {/* </div> */}
           </div>
         </div>
       </div>
@@ -107,8 +106,8 @@ const Home = () => {
         <div className="w-full 2xl:w-1/2 bg-grey-light 2xl:bg-white rounded-2xl p-4 h-[392px]"></div>
         <div className="w-full 2xl:w-1/2 bg-grey-light 2xl:bg-white rounded-2xl p-4 h-[392px]"></div>
       </div>
-    </div>*/}
-  );
+    </div>*/
+  };
 };
 
 export default Home;
