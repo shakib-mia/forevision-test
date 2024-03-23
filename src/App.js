@@ -2,6 +2,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { ToastContainer } from "react-toastify";
+import Construction from "./pages/Construction/Construction";
 import "react-toastify/dist/ReactToastify.css";
 import { backendUrl, routes } from "./constants";
 import BottomBar from "./components/BottomBar/BottomBar";
@@ -46,7 +47,7 @@ function App() {
 
     if (token) {
       axios.get(`${backendUrl}getUserData`, config).then(({ data }) => {
-        if (data.data !== null) {
+        if (data?.data !== null) {
           setUserData(data.data);
         } else {
           // navigate("/signup-details");
@@ -60,7 +61,6 @@ function App() {
   return (
     <>
       {/* <Construction /> */}
-
       <ProfileContext.Provider value={store}>
         {token ? token.length && <BottomBar /> : <></>}
         {location.pathname !== "/login" &&
@@ -72,7 +72,6 @@ function App() {
             <Route key={key} path={path} element={page} />
           ))}
         </Routes>
-
         <ToastContainer />
       </ProfileContext.Provider>
     </>

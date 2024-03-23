@@ -9,10 +9,9 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import { toast } from "react-toastify";
 import notFound from "../../assets/images/not-found.svg";
 // import rupee from "../../assets/icons/rupee.svg"
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from 'react-router-dom';
 import { backendUrl } from "../../constants";
 import RevenueDetails from "../../components/RevenueDetails/RevenueDetails";
-import WithdrawModal from "../../components/WithdrawModal/WithdrawModal";
 
 const Revenue = () => {
   const [songs, setSongs] = useState([]);
@@ -20,9 +19,8 @@ const Revenue = () => {
   const [isrcs, setIsrcs] = useState([]);
   const currentTime = new Date().getHours();
   const [details, setDetails] = useState("");
-  const [withdrawModal, setWithdrawModal] = useState(false);
   // const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [bestSong, setBestSong] = useState("Loading...");
 
   useEffect(() => {
@@ -36,7 +34,7 @@ const Revenue = () => {
   }, [currentTime]);
 
   const { userData, token } = useContext(ProfileContext);
-  // console.log(token);
+  // console.log(userData);
   useEffect(() => {
     if (userData?.first_name || userData?.partner_name) {
       const config = {
@@ -51,7 +49,7 @@ const Revenue = () => {
           console.log(error);
           if (error.response.status === 401) {
             sessionStorage.removeItem("token");
-            navigate("/login");
+            // navigate("/login")
           }
         });
     }
@@ -358,7 +356,7 @@ const Revenue = () => {
               </h4>
               <p className="text-subtitle-1 text-interactive-dark-active 2xl:text-white tracking-[0.5px] mt-1">
                 Welcome to your revenue dashboard, Let’s see how much you’ve
-                earned with us !
+                earned with us !{" "}
                 <p className="2xl:hidden text-interactive-light-destructive">
                   To see the detailed version of the dashboard, please log in
                   from a desktop.
@@ -371,22 +369,8 @@ const Revenue = () => {
                     Revenue Analytics
                   </h6>
                   <Button
-                    disabled={true}
-                    onClick={() => {
-                      data[2].data.toFixed(2) > 2000
-                        ? setWithdrawModal(true)
-                        : toast.error(
-                            <>
-                              <p>Request Error</p>{" "}
-                              <p>
-                                You need atleast INR 1000 in your account to
-                                Request for withdrawal
-                              </p>
-                            </>,
-                            { toastId: "error", position: "top-center" }
-                          );
-                    }}
                     className="px-2 py-1"
+                    disabled={true}
                     text="Request Withdraw"
                   />
                 </div>
@@ -435,37 +419,19 @@ const Revenue = () => {
                   Account <br className="2xl:hidden" /> Balance
                 </h4>
                 <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2">
-                  &#8377; {data[2].data.toFixed(2)}
+                  &#8377;{" "}
+                  {(
+                    userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                  ).toFixed(2)}
                 </h4>
-                <div className="flex justify-center mt-5">
-                  <Button
-                    className="px-2 py-1"
-                    disabled={true}
-                    onClick={() => {
-                      data[2].data.toFixed(2) > 2000
-                        ? setWithdrawModal(true)
-                        : toast.error(
-                            <>
-                              <p className="font-bold">Request Error</p>{" "}
-                              <p>
-                                You need atleast INR 1000 in your account to
-                                Request for withdrawal
-                              </p>
-                            </>,
-                            { toastId: "error", position: "top-center" }
-                          );
-                    }}
-                    text="Request Withdraw"
-                  />
-                </div>
               </div>
             )}
           </div>
-          {withdrawModal ? (
+          {/* {withdrawModal ? (
             <WithdrawModal setWithdrawModal={setWithdrawModal} />
           ) : (
             ""
-          )}
+          )} */}
 
           {/* PC VIEW */}
           <div className="hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
@@ -477,15 +443,12 @@ const Revenue = () => {
               ))}
             </ul>
 
-            {aggregatedMusicData.map((song, key) => (
-              <ul
-                key={key}
-                className="grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1"
-              >
+            {aggregatedMusicData.map((song) => (
+              <ul className="grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
                 {/* list item */}
-                {options.map((item, key) => {
+                {options.map((item) => {
                   return (
-                    <li key={key} className="text-center">
+                    <li className="text-center">
                       {typeof song[item] === "number" &&
                       song[item].toString().split(".").length > 1 ? (
                         item === "after tds revenue" ? (
@@ -528,7 +491,6 @@ const Revenue = () => {
               <div className="border border-primary-light rounded-full px-3 text-primary-light py-1 grid grid-cols-3 relative">
                 {phoneOptions.map((item, key) => (
                   <p
-                    key={key}
                     className={`text-paragraph-2 ${
                       key === 0
                         ? "text-left"
@@ -553,18 +515,14 @@ const Revenue = () => {
                 {/* <p className="text-paragraph-2 text-right font-medium">Final Revenue</p> */}
               </div>
 
-              {aggregatedMusicData.map((song, key) => (
-                <ul
-                  className="grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1"
-                  key={key}
-                >
+              {aggregatedMusicData.map((song) => (
+                <ul className="grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
                   {/* list item */}
-                  {phoneOptions.map((item, key) => {
+                  {phoneOptions.map((item) => {
                     return (
                       <li
                         className="text-center"
                         onClick={() => setDetails(song.isrc)}
-                        key={key}
                       >
                         {typeof song[item] === "number" &&
                         song[item].toString().split(".").length > 1 ? (
