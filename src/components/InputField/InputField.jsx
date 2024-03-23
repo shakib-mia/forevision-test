@@ -28,6 +28,7 @@ const InputField = ({
   badge,
   setBadge,
   selectedCode,
+  note,
   setSelectedCode,
 }) => {
   const [checked, setChecked] = useState(false);
@@ -234,6 +235,8 @@ const InputField = ({
           className="absolute top-0 bottom-0 m-auto right-2 w-2 h-2"
         />
       )}
+
+      <p className="text-subtitle-2 text-grey-dark">{note}</p>
     </div>
   );
 };
