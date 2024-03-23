@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { Profiler, useContext, useState } from "react";
 import InputField from "../../components/InputField/InputField";
 import axios from "axios";
 import Button from "../../components/Button/Button";
-import { upload } from "@testing-library/user-event/dist/upload";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 function RevenueForm() {
   const [cgst, setCgst] = useState(false);
   const [ruIndian, setRuIndian] = useState(false);
   const [aadharCard, setAadharCard] = useState("");
   const [panCard, setPanCard] = useState("");
-  const [govetID, setGovetID] = useState("");
+  const [gst, setGst] = useState("");
   const [cancelledCheque, setCancelledCheque] = useState("");
+  const { token } = useContext(ProfileContext);
 
   const aadharCardhandle = (e) => {
     e.preventDefault();
@@ -20,9 +21,9 @@ function RevenueForm() {
     e.preventDefault();
     e.target.files[0] && setPanCard(URL.createObjectURL(e.target.files[0]));
   };
-  const govetIDhandle = (e) => {
+  const gsthandle = (e) => {
     e.preventDefault();
-    e.target.files[0] && setGovetID(URL.createObjectURL(e.target.files[0]));
+    e.target.files[0] && setGst(URL.createObjectURL(e.target.files[0]));
     console.log(e.target.files[0]);
   };
   const cancelledChequehandle = (e) => {
@@ -78,12 +79,12 @@ function RevenueForm() {
     const confirmAccountNumber = form.confirmAccountNumber.value;
     const AadharCard = form.aadharCard.files[0];
     const PanCard = form.panCard.files[0];
-    const GovetID = form.govetID.files[0];
+    const Gst = form.gst.files[0];
     const CancelledCheque = form.cancelledCheque.files[0];
 
     imageUploding("upload-aadhar-cards", AadharCard, setAadharCard);
     imageUploding("upload-pan-cards", PanCard, setPanCard);
-    imageUploding("upload-gst-certificate", GovetID, setGovetID);
+    imageUploding("upload-gst-certificate", Gst, setGst);
     imageUploding(
       "upload-cancelled-cheques",
       CancelledCheque,
@@ -120,22 +121,23 @@ function RevenueForm() {
       confirmAccountNumber,
       aadharCard,
       panCard,
-      govetID,
+      gst,
       cancelledCheque,
     };
     console.log(body);
-    // const config = {
-    //   headers: {
-    //     token: sessionStorage.getItem("token") || token,
-    //   },
-    // };
 
-    // axios
-    //   .get(`https://api.forevisiondigital.in/withdrawal-request`, body, config)
-    //   .then(({ data }) => {
-    //     console.log(data);
-    //   })
-    //   .catch((e) => console.log(e.message));
+    const config = {
+      headers: {
+        token: sessionStorage.getItem("token") || token,
+      },
+    };
+
+    axios
+      .post(`https://api.forevisiondigital.in/withdrawal-request`, body, config)
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((e) => console.log(e.message));
   };
   return (
     <>
@@ -417,7 +419,7 @@ function RevenueForm() {
             <div className="flex flex-wrap">
               <div className="w-1/2 p-1">
                 <label className="text-grey mb-1" htmlFor="aadharCard">
-                  Aadhar Card
+                  Aadhar Card / Govet ID
                 </label>
                 <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px]">
                   <label htmlFor="aadharCard">
@@ -467,21 +469,21 @@ function RevenueForm() {
               </div>
               <div className="w-1/2 p-1">
                 <label className="text-grey mb-1" htmlFor="govetID">
-                  <p>Govet ID</p>
+                  <p>GST certificate</p>
                   {ruIndian && (
                     <div className="w-1/2 p-1">
                       <p className="teeractive-light-destructive pt-1 text-[12px]">
-                        Please fill on the field with Govet ID
+                        Please fill on the field with GST certificate
                       </p>
                     </div>
                   )}
                 </label>
                 <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px]">
-                  <label htmlFor="govetID">
-                    {govetID.length ? (
+                  <label htmlFor="gst">
+                    {gst.length ? (
                       <img
                         className="w-full h-[5rem] mx-auto rounded-xl"
-                        src={govetID}
+                        src={gst}
                         alt=""
                       />
                     ) : (
@@ -489,11 +491,11 @@ function RevenueForm() {
                     )}
                     <input
                       className="hidden"
-                      name="govetID"
-                      id="govetID"
+                      name="gst"
+                      id="gst"
                       type="file"
                       required={ruIndian}
-                      onChange={govetIDhandle}
+                      onChange={gsthandle}
                     />{" "}
                   </label>
                 </div>

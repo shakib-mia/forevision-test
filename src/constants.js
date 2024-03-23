@@ -16,7 +16,7 @@ import OngoingProjects from "./pages/OngoingProjects/OngoingProjects";
 import PreviousProjects from "./pages/PreviousProjects/PreviousProjects";
 import Profile from "./pages/Profile/Profile";
 import Revenue from "./pages/Revenue/Revenue";
-import RevenueFrom from "./pages/RevenueFrom/RevenueFrom";
+import RevenueForm from "./pages/RevenueForm/RevenueForm";
 
 // export const backendUrl = "http://localhost:5000/";
 export const backendUrl = "https://api.forevisiondigital.in/";
@@ -346,8 +346,8 @@ export const routes = [
     page: <ForgetPassword />,
   },
   {
-    path: "/revenue-from",
-    page: <RevenueFrom />,
+    path: "/revenue-form",
+    page: <RevenueForm />,
   },
 
   {
