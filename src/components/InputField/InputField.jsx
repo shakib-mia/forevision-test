@@ -41,7 +41,7 @@ const InputField = ({
         <>
           {label && (
             <div className="flex justify-between">
-              <label htmlFor={id} className="ml-0">
+              <label htmlFor={id} className="ml-0 text-grey">
                 {label}
               </label>
               <span className="text-black-secondary">

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import InputField from "../../components/InputField/InputField";
 import axios from "axios";
+import Button from "../../components/Button/Button";
 
-function RevenueFrom() {
+function RevenueForm() {
   const [cgst, setCgst] = useState(false);
   const [ruIndian, setRuIndian] = useState(false);
   const [aadharCard, setAadharCard] = useState("");
@@ -111,7 +112,7 @@ function RevenueFrom() {
     const sgstAmount = form.sgstAmount.value;
     const igstAmount = form.igstAmount.value;
     const totalAmount = form.totalAmount.value;
-    const totalAmountWord = form.totalAmountWord.value;
+    // const totalAmountWord = form.totalAmountWord.value;
     const bankName = form.bankName.value;
     const branch = form.branch.value;
     const accountType = form.accountType.value;
@@ -140,7 +141,7 @@ function RevenueFrom() {
       sgstAmount,
       igstAmount,
       totalAmount,
-      totalAmountWord,
+      // totalAmountWord,
       bankName,
       branch,
       accountType,
@@ -177,7 +178,7 @@ function RevenueFrom() {
           <div className="pt-[4rem]">
             <div className=" mb-3">
               <h1 className="text-heading-4-bold pb-1">Revenue Withdraw</h1>
-              <h1>Please fill tha form out to initiate the request</h1>
+              <h1>Please fill the form out to initiate the request</h1>
             </div>
             <div className=" ">
               <h1>Are you registered under the CGST 2017 ?</h1>
@@ -200,7 +201,7 @@ function RevenueFrom() {
                 No
               </label>
 
-              <h1>Are you, a resident of India....?</h1>
+              <h1>Are you a resident of India?</h1>
               <label className="mr-2">
                 <input
                   className="mr-2"
@@ -222,87 +223,84 @@ function RevenueFrom() {
             </div>
           </div>
 
-          <fieldset>
-            <div className="flex flex-wrap gap-3 bg-white">
+          {/* <fieldset> */}
+          <div className="flex flex-col gap-3 bg-white mt-5">
+            <div className="flex gap-3">
               <InputField
                 name={"vendorName"}
                 label={"Vendor Name*"}
                 id={"vandorName"}
                 type={"text"}
-                placeholder={"ForeVision Digital"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-2/4"}
               />
               <InputField
                 name={"invoiceNumber"}
                 label={"Invoice Number*"}
                 id={"invoiceNumber"}
                 type={"text"}
-                placeholder={"420xxxxxxx"}
-                containerClassName={"w-1/5"}
+                containerClassName={"w-1/4"}
               />
               <InputField
                 name={"invoiceDate"}
                 label={"Invoice Date*"}
                 id={"invoiceDate"}
                 type={"date"}
-                placeholder={"04-Mar-2024"}
-                containerClassName={"w-1/5"}
+                containerClassName={"w-1/4"}
               />
+            </div>
+            <div className="flex gap-3">
               <InputField
                 name={"address"}
                 label={"Address*"}
                 id={"address"}
                 type={"address"}
-                placeholder={"Dhangdhinguri"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-2/4"}
               />
               <InputField
                 name={"streetName"}
                 label={"Street Name"}
                 id={"streetName"}
                 type={"address"}
-                placeholder={"RaserKuthi"}
-                containerClassName={"w-1/5"}
+                containerClassName={"w-1/4"}
               />
               <InputField
                 name={"landMark"}
                 label={"Land Mark (Optional)"}
                 id={"landMark"}
                 type={"text"}
-                placeholder={"Land Mark"}
-                containerClassName={"w-1/5"}
+                containerClassName={"w-1/4"}
               />
+            </div>
+            <div className="flex gap-3">
               <InputField
                 name={"pinCode"}
                 label={"Pin Code*"}
                 id={"pinCode"}
                 type={"number"}
-                placeholder={"518462"}
-                containerClassName={"w-1/5"}
+                containerClassName={"w-1/4"}
               />
               <InputField
                 name={"city"}
                 label={"City*"}
                 id={"city"}
                 type={"address"}
-                placeholder={"COOCHBEHAR"}
-                containerClassName={"w-1/5"}
+                containerClassName={"w-2/4"}
               />
               <InputField
                 name={"state"}
                 label={"State*"}
                 id={"state"}
                 type={"text"}
-                placeholder={"WEST BANGAL"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-1/4"}
               />
+            </div>
+            <div className="flex gap-3 mt-6">
               <InputField
                 name={"gctinNumber"}
                 label={"GSTIN Number*"}
                 id={"gctinNumber"}
                 type={"text"}
-                placeholder={"374FCFCFCF34874KK"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-2/4"}
                 required={cgst ? true : false}
               />
               <InputField
@@ -310,51 +308,35 @@ function RevenueFrom() {
                 label={"Place of Supply*"}
                 id={"placeOfSuppl"}
                 type={"text"}
-                placeholder={"MUMBAI MAHARASHTRA"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-2/4"}
                 required={cgst ? true : false}
               />
+            </div>
+            <div className="flex gap-3">
               <InputField
                 name={"cinNumber"}
                 label={"CIN Number*"}
                 id={"cinNumber"}
                 type={"text"}
-                placeholder={"NA"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-2/4"}
               />
               <InputField
                 name={"serviceAccount"}
                 label={"Service Accounting Number (SAC)*"}
                 id={"serviceAccount"}
                 type={"text"}
-                placeholder={"9945515"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-2/4"}
                 required={cgst ? true : false}
               />
-              <InputField
-                name={"panNumber"}
-                label={"PAN Number*"}
-                id={"panNumber"}
-                type={"text"}
-                placeholder={"BHADC5451D"}
-                containerClassName={"w-2/5"}
-              />
-              <InputField
-                name={"taxableValue"}
-                label={"Taxable Value*"}
-                id={"taxableValue"}
-                type={"text"}
-                placeholder={"51,145"}
-                containerClassName={"w-1/5"}
-                required={cgst ? true : false}
-              />
+            </div>
+
+            <div className="flex gap-3 mb-5">
               <InputField
                 name={"cgstAmount"}
                 label={"CGST Amount"}
                 id={"cgstAmount"}
                 type={"text"}
-                placeholder={""}
-                containerClassName={"w-1/5"}
+                containerClassName={"w-1/3"}
                 required={cgst ? true : false}
               />
               <InputField
@@ -362,8 +344,7 @@ function RevenueFrom() {
                 label={"SGST Amount"}
                 id={"sgstAmount"}
                 type={"text"}
-                placeholder={" "}
-                containerClassName={"w-1/5"}
+                containerClassName={"w-1/3"}
                 required={cgst ? true : false}
               />
               <InputField
@@ -371,84 +352,105 @@ function RevenueFrom() {
                 label={"IGST Amount"}
                 id={"igstAmount"}
                 type={"text"}
-                placeholder={"5,515"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-1/3"}
                 required={cgst ? true : false}
               />
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 mb-5">
+              <InputField
+                name={"panNumber"}
+                label={"PAN Number*"}
+                id={"panNumber"}
+                type={"text"}
+                containerClassName={"w-full"}
+              />
+              <InputField
+                name={"taxableValue"}
+                label={"Taxable Value*"}
+                id={"taxableValue"}
+                type={"text"}
+                containerClassName={"w-full"}
+                required={cgst ? true : false}
+              />
+
               <InputField
                 name={"totalAmount"}
                 label={"Total Amount (in numbers)"}
                 id={"totalAmount"}
                 type={"number"}
-                placeholder={"13,359"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-full"}
               />
-              <InputField
+            </div>
+            {/* <InputField
                 name={"totalAmountWord"}
                 label={"Total Amount (in Word)"}
                 id={"totalAmountWord"}
                 type={"text"}
-                placeholder={"Thirteen Thousand Three Hundred And Nine Only"}
                 containerClassName={"w-2/5"}
-              />
+              /> */}
+            <div className="flex gap-3">
               <InputField
                 name={"bankName"}
                 label={"Name of the Bank*"}
                 id={"bankName"}
                 type={"text"}
-                placeholder={"BANK OF BARODA"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-1/2"}
               />
               <InputField
                 name={"branch"}
                 label={"Branch*"}
                 id={"branch"}
                 type={"text"}
-                placeholder={"COOCH BEHAR"}
-                containerClassName={"w-1/5"}
+                containerClassName={"w-1/2"}
               />
+            </div>
+            <div className="flex gap-3">
               <InputField
                 name={"accountType"}
                 label={"Account Type*"}
                 id={"accountType"}
                 type={"text"}
-                placeholder={"CURRENT"}
-                containerClassName={"w-1/5"}
+                containerClassName={"w-1/3"}
               />
               <InputField
                 name={"ifscCode"}
                 label={"IFSC*"}
                 id={"ifscCode"}
                 type={"text"}
-                placeholder={"ABSBDBSCOCOHE"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-1/3"}
               />
               <InputField
                 name={"beneficiaryName"}
                 label={"Beneficiary Name*"}
                 id={"beneficiaryName"}
                 type={"text"}
-                placeholder={"FOREVISON DIGITAL"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-1/3"}
               />
+            </div>
+
+            <div className="flex gap-3">
               <InputField
                 name={"accountNumber"}
                 label={"Account Number*"}
                 id={"accountNumber"}
                 type={"number"}
-                placeholder={"515151562625626"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-full"}
               />
               <InputField
                 name={"confirmAccountNumber"}
                 label={"Confirm Account Number*"}
                 id={"confirmAccountNumber"}
                 type={"text"}
-                placeholder={"1515151515151515"}
-                containerClassName={"w-2/5"}
+                containerClassName={"w-full"}
               />
-              <div className="w-2/5">
-                <div className="w-full h-[6rem] border-dashed border-4 borderg-gray-400 rounded-[5px]">
+            </div>
+            <div className="flex flex-wrap">
+              <div className="w-1/2 p-1">
+                <label className="text-grey mb-1" htmlFor="aadharCard">
+                  Aadhar Card
+                </label>
+                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px]">
                   <label htmlFor="aadharCard">
                     {aadharCard.length ? (
                       <img
@@ -468,10 +470,12 @@ function RevenueFrom() {
                     />{" "}
                   </label>
                 </div>
-                <label htmlFor="aadharCard">Aadhar Card</label>
               </div>
-              <div className="w-2/5">
-                <div className="w-full h-[6rem] border-dashed border-4 borderg-gray-400 rounded-[5px] ">
+              <div className="w-1/2 p-1">
+                <label className="text-grey mb-1" htmlFor="panCard">
+                  PAN Card
+                </label>
+                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] ">
                   <label htmlFor="panCard">
                     {panCard.length ? (
                       <img
@@ -491,10 +495,19 @@ function RevenueFrom() {
                     />{" "}
                   </label>
                 </div>
-                <label htmlFor="panCard">PAN Card</label>
               </div>
-              <div className="w-2/5">
-                <div className="w-full h-[6rem] border-dashed border-4 borderg-gray-400 rounded-[5px]">
+              <div className="w-1/2 p-1">
+                <label className="text-grey mb-1" htmlFor="govetID">
+                  <p>Govet ID</p>
+                  {ruIndian && (
+                    <div className="w-1/2 p-1">
+                      <p className="teeractive-light-destructive pt-1 text-[12px]">
+                        Please fill on the field with Govet ID
+                      </p>
+                    </div>
+                  )}
+                </label>
+                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px]">
                   <label htmlFor="govetID">
                     {govetID.length ? (
                       <img
@@ -515,19 +528,17 @@ function RevenueFrom() {
                     />{" "}
                   </label>
                 </div>
-                <label htmlFor="govetID">
-                  <p>Govet ID</p>
+              </div>
+              <div className="w-1/2 p-1">
+                <label className="text-grey mb-1" htmlFor="cancelledCheque">
+                  <p>Cancelled Cheque</p>
                   {ruIndian && (
-                    <>
-                      <p className="text-interactive-light-destructive pt-1 text-[12px]">
-                        Please fill on the field with Govet ID
-                      </p>
-                    </>
+                    <p className="text-interactive-light-destructive pt-1 text-[12px]">
+                      Please fill on the field with Cancelled Cheque
+                    </p>
                   )}
                 </label>
-              </div>
-              <div className="w-2/5">
-                <div className="w-full h-[6rem] border-dashed border-4 borderg-gray-400 rounded-[5px]">
+                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px]">
                   <label htmlFor="cancelledCheque">
                     {cancelledCheque.length ? (
                       <img
@@ -548,25 +559,20 @@ function RevenueFrom() {
                     />{" "}
                   </label>
                 </div>
-                <label htmlFor="cancelledCheque">
-                  <p>Cancelled Cheque</p>
-                  {ruIndian && (
-                    <p className="text-interactive-light-destructive pt-1 text-[12px]">
-                      Please fill on the field with Cancelled Cheque
-                    </p>
-                  )}
-                </label>
               </div>
             </div>
-          </fieldset>
+          </div>
+          {/* </fieldset> */}
 
           <div className="py-4 text-center">
-            <button
+            {/* <button
               type="submit"
               className=" bottom-3 bg-primary-light p-1 rounded-md text-white"
             >
               SAVE AND NEXT
-            </button>
+            </button> */}
+
+            <Button type={"submit"}>Submit</Button>
           </div>
         </form>
       </section>
@@ -574,4 +580,4 @@ function RevenueFrom() {
   );
 }
 
-export default RevenueFrom;
+export default RevenueForm;

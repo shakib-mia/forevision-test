@@ -12,6 +12,7 @@ import notFound from "../../assets/images/not-found.svg";
 // import { useNavigate } from 'react-router-dom';
 import { backendUrl } from "../../constants";
 import RevenueDetails from "../../components/RevenueDetails/RevenueDetails";
+import { useNavigate } from "react-router-dom";
 
 const Revenue = () => {
   const [songs, setSongs] = useState([]);
@@ -20,7 +21,7 @@ const Revenue = () => {
   const currentTime = new Date().getHours();
   const [details, setDetails] = useState("");
   // const [success, setSuccess] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [bestSong, setBestSong] = useState("Loading...");
 
   useEffect(() => {
@@ -409,21 +410,37 @@ const Revenue = () => {
               {/* </>} */}
             </div>
             {filtered.length > 0 && (
-              <div className="w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative bg-[length:100%_100%] bg-grey-light 2xl:bg-white rounded-[24px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px]">
-                <img
-                  src={balanceBG}
-                  className="absolute w-full h-auto left-0 top-0 z-0"
-                  alt=""
-                />
-                <h4 className="text-heading-4-bold text-white 2xl:text-grey relative">
-                  Account <br className="2xl:hidden" /> Balance
-                </h4>
-                <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2">
-                  &#8377;{" "}
-                  {(
-                    userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
-                  ).toFixed(2)}
-                </h4>
+              <div className="w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative flex flex-col justify-between bg-[length:100%_100%] bg-grey-light 2xl:bg-white rounded-[24px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px]">
+                <div>
+                  <img
+                    src={balanceBG}
+                    className="absolute w-full h-auto left-0 top-0 z-0"
+                    alt=""
+                  />
+                  <h4 className="text-heading-4-bold text-white 2xl:text-grey relative">
+                    Account <br className="2xl:hidden" /> Balance
+                  </h4>
+                  <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2">
+                    &#8377;{" "}
+                    {(
+                      userData.lifetimeRevenue -
+                      (userData.lifetimeDisbursed || 0)
+                    ).toFixed(2)}
+                  </h4>
+                </div>
+
+                <div className="flex justify-center">
+                  <Button
+                    onClick={() => navigate("/revenue-form")}
+                    disabled={
+                      (
+                        userData.lifetimeRevenue -
+                        (userData.lifetimeDisbursed || 0)
+                      ).toFixed(2) < 1000
+                    }
+                    text={"Request Withdraw"}
+                  ></Button>
+                </div>
               </div>
             )}
           </div>
