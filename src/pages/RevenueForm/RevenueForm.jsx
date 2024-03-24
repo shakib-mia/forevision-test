@@ -3,11 +3,16 @@ import InputField from "../../components/InputField/InputField";
 import axios from "axios";
 import Button from "../../components/Button/Button";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import { backendUrl, config } from "../../constants";
 
 function RevenueForm() {
   const [cgst, setCgst] = useState(false);
   const [ruIndian, setRuIndian] = useState(false);
   const [aadharCard, setAadharCard] = useState("");
+  const [aadharUrl, setAadharUrl] = useState("");
+  const [panUrl, setPanUrl] = useState("");
+  const [gstUrl, setGstUrl] = useState("");
+  const [cancelledUrl, setCancelledUrl] = useState("");
   const [panCard, setPanCard] = useState("");
   const [gst, setGst] = useState("");
   const [cancelledCheque, setCancelledCheque] = useState("");
@@ -24,7 +29,7 @@ function RevenueForm() {
   const gsthandle = (e) => {
     e.preventDefault();
     e.target.files[0] && setGst(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.files[0]);
+    // console.log(e.target.files[0]);
   };
   const cancelledChequehandle = (e) => {
     e.preventDefault();
@@ -32,15 +37,17 @@ function RevenueForm() {
       setCancelledCheque(URL.createObjectURL(e.target.files[0]));
   };
 
-  const imageUploding = (urlbody, imageFile, setfile) => {
+  const imageUploading = (urlbody, imageFile, setfile) => {
     const formData = new FormData();
     formData.append("file", imageFile);
+    // console.log(imageFile);
     axios
-      .post(`https://api.forevisiondigital.in/${urlbody}`, formData)
+      .post(`${backendUrl + urlbody}`, formData, config)
       .then(({ data }) => {
         console.log(data.url);
         if (data.url) {
           setfile(data.url);
+          return data.url;
         }
       })
       .catch((err) => console.log(err.message));
@@ -78,19 +85,19 @@ function RevenueForm() {
     const accountNumber = form.accountNumber.value;
     const confirmAccountNumber = form.confirmAccountNumber.value;
     const AadharCard = form.aadharCard.files[0];
-    const PanCard = form.panCard.files[0];
-    const Gst = form.gst.files[0];
-    const CancelledCheque = form.cancelledCheque.files[0];
+    const PanCardFile = form.panCard.files[0];
+    const GstFile = form.gst.files[0];
+    const cancelledChequeFile = form.cancelledCheque.files[0];
 
-    imageUploding("upload-aadhar-cards", AadharCard, setAadharCard);
-    imageUploding("upload-pan-cards", PanCard, setPanCard);
-    imageUploding("upload-gst-certificate", Gst, setGst);
-    imageUploding(
+    imageUploading("upload-aadhar-cards", AadharCard, setAadharUrl);
+    imageUploading("upload-pan-cards", PanCardFile, setPanUrl);
+    imageUploading("upload-gst-certificate", GstFile, setGstUrl);
+    imageUploading(
       "upload-cancelled-cheques",
-      CancelledCheque,
-      setCancelledCheque
+      cancelledChequeFile,
+      setCancelledUrl
     );
-
+    // console.log(aadharUrl);
     const body = {
       vendorName,
       invoiceNumber,
@@ -119,10 +126,10 @@ function RevenueForm() {
       beneficiaryName,
       accountNumber,
       confirmAccountNumber,
-      aadharCard,
-      panCard,
-      gst,
-      cancelledCheque,
+      aadharUrl,
+      panUrl,
+      gstUrl,
+      cancelledUrl,
     };
     console.log(body);
 
@@ -133,9 +140,14 @@ function RevenueForm() {
     };
 
     axios
-      .post(`https://api.forevisiondigital.in/withdrawal-request`, body, config)
+      .post(`${backendUrl}withdrawal-request`, body, config)
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
+        e.target.reset();
+        setAadharCard("");
+        setPanCard("");
+        setGst("");
+        setCancelledCheque("");
       })
       .catch((e) => console.log(e.message));
   };
@@ -419,7 +431,7 @@ function RevenueForm() {
             <div className="flex flex-wrap">
               <div className="w-1/2 p-1">
                 <label className="text-grey mb-1" htmlFor="aadharCard">
-                  Aadhar Card / Govet ID
+                  Aadhar Card / Govt ID
                 </label>
                 <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px]">
                   <label htmlFor="aadharCard">
@@ -468,7 +480,7 @@ function RevenueForm() {
                 </div>
               </div>
               <div className="w-1/2 p-1">
-                <label className="text-grey mb-1" htmlFor="govetID">
+                <label className="text-grey mb-1" htmlFor="GovtID">
                   <p>GST certificate</p>
                   {ruIndian && (
                     <div className="w-1/2 p-1">

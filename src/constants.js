@@ -18,8 +18,8 @@ import Profile from "./pages/Profile/Profile";
 import Revenue from "./pages/Revenue/Revenue";
 import RevenueForm from "./pages/RevenueForm/RevenueForm";
 
-// export const backendUrl = "http://localhost:5000/";
-export const backendUrl = "https://api.forevisiondigital.in/";
+export const backendUrl = "http://localhost:4000/";
+// export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   {
