@@ -20,6 +20,7 @@ const InputField = ({
   textarea,
   pattern,
   fieldClassName,
+  accept,
   containerId,
   selectItems,
   value,
@@ -87,7 +88,7 @@ const InputField = ({
                     } file:rounded-[3px] file:mr-3 w-full`}
                     id={id}
                     placeholder={placeholder}
-                    accept=".png, .jpg, .jpeg, .svg, .webp, .bmp, .tif, .tiff, .raw, .cr2, .nef, .orf, .sr2"
+                    accept={accept}
                   />
                 ) : type === "multi-select" ? (
                   // multi check selects

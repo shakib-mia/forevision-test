@@ -17,7 +17,6 @@ import PreviousProjects from "./pages/PreviousProjects/PreviousProjects";
 import Profile from "./pages/Profile/Profile";
 import Revenue from "./pages/Revenue/Revenue";
 import RevenueForm from "./pages/RevenueForm/RevenueForm";
-import layer from "./assets/icons/navbar/layers.webp";
 import SongUpload from "./pages/SongUpload/SongUpload";
 
 export const backendUrl = "http://localhost:4000/";
