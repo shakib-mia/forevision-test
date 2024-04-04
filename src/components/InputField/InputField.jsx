@@ -31,6 +31,8 @@ const InputField = ({
   selectedCode,
   note,
   setSelectedCode,
+  max,
+  min,
 }) => {
   const [checked, setChecked] = useState(false);
   const location = useLocation();
@@ -155,6 +157,8 @@ const InputField = ({
                       } file:rounded-[3px] file:mr-3 w-full`}
                       id={id}
                       placeholder={placeholder}
+                      max={max}
+                      min={min}
                     />
                     {type === "password" && (
                       <label className="absolute right-2 top-0 bottom-0 my-auto flex items-center cursor-pointer">

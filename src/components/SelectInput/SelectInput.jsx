@@ -34,7 +34,9 @@ const SelectInput = ({ id, item }) => {
       </div>
       <label
         htmlFor={item.name + "_" + id}
-        className={`cursor-pointer mb-0 ${item.text.length > 20 && "lg:w-5/6"}`}
+        className={`cursor-pointer mb-0 ${
+          item?.text?.length > 20 && "lg:w-5/6"
+        }`}
       >
         {item.text}
       </label>

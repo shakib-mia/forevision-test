@@ -1,7 +1,18 @@
 import React, { useState } from "react";
-import arrow from "../../assets/icons/arrow.svg"
+import arrow from "../../assets/icons/arrow.svg";
 
-const Button = ({ text, type, disabled, onClick, leftIcon, rightIcon, small, paddingZero }) => {
+const Button = ({
+  text,
+  type,
+  disabled,
+  onClick,
+  leftIcon,
+  rightIcon,
+  small,
+  paddingZero,
+  containerClassName,
+  className,
+}) => {
   const [focus, setFocus] = useState(false);
   // console.log(disabled);
   // console.log(className?.includes('px'));
@@ -9,20 +20,29 @@ const Button = ({ text, type, disabled, onClick, leftIcon, rightIcon, small, pad
     <>
       {type !== "submit" && (
         <div
-          className={`border-[2px] ${focus && !disabled ? "border-interactive-light-focus" : "border-transparent"
-            } rounded-full ${paddingZero ? 'p-0' : 'p-[4px]'}`}
+          className={`border-[2px] ${containerClassName} ${
+            focus && !disabled
+              ? "border-interactive-light-focus"
+              : "border-transparent"
+          } rounded-full ${paddingZero ? "p-0" : "p-[4px]"}`}
         >
           <button
-            className={`${small ? 'px-2 py-1' : 'px-3 py-2'} disabled:bg-interactive-light-disabled disabled:cursor-not-allowed text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active font-bold rounded-full uppercase flex gap-1`}
+            className={`${
+              small ? "px-2 py-1" : "px-3 py-2"
+            } disabled:bg-interactive-light-disabled disabled:cursor-not-allowed text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active font-bold rounded-full uppercase flex gap-1 ${className}`}
             onClick={() => {
-              onClick && onClick()
-              setFocus(true)
+              onClick && onClick();
+              setFocus(true);
             }}
             disabled={disabled}
             onFocus={() => setFocus(true)}
             onBlur={() => setFocus(false)}
           >
-            {leftIcon ? <img src={arrow} className="rotate-180" alt="left-icon" /> : <></>}
+            {leftIcon ? (
+              <img src={arrow} className="rotate-180" alt="left-icon" />
+            ) : (
+              <></>
+            )}
             {text && <div>{text}</div>}
             {rightIcon ? <img src={arrow} alt="right-icon" /> : <></>}
           </button>
@@ -31,8 +51,11 @@ const Button = ({ text, type, disabled, onClick, leftIcon, rightIcon, small, pad
 
       {type === "submit" && (
         <div
-          className={`border-[2px] inline-block ${focus && !disabled ? "border-interactive-light-focus" : "border-transparent"
-            } rounded-full p-[4px]`}
+          className={`border-[2px] inline-block ${containerClassName} ${
+            focus && !disabled
+              ? "border-interactive-light-focus"
+              : "border-transparent"
+          } rounded-full p-[4px]`}
         >
           <input
             type="submit"

@@ -5,50 +5,79 @@ import SongUploadForm from "../../components/SongUploadForm/SongUploadForm";
 
 const SongUpload = () => {
   const [count, setCount] = useState(1);
-  const [singleUpload, setSingleUpload] = useState(true);
+  // const [singleUpload, setSingleUpload] = useState(true);
+  const [uploadType, setUploadType] = useState("Single");
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    if (singleUpload) {
+    // console.log(uploadType);
+    if (uploadType === "Single") {
       setCount(1);
-    } else {
-      setCount(2);
+    } else if (uploadType === "Album") {
+      setCount(1);
     }
-  }, [singleUpload]);
+  }, [uploadType]);
 
   return (
-    <div className="2xl:p-4 2xl:pl-7 mb-6 2xl:mb-0">
-      <p>What Do You Want to Release?</p>
+    <div className="p-3 2xl:p-4 2xl:pl-7 mb-6 2xl:mb-0">
+      <h1 className="text-heading-1-bold text-grey pb-7">
+        Let's Release a Chartbuster
+      </h1>
 
-      <label>
+      <h3 className="text-heading-3-bold text-grey pb-4">
+        What Do You Want to Release?
+      </h3>
+
+      <label className="text-heading-5-bold text-grey-dark flex items-center gap-1">
         <input
           type="radio"
           name="upload-type"
-          checked={singleUpload}
+          checked={uploadType === "Single"}
           className="mr-1"
           onChange={(e) => {
-            e.target.checked && setSingleUpload(true);
+            e.target.checked && setUploadType("Single");
           }}
         />
         Single Song
       </label>
       <br />
-      <label>
+      {/* <br /> */}
+      {/* <br /> */}
+      <label className="text-heading-5-bold text-grey-dark flex items-center gap-1 mb-2">
         <input
           type="radio"
           name="upload-type"
-          checked={!singleUpload}
+          checked={uploadType === "Album"}
           className="mr-1"
           onChange={(e) => {
-            e.target.checked && setSingleUpload(false);
+            e.target.checked && setUploadType("Album");
           }}
         />
         Album
       </label>
 
+      <label className="text-heading-5-bold text-grey-dark flex items-center gap-1 mb-2">
+        <input
+          type="radio"
+          name="upload-type"
+          checked={uploadType === "Film"}
+          className="mr-1"
+          onChange={(e) => {
+            e.target.checked && setUploadType("Film");
+          }}
+        />
+        Film
+      </label>
+
       {[...Array(count).fill()].map((_, index) => (
-        <SongUploadForm index={index} key={index} />
+        <SongUploadForm
+          index={index}
+          key={index}
+          setSubmitted={setSubmitted}
+          uploadType={uploadType}
+        />
       ))}
-      {count === 1 || (
+      {uploadType !== "Single" && submitted && (
         <div className="flex justify-center mt-4">
           <Button
             onClick={() => setCount((count) => count + 1)}

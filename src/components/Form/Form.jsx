@@ -69,21 +69,23 @@ const Form = ({ fields, instruction, backendUrl, uIdKey, id }) => {
     });
 
     if (Object.entries(formData)) {
-      axios.post(backendUrl, formData, {
-        headers: {
-          Authorization: `Bearer ${profileData.user_token}`,
-        },
-      }).then(({ data }) => {
-        if (data.success) {
-          // console.log(data);
-          toast.update(toastId.current, {
-            type: toast.TYPE.SUCCESS,
-            render: "Success",
-            position: "bottom-right",
-            autoClose: 5000,
-          });
-        }
-      });
+      axios
+        .post(backendUrl, formData, {
+          headers: {
+            Authorization: `Bearer ${profileData.user_token}`,
+          },
+        })
+        .then(({ data }) => {
+          if (data.success) {
+            // console.log(data);
+            toast.update(toastId.current, {
+              type: toast.TYPE.SUCCESS,
+              render: "Success",
+              position: "bottom-right",
+              autoClose: 5000,
+            });
+          }
+        });
     }
   };
 
@@ -133,7 +135,9 @@ const Form = ({ fields, instruction, backendUrl, uIdKey, id }) => {
       >
         {fields.map((props, key) =>
           props.type === "dropdown" ? (
-            <SelectOptions {...props} key={props} />
+            <div className="mt-[32px]">
+              <SelectOptions {...props} key={props} />
+            </div>
           ) : (
             <InputField
               {...props}

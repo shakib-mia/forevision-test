@@ -1,12 +1,15 @@
-import React, { Profiler, useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import InputField from "../../components/InputField/InputField";
 import axios from "axios";
 import Button from "../../components/Button/Button";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { backendUrl, config } from "../../constants";
+import Invoice from "../../components/Invoice/Invoice";
+import SelectOptions from "../../components/SelectOptions/SelectOptions";
+import generatePDF, { usePDF } from "react-to-pdf";
 
 function RevenueForm() {
-  const [cgst, setCgst] = useState(false);
+  const [gst, setGst] = useState(false);
   const [ruIndian, setRuIndian] = useState(false);
   const [aadharCard, setAadharCard] = useState("");
   const [aadharUrl, setAadharUrl] = useState("");
@@ -14,9 +17,15 @@ function RevenueForm() {
   const [gstUrl, setGstUrl] = useState("");
   const [cancelledUrl, setCancelledUrl] = useState("");
   const [panCard, setPanCard] = useState("");
-  const [gst, setGst] = useState("");
+  const [gstCertificate, setGstCertificate] = useState("");
   const [cancelledCheque, setCancelledCheque] = useState("");
   const { token, userData } = useContext(ProfileContext);
+  const [confirmed, setConfirmed] = useState(true);
+  const [state, setState] = useState("");
+  const invoiceRef = useRef(null);
+  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
+  const [formBody, setFormBody] = useState({});
+
   // console.log(data);
 
   const aadharCardhandle = (e) => {
@@ -29,7 +38,8 @@ function RevenueForm() {
   };
   const gsthandle = (e) => {
     e.preventDefault();
-    e.target.files[0] && setGst(URL.createObjectURL(e.target.files[0]));
+    e.target.files[0] &&
+      setGstCertificate(URL.createObjectURL(e.target.files[0]));
     // console.log(e.target.files[0]);
   };
   const cancelledChequehandle = (e) => {
@@ -71,15 +81,15 @@ function RevenueForm() {
     const pinCode = form.pinCode.value;
     const city = form.city.value;
     const state = form.state.value;
-    const gctinNumber = form.gctinNumber.value;
+    const gstinNumber = form.gctinNumber?.value;
     const placeOfSupply = form.placeOfSupply.value;
     const cinNumber = form.cinNumber.value;
-    const serviceAccount = form.serviceAccount.value;
+    const serviceAccount = form.serviceAccount?.value;
     const panNumber = form.panNumber.value;
     const taxableValue = form.taxableValue.value;
-    const cgstAmount = form.cgstAmount.value;
-    const sgstAmount = form.sgstAmount.value;
-    const igstAmount = form.igstAmount.value;
+    const cgstAmount = form.cgstAmount?.value;
+    const sgstAmount = form.sgstAmount?.value;
+    const igstAmount = form.igstAmount?.value;
     const totalAmount = form.totalAmount.value;
     // const totalAmountWord = form.totalAmountWord.value;
     const bankName = form.bankName.value;
@@ -126,7 +136,7 @@ function RevenueForm() {
       pinCode,
       city,
       state,
-      gctinNumber,
+      gstinNumber,
       placeOfSupply,
       cinNumber,
       serviceAccount,
@@ -152,6 +162,8 @@ function RevenueForm() {
       cancelledUrl: cancelledChequeUrl,
     };
 
+    setFormBody(body);
+
     const config = {
       headers: {
         token: sessionStorage.getItem("token") || token,
@@ -159,28 +171,65 @@ function RevenueForm() {
     };
 
     console.log(body);
+    setConfirmed(true);
 
-    axios
-      .post(`${backendUrl}withdrawal-request`, body, config)
-      .then(({ data }) => {
-        // console.log(data);
-        if (data.acknowledged) {
-          e.target.reset();
-          setAadharCard("");
-          setPanCard("");
-          setGst("");
-          setCancelledCheque("");
-        }
-      })
-      .catch((e) => console.log(e.message));
+    // axios
+    //   .post(`${backendUrl}withdrawal-request`, body, config)
+    //   .then(({ data }) => {
+    //     // console.log(data);
+    //     if (data.acknowledged) {
+    //       e.target.reset();
+    //       setAadharCard("");
+    //       setPanCard("");
+    //       setGst("");
+    //       setCancelledCheque("");
+    //     }
+    //   })
+    //   .catch((e) => console.log(e.message));
   };
 
   return (
     <>
-      <section className="w-4/6 mx-auto my-4 text-grey-dark">
+      {confirmed && (
+        <div className="fixed top-0 left-0 backdrop-blur w-screen h-screen z-[9999] flex justify-center overflow-x-auto overflow-y-auto">
+          <div className="bg-white w-[800px] h-[1500px] my-7 shadow-2xl rounded-lg relative">
+            <button
+              className="absolute -right-5 -top-5 text-heading-4"
+              onClick={() => setConfirmed(false)}
+            >
+              &times;
+            </button>
+            <Invoice gst={gst} formBody={formBody} ref={targetRef} />
+
+            <div className="flex justify-center">
+              <Button
+                type={"success"}
+                text={"confirm"}
+                containerClassName={"w-fit mt-3"}
+                onClick={() =>
+                  generatePDF(targetRef, {
+                    filename: `Invoice_of_${userData.first_name}_${userData.last_name}.pdf`,
+                    // overrides: {
+                    //   canvas: {
+                    //     height: (1500 * 72) / 96,
+                    //   },
+                    // },
+                  })
+                }
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <section
+        className={`w-full lg:w-4/6 mx-auto my-4 text-grey-dark ${
+          confirmed && "overflow-y-hidden"
+        }`}
+      >
         <form
           onSubmit={FormHandle}
-          className="container px-[4rem] mx-auto rounded-md shadow-xl bg-white"
+          className="px-3 md:px-[4rem] w-full md:mx-auto rounded-md shadow-xl bg-white"
         >
           <div className="pt-[4rem]">
             <div className=" mb-3">
@@ -193,7 +242,7 @@ function RevenueForm() {
                 <input
                   className="mr-2"
                   type="radio"
-                  onClick={() => setCgst(true)}
+                  onClick={() => setGst(true)}
                   required
                   name="cgst"
                 />
@@ -203,7 +252,7 @@ function RevenueForm() {
                 <input
                   className="mr-2"
                   type="radio"
-                  onClick={() => setCgst(false)}
+                  onClick={() => setGst(false)}
                   required
                   name="cgst"
                 />
@@ -236,56 +285,64 @@ function RevenueForm() {
 
           {/* <fieldset> */}
           <div className="flex flex-col gap-3 bg-white mt-5">
-            <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row gap-3">
               <InputField
                 name={"vendorName"}
                 label={"Vendor Name*"}
                 id={"vandorName"}
                 type={"text"}
-                required={cgst}
-                containerClassName={"w-2/4"}
+                required={gst}
+                containerClassName={"w-full md:w-2/4"}
               />
               <InputField
                 name={"invoiceNumber"}
                 label={"Invoice Number*"}
                 id={"invoiceNumber"}
                 type={"text"}
-                required={cgst}
-                containerClassName={"w-1/4"}
+                required={gst}
+                containerClassName={"w-full md:w-1/4"}
               />
               <InputField
                 name={"invoiceDate"}
                 label={"Invoice Date*"}
                 id={"invoiceDate"}
                 type={"date"}
-                required={cgst}
-                containerClassName={"w-1/4"}
+                // required={gst}
+                value={
+                  new Date().getFullYear() +
+                  "-" +
+                  String(new Date().getMonth() + 1).padStart(2, "0") +
+                  "-" +
+                  String(new Date().getDate()).padStart(2, "0")
+                }
+                disabled={true}
+                containerClassName={"w-full md:w-1/4"}
               />
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row gap-3">
               <InputField
                 name={"address"}
                 label={"Address*"}
                 id={"address"}
-                required={cgst}
+                required={gst}
                 type={"address"}
-                containerClassName={"w-2/4"}
+                containerClassName={"w-full md:w-2/4"}
               />
               <InputField
                 name={"streetName"}
                 label={"Street Name"}
                 id={"streetName"}
                 type={"address"}
-                required={cgst}
-                containerClassName={"w-1/4"}
+                required={gst}
+                containerClassName={"w-full md:w-1/4"}
               />
               <InputField
                 name={"landMark"}
                 label={"Land Mark (Optional)"}
                 id={"landMark"}
                 type={"text"}
-                required={cgst}
-                containerClassName={"w-1/4"}
+                required={gst}
+                containerClassName={"w-full md:w-1/4"}
               />
             </div>
             <div className="flex gap-3">
@@ -294,42 +351,92 @@ function RevenueForm() {
                 label={"Pin Code*"}
                 id={"pinCode"}
                 type={"number"}
-                required={cgst}
+                required={gst}
                 containerClassName={"w-1/4"}
               />
               <InputField
                 name={"city"}
                 label={"City*"}
                 id={"city"}
-                required={cgst}
+                required={gst}
                 type={"address"}
                 containerClassName={"w-2/4"}
               />
-              <InputField
-                name={"state"}
-                label={"State*"}
-                id={"state"}
-                required={cgst}
-                type={"text"}
-                containerClassName={"w-1/4"}
-              />
+              {ruIndian ? (
+                <SelectOptions
+                  label={"State*"}
+                  name="state"
+                  onChange={(e) => setState(e.target.value)}
+                  options={[
+                    "Andaman and Nicobar Islands",
+                    "Andhra Pradesh",
+                    "Arunachal Pradesh",
+                    "Assam",
+                    "Bihar",
+                    "Chandigarh",
+                    "Chhattisgarh",
+                    "Dadra and Nagar Haveli",
+                    "Daman and Diu",
+                    "Delhi",
+                    "Goa",
+                    "Gujarat",
+                    "Haryana",
+                    "Himachal Pradesh",
+                    "Jammu",
+                    "Jharkhand",
+                    "Karnataka",
+                    "Kashmir",
+                    "Kerala",
+                    "Ladakh",
+                    "Lakshadweep",
+                    "Madhya Pradesh",
+                    "Maharashtra",
+                    "Manipur",
+                    "Meghalaya",
+                    "Mizoram",
+                    "Nagaland",
+                    "Odisha",
+                    "Puducherry",
+                    "Punjab",
+                    "Rajasthan",
+                    "Sikkim",
+                    "Tamil Nadu",
+                    "Telangana",
+                    "Tripura",
+                    "Uttarakhand",
+                    "Uttar Pradesh",
+                    "West Bengal",
+                  ]}
+                  id={"state"}
+                />
+              ) : (
+                <InputField
+                  type={"text"}
+                  id={"state"}
+                  name={"state"}
+                  label={"State*"}
+                  containerClassName={"w-1/4"}
+                />
+              )}
             </div>
             <div className="flex gap-3 mt-6">
-              <InputField
-                name={"gctinNumber"}
-                label={"GSTIN Number*"}
-                id={"gctinNumber"}
-                type={"text"}
-                containerClassName={"w-2/4"}
-                required={cgst}
-              />
+              {gst && (
+                <InputField
+                  name={"gctinNumber"}
+                  label={"GSTIN Number*"}
+                  id={"gctinNumber"}
+                  type={"text"}
+                  containerClassName={"w-2/4"}
+                  required={gst}
+                />
+              )}
               <InputField
                 name={"placeOfSupply"}
                 label={"Place of Supply*"}
                 id={"placeOfSuppl"}
                 type={"text"}
-                containerClassName={"w-2/4"}
-                required={cgst}
+                containerClassName={gst ? "w-2/4" : "w-full"}
+                required={gst}
               />
             </div>
             <div className="flex gap-3">
@@ -338,70 +445,80 @@ function RevenueForm() {
                 label={"CIN Number*"}
                 id={"cinNumber"}
                 type={"text"}
-                required={cgst}
-                containerClassName={"w-2/4"}
+                required={gst}
+                containerClassName={`${gst ? "w-2/4" : "w-full"}`}
               />
-              <InputField
-                name={"serviceAccount"}
-                label={"Service Accounting Number (SAC)*"}
-                id={"serviceAccount"}
-                type={"text"}
-                containerClassName={"w-2/4"}
-                required={cgst}
-              />
+              {gst && (
+                <InputField
+                  name={"serviceAccount"}
+                  label={"Service Accounting Number (SAC)*"}
+                  id={"serviceAccount"}
+                  type={"text"}
+                  containerClassName={"w-2/4"}
+                  required={gst}
+                />
+              )}
             </div>
 
-            <div className="flex gap-3 mb-5">
-              <InputField
-                name={"cgstAmount"}
-                label={"CGST Amount"}
-                id={"cgstAmount"}
-                type={"text"}
-                containerClassName={"w-1/3"}
-                required={cgst}
-              />
-              <InputField
-                name={"sgstAmount"}
-                label={"SGST Amount"}
-                id={"sgstAmount"}
-                type={"text"}
-                containerClassName={"w-1/3"}
-                required={cgst}
-              />
-              <InputField
-                name={"igstAmount"}
-                label={"IGST Amount"}
-                id={"igstAmount"}
-                type={"text"}
-                containerClassName={"w-1/3"}
-                required={cgst}
-              />
-            </div>
+            {gst && (
+              <div className="flex gap-3 mb-5">
+                {state === "West Bengal" && (
+                  <>
+                    <InputField
+                      name={"cgstAmount"}
+                      label={"CGST Amount"}
+                      id={"cgstAmount"}
+                      type={"text"}
+                      containerClassName={"w-1/2"}
+                      required={gst && state === "West Bengal"}
+                    />
+                    <InputField
+                      name={"sgstAmount"}
+                      label={"SGST Amount"}
+                      id={"sgstAmount"}
+                      type={"text"}
+                      containerClassName={"w-1/2"}
+                      required={gst && state === "West Bengal"}
+                    />
+                  </>
+                )}
+                {state !== "West Bengal" && (
+                  <InputField
+                    name={"igstAmount"}
+                    label={"IGST Amount"}
+                    id={"igstAmount"}
+                    type={"text"}
+                    containerClassName={"w-full"}
+                    required={gst && state !== "West Bengal"}
+                  />
+                )}
+              </div>
+            )}
 
-            <div className="grid grid-cols-3 gap-3 mb-5">
+            <div className="grid grid-cols-2 gap-3 mb-5">
               <InputField
                 name={"panNumber"}
                 label={"PAN Number*"}
                 id={"panNumber"}
                 type={"text"}
-                required={cgst}
+                required={gst}
                 containerClassName={"w-full"}
               />
-              <InputField
+              {/* <InputField
                 name={"taxableValue"}
-                label={"Taxable Value*"}
-                id={"taxableValue"}
+                label={"Total Amount"}
+                id={"totalAmount"}
                 type={"text"}
                 containerClassName={"w-full"}
-                required={cgst}
-              />
+                required={gst}
+              /> */}
 
               <InputField
                 name={"totalAmount"}
-                label={"Total Amount (in numbers)"}
-                id={"totalAmount"}
+                label={"Taxable Value"}
+                id={"taxableValue"}
                 type={"number"}
-                required={cgst}
+                required={gst}
                 value={Math.floor(
                   userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
                 )}
@@ -413,7 +530,7 @@ function RevenueForm() {
               name={"totalAmountWord"}
               label={"Total Amount (in Word)"}
               id={"totalAmountWord"}
-              required={cgst}
+              required={gst}
               type={"text"}
               containerClassName={"w-2/5"}
             /> */}
@@ -422,7 +539,7 @@ function RevenueForm() {
                 name={"bankName"}
                 label={"Name of the Bank*"}
                 id={"bankName"}
-                required={cgst}
+                required={gst}
                 type={"text"}
                 containerClassName={"w-1/2"}
               />
@@ -431,7 +548,7 @@ function RevenueForm() {
                 label={"Branch*"}
                 id={"branch"}
                 type={"text"}
-                required={cgst}
+                required={gst}
                 containerClassName={"w-1/2"}
               />
             </div>
@@ -439,7 +556,7 @@ function RevenueForm() {
               <InputField
                 name={"accountType"}
                 label={"Account Type*"}
-                required={cgst}
+                required={gst}
                 id={"accountType"}
                 type={"text"}
                 containerClassName={"w-1/3"}
@@ -449,7 +566,7 @@ function RevenueForm() {
                 label={"IFSC*"}
                 id={"ifscCode"}
                 type={"text"}
-                required={cgst}
+                required={gst}
                 containerClassName={"w-1/3"}
               />
               <InputField
@@ -457,7 +574,7 @@ function RevenueForm() {
                 label={"Beneficiary Name*"}
                 id={"beneficiaryName"}
                 type={"text"}
-                required={cgst}
+                required={gst}
                 containerClassName={"w-1/3"}
               />
             </div>
@@ -468,7 +585,7 @@ function RevenueForm() {
                 label={"Account Number*"}
                 id={"accountNumber"}
                 type={"number"}
-                required={cgst}
+                required={gst}
                 containerClassName={"w-full"}
               />
               <InputField
@@ -476,16 +593,16 @@ function RevenueForm() {
                 label={"Confirm Account Number*"}
                 id={"confirmAccountNumber"}
                 type={"text"}
-                required={cgst}
+                required={gst}
                 containerClassName={"w-full"}
               />
             </div>
             <div className="flex flex-wrap">
-              <div className="w-1/2 p-1">
+              <div className="w-full md:w-1/2 p-1">
                 <label className="text-grey mb-1" htmlFor="aadharCard">
                   Aadhar Card / Any Government Issued ID
                 </label>
-                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px]">
+                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="aadharCard">
                     {aadharCard.length ? (
                       <img
@@ -494,7 +611,9 @@ function RevenueForm() {
                         alt=""
                       />
                     ) : (
-                      <p className="pt-3 text-center text-heading-5-bold">+</p>
+                      <p className="inline-block text-center text-heading-5-bold cursor-pointer">
+                        +
+                      </p>
                     )}
                     <input
                       className="hidden"
@@ -507,11 +626,11 @@ function RevenueForm() {
                   </label>
                 </div>
               </div>
-              <div className="w-1/2 p-1">
+              <div className="w-full md:w-1/2 p-1">
                 <label className="text-grey mb-1" htmlFor="panCard">
                   PAN Card
                 </label>
-                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] ">
+                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="panCard">
                     {panCard.length ? (
                       <img
@@ -520,20 +639,22 @@ function RevenueForm() {
                         alt=""
                       />
                     ) : (
-                      <p className="pt-3 text-center text-heading-5-bold">+</p>
+                      <p className="inline-block text-center text-heading-5-bold cursor-pointer">
+                        +
+                      </p>
                     )}
                     <input
                       className="hidden"
                       name="panCard"
                       id="panCard"
                       type="file"
-                      required={cgst}
+                      required={gst}
                       onChange={panCardhandle}
                     />{" "}
                   </label>
                 </div>
               </div>
-              <div className="w-1/2 p-1">
+              <div className="w-full md:w-1/2 p-1">
                 <label className="text-grey mb-1" htmlFor="GovtID">
                   <p>GST certificate</p>
                   {ruIndian && (
@@ -544,16 +665,18 @@ function RevenueForm() {
                     </div>
                   )}
                 </label>
-                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px]">
+                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="gst">
-                    {gst.length ? (
+                    {gstCertificate.length ? (
                       <img
                         className="w-full h-[5rem] mx-auto rounded-xl"
-                        src={gst}
+                        src={gstCertificate}
                         alt=""
                       />
                     ) : (
-                      <p className="pt-3 text-center text-heading-5-bold">+</p>
+                      <p className="inline-block text-center text-heading-5-bold cursor-pointer">
+                        +
+                      </p>
                     )}
                     <input
                       className="hidden"
@@ -566,7 +689,7 @@ function RevenueForm() {
                   </label>
                 </div>
               </div>
-              <div className="w-1/2 p-1">
+              <div className="w-full md:w-1/2 p-1">
                 <label className="text-grey mb-1" htmlFor="cancelledCheque">
                   <p>Cancelled Cheque</p>
                   {ruIndian && (
@@ -575,7 +698,7 @@ function RevenueForm() {
                     </p>
                   )}
                 </label>
-                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px]">
+                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="cancelledCheque">
                     {cancelledCheque.length ? (
                       <img
@@ -584,7 +707,9 @@ function RevenueForm() {
                         alt=""
                       />
                     ) : (
-                      <p className="pt-3 text-center text-heading-5-bold">+</p>
+                      <p className="inline-block text-center text-heading-5-bold cursor-pointer">
+                        +
+                      </p>
                     )}
                     <input
                       className="hidden"
