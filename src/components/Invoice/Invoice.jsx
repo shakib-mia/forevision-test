@@ -16,19 +16,26 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
       taxableValue: formBody.taxableValue || 0,
       cgst: {
         rate: 9,
-        amount: "N/A",
+        amount: Math.round(parseInt(formBody.taxableValue) * 0.09),
       },
       sgst: {
         rate: 9,
-        amount: "N/A",
+        amount: Math.round(parseInt(formBody.taxableValue) * 0.09),
       },
       igst: {
         rate: 18,
-        amount: "N/A",
+        amount: Math.round(parseInt(formBody.taxableValue) * 0.18),
       },
-      total: "13,359",
+      total:
+        formBody.state === "West Bengal"
+          ? parseInt(formBody.taxableValue) +
+            Math.round(2 * parseInt(formBody.taxableValue) * 0.09)
+          : parseInt(formBody.taxableValue) +
+            Math.round(parseInt(formBody.taxableValue) * 0.18),
     },
   ];
+
+  // console.log(formBody.taxableValue);
 
   function numberToWords(num) {
     if (num === 0) return "zero";
@@ -195,7 +202,11 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
         <div className="flex flex-col divide-y divide-surface-white-line border-b border-surface-white-line">
           <div
             className={`grid ${
-              gst ? "grid-cols-8" : "grid-cols-5"
+              gst
+                ? formBody.state === "West Bengal"
+                  ? "grid-cols-7"
+                  : "grid-cols-6"
+                : "grid-cols-5"
             } px-3 divide-x divide-surface-white-line text-subtitle-2 font-bold`}
           >
             <div className="text-center flex items-center justify-center">
@@ -212,27 +223,37 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
             </div>
             {gst && (
               <>
-                <div className="text-center flex flex-col items-center justify-center">
-                  CGST <br />
-                  <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
-                    <p className="flex items-center justify-center">Rate</p>
-                    <p className="flex items-center justify-center">Amount</p>
+                {formBody.state === "West Bengal" && (
+                  <>
+                    <div className="text-center flex flex-col items-center justify-center">
+                      CGST <br />
+                      <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
+                        <p className="flex items-center justify-center">Rate</p>
+                        <p className="flex items-center justify-center">
+                          Amount
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-center flex flex-col items-center justify-center">
+                      SGST <br />
+                      <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
+                        <p className="flex items-center justify-center">Rate</p>
+                        <p className="flex items-center justify-center">
+                          Amount
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )}
+                {formBody.state !== "West Bengal" && (
+                  <div className="text-center flex flex-col items-center justify-center">
+                    IGST <br />
+                    <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
+                      <p className="flex items-center justify-center">Rate</p>
+                      <p className="flex items-center justify-center">Amount</p>
+                    </div>
                   </div>
-                </div>
-                <div className="text-center flex flex-col items-center justify-center">
-                  SGST <br />
-                  <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
-                    <p className="flex items-center justify-center">Rate</p>
-                    <p className="flex items-center justify-center">Amount</p>
-                  </div>
-                </div>
-                <div className="text-center flex flex-col items-center justify-center">
-                  IGST <br />
-                  <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
-                    <p className="flex items-center justify-center">Rate</p>
-                    <p className="flex items-center justify-center">Amount</p>
-                  </div>
-                </div>
+                )}
               </>
             )}
 
@@ -254,7 +275,11 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
             }) => (
               <div
                 className={`grid ${
-                  gst ? "grid-cols-8" : "grid-cols-5"
+                  gst
+                    ? formBody.state === "West Bengal"
+                      ? "grid-cols-7"
+                      : "grid-cols-6"
+                    : "grid-cols-5"
                 } px-3 divide-x divide-surface-white-line text-subtitle-2 font-bold`}
               >
                 <div className="text-center flex items-center justify-center">
@@ -272,32 +297,38 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
 
                 {gst && (
                   <>
-                    <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
-                      <p className="flex items-center justify-center">
-                        {cgst.rate}%
-                      </p>
-                      <p className="flex items-center justify-center">
-                        {cgst.amount}
-                      </p>
-                    </div>
+                    {formBody.state === "West Bengal" && (
+                      <>
+                        <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
+                          <p className="flex items-center justify-center">
+                            {cgst.rate}%
+                          </p>
+                          <p className="flex items-center justify-center">
+                            {cgst.amount}
+                          </p>
+                        </div>
 
-                    <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
-                      <p className="flex items-center justify-center">
-                        {sgst.rate}%
-                      </p>
-                      <p className="flex items-center justify-center">
-                        {sgst.amount}
-                      </p>
-                    </div>
+                        <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
+                          <p className="flex items-center justify-center">
+                            {sgst.rate}%
+                          </p>
+                          <p className="flex items-center justify-center">
+                            {sgst.amount}
+                          </p>
+                        </div>
+                      </>
+                    )}
 
-                    <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
-                      <p className="flex items-center justify-center">
-                        {igst.rate}%
-                      </p>
-                      <p className="flex items-center justify-center">
-                        {igst.amount}
-                      </p>
-                    </div>
+                    {formBody.state !== "West Bengal" && (
+                      <div className="border-t border-surface-white-line h-full grid grid-cols-2 divide-x divide-surface-white-line w-full">
+                        <p className="flex items-center justify-center">
+                          {igst.rate}%
+                        </p>
+                        <p className="flex items-center justify-center">
+                          {igst.amount}
+                        </p>
+                      </div>
+                    )}
                   </>
                 )}
 
@@ -313,8 +344,17 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
           <div className="flex flex-wrap divide-x divide-y divide-surface-white-line border-b border-surface-white-line">
             <div className="p-3 w-7/12 border-t border-surface-white-line">
               Total Invoice amount in words:
-              <br />
-              {numberToWords(accountBalance)} Rupees only
+              {/* <br /> */}
+              <div className="capitalize">
+                {numberToWords(
+                  formBody.state === "West Bengal"
+                    ? parseInt(formBody.taxableValue) +
+                        Math.round(2 * parseInt(formBody.taxableValue) * 0.09)
+                    : parseInt(formBody.taxableValue) +
+                        Math.round(parseInt(formBody.taxableValue) * 0.18)
+                )}{" "}
+              </div>
+              Rupees only
             </div>
             <div className="w-5/12 flex flex-col divide-y divide-surface-white-line">
               {/* +++++++++++++++++++++++  HIDE FOR NON GST   ++++++++++++++++++++++++++ */}
@@ -323,26 +363,50 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                 <p className="p-1">Total amount before tax</p>
                 <p className="p-1">{accountBalance}</p>
               </div>
-              <div className="grid grid-cols-2 divide-x divide-surface-white-line">
-                <p className="p-1">Add - CGST</p>
-                <p className="p-1">NA</p>
-              </div>
-              <div className="grid grid-cols-2 divide-x divide-surface-white-line">
-                <p className="p-1">Add - SGST</p>
-                <p className="p-1">NA</p>
-              </div>
-              <div className="grid grid-cols-2 divide-x divide-surface-white-line">
-                <p className="p-1">Add - IGST</p>
-                <p className="p-1">{Math.round(accountBalance * 0.18)}</p>
-              </div>
-              <div className="grid grid-cols-2 divide-x divide-surface-white-line">
-                <p className="p-1">Total Amount - GST</p>{" "}
-                {/* (cgst +sgst) / igst */}
-                <p className="p-1">2,038</p>
-              </div>
+              {gst && formBody.state === "West Bengal" && (
+                <>
+                  <div className="grid grid-cols-2 divide-x divide-surface-white-line">
+                    <p className="p-1">Add - CGST</p>
+                    <p className="p-1">
+                      {gst ? Math.round(accountBalance * 0.09) : "NA"}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 divide-x divide-surface-white-line">
+                    <p className="p-1">Add - SGST</p>
+                    <p className="p-1">
+                      {gst ? Math.round(accountBalance * 0.09) : "NA"}
+                    </p>
+                  </div>
+                </>
+              )}
+              {gst && formBody.state !== "West Bengal" && (
+                <div className="grid grid-cols-2 divide-x divide-surface-white-line">
+                  <p className="p-1">Add - IGST</p>
+                  <p className="p-1">
+                    {gst ? Math.round(accountBalance * 0.18) : "NA"}
+                  </p>
+                </div>
+              )}
+              {gst && (
+                <div className="grid grid-cols-2 divide-x divide-surface-white-line">
+                  <p className="p-1">Total Amount - GST</p>{" "}
+                  {/* (cgst +sgst) / igst */}
+                  <p className="p-1">
+                    {formBody.state === "West Bengal"
+                      ? 2 * Math.round(accountBalance * 0.09)
+                      : Math.round(accountBalance * 0.18)}
+                  </p>
+                </div>
+              )}
               <div className="grid grid-cols-2 divide-x divide-surface-white-line">
                 <p className="p-1">Total Amount after tax</p>
-                <p className="p-1">13,359</p>{" "}
+                <p className="p-1">
+                  {gst
+                    ? formBody.state === "West Bengal"
+                      ? accountBalance + 2 * Math.round(accountBalance * 0.09)
+                      : accountBalance + Math.round(accountBalance * 0.18)
+                    : accountBalance}
+                </p>{" "}
                 {/*total amount before tax + total gst*/}
               </div>
               <div className="grid grid-cols-2 divide-x divide-surface-white-line">

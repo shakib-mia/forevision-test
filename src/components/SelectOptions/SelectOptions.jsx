@@ -1,8 +1,14 @@
 import React from "react";
 
-const SelectOptions = ({ id, label, onChange, options }) => {
+const SelectOptions = ({
+  id,
+  label,
+  onChange,
+  options,
+  containerClassName,
+}) => {
   return (
-    <div className="input">
+    <div className={`input ${containerClassName}`}>
       {label && (
         <label htmlFor={id} className="text-grey">
           {label}

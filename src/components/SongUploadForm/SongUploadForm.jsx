@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import CallerTuneTimeStamp from "../CallerTuneTimeStamp/CallerTuneTimeStamp";
 import SelectInput from "../SelectInput/SelectInput";
 import SelectOptions from "../SelectOptions/SelectOptions";
+import Form from "../Form/Form";
 
 const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
   const [newIsrc, setNewIsrc] = useState("");
@@ -21,6 +22,23 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
   const [startSeconds, setStartSeconds] = useState(0);
   const [genre, setGenre] = useState("Film");
   const [subGenreOptions, setSubGenreOptions] = useState([]);
+  const [recordLabels, setRecordLabels] = useState([]);
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        token: sessionStorage.getItem("token"),
+      },
+    };
+    axios
+      .get(backendUrl + "record-labels", config)
+      .then(({ data }) => setRecordLabels(data))
+      .catch((err) => {
+        if (err.response.status === 401) {
+          sessionStorage.removeItem("token");
+        }
+      });
+  }, []);
 
   useEffect(() => {
     const options =
@@ -214,10 +232,12 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
       label: "UPC",
       note: "If you already have a UPC for this release, please add. If not, no problem, we'll create one for you.",
     },
+    // {
+    //   block1: [
     {
       required: true,
-      label: "Album",
-      placeholder: "Album",
+      label: "Album Name",
+      placeholder: "Album Name",
       name: "Album",
       type: "text",
     },
@@ -240,31 +260,12 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
     },
     {
       required: true,
-      type: "select-input",
-      // placeholder: "Parental Advisory",
-      name: "Instrumental",
-      label: "Is this an Instrumental?",
-      options: ["Yes", "No"],
-    },
-    {
-      required: true,
-      placeholder: "Record Label",
-      name: "Record Label",
-      label: "Record Label",
-      type: "text",
-    },
-    {
-      required: true,
-      placeholder: "Reporting Partner",
-      name: "Reporting Partner",
-      label: "Reporting Partner",
-    },
-    {
-      required: true,
       placeholder: "Date of Release",
       name: "Date of Release",
+      type: "date",
       label: "Date of Release",
     },
+
     {
       required: true,
       placeholder: "Go Live Date",
@@ -281,98 +282,29 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
       label: "Go Live Time",
       // onChange: (e) => console.log(e.target.value),
     },
+
     {
       required: true,
-      placeholder: "Artist Name",
-      name: "ArtistName",
-      label: "Artist Name",
-    },
-    {
-      required: true,
-      placeholder: "Featuring Artist",
-      name: "FeaturingArtistName",
-      label: "Featuring Artist Name",
+      type: "select-input",
+      // placeholder: "Parental Advisory",
+      name: "Instrumental",
+      label: "Is this an Instrumental?",
+      options: ["No", "Yes"],
     },
     {
       required: true,
-      placeholder: "Composer",
-      name: "Composer",
-      label: "Composer",
+      // placeholder: "Record Label",
+      name: "Record Label",
+      label: "Record Label",
+      type: "select-input",
+      options: recordLabels,
+      // onChange: (e) => console.log(e.target.value),
     },
     {
       required: true,
-      placeholder: "Lyricist",
-      name: "Lyricist",
-      label: "Lyricist",
-    },
-
-    {
-      required: false,
-      placeholder: "Spotify Artist Profile / ID for the track Main Artist",
-      name: "Spotify Artist Profile / ID for the track Main Artist",
-      label: "Spotify Artist Profile / ID for the track Main Artist",
-    },
-
-    {
-      required: false,
-      placeholder: "Spotify Artist Profile / ID for the track Featured Artist",
-      name: "Spotify Artist Profile / ID for the track Featured Artist",
-      label: "Spotify Artist Profile / ID for the track Featured Artist",
-    },
-
-    {
-      required: false,
-      placeholder: "Apple Artist ID for Track Main Artist",
-      name: "Apple Artist ID for Track Main Artist",
-      label: "Apple Artist ID for Track Main Artist",
-    },
-
-    {
-      required: false,
-      placeholder: "Apple Artist ID for Composer",
-      name: "Apple Artist ID for Composer",
-      label: "Apple Artist ID for Composer",
-    },
-
-    uploadType === "Film" && {
-      required: false,
-      placeholder: "Apple Artist ID for Lyricist",
-      name: "Apple Artist ID for Lyricist",
-      label: "Apple Artist ID for Lyricist",
-    },
-
-    uploadType === "Film" && {
-      required: false,
-      placeholder: "Apple Artist ID for Film Producer",
-      name: "Apple Artist ID for Film Producer",
-      label: "Apple Artist ID for Film Producer",
-    },
-
-    uploadType === "Film" && {
-      required: false,
-      placeholder: "Apple Artist ID for Film Director",
-      name: "Apple Artist ID for Film Director",
-      label: "Apple Artist ID for Film Director",
-    },
-
-    uploadType === "Film" && {
-      required: false,
-      placeholder: "Apple Artist ID for Starcast",
-      name: "Apple Artist ID for Starcast",
-      label: "Apple Artist ID for Starcast",
-    },
-
-    {
-      required: false,
-      placeholder: "https://www.facebook.com/username",
-      name: "Facebook page link for Track Main Artist",
-      label: "Facebook page link for Track Main Artist",
-    },
-    {
-      required: false,
-      placeholder: "https://www.instagram.com/username",
-      name: "Instagram Artist handle for Track Main Artist",
-      label: "Instagram Artist handle for Track Main Artist",
+      placeholder: "Reporting Partner",
+      name: "Reporting Partner",
+      label: "Reporting Partner",
     },
 
     {
@@ -416,6 +348,7 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
         "Odia",
         "Punjabi",
         "Rajasthani",
+        "Rajbongshi",
         "Sanskrit",
         "Tamil",
         "Telugu",
@@ -493,6 +426,117 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
       label: "Sub Category",
     },
 
+    {
+      required: true,
+      type: "select-input",
+      placeholder: "Parental Advisory",
+      name: "Parental Advisory",
+      label: "Parental Advisory",
+      options: ["Non Explicit", "Explicit"],
+    },
+
+    {
+      required: true,
+      type: "date",
+      placeholder: "Original Release Date of Music",
+      name: "Original Release Date of Music",
+      label: "Original Release Date of Music",
+    },
+
+    {
+      required: true,
+      placeholder: "Artist Name",
+      name: "ArtistName",
+      label: "Artist Name",
+    },
+    {
+      required: true,
+      placeholder: "Featuring Artist",
+      name: "FeaturingArtistName",
+      label: "Featuring Artist Name",
+    },
+    {
+      required: true,
+      placeholder: "Composer",
+      name: "Composer",
+      label: "Composer",
+    },
+    {
+      required: true,
+      placeholder: "Lyricist",
+      name: "Lyricist",
+      label: "Lyricist",
+    },
+
+    {
+      required: false,
+      placeholder: "Spotify Artist Profile / ID for the track Main Artist",
+      name: "SpotifyMainArtist",
+      label: "Spotify Artist Profile / ID for the track Main Artist",
+    },
+
+    {
+      required: false,
+      placeholder: "Spotify Artist Profile / ID for the track Featured Artist",
+      name: "SpotifyFeaturedArtist",
+      label: "Spotify Artist Profile / ID for the track Featured Artist",
+    },
+
+    {
+      required: false,
+      placeholder: "Apple Artist ID for Track Main Artist",
+      name: "AppleMainArtist",
+      label: "Apple Artist ID for Track Main Artist",
+    },
+
+    {
+      required: false,
+      placeholder: "Apple Artist ID for Composer",
+      name: "AppleFeaturedArtist",
+      label: "Apple Artist ID for Composer",
+    },
+
+    uploadType === "Film" && {
+      required: false,
+      placeholder: "Apple Artist ID for Lyricist",
+      name: "AppleLyricistD",
+      label: "Apple Artist ID for Lyricist",
+    },
+
+    uploadType === "Film" && {
+      required: false,
+      placeholder: "Apple Artist ID for Film Producer",
+      name: "AppleFilmProducerID",
+      label: "Apple Artist ID for Film Producer",
+    },
+
+    uploadType === "Film" && {
+      required: false,
+      placeholder: "Apple Artist ID for Film Director",
+      name: "AppleFilmDirectorID",
+      label: "Apple Artist ID for Film Director",
+    },
+
+    uploadType === "Film" && {
+      required: false,
+      placeholder: "Apple Artist ID for Starcast",
+      name: "AppleStarcastID",
+      label: "Apple Artist ID for Starcast",
+    },
+
+    {
+      required: false,
+      placeholder: "https://www.facebook.com/username",
+      name: "FacebookMainArtist",
+      label: "Facebook page link for Track Main Artist",
+    },
+    {
+      required: false,
+      placeholder: "https://www.instagram.com/username",
+      name: "InstagramHandleMainArtist",
+      label: "Instagram Artist handle for Track Main Artist",
+    },
+
     uploadType === "Film" && {
       required: true,
       type: "date",
@@ -535,27 +579,10 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
 
     {
       required: true,
-      type: "select-input",
-      placeholder: "Parental Advisory",
-      name: "Parental Advisory",
-      label: "Parental Advisory",
-      options: ["Explicit", "Non Explicit"],
-    },
-
-    {
-      required: true,
-      type: "date",
-      placeholder: "Original Release Date of Music",
-      name: "Original Release Date of Music",
-      label: "Original Release Date of Music",
-    },
-
-    {
-      required: true,
       // placeholder: "Sub Category",
       type: "file",
       name: "song",
-      label: "song",
+      label: "Song",
       accept: ".wav,.mp3",
       note: "Upload Your Song Here",
       onChange: (event) => {
@@ -583,7 +610,7 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
       type: "file",
       placeholder: "Art Work",
       name: "art-work",
-      label: "art-work",
+      label: "Art Work",
       accept: "image/jpg",
       note: "Upload Your Artwork Here (3000 X 3000, .jpg)",
       onChange: (e) => {
@@ -614,15 +641,13 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
     },
   ];
 
-  console.log(fields.length);
-
   const checkFormValidity = () => {
     const isFormValid = fields.every((field) => {
       // Check if each required field has a value
       // console.log(formRef.current["Sub Category"].required);
-      if (formRef.current["Sub Category"].required) {
+      if (formRef.current["Sub Category"]?.required) {
         return (
-          !!formRef.current["Sub Category"].value &&
+          !!formRef.current["Sub Category"]?.value &&
           formRef.current[`prev-Released-${index}`].value
         );
       }
@@ -698,6 +723,7 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
     fields.map(({ name }) => (songData[name] = e.target[name]?.value));
     songData.songUrl = songUrl;
     songData.artWorkUrl = artWorkUrl;
+    songData.audioDuration = audioDuration;
     delete songData.song;
     delete songData["art-work"];
 
@@ -723,27 +749,55 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
   };
 
   return (
+    // <Form fields={fields} handleSubmit={handleSubmit} ref={formRef} />
+
     <form
       className="flex flex-col w-full items-center mt-3"
       onSubmit={handleSubmit}
       ref={formRef}
     >
-      <div className="grid grid-cols-2 gap-4 w-full mb-4">
-        {fields.map((item, key) =>
-          item.type === "select-input" ? (
-            <SelectOptions
-              {...item}
-              // onChange={(e) => console.log(e.target.value)}
-              // options={}
-            />
-          ) : (
-            item.name?.length && <InputField {...item} key={key} />
-          )
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 w-full mb-4">
+        {fields.map((item, key) => (
+          <>
+            {item.name === "Record Label" || item.name === "ArtistName" ? (
+              <>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </>
+            ) : (
+              <></>
+            )}
+            {item.type === "select-input" ? (
+              <SelectOptions
+                {...item}
+                // onChange={(e) => console.log(e.target.value)}
+                // options={}
+              />
+            ) : (
+              item.name?.length && <InputField {...item} key={key} />
+            )}
 
-        <aside>
-          {audioUrl.length > 0 && <audio src={audioUrl} controls />}
-        </aside>
+            {item.name === "Lyricist" ||
+            item.name === "InstagramHandleMainArtist" ? (
+              <>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </>
+            ) : (
+              <></>
+            )}
+          </>
+        ))}
+
+        {audioUrl.length > 0 && (
+          <aside>
+            {audioUrl.length > 0 && <audio src={audioUrl} controls />}
+          </aside>
+        )}
 
         <aside>
           <h6>Previously Released</h6>

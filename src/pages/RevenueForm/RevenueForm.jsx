@@ -20,7 +20,7 @@ function RevenueForm() {
   const [gstCertificate, setGstCertificate] = useState("");
   const [cancelledCheque, setCancelledCheque] = useState("");
   const { token, userData } = useContext(ProfileContext);
-  const [confirmed, setConfirmed] = useState(true);
+  const [confirmed, setConfirmed] = useState(false);
   const [state, setState] = useState("");
   const invoiceRef = useRef(null);
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
@@ -188,6 +188,35 @@ function RevenueForm() {
     //   .catch((e) => console.log(e.message));
   };
 
+  const handlePdf = async () => {
+    const pdf = await generatePDF(targetRef, {
+      filename: `Invoice_of_${userData.first_name}_${userData.last_name}.pdf`,
+      // overrides: {
+      //   canvas: {
+      //     height: (1500 * 72) / 96,
+      //   },
+      // },
+    });
+    // console.log(pdf);
+    const formData = new FormData();
+    formData.append("file", pdf.output("blob"));
+
+    const config = {
+      headers: {
+        authorization: sessionStorage.getItem("token"),
+      },
+    };
+
+    const { data } = await axios.post(
+      "http://localhost:4000/store-invoice",
+      formData,
+      config
+    );
+    // console.log(data);
+    const newBody = { ...formBody, pdfUrl: data.pdfUrl };
+    console.log(newBody);
+  };
+
   return (
     <>
       {confirmed && (
@@ -206,16 +235,7 @@ function RevenueForm() {
                 type={"success"}
                 text={"confirm"}
                 containerClassName={"w-fit mt-3"}
-                onClick={() =>
-                  generatePDF(targetRef, {
-                    filename: `Invoice_of_${userData.first_name}_${userData.last_name}.pdf`,
-                    // overrides: {
-                    //   canvas: {
-                    //     height: (1500 * 72) / 96,
-                    //   },
-                    // },
-                  })
-                }
+                onClick={handlePdf}
               />
             </div>
           </div>
@@ -460,7 +480,7 @@ function RevenueForm() {
               )}
             </div>
 
-            {gst && (
+            {/* {gst && (
               <div className="flex gap-3 mb-5">
                 {state === "West Bengal" && (
                   <>
@@ -468,7 +488,7 @@ function RevenueForm() {
                       name={"cgstAmount"}
                       label={"CGST Amount"}
                       id={"cgstAmount"}
-                      type={"text"}
+                      type={"number"}
                       containerClassName={"w-1/2"}
                       required={gst && state === "West Bengal"}
                     />
@@ -476,7 +496,7 @@ function RevenueForm() {
                       name={"sgstAmount"}
                       label={"SGST Amount"}
                       id={"sgstAmount"}
-                      type={"text"}
+                      type={"number"}
                       containerClassName={"w-1/2"}
                       required={gst && state === "West Bengal"}
                     />
@@ -487,15 +507,15 @@ function RevenueForm() {
                     name={"igstAmount"}
                     label={"IGST Amount"}
                     id={"igstAmount"}
-                    type={"text"}
+                    type={"number"}
                     containerClassName={"w-full"}
                     required={gst && state !== "West Bengal"}
                   />
                 )}
               </div>
-            )}
+            )} */}
 
-            <div className="grid grid-cols-2 gap-3 mb-5">
+            <div className="grid grid-cols-2 gap-3 my-5">
               <InputField
                 name={"panNumber"}
                 label={"PAN Number*"}
@@ -520,7 +540,8 @@ function RevenueForm() {
                 type={"number"}
                 required={gst}
                 value={Math.floor(
-                  userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                  userData.lifetimeRevenue -
+                    (userData.lifetimeDisbursed || 0) || 0
                 )}
                 disabled={true}
                 containerClassName={"w-full"}

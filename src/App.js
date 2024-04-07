@@ -56,6 +56,7 @@ function App() {
     }
   }, [token]);
 
+  // console.log(token);
   // if(userData._id === );
 
   return (

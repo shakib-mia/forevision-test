@@ -53,10 +53,11 @@ const Login = () => {
             navigate("/signup-details");
           } else {
             // console.log(data);
-            setShowMessage(true);
+            // setShowMessage(true);
 
             setLoading(false);
-            setTimeout(() => navigate("/"), 10000);
+            navigate("/");
+            // setTimeout(() => navigate("/"), 10000);
             setUserData(data.details);
 
             // const config = {
