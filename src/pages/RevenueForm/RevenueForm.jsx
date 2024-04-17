@@ -7,6 +7,7 @@ import { backendUrl, config } from "../../constants";
 import Invoice from "../../components/Invoice/Invoice";
 import SelectOptions from "../../components/SelectOptions/SelectOptions";
 import generatePDF, { usePDF } from "react-to-pdf";
+import { toast } from "react-toastify";
 
 function RevenueForm() {
   const [gst, setGst] = useState(false);
@@ -19,12 +20,16 @@ function RevenueForm() {
   const [panCard, setPanCard] = useState("");
   const [gstCertificate, setGstCertificate] = useState("");
   const [cancelledCheque, setCancelledCheque] = useState("");
+  const [signature, setSignature] = useState("");
+  const [signatureUrl, setSignatureUrl] = useState("");
+  const [placeOfSupply, setPlaceOfSupply] = useState("");
   const { token, userData } = useContext(ProfileContext);
   const [confirmed, setConfirmed] = useState(false);
   const [state, setState] = useState("");
   const invoiceRef = useRef(null);
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   const [formBody, setFormBody] = useState({});
+  const [accountType, setAccountType] = useState("");
 
   // console.log(data);
 
@@ -46,6 +51,30 @@ function RevenueForm() {
     e.preventDefault();
     e.target.files[0] &&
       setCancelledCheque(URL.createObjectURL(e.target.files[0]));
+  };
+
+  const signatureHandle = (e) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    // console.log(reader);
+    reader.onload = (e) => {
+      const img = new Image();
+      img.src = e.target.result;
+      // img.onload = () => {
+      //   // Set image dimensions
+      //   console.log({ width: img.width, height: img.height });
+      //   if (img.width <= 276 && img.height <= 118) {
+      //     //   alert("perfect");
+      //   } else {
+      //     toast.error("Image should be less than or equal 276 X 118 pixels", {
+      //       position: "bottom-center",
+      //     });
+      //   }
+      // };
+      //   img.src = e.target.result;
+    };
+    // e.target.files[0] && reader.readAsDataURL(e.target.files[0]);
+    e.target.files[0] && setSignature(URL.createObjectURL(e.target.files[0]));
   };
 
   const imageUploading = async (urlbody, imageFile, setfile) => {
@@ -82,7 +111,7 @@ function RevenueForm() {
     const city = form.city.value;
     const state = form.state.value;
     const gstinNumber = form.gctinNumber?.value;
-    const placeOfSupply = form.placeOfSupply.value;
+    // const placeOfSupply = form.placeOfSupply.value;
     const cinNumber = form.cinNumber.value;
     const serviceAccount = form.serviceAccount?.value;
     const panNumber = form.panNumber.value;
@@ -103,6 +132,7 @@ function RevenueForm() {
     const PanCardFile = form.panCard.files[0];
     const GstFile = form.gst.files[0];
     const cancelledChequeFile = form.cancelledCheque.files[0];
+    const signatureFile = form.signature.files[0];
 
     const aadharCardUrl = await imageUploading(
       "upload-aadhar-cards",
@@ -125,6 +155,13 @@ function RevenueForm() {
       cancelledChequeFile,
       setCancelledUrl
     );
+
+    const signatureUrl = await imageUploading(
+      "upload-signature",
+      signatureFile,
+      setSignatureUrl
+    );
+
     // console.log(aadharUrl);
     const body = {
       vendorName,
@@ -159,7 +196,8 @@ function RevenueForm() {
       aadharUrl: aadharCardUrl,
       panUrl: panCardUrl,
       gstUrl: gstCertUrl,
-      cancelledUrl: cancelledChequeUrl,
+      cancelledChequeUrl,
+      signatureUrl,
     };
 
     setFormBody(body);
@@ -172,20 +210,6 @@ function RevenueForm() {
 
     console.log(body);
     setConfirmed(true);
-
-    // axios
-    //   .post(`${backendUrl}withdrawal-request`, body, config)
-    //   .then(({ data }) => {
-    //     // console.log(data);
-    //     if (data.acknowledged) {
-    //       e.target.reset();
-    //       setAadharCard("");
-    //       setPanCard("");
-    //       setGst("");
-    //       setCancelledCheque("");
-    //     }
-    //   })
-    //   .catch((e) => console.log(e.message));
   };
 
   const handlePdf = async () => {
@@ -208,20 +232,43 @@ function RevenueForm() {
     };
 
     const { data } = await axios.post(
-      "http://localhost:4000/store-invoice",
+      "https://api.forevisiondigital.in/store-invoice",
       formData,
       config
     );
     // console.log(data);
     const newBody = { ...formBody, pdfUrl: data.pdfUrl };
     console.log(newBody);
+
+    axios
+      .post(`${backendUrl}withdrawal-request`, newBody, {
+        headers: {
+          token: sessionStorage.getItem("token"),
+        },
+      })
+      .then(({ data }) => {
+        // console.log(data);
+        if (data.acknowledged) {
+          // e.target.reset();
+          setAadharCard("");
+          setPanCard("");
+          setGst("");
+          setCancelledCheque("");
+
+          setConfirmed(false);
+          toast.success("Withdrawal Request Placed Successfully", {
+            position: "bottom-center",
+          });
+        }
+      })
+      .catch((e) => console.log(e.message));
   };
 
   return (
     <>
       {confirmed && (
         <div className="fixed top-0 left-0 backdrop-blur w-screen h-screen z-[9999] flex justify-center overflow-x-auto overflow-y-auto">
-          <div className="bg-white w-[800px] h-[1500px] my-7 shadow-2xl rounded-lg relative">
+          <div className="bg-white w-[800px] h-[1119px] my-7 shadow-2xl rounded-lg relative">
             <button
               className="absolute -right-5 -top-5 text-heading-4"
               onClick={() => setConfirmed(false)}
@@ -365,14 +412,14 @@ function RevenueForm() {
                 containerClassName={"w-full md:w-1/4"}
               />
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-col md:flex-row">
               <InputField
                 name={"pinCode"}
                 label={"Pin Code*"}
                 id={"pinCode"}
                 type={"number"}
                 required={gst}
-                containerClassName={"w-1/4"}
+                containerClassName={"w-full md:w-1/4"}
               />
               <InputField
                 name={"city"}
@@ -380,7 +427,7 @@ function RevenueForm() {
                 id={"city"}
                 required={gst}
                 type={"address"}
-                containerClassName={"w-2/4"}
+                containerClassName={"w-full md:w-2/4"}
               />
               {ruIndian ? (
                 <SelectOptions
@@ -428,6 +475,7 @@ function RevenueForm() {
                     "West Bengal",
                   ]}
                   id={"state"}
+                  containerClassName={"w-full md:w-1/4"}
                 />
               ) : (
                 <InputField
@@ -435,38 +483,42 @@ function RevenueForm() {
                   id={"state"}
                   name={"state"}
                   label={"State*"}
-                  containerClassName={"w-1/4"}
+                  containerClassName={"w-full md:w-1/4"}
                 />
               )}
             </div>
-            <div className="flex gap-3 mt-6">
-              {gst && (
+            {gst && (
+              <div className="flex gap-3 flex-col md:flex-row mt-6">
                 <InputField
                   name={"gctinNumber"}
                   label={"GSTIN Number*"}
                   id={"gctinNumber"}
                   type={"text"}
-                  containerClassName={"w-2/4"}
+                  containerClassName={"w-full md:w-2/4"}
                   required={gst}
                 />
-              )}
-              <InputField
-                name={"placeOfSupply"}
-                label={"Place of Supply*"}
-                id={"placeOfSuppl"}
-                type={"text"}
-                containerClassName={gst ? "w-2/4" : "w-full"}
-                required={gst}
-              />
-            </div>
-            <div className="flex gap-3">
+                <InputField
+                  name={"placeOfSupply"}
+                  label={"Place of Supply*"}
+                  id={"placeOfSuppl"}
+                  type={"text"}
+                  value={
+                    state === "Kashmir" || state === "West Bengal" ? state : ""
+                  }
+                  onChange={(e) => setPlaceOfSupply(e.target.value)}
+                  containerClassName={gst ? "w-full md:w-2/4" : "w-full"}
+                  required={gst}
+                />
+              </div>
+            )}
+            <div className="flex flex-col md:flex-row gap-3">
               <InputField
                 name={"cinNumber"}
-                label={"CIN Number*"}
+                label={"CIN Number"}
                 id={"cinNumber"}
                 type={"text"}
-                required={gst}
-                containerClassName={`${gst ? "w-2/4" : "w-full"}`}
+                // required={gst}
+                containerClassName={`${gst ? "w-full md:w-2/4" : "w-full"}`}
               />
               {gst && (
                 <InputField
@@ -474,7 +526,7 @@ function RevenueForm() {
                   label={"Service Accounting Number (SAC)*"}
                   id={"serviceAccount"}
                   type={"text"}
-                  containerClassName={"w-2/4"}
+                  containerClassName={"w-full md:w-2/4"}
                   required={gst}
                 />
               )}
@@ -515,7 +567,7 @@ function RevenueForm() {
               </div>
             )} */}
 
-            <div className="grid grid-cols-2 gap-3 my-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-5">
               <InputField
                 name={"panNumber"}
                 label={"PAN Number*"}
@@ -555,14 +607,14 @@ function RevenueForm() {
               type={"text"}
               containerClassName={"w-2/5"}
             /> */}
-            <div className="flex gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <InputField
                 name={"bankName"}
                 label={"Name of the Bank*"}
                 id={"bankName"}
                 required={gst}
                 type={"text"}
-                containerClassName={"w-1/2"}
+                // containerClassName={"w-full md:w-1/2"}
               />
               <InputField
                 name={"branch"}
@@ -570,17 +622,19 @@ function RevenueForm() {
                 id={"branch"}
                 type={"text"}
                 required={gst}
-                containerClassName={"w-1/2"}
+                // containerClassName={"w-1/2"}
               />
             </div>
-            <div className="flex gap-3">
-              <InputField
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              <SelectOptions
                 name={"accountType"}
                 label={"Account Type*"}
                 required={gst}
                 id={"accountType"}
                 type={"text"}
-                containerClassName={"w-1/3"}
+                options={["Savings", "Current"]}
+                onChange={(e) => setAccountType(e.target.value)}
+                // containerClassName={"w-1/3"}
               />
               <InputField
                 name={"ifscCode"}
@@ -588,7 +642,7 @@ function RevenueForm() {
                 id={"ifscCode"}
                 type={"text"}
                 required={gst}
-                containerClassName={"w-1/3"}
+                // containerClassName={"w-1/3"}
               />
               <InputField
                 name={"beneficiaryName"}
@@ -596,26 +650,26 @@ function RevenueForm() {
                 id={"beneficiaryName"}
                 type={"text"}
                 required={gst}
-                containerClassName={"w-1/3"}
+                // containerClassName={"w-1/3"}
               />
             </div>
 
-            <div className="flex gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <InputField
                 name={"accountNumber"}
                 label={"Account Number*"}
                 id={"accountNumber"}
                 type={"number"}
                 required={gst}
-                containerClassName={"w-full"}
+                // containerClassName={"w-full"}
               />
               <InputField
                 name={"confirmAccountNumber"}
                 label={"Confirm Account Number*"}
                 id={"confirmAccountNumber"}
-                type={"text"}
+                type={"number"}
                 required={gst}
-                containerClassName={"w-full"}
+                // containerClassName={"w-full"}
               />
             </div>
             <div className="flex flex-wrap">
@@ -737,11 +791,46 @@ function RevenueForm() {
                       name="cancelledCheque"
                       id="cancelledCheque"
                       type="file"
-                      required={true}
+                      required
                       onChange={cancelledChequehandle}
                     />{" "}
                   </label>
                 </div>
+              </div>
+            </div>
+            <div>
+              <div className="w-full md:w-1/4 mx-auto">
+                <label className="text-grey" htmlFor="signature">
+                  <p>Signature</p>
+                  {/* {ruIndian && (
+                  <p className="text-interactive-light-destructive pt-1 text-[12px]">
+                    Please fill on the field with Signature
+                  </p>
+                )} */}
+                </label>
+              </div>
+              <div className="w-1/4 mx-auto aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <label htmlFor="signature">
+                  {signature.length ? (
+                    <img
+                      className="w-full h-[5rem] mx-auto rounded-xl"
+                      src={signature}
+                      alt=""
+                    />
+                  ) : (
+                    <p className="inline-block text-center text-heading-5-bold cursor-pointer">
+                      +
+                    </p>
+                  )}
+                  <input
+                    className="hidden"
+                    name="signature"
+                    id="signature"
+                    type="file"
+                    required={true}
+                    onChange={signatureHandle}
+                  />{" "}
+                </label>
               </div>
             </div>
           </div>

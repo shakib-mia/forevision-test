@@ -371,7 +371,13 @@ const Revenue = () => {
                   </h6>
                   <Button
                     className="px-2 py-1"
-                    disabled={true}
+                    disabled={
+                      (
+                        userData.lifetimeRevenue -
+                        (userData.lifetimeDisbursed || 0)
+                      ).toFixed(2) < 1000
+                    }
+                    onClick={() => navigate("/revenue-form")}
                     text="Request Withdraw"
                   />
                 </div>
@@ -420,7 +426,7 @@ const Revenue = () => {
                   <h4 className="text-heading-4-bold text-white 2xl:text-grey relative">
                     Account <br className="2xl:hidden" /> Balance
                   </h4>
-                  <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2">
+                  <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2 relative">
                     &#8377;{" "}
                     {(
                       userData.lifetimeRevenue -

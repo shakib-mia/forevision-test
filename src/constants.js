@@ -19,7 +19,7 @@ import Revenue from "./pages/Revenue/Revenue";
 import RevenueForm from "./pages/RevenueForm/RevenueForm";
 import SongUpload from "./pages/SongUpload/SongUpload";
 
-export const backendUrl = "http://localhost:4000/";
+export const backendUrl = "https://api.forevisiondigital.in/";
 // export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [

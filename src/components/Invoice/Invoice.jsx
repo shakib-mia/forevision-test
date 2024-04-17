@@ -26,12 +26,13 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
         rate: 18,
         amount: Math.round(parseInt(formBody.taxableValue) * 0.18),
       },
-      total:
-        formBody.state === "West Bengal"
+      total: gst
+        ? formBody.state === "West Bengal"
           ? parseInt(formBody.taxableValue) +
             Math.round(2 * parseInt(formBody.taxableValue) * 0.09)
           : parseInt(formBody.taxableValue) +
-            Math.round(parseInt(formBody.taxableValue) * 0.18),
+            Math.round(parseInt(formBody.taxableValue) * 0.18)
+        : formBody.taxableValue,
     },
   ];
 
@@ -184,11 +185,11 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
         </div>
 
         <div className="flex divide-x divide-surface-white-line border-b border-surface-white-line">
-          <div className="w-7/12 p-3 font-bold text-subtitle-2">
+          <div className="w-7/12 px-3 py-2 font-bold text-subtitle-2">
             <p>Name - Forevision Digital </p>
             <p>Address - Dhandinguri, Raserkuthi, Coochbeher - 736165</p>
-            <br />
-            <br />
+            {/* <br />
+            <br /> */}
             <p>GSTIN Number - FLKJW353P4O4</p>
             <p>PAN Number - </p>
             <p>State - West Bengal</p>
@@ -340,23 +341,25 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
           )}
         </div>
 
-        <div className="mt-6 text-subtitle-2 font-bold">
+        <div className="text-subtitle-2 font-bold">
           <div className="flex flex-wrap divide-x divide-y divide-surface-white-line border-b border-surface-white-line">
-            <div className="p-3 w-7/12 border-t border-surface-white-line">
+            <div className="p-3 w-7/12">
               Total Invoice amount in words:
               {/* <br /> */}
               <div className="capitalize">
                 {numberToWords(
-                  formBody.state === "West Bengal"
-                    ? parseInt(formBody.taxableValue) +
+                  gst
+                    ? formBody.state === "West Bengal"
+                      ? parseInt(formBody.taxableValue) +
                         Math.round(2 * parseInt(formBody.taxableValue) * 0.09)
-                    : parseInt(formBody.taxableValue) +
+                      : parseInt(formBody.taxableValue) +
                         Math.round(parseInt(formBody.taxableValue) * 0.18)
+                    : formBody.taxableValue
                 )}{" "}
               </div>
               Rupees only
             </div>
-            <div className="w-5/12 flex flex-col divide-y divide-surface-white-line">
+            <div className="w-5/12 flex flex-col divide-y divide-surface-white-line !border-t-0">
               {/* +++++++++++++++++++++++  HIDE FOR NON GST   ++++++++++++++++++++++++++ */}
 
               <div className="grid grid-cols-2 divide-x divide-surface-white-line">
@@ -417,7 +420,7 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
           </div>
 
           <div className="flex flex-wrap divide-x divide-surface-white-line border-b border-surface-white-line">
-            <div className="p-3 w-7/12">
+            <div className="px-3 pt-2 w-7/12">
               <p>Bank Details :</p>
               <p>Name of the Bank - BANK OF BARODA</p>
               <p>Branch - COOCH BEHAR</p>
@@ -426,14 +429,22 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
               <p>Account Number - 09010200001947</p>
               <p>IFSC - BARB0COOCHB</p>
             </div>
-            <div className="w-5/12 flex flex-col p-3">
+            <div className="w-5/12 flex flex-col p-1">
               <p className="text-center">
                 Certified that the Particulars given above are true & correct
               </p>
               <p>For - ForeVision Digital</p>
               <p>Authorised Signatory -</p>
 
-              <div className="mt-7 mx-auto w-10/12 bg-surface-white-line h-[1px]"></div>
+              <div
+                className={`${
+                  formBody.state === "West Bengal"
+                    ? "mt-1 w-1/2"
+                    : "mt-2 w-10/12"
+                } mx-auto border-surface-white-line border-b pb-1`}
+              >
+                <img src={formBody.signatureUrl} alt="signature" />
+              </div>
             </div>
           </div>
         </div>
