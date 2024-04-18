@@ -8,8 +8,10 @@ import Invoice from "../../components/Invoice/Invoice";
 import SelectOptions from "../../components/SelectOptions/SelectOptions";
 import generatePDF, { usePDF } from "react-to-pdf";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function RevenueForm() {
+  const navigate = useNavigate();
   const [gst, setGst] = useState(false);
   const [ruIndian, setRuIndian] = useState(false);
   const [aadharCard, setAadharCard] = useState("");
@@ -259,6 +261,7 @@ function RevenueForm() {
           toast.success("Withdrawal Request Placed Successfully", {
             position: "bottom-center",
           });
+          navigate("/");
         }
       })
       .catch((e) => console.log(e.message));
@@ -502,8 +505,11 @@ function RevenueForm() {
                   label={"Place of Supply*"}
                   id={"placeOfSuppl"}
                   type={"text"}
+                  disabled={state === "Kashmir" || state === "West Bengal"}
                   value={
-                    state === "Kashmir" || state === "West Bengal" ? state : ""
+                    state === "Kashmir" || state === "West Bengal"
+                      ? state
+                      : placeOfSupply
                   }
                   onChange={(e) => setPlaceOfSupply(e.target.value)}
                   containerClassName={gst ? "w-full md:w-2/4" : "w-full"}
