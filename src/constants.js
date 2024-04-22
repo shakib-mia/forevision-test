@@ -21,8 +21,8 @@ import SongUpload from "./pages/SongUpload/SongUpload";
 import Home from "./pages/Home/Home";
 import Payment from "./pages/Payment/Payment";
 
-export const backendUrl = "http://localhost:4000/";
-// export const backendUrl = "https://api.forevisiondigital.in/";
+// export const backendUrl = "http://localhost:4000/";
+export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   {
