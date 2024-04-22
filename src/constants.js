@@ -287,7 +287,7 @@ export const routes = [
     path: "/",
     page: (
       <RequireAuth>
-        <Home />
+        <Revenue /> {/* will be replaced by <Home /> */}
       </RequireAuth>
     ),
   },
