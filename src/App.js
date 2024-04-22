@@ -24,73 +24,71 @@ function App() {
   const [tokenDetails, setTokenDetails] = useState({});
   const navigate = useNavigate();
 
-  // console.log();
-
   /* Working api calls starts here */
 
-  // useEffect(() => {
-  //   if (token) {
-  //     axios
-  //       .get(backendUrl + "token-time", {
-  //         headers: {
-  //           token,
-  //         },
-  //       })
-  //       .then(({ data }) => setTokenDetails(data))
-  //       .catch((err) => {
-  //         if (err.response.data.name === "TokenExpiredError") {
-  //           setToken("");
-  //           sessionStorage.removeItem("token");
-  //           toast.error("Token has expired", {
-  //             position: "bottom-center",
-  //           });
-  //           navigate("/login");
-  //         }
-  //       });
-  //   }
-  // }, [token]);
+  useEffect(() => {
+    if (token) {
+      axios
+        .get(backendUrl + "token-time", {
+          headers: {
+            token,
+          },
+        })
+        .then(({ data }) => setTokenDetails(data))
+        .catch((err) => {
+          if (err.response.data.name === "TokenExpiredError") {
+            setToken("");
+            sessionStorage.removeItem("token");
+            toast.error("Token has expired", {
+              position: "bottom-center",
+            });
+            navigate("/login");
+          }
+        });
+    }
+  }, [token]);
 
-  // const store = {
-  //   userData,
-  //   setUserData,
-  //   prevRoute,
-  //   setPrevRoute,
-  //   profileData,
-  //   setProfileData,
-  //   token,
-  //   setToken,
-  //   uId,
-  //   setUId,
-  //   tokenDetails,
-  //   // timeStamp,
-  // };
+  const store = {
+    userData,
+    setUserData,
+    prevRoute,
+    setPrevRoute,
+    profileData,
+    setProfileData,
+    token,
+    setToken,
+    uId,
+    setUId,
+    tokenDetails,
+    // timeStamp,
+  };
 
-  // // console.log(userData);
+  // console.log(userData);
 
-  // useEffect(() => {
-  //   const config = {
-  //     headers: {
-  //       token: sessionStorage.getItem("token") || token,
-  //     },
-  //   };
+  useEffect(() => {
+    const config = {
+      headers: {
+        token: sessionStorage.getItem("token") || token,
+      },
+    };
 
-  //   if (token) {
-  //     axios.get(`${backendUrl}getUserData`, config).then(({ data }) => {
-  //       if (data?.data !== null) {
-  //         setUserData(data.data);
-  //       } else {
-  //         // navigate("/signup-details");
-  //       }
-  //     });
-  //   }
-  // }, [token]);
+    if (token) {
+      axios.get(`${backendUrl}getUserData`, config).then(({ data }) => {
+        if (data?.data !== null) {
+          setUserData(data.data);
+        } else {
+          // navigate("/signup-details");
+        }
+      });
+    }
+  }, [token]);
 
   /* Working api calls ends here */
 
   return (
     <>
-      <Construction />
-      {/* <ProfileContext.Provider value={store}>
+      {/* <Construction /> */}
+      <ProfileContext.Provider value={store}>
         {token ? token.length && <BottomBar /> : <></>}
         {location.pathname !== "/login" &&
           location.pathname !== "/signup" &&
@@ -102,7 +100,7 @@ function App() {
           ))}
         </Routes>
         <ToastContainer />
-      </ProfileContext.Provider> */}
+      </ProfileContext.Provider>
     </>
   );
 }

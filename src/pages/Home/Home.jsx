@@ -103,7 +103,7 @@ const Home = () => {
             className="absolute top-0 left-0 z-0 w-full"
             alt=""
           />
-          <div className="absolute z-10 left-0 w-full flex flex-col justify-between h-full py-2 2xl:py-6 ">
+          <div className="absolute z-10 left-0 w-full flex flex-col justify-center h-full py-2 2xl:py-6 ">
             <aside>
               {" "}
               <h4 className="text-heading-4-bold ml-5 2xl:ml-4 text-white">

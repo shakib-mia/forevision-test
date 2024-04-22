@@ -443,7 +443,11 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                     : "mt-2 w-10/12"
                 } mx-auto border-surface-white-line border-b pb-1`}
               >
-                <img src={formBody.signatureUrl} alt="signature" />
+                <img
+                  src={formBody.signatureUrl}
+                  className="h-[155px] mx-auto"
+                  alt="signature"
+                />
               </div>
             </div>
           </div>
