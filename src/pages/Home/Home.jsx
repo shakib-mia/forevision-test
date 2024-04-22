@@ -14,6 +14,10 @@ import {
   FaTwitter,
 } from "react-icons/fa6";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import Notifications from "../../components/Notifications/Notifications";
+import AccountHistory from "../../components/AccountHistory/AccountHistory";
+import Uploads from "../../components/Uploads/Uploads";
+import { FaPen } from "react-icons/fa";
 
 // import bg from "./../../assets/images/dashboard-bg.webp";
 
@@ -23,8 +27,8 @@ const Home = () => {
 
   return (
     <div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7">
-      <div className="grid grid-cols-1 2xl:grid-cols-3 justify-between space-y-4 2xl:space-y-0 2xl:space-x-2 text-white">
-        <div className="bg-grey p-0 2xl:p-4 rounded-2xl">
+      <div className="grid grid-cols-1 2xl:grid-cols-3 justify-between space-y-4 2xl:space-y-0 2xl:space-x-2 text-grey-dark">
+        <div className="bg-grey-light p-0 2xl:p-4 rounded-2xl">
           <div className="flex flex-col 2xl:flex-row items-center 2xl:items-end justify-center 2xl:justify-between">
             <img src={profile} className="rounded-full w-5/12 mb-0" alt="" />
             <div className="hidden 2xl:block text-center 2xl:text-left">
@@ -37,9 +41,11 @@ const Home = () => {
               <div className="flex gap-2 items-center">
                 <h5 className="text-heading-5">
                   John Doe
-                  <div className="border border-white hidden 2xl:block"></div>
+                  <div className="border border-grey-dark hidden 2xl:block"></div>
                 </h5>
-                <svg
+
+                <FaPen className="text-paragraph-1" />
+                {/* <svg
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
@@ -53,7 +59,7 @@ const Home = () => {
                     d="M19 3.17157C18.7599 3.17157 18.5222 3.21886 18.3003 3.31075C18.0785 3.40264 17.8769 3.53732 17.7071 3.7071L4.39491 17.0193L3.42524 20.5748L6.9807 19.6051L20.2929 6.29289C20.4627 6.1231 20.5974 5.92154 20.6893 5.69971C20.7812 5.47787 20.8284 5.24011 20.8284 5C20.8284 4.75988 20.7812 4.52212 20.6893 4.30029C20.5974 4.07845 20.4627 3.87689 20.2929 3.7071C20.1231 3.53732 19.9216 3.40264 19.6997 3.31075C19.4779 3.21886 19.2401 3.17157 19 3.17157ZM17.5349 1.46299C17.9994 1.27059 18.4973 1.17157 19 1.17157C19.5028 1.17157 20.0006 1.27059 20.4651 1.46299C20.9296 1.65539 21.3516 1.93739 21.7071 2.29289C22.0626 2.64839 22.3446 3.07043 22.537 3.53492C22.7294 3.99941 22.8284 4.49724 22.8284 5C22.8284 5.50275 22.7294 6.00058 22.537 6.46507C22.3446 6.92956 22.0626 7.3516 21.7071 7.7071L8.20713 21.2071C8.08407 21.3302 7.93104 21.419 7.76314 21.4648L2.26314 22.9648C1.91693 23.0592 1.54667 22.9609 1.29292 22.7071C1.03917 22.4534 0.940838 22.0831 1.03526 21.7369L2.53526 16.2369C2.58105 16.069 2.66986 15.9159 2.79292 15.7929L16.2929 2.29289C16.6484 1.93739 17.0705 1.65539 17.5349 1.46299Z"
                     fill="#ffffff"
                   />
-                </svg>
+                </svg> */}
               </div>
 
               <div className="flex gap-[10px] items-center">
@@ -91,7 +97,7 @@ const Home = () => {
             </p>
           </div>
         </div>
-        <div className="bg-grey px-4 rounded-2xl relative overflow-hidden h-[392px] 2xl:h-auto">
+        <div className="bg-grey-light px-4 rounded-2xl relative overflow-hidden h-[590px]">
           <img
             src={accountBg}
             className="absolute top-0 left-0 z-0 w-full"
@@ -108,8 +114,7 @@ const Home = () => {
                   userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
                 ).toFixed(2)}
               </h4>
-            </aside>
-            <div className="flex justify-center 2xl:justify-start 2xl:ml-4">
+              {/* <div className="flex justify-center 2xl:justify-start 2xl:ml-4"> */}
               <Button
                 disabled={
                   (
@@ -117,44 +122,19 @@ const Home = () => {
                   ).toFixed(2) < 1000
                 }
                 text="Request Withdraw"
+                containerClassName={"w-fit 2xl:ml-4"}
                 onClick={() => navigate("/revenue-form")}
               ></Button>
-            </div>
+              {/* </div> */}
+            </aside>
           </div>
         </div>
-        <div className="bg-grey p-4 rounded-2xl flex flex-col justify-between">
-          <div className="flex flex-col gap-2">
-            <SongListItem name="peja meghe Bhalobasa" />
-            <SongListItem name="Smokin' till my lungs burn " />
-            <SongListItem name="peja meghe Bhalobasa" />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <h4 className="text-heading-4-bold text-white">Your Uploads</h4>
-
-            <Button
-              onClick={() => navigate("/")}
-              text="Visit Dashboard"
-            ></Button>
-          </div>
-        </div>
+        <Uploads />
       </div>
 
-      <div className="flex flex-col 2xl:flex-row mt-2 w-full gap-2 mb-7 2xl:mb-0 text-white">
-        <div className="w-full 2xl:w-1/2 bg-grey rounded-2xl p-4 h-[392px]">
-          <h5 className="font-bold">Account History</h5>
-
-          <div className="flex">
-            <div className="w-3/4">
-              You have requested for withdrawal of INR XXXXXXX .It will take 5-7
-              Business days to process.
-            </div>
-            <div className="w-1/4">Lorem, ipsum.</div>
-          </div>
-        </div>
-        <div className="w-full 2xl:w-1/2 bg-grey rounded-2xl p-4 h-[392px]">
-          <h5 className="font-bold">Notifications</h5>
-        </div>
+      <div className="flex flex-col 2xl:flex-row mt-2 w-full gap-2 mb-7 2xl:mb-0 text-grey-dark">
+        <AccountHistory />
+        <Notifications />
       </div>
     </div>
   );

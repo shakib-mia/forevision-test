@@ -135,6 +135,7 @@ function RevenueForm() {
     const GstFile = form.gst.files[0];
     const cancelledChequeFile = form.cancelledCheque.files[0];
     const signatureFile = form.signature.files[0];
+    // console.log(taxableValue);
 
     const aadharCardUrl = await imageUploading(
       "upload-aadhar-cards",

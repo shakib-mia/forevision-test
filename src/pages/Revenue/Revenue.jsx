@@ -34,7 +34,7 @@ const Revenue = () => {
     }
   }, [currentTime]);
 
-  const { userData, token } = useContext(ProfileContext);
+  const { userData, token, setToken } = useContext(ProfileContext);
   // console.log(userData);
   useEffect(() => {
     if (userData?.first_name || userData?.partner_name) {
@@ -47,10 +47,14 @@ const Revenue = () => {
         .get(backendUrl + "user-revenue", config)
         .then(({ data }) => setIsrcs(data))
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           if (error.response.status === 401) {
             sessionStorage.removeItem("token");
-            // navigate("/login")
+            navigate("/login");
+            setToken("");
+            toast.error("Token has expired", {
+              position: "bottom-center",
+            });
           }
         });
     }

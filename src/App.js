@@ -1,7 +1,7 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import Construction from "./pages/Construction/Construction";
 import "react-toastify/dist/ReactToastify.css";
 import { backendUrl, routes } from "./constants";
@@ -21,7 +21,32 @@ function App() {
   const [profileData, setProfileData] = useState({});
   const [uId, setUId] = useState("");
   const [token, setToken] = useState(sessionStorage.getItem("token"));
-  // const navigate = useNavigate();
+  const [tokenDetails, setTokenDetails] = useState({});
+  const navigate = useNavigate();
+
+  // console.log();
+
+  useEffect(() => {
+    if (token) {
+      axios
+        .get(backendUrl + "token-time", {
+          headers: {
+            token,
+          },
+        })
+        .then(({ data }) => setTokenDetails(data))
+        .catch((err) => {
+          if (err.response.data.name === "TokenExpiredError") {
+            setToken("");
+            sessionStorage.removeItem("token");
+            toast.error("Token has expired", {
+              position: "bottom-center",
+            });
+            navigate("/login");
+          }
+        });
+    }
+  }, [token]);
 
   const store = {
     userData,
@@ -34,6 +59,8 @@ function App() {
     setToken,
     uId,
     setUId,
+    tokenDetails,
+    // timeStamp,
   };
 
   // console.log(userData);

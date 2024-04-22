@@ -19,9 +19,10 @@ import Revenue from "./pages/Revenue/Revenue";
 import RevenueForm from "./pages/RevenueForm/RevenueForm";
 import SongUpload from "./pages/SongUpload/SongUpload";
 import Home from "./pages/Home/Home";
+import Payment from "./pages/Payment/Payment";
 
-// export const backendUrl = "http://localhost:4000/";
-export const backendUrl = "https://api.forevisiondigital.in/";
+export const backendUrl = "http://localhost:4000/";
+// export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   {
@@ -79,26 +80,26 @@ export const navItem = [
   //     },
   //   ],
   // },
-  {
-    icon: (
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M11.553 1.10557C11.8345 0.964809 12.1659 0.964809 12.4474 1.10557L22.4474 6.10557C22.7862 6.27496 23.0002 6.62123 23.0002 7C23.0002 7.37877 22.7862 7.72504 22.4474 7.89443L12.4474 12.8944C12.1659 13.0352 11.8345 13.0352 11.553 12.8944L1.55301 7.89443C1.21422 7.72504 1.00022 7.37877 1.00022 7C1.00022 6.62123 1.21422 6.27496 1.55301 6.10557L11.553 1.10557ZM4.23629 7L12.0002 10.882L19.7642 7L12.0002 3.11803L4.23629 7ZM1.10579 11.5528C1.35278 11.0588 1.95345 10.8586 2.44743 11.1056L12.0002 15.882L21.553 11.1056C22.047 10.8586 22.6477 11.0588 22.8946 11.5528C23.1416 12.0468 22.9414 12.6474 22.4474 12.8944L12.4474 17.8944C12.1659 18.0352 11.8345 18.0352 11.553 17.8944L1.55301 12.8944C1.05903 12.6474 0.858803 12.0468 1.10579 11.5528ZM1.10579 16.5528C1.35278 16.0588 1.95345 15.8586 2.44743 16.1056L12.0002 20.882L21.553 16.1056C22.047 15.8586 22.6477 16.0588 22.8946 16.5528C23.1416 17.0468 22.9414 17.6474 22.4474 17.8944L12.4474 22.8944C12.1659 23.0352 11.8345 23.0352 11.553 22.8944L1.55301 17.8944C1.05903 17.6474 0.858803 17.0468 1.10579 16.5528Z"
-          fill="black"
-        />
-      </svg>
-    ),
-    text: "Upload",
-    path: "/song-upload",
-  },
+  // {
+  //   icon: (
+  //     <svg
+  //       width="24"
+  //       height="24"
+  //       viewBox="0 0 24 24"
+  //       fill="none"
+  //       xmlns="http://www.w3.org/2000/svg"
+  //     >
+  //       <path
+  //         fill-rule="evenodd"
+  //         clip-rule="evenodd"
+  //         d="M11.553 1.10557C11.8345 0.964809 12.1659 0.964809 12.4474 1.10557L22.4474 6.10557C22.7862 6.27496 23.0002 6.62123 23.0002 7C23.0002 7.37877 22.7862 7.72504 22.4474 7.89443L12.4474 12.8944C12.1659 13.0352 11.8345 13.0352 11.553 12.8944L1.55301 7.89443C1.21422 7.72504 1.00022 7.37877 1.00022 7C1.00022 6.62123 1.21422 6.27496 1.55301 6.10557L11.553 1.10557ZM4.23629 7L12.0002 10.882L19.7642 7L12.0002 3.11803L4.23629 7ZM1.10579 11.5528C1.35278 11.0588 1.95345 10.8586 2.44743 11.1056L12.0002 15.882L21.553 11.1056C22.047 10.8586 22.6477 11.0588 22.8946 11.5528C23.1416 12.0468 22.9414 12.6474 22.4474 12.8944L12.4474 17.8944C12.1659 18.0352 11.8345 18.0352 11.553 17.8944L1.55301 12.8944C1.05903 12.6474 0.858803 12.0468 1.10579 11.5528ZM1.10579 16.5528C1.35278 16.0588 1.95345 15.8586 2.44743 16.1056L12.0002 20.882L21.553 16.1056C22.047 15.8586 22.6477 16.0588 22.8946 16.5528C23.1416 17.0468 22.9414 17.6474 22.4474 17.8944L12.4474 22.8944C12.1659 23.0352 11.8345 23.0352 11.553 22.8944L1.55301 17.8944C1.05903 17.6474 0.858803 17.0468 1.10579 16.5528Z"
+  //         fill="black"
+  //       />
+  //     </svg>
+  //   ),
+  //   text: "Upload",
+  //   path: "/song-upload",
+  // },
   // {
   //   icon: (
   //     <svg
@@ -275,21 +276,26 @@ export const imageDomain = "https://beta.forevisiondigital.com/admin/";
 
 export const config = {
   headers: {
-    Authorization: sessionStorage.getItem("token"),
+    token: sessionStorage.getItem("token"),
   },
 };
 
 export const user = JSON.parse(sessionStorage.getItem("user"));
 
 export const routes = [
-  // {
-  //   path: "/",
-  //   page: (
-  //     <RequireAuth>
-  //       <Home />
-  //     </RequireAuth>
-  //   ),
-  // },
+  {
+    path: "/",
+    page: (
+      <RequireAuth>
+        <Home />
+      </RequireAuth>
+    ),
+  },
+
+  {
+    path: "/payment",
+    page: <Payment />,
+  },
   {
     path: "/verified-on-resso",
     page: (
@@ -367,10 +373,10 @@ export const routes = [
     path: "/forgot-password",
     page: <ForgetPassword />,
   },
-  // {
-  //   path: "/revenue-form",
-  //   page: <RevenueForm />,
-  // },
+  {
+    path: "/revenue-form",
+    page: <RevenueForm />,
+  },
 
   {
     path: "/signup-details",
@@ -381,50 +387,42 @@ export const routes = [
     ),
   },
 
-  // {
-  //   path: "/projects/ongoing",
-  //   page: (
-  //     <RequireAuth>
-  //       <OngoingProjects />
-  //     </RequireAuth>
-  //   ),
-  // },
-  // {
-  //   path: "/projects/previous",
-  //   page: (
-  //     <RequireAuth>
-  //       <PreviousProjects />
-  //     </RequireAuth>
-  //   ),
-  // },
-
-  // {
-  //   path: "/profile",
-  //   page: (
-  //     <RequireAuth>
-  //       <Profile />
-  //     </RequireAuth>
-  //   ),
-  // },
-
-  // {
-  //   path: "/profile/:id",
-  //   page: (
-  //     <RequireAuth>
-  //       <Profile />
-  //     </RequireAuth>
-  //   ),
-  // },
-  // {
-  //   path: "/profile/:id",
-  //   page: (
-  //     <RequireAuth>
-  //       <Profile />
-  //     </RequireAuth>
-  //   ),
-  // },
   {
-    path: "/",
+    path: "/projects/ongoing",
+    page: (
+      <RequireAuth>
+        <OngoingProjects />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/projects/previous",
+    page: (
+      <RequireAuth>
+        <PreviousProjects />
+      </RequireAuth>
+    ),
+  },
+
+  {
+    path: "/profile",
+    page: (
+      <RequireAuth>
+        <Profile />
+      </RequireAuth>
+    ),
+  },
+
+  {
+    path: "/profile/:id",
+    page: (
+      <RequireAuth>
+        <Profile />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/revenue-reports",
     page: (
       // <Construction />
       <RequireAuth>
@@ -432,12 +430,12 @@ export const routes = [
       </RequireAuth>
     ),
   },
-  // {
-  //   path: "/song-upload",
-  //   page: (
-  //     <RequireAuth>
-  //       <SongUpload />
-  //     </RequireAuth>
-  //   ),
-  // },
+  {
+    path: "/song-upload",
+    page: (
+      <RequireAuth>
+        <SongUpload />
+      </RequireAuth>
+    ),
+  },
 ];
