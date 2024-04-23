@@ -291,7 +291,14 @@ export const routes = [
       </RequireAuth>
     ),
   },
-
+  // {
+  //   path: "/home",
+  //   page: (
+  //     <RequireAuth>
+  //       <Home />
+  //     </RequireAuth>
+  //   ),
+  // },
   {
     path: "/payment",
     page: <Payment />,
