@@ -464,7 +464,10 @@ const Revenue = () => {
           <div className="hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
             <ul className="grid grid-cols-9 gap-3 sticky top-0 mb-2">
               {labels.map((item, key) => (
-                <li key={key} className="capitalize text-center font-semibold">
+                <li
+                  key={"label-" + key}
+                  className="capitalize text-center font-semibold"
+                >
                   {item}
                 </li>
               ))}
