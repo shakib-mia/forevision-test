@@ -146,7 +146,11 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
    ****************/
 
   return (
-    <div className="bg-white w-full h-full rounded-lg" id="invoice" ref={ref}>
+    <div
+      className="bg-white w-[800px] h-[1120px] rounded-lg"
+      id="invoice"
+      ref={ref}
+    >
       <div className="p-3">
         <p>
           <b>Vendor Name -</b> {formBody.vendorName}
