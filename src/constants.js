@@ -320,10 +320,10 @@ export const routes = [
     path: "/payment",
     page: <Payment />,
   },
-  {
-    path: "/plans",
-    page: <Plans />,
-  },
+  // {
+  //   path: "/plans",
+  //   page: <Plans />,
+  // },
   {
     path: "/verified-on-resso",
     page: (
