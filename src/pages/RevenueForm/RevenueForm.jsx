@@ -736,41 +736,43 @@ function RevenueForm() {
                   </label>
                 </div>
               </div>
-              <div className="w-full md:w-1/2 p-1">
-                <label className="text-grey mb-1" htmlFor="GovtID">
-                  <p>GST certificate</p>
-                  {ruIndian && (
-                    <div className="w-1/2 p-1">
-                      <p className="teeractive-light-destructive pt-1 text-[12px]">
-                        Please fill on the field with GST certificate
-                      </p>
-                    </div>
-                  )}
-                </label>
-                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
-                  <label htmlFor="gst">
-                    {gstCertificate.length ? (
-                      <img
-                        className="w-full h-[5rem] mx-auto rounded-xl"
-                        src={gstCertificate}
-                        alt=""
-                      />
-                    ) : (
-                      <p className="inline-block text-center text-heading-5-bold cursor-pointer">
-                        +
-                      </p>
+              {gst && (
+                <div className="w-full md:w-1/2 p-1">
+                  <label className="text-grey mb-1" htmlFor="GovtID">
+                    <p>GST certificate</p>
+                    {ruIndian && (
+                      <div className="w-1/2 p-1">
+                        <p className="teeractive-light-destructive pt-1 text-[12px]">
+                          Please fill on the field with GST certificate
+                        </p>
+                      </div>
                     )}
-                    <input
-                      className="hidden"
-                      name="gst"
-                      id="gst"
-                      type="file"
-                      required={ruIndian}
-                      onChange={gsthandle}
-                    />{" "}
                   </label>
+                  <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                    <label htmlFor="gst">
+                      {gstCertificate.length ? (
+                        <img
+                          className="w-full h-[5rem] mx-auto rounded-xl"
+                          src={gstCertificate}
+                          alt=""
+                        />
+                      ) : (
+                        <p className="inline-block text-center text-heading-5-bold cursor-pointer">
+                          +
+                        </p>
+                      )}
+                      <input
+                        className="hidden"
+                        name="gst"
+                        id="gst"
+                        type="file"
+                        required={ruIndian}
+                        onChange={gsthandle}
+                      />{" "}
+                    </label>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="w-full md:w-1/2 p-1">
                 <label className="text-grey mb-1" htmlFor="cancelledCheque">
                   <p>Cancelled Cheque</p>
