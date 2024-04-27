@@ -17,7 +17,7 @@ const SongPlans = ({ handlePayment }) => {
   return (
     <div className="overflow-hidden py-5 px-[10px]">
       <ReactOwlCarousel
-        // autoplay={true}
+        autoplay={true}
         autoplayHoverPause
         autoplayTimeout={1000}
         // slidesPerView={3}

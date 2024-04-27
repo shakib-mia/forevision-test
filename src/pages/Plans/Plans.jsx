@@ -108,15 +108,18 @@ const Plans = () => {
     { placeholder: "Spotify Profile Link", name: "spotifyProfileLink" },
     { placeholder: "JioSaavn Profile Link", name: "jioSaavnProfileLink" },
     { placeholder: "Wynk Profile Link", name: "wynkProfileLink" },
-    { placeholder: "Monthly Listeners", name: "monthlyListeners" },
+    {
+      placeholder: "Monthly Listeners",
+      name: "monthlyListeners",
+      type: "number",
+    },
     {
       placeholder: "Instagram account link",
       name: "instagramAccountLink",
       type: "number",
     },
     {
-      placeholder:
-        "Number of songs uploaded till date through Forevision ( eta Prantik er input)",
+      placeholder: "Number of songs uploaded till date through Forevision",
     },
   ];
 
@@ -144,15 +147,17 @@ const Plans = () => {
         <SongPlans handlePayment={handlePayment} />
       )}
 
-      <div className="flex gap-6">
+      <div className="flex flex-col-reverse xl:flex-row gap-3 xl:gap-6 w-11/12 mx-auto">
         <Form
           heading="Lorem ipsum dolor"
-          containerClassName="mt-5 !mx-0 !ml-4 !w-5/12 !px-4"
+          containerClassName="xl:mt-5 !mx-0 xl:!ml-4 !w-full xl:!w-5/12 !px-4"
           fields={fields}
           headingSize="text-heading-3-bold"
         ></Form>
-        <aside className="w-7/12 pt-7 pr-4">
-          <h1 className="text-heading-1-bold">Lorem, ipsum dolor.</h1>
+        <aside className="w-full xl:w-7/12 xl:pt-7 pr-4">
+          <h1 className="text-heading-4-bold xl:text-heading-1-bold">
+            Lorem, ipsum dolor.
+          </h1>
           <p className="text-paragraph-1">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
             nulla, ipsam eum dignissimos praesentium sunt suscipit minima culpa

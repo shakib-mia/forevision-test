@@ -183,7 +183,7 @@ const Form = forwardRef(
             <Button type="submit" text="submit" disabled={disabled} />
           </div>
         </form>
-        <Chat />
+        {/* <Chat /> */}
       </>
     );
   }
