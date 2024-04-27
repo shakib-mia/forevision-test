@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
+import razorpay from "./../../assets/icons/razorpay.png";
+import phonepe from "./../../assets/icons/phonepe.png";
+import paypal from "./../../assets/icons/paypal.png";
 
-const AlbumPlan = ({ handlePayment }) => {
+const AlbumPlan = ({ handleRazorpayPayment, handlePhonePePayment }) => {
   const [modal, showModal] = useState(false);
 
   return (
@@ -132,9 +135,9 @@ const AlbumPlan = ({ handlePayment }) => {
         <Button
           text={"Get Started"}
           className={
-            "w-full justify-center bg-white !text-interactive-light-hover hover:bg-white-secondary"
+            "w-full justify-center bg-white !text-interactive-light-hover hover:bg-white-secondary active:bg-white-deactivated focus:bg-white-tertiary"
           }
-          //   onClick={() => handlePayment(99900)}
+          //   onClick={() => handleRazorpayPayment(99900)}
           onClick={() => showModal(true)}
           containerClassName={"mt-5"}
         ></Button>
@@ -142,17 +145,44 @@ const AlbumPlan = ({ handlePayment }) => {
 
       {modal && (
         <Modal>
-          <div className="w-1/4 h-3/4 bg-white m-auto relative">
+          <div className="w-11/12 lg:w-1/2 xl:w-1/4 h-3/4 bg-white m-auto relative p-2 rounded-lg">
             <button
               className="absolute -top-5 -right-5 text-heading-4 text-interactive-light-destructive-focus"
               onClick={() => showModal(false)}
             >
               &times;
             </button>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro et
-            laborum modi autem saepe repellendus voluptas. Exercitationem, cum
-            reprehenderit amet, sit quos recusandae deleniti quae sapiente ad,
-            ipsam tenetur a.
+
+            <h5 className="text-heading-5-bold text-white-secondary bg-primary absolute top-0 left-0 w-full p-2 rounded-t-lg">
+              Select Your Payment Method
+            </h5>
+
+            <button
+              className="w-full flex justify-center py-2 border-2 border-primary rounded-full mt-6"
+              onClick={() => {
+                handleRazorpayPayment(99900);
+                // setTimeout(() => showModal(false), 1000);
+                setTimeout(() => {
+                  showModal(false);
+                }, 700);
+              }}
+            >
+              <img src={razorpay} alt="razorpay" className="w-1/3" />
+            </button>
+
+            <button
+              className="w-full flex justify-center py-2 border-2 border-secondary-dark rounded-full mt-2"
+              onClick={() => handlePhonePePayment(99900)}
+            >
+              <img src={phonepe} alt="phonepe" className="w-1/3" />
+            </button>
+
+            <button
+              className="w-full flex justify-center py-2 border-2 border-secondary-dark rounded-full mt-2"
+              // onClick={() => handleRazorpayPayment(99900)}
+            >
+              <img src={paypal} alt="paypal" className="w-1/3" />
+            </button>
           </div>
         </Modal>
       )}

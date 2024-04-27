@@ -1,20 +1,8 @@
 import React, { useState } from "react";
-import {
-  FaCheck,
-  FaFacebook,
-  FaFacebookF,
-  FaInstagram,
-  FaYoutube,
-} from "react-icons/fa";
-import ReactOwlCarousel from "react-owl-carousel";
-import { Swiper } from "swiper/react";
-import { SwiperSlide } from "swiper/react";
-import Button from "../../components/Button/Button";
 import useRazorpay from "react-razorpay";
 import axios from "axios";
 import { backendUrl } from "../../constants";
 import logo from "../../assets/icons/logo.PNG";
-import { SiAirtel } from "react-icons/si";
 import Toggle from "../../components/Toggle/Toggle";
 import SongPlans from "../SongPlans/SongPlans";
 import AlbumPlan from "../../components/AlbumPlan/AlbumPlan";
@@ -24,7 +12,7 @@ const Plans = () => {
   const [checked, setChecked] = useState(false);
   const [Razorpay] = useRazorpay();
 
-  const handlePayment = async (amount) => {
+  const handleRazorpayPayment = async (amount) => {
     // const order = await createOrder(params); //  Create order on your backend
 
     // const options = {
@@ -71,6 +59,39 @@ const Plans = () => {
       .post(backendUrl + "razorpay", { amount }) // ============  *** Need to set amount dynamically here ***  ================
       .then(({ data }) => initPayment(data))
       .catch((error) => console.log(error));
+  };
+
+  const handlePhonePePayment = (amount) => {
+    // console.log(amount);
+    const options = {
+      method: "post",
+      url: "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
+      headers: {
+        accept: "text/plain",
+        "Content-Type": "application/json",
+      },
+      data: {
+        merchantId: "PGTESTPAYUAT",
+        merchantTransactionId: "MT7850590068188104",
+        merchantUserId: "MUID123",
+        amount: 10000,
+        redirectUrl: "https://webhook.site/redirect-url",
+        redirectMode: "REDIRECT",
+        callbackUrl: "https://webhook.site/callback-url",
+        mobileNumber: "9999999999",
+        paymentInstrument: {
+          type: "PAY_PAGE",
+        },
+      },
+    };
+    axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   };
 
   const initPayment = (data) => {
@@ -142,9 +163,15 @@ const Plans = () => {
       </div>
 
       {checked ? (
-        <AlbumPlan handlePayment={handlePayment} />
+        <AlbumPlan
+          handleRazorpayPayment={handleRazorpayPayment}
+          handlePhonePePayment={handlePhonePePayment}
+        />
       ) : (
-        <SongPlans handlePayment={handlePayment} />
+        <SongPlans
+          handleRazorpayPayment={handleRazorpayPayment}
+          handlePhonePePayment={handlePhonePePayment}
+        />
       )}
 
       <div className="flex flex-col-reverse xl:flex-row gap-3 xl:gap-6 w-11/12 mx-auto">

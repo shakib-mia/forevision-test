@@ -12,7 +12,7 @@ import axios from "axios";
 import useRazorpay from "react-razorpay";
 import { useNavigate } from "react-router-dom";
 
-const SongPlans = ({ handlePayment }) => {
+const SongPlans = ({ handleRazorpayPayment }) => {
   const navigate = useNavigate();
   return (
     <div className="overflow-hidden py-5 px-[10px]">
@@ -287,7 +287,7 @@ const SongPlans = ({ handlePayment }) => {
             className={
               "w-full justify-center bg-white !text-interactive-light-hover hover:bg-white-secondary active:bg-white-deactivated focus:bg-white-tertiary"
             }
-            onClick={() => handlePayment(69900)}
+            onClick={() => handleRazorpayPayment(69900)}
             containerClassName={"mt-5"}
           ></Button>
         </div>
@@ -396,7 +396,7 @@ const SongPlans = ({ handlePayment }) => {
 
             <Button
               text={"Get Started"}
-              onClick={() => handlePayment(49800)}
+              onClick={() => handleRazorpayPayment(49800)}
               className={"w-full justify-center"}
             ></Button>
           </div>
@@ -499,7 +499,7 @@ const SongPlans = ({ handlePayment }) => {
             <Button
               text={"Get Started"}
               className={"w-full justify-center"}
-              onClick={() => handlePayment(49900)}
+              onClick={() => handleRazorpayPayment(49900)}
             ></Button>
           </div>
         </div>

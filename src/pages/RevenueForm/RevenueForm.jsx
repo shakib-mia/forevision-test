@@ -679,12 +679,12 @@ function RevenueForm() {
                 // containerClassName={"w-full"}
               />
             </div>
-            <div className="flex flex-wrap">
-              <div className="w-full md:w-1/2 p-1">
+            <div className="flex flex-wrap w-7/12 mx-auto">
+              <div className="w-full md:w-1/2 aspect-square p-1">
                 <label className="text-grey mb-1" htmlFor="aadharCard">
                   Aadhar Card / Any Government Issued ID
                 </label>
-                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <div className="h-full border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="aadharCard">
                     {aadharCard.length ? (
                       <img
@@ -708,11 +708,11 @@ function RevenueForm() {
                   </label>
                 </div>
               </div>
-              <div className="w-full md:w-1/2 p-1">
+              <div className="w-full md:w-1/2 aspect-square p-1">
                 <label className="text-grey mb-1" htmlFor="panCard">
                   PAN Card
                 </label>
-                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <div className="h-full border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="panCard">
                     {panCard.length ? (
                       <img
@@ -737,7 +737,7 @@ function RevenueForm() {
                 </div>
               </div>
               {gst && (
-                <div className="w-full md:w-1/2 p-1">
+                <div className="w-full md:w-1/2 aspect-square p-1">
                   <label className="text-grey mb-1" htmlFor="GovtID">
                     <p>GST certificate</p>
                     {ruIndian && (
@@ -748,7 +748,7 @@ function RevenueForm() {
                       </div>
                     )}
                   </label>
-                  <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                  <div className="h-full border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                     <label htmlFor="gst">
                       {gstCertificate.length ? (
                         <img
@@ -773,7 +773,7 @@ function RevenueForm() {
                   </div>
                 </div>
               )}
-              <div className="w-full md:w-1/2 p-1">
+              <div className="w-full aspect-square md:w-1/2 p-1">
                 <label className="text-grey mb-1" htmlFor="cancelledCheque">
                   <p>Cancelled Cheque</p>
                   {ruIndian && (
@@ -782,7 +782,7 @@ function RevenueForm() {
                     </p>
                   )}
                 </label>
-                <div className="h-[6rem] border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <div className="h-full border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="cancelledCheque">
                     {cancelledCheque.length ? (
                       <img
@@ -806,40 +806,40 @@ function RevenueForm() {
                   </label>
                 </div>
               </div>
-            </div>
-            <div>
-              <div className="w-full md:w-1/4 mx-auto">
-                <label className="text-grey" htmlFor="signature">
-                  <p>Signature</p>
-                  {/* {ruIndian && (
+              <div className="w-1/2 p-1 aspect-square">
+                <div className="w-full mx-auto">
+                  <label className="text-grey" htmlFor="signature">
+                    <p>Signature</p>
+                    {/* {ruIndian && (
                   <p className="text-interactive-light-destructive pt-1 text-[12px]">
                     Please fill on the field with Signature
                   </p>
                 )} */}
-                </label>
-              </div>
-              <div className="w-1/4 mx-auto aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
-                <label htmlFor="signature">
-                  {signature.length ? (
-                    <img
-                      className="w-full h-[5rem] mx-auto rounded-xl"
-                      src={signature}
-                      alt=""
-                    />
-                  ) : (
-                    <p className="inline-block text-center text-heading-5-bold cursor-pointer">
-                      +
-                    </p>
-                  )}
-                  <input
-                    className="hidden"
-                    name="signature"
-                    id="signature"
-                    type="file"
-                    required={true}
-                    onChange={signatureHandle}
-                  />{" "}
-                </label>
+                  </label>
+                </div>
+                <div className="w-full h-full border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                  <label htmlFor="signature">
+                    {signature.length ? (
+                      <img
+                        className="w-full h-[5rem] mx-auto rounded-xl"
+                        src={signature}
+                        alt=""
+                      />
+                    ) : (
+                      <p className="inline-block text-center text-heading-5-bold cursor-pointer">
+                        +
+                      </p>
+                    )}
+                    <input
+                      className="hidden"
+                      name="signature"
+                      id="signature"
+                      type="file"
+                      required={true}
+                      onChange={signatureHandle}
+                    />{" "}
+                  </label>
+                </div>
               </div>
             </div>
           </div>

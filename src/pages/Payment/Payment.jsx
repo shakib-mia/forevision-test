@@ -7,7 +7,7 @@ import logo from "../../assets/icons/logo.PNG";
 const Payment = () => {
   const [Razorpay] = useRazorpay();
 
-  const handlePayment = async (params) => {
+  const handleRazorpayPayment = async (params) => {
     // const order = await createOrder(params); //  Create order on your backend
 
     // const options = {
@@ -85,7 +85,7 @@ const Payment = () => {
 
   return (
     <div className="ml-7">
-      <button onClick={handlePayment}>open razorpay</button>
+      <button onClick={handleRazorpayPayment}>open razorpay</button>
     </div>
   );
 };
