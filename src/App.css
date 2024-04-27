@@ -158,3 +158,11 @@ a.active:hover svg path {
 ::-webkit-scrollbar {
   width: 0;
 }
+
+#plans-page .owl-carousel .owl-stage-outer {
+  @apply overflow-visible;
+}
+
+#plans-page .owl-stage {
+  @apply flex;
+}

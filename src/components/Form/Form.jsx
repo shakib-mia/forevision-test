@@ -16,7 +16,19 @@ import SelectOptions from "../SelectOptions/SelectOptions";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const Form = forwardRef(
-  ({ fields, instruction, backendUrl, uIdKey, id }, ref) => {
+  (
+    {
+      fields,
+      instruction,
+      backendUrl,
+      uIdKey,
+      id,
+      containerClassName,
+      headingSize,
+      heading,
+    },
+    ref
+  ) => {
     const [disabled, setDisabled] = useState(true);
     const toastId = React.useRef(null);
 
@@ -141,8 +153,15 @@ const Form = forwardRef(
           onChange={handleChange}
           id={id || "myForm"}
           ref={ref || formRef}
-          className="mt-[90px] rounded-[15px] shadow-lg pt-[29px] px-[50px] 2xl:px-[60px] 3xl:px-[101px] pb-[80px] bg-white-secondary w-7/12 mx-auto"
+          className={`mt-[90px] rounded-[15px] shadow-lg pt-[29px] px-[50px] 2xl:px-[60px] 3xl:px-[101px] pb-[80px] bg-white-secondary w-7/12 mx-auto ${containerClassName}`}
         >
+          {heading && (
+            <h3
+              className={`${headingSize ? headingSize : "text-heading-4-bold"}`}
+            >
+              {heading}
+            </h3>
+          )}
           {fields.map((props, key) =>
             props.type === "dropdown" ? (
               <div className="mt-[32px]">

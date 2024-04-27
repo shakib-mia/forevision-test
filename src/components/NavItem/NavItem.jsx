@@ -14,8 +14,9 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
           onMouseLeave={() => setHovered(false)}
         >
           <div
-            className={`flex justify-between items-center ${text && "hover:bg-grey-light hover:text-black cursor-pointer"
-              } p-1 rounded-md`}
+            className={`flex justify-between items-center ${
+              text && "hover:bg-grey-light hover:text-black cursor-pointer"
+            } p-1 rounded-md`}
           >
             <div className="flex gap-[10px] items-center">
               {icon}
@@ -26,8 +27,9 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
               <img
                 src={downArrow}
                 alt="downarrow"
-                className={`w-[9px] h-[5px] ${itemHovered && "rotate-180"
-                  } transition`}
+                className={`w-[9px] h-[5px] ${
+                  itemHovered && "rotate-180"
+                } transition`}
               />
             ) : (
               <></>
@@ -59,11 +61,12 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
           onMouseLeave={() => setHovered(false)}
         >
           <div
-            className={`flex justify-between items-center ${text && "hover:bg-grey-light cursor-pointer"
-              } py-2 px-[10px] rounded-md`}
+            className={`flex justify-between items-center ${
+              text && "hover:bg-grey-light cursor-pointer"
+            } py-2 px-[10px] rounded-md`}
           >
             <div className="flex gap-[10px] items-center">
-              {icon && <img src={icon} alt={text} />}
+              {icon}
               {hovered && <h2>{text}</h2>}
             </div>
 
@@ -71,8 +74,9 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
               <img
                 src={downArrow}
                 alt="downarrow"
-                className={`w-[9px] h-[5px] ${itemHovered && "rotate-180"
-                  } transition`}
+                className={`w-[9px] h-[5px] ${
+                  itemHovered && "rotate-180"
+                } transition`}
               />
             ) : (
               <></>
