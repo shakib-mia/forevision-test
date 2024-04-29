@@ -11,7 +11,7 @@ const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
   const { setProfileData, userData } = useContext(ProfileContext);
   // console.log(userData);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleMouseEnter = () => {
     // document
@@ -28,19 +28,18 @@ const Sidebar = () => {
     setHovered(false);
   };
 
-
   const handleLogout = () => {
-    setProfileData({})
-    sessionStorage.removeItem("token")
-    sessionStorage.removeItem("user")
-    navigate("/login")
-  }
+    setProfileData({});
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    navigate("/login");
+  };
 
   // console.log(userData);
 
   return (
     <aside
-      className="fixed top-0 left-0 h-screen shadow-lg p-2 bg-white w-6 hover:w-[15%] transition-all duration-500 overflow-hidden overflow-y-auto hidden lg:flex lg:flex-col lg:justify-between z-10"
+      className="fixed top-0 left-0 h-screen shadow-lg p-2 bg-white w-6 hover:w-[15%] transition-all duration-500 overflow-hidden overflow-y-auto hidden lg:flex lg:flex-col lg:justify-between z-20"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -72,12 +71,23 @@ const Sidebar = () => {
       </section>
 
       <div className="mb-0 border-t-[1px] border-surface-white-line pt-[20px] flex items-center gap-1">
-        <img src={userData?.display_image ? imageDomain + userData?.display_image : ""} className="rounded-full w-[40px] h-[40px]" alt="profile" />
+        <img
+          src={
+            userData?.display_image ? imageDomain + userData?.display_image : ""
+          }
+          className="rounded-full w-[40px] h-[40px]"
+          alt="profile"
+        />
         {hovered && (
           <>
             <div className="overflow-hidden whitespace-nowrap">
-              <h1 className="text-subtitle-1-bold">{userData?.partner_name || userData?.first_name + " " + userData?.last_name}</h1>
-              <p className="text-button text-black-tertiary">{userData?.user_email || userData?.emailId}</p>
+              <h1 className="text-subtitle-1-bold">
+                {userData?.partner_name ||
+                  userData?.first_name + " " + userData?.last_name}
+              </h1>
+              <p className="text-button text-black-tertiary">
+                {userData?.user_email || userData?.emailId}
+              </p>
             </div>
 
             <img

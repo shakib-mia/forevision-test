@@ -241,7 +241,7 @@ function RevenueForm() {
     );
     // console.log(data);
     const newBody = { ...formBody, pdfUrl: data.pdfUrl };
-    console.log(newBody);
+    // console.log(newBody);
 
     axios
       .post(`${backendUrl}withdrawal-request`, newBody, {
@@ -679,12 +679,12 @@ function RevenueForm() {
                 // containerClassName={"w-full"}
               />
             </div>
-            <div className="flex flex-wrap w-7/12 mx-auto">
-              <div className="w-full md:w-1/2 aspect-square p-1">
+            <div className="flex flex-wrap justify-center w-full mx-auto">
+              <div className="w-1/2 md:w-1/4 p-1 flex flex-col justify-between">
                 <label className="text-grey mb-1" htmlFor="aadharCard">
                   Aadhar Card / Any Government Issued ID
                 </label>
-                <div className="h-full border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="aadharCard">
                     {aadharCard.length ? (
                       <img
@@ -708,11 +708,14 @@ function RevenueForm() {
                   </label>
                 </div>
               </div>
-              <div className="w-full md:w-1/2 aspect-square p-1">
-                <label className="text-grey mb-1" htmlFor="panCard">
+              <div className="w-1/2 md:w-1/4 flex flex-col justify-between p-1">
+                <label
+                  className="text-grey mb-1 text-paragraph-1"
+                  htmlFor="panCard"
+                >
                   PAN Card
                 </label>
-                <div className="h-full border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="panCard">
                     {panCard.length ? (
                       <img
@@ -736,19 +739,53 @@ function RevenueForm() {
                   </label>
                 </div>
               </div>
+              <div className="w-1/2 md:w-1/4 flex flex-col justify-between p-1">
+                <label className="text-grey mb-1" htmlFor="cancelledCheque">
+                  <p>Cancelled Cheque</p>
+                  {/* {ruIndian && (
+                    <p className="text-interactive-light-destructive pt-1 text-[12px]">
+                      Please fill on the field with Cancelled Cheque
+                    </p>
+                  )} */}
+                </label>
+                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                  <label htmlFor="cancelledCheque">
+                    {cancelledCheque.length ? (
+                      <img
+                        className="w-full h-[5rem] mx-auto rounded-xl"
+                        src={cancelledCheque}
+                        alt=""
+                      />
+                    ) : (
+                      <p className="inline-block text-center text-heading-5-bold cursor-pointer">
+                        +
+                      </p>
+                    )}
+                    <input
+                      className="hidden"
+                      name="cancelledCheque"
+                      id="cancelledCheque"
+                      type="file"
+                      required
+                      onChange={cancelledChequehandle}
+                    />{" "}
+                  </label>
+                </div>
+              </div>
+              {/* <div className="flex justify-center"> */}
               {gst && (
-                <div className="w-full md:w-1/2 aspect-square p-1">
+                <div className="w-1/2 md:w-1/4 aspect-square flex flex-col justify-between p-1">
                   <label className="text-grey mb-1" htmlFor="GovtID">
                     <p>GST certificate</p>
-                    {ruIndian && (
+                    {/* {ruIndian && (
                       <div className="w-1/2 p-1">
                         <p className="teeractive-light-destructive pt-1 text-[12px]">
                           Please fill on the field with GST certificate
                         </p>
                       </div>
-                    )}
+                    )} */}
                   </label>
-                  <div className="h-full border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                  <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                     <label htmlFor="gst">
                       {gstCertificate.length ? (
                         <img
@@ -773,42 +810,13 @@ function RevenueForm() {
                   </div>
                 </div>
               )}
-              <div className="w-full aspect-square md:w-1/2 p-1">
-                <label className="text-grey mb-1" htmlFor="cancelledCheque">
-                  <p>Cancelled Cheque</p>
-                  {ruIndian && (
-                    <p className="text-interactive-light-destructive pt-1 text-[12px]">
-                      Please fill on the field with Cancelled Cheque
-                    </p>
-                  )}
-                </label>
-                <div className="h-full border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
-                  <label htmlFor="cancelledCheque">
-                    {cancelledCheque.length ? (
-                      <img
-                        className="w-full h-[5rem] mx-auto rounded-xl"
-                        src={cancelledCheque}
-                        alt=""
-                      />
-                    ) : (
-                      <p className="inline-block text-center text-heading-5-bold cursor-pointer">
-                        +
-                      </p>
-                    )}
-                    <input
-                      className="hidden"
-                      name="cancelledCheque"
-                      id="cancelledCheque"
-                      type="file"
-                      required
-                      onChange={cancelledChequehandle}
-                    />{" "}
-                  </label>
-                </div>
-              </div>
-              <div className="w-1/2 p-1 aspect-square">
+
+              <div className="w-1/2 md:w-1/4 p-1 flex flex-col justify-between aspect-square">
                 <div className="w-full mx-auto">
-                  <label className="text-grey" htmlFor="signature">
+                  <label
+                    className="text-grey text-subtitle-1"
+                    htmlFor="signature"
+                  >
                     <p>Signature</p>
                     {/* {ruIndian && (
                   <p className="text-interactive-light-destructive pt-1 text-[12px]">
@@ -817,7 +825,7 @@ function RevenueForm() {
                 )} */}
                   </label>
                 </div>
-                <div className="w-full h-full border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="signature">
                     {signature.length ? (
                       <img
@@ -841,6 +849,7 @@ function RevenueForm() {
                   </label>
                 </div>
               </div>
+              {/* </div> */}
             </div>
           </div>
           {/* </fieldset> */}

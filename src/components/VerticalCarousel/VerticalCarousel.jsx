@@ -3,10 +3,9 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import React, { useEffect, useState } from "react";
 import arrow from "./../../assets/icons/down-arrow-white.webp";
 // Import Swiper React components
-import { Swiper } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import Swiper, { Navigation } from "swiper";
 
 const VerticalCarousel = ({ className, heading, children }) => {
   const slide = document.getElementsByClassName("swiper-slide");

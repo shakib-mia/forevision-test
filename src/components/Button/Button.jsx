@@ -3,6 +3,7 @@ import arrow from "../../assets/icons/arrow.svg";
 
 const Button = ({
   text,
+  id,
   type,
   disabled,
   onClick,
@@ -12,8 +13,10 @@ const Button = ({
   paddingZero,
   containerClassName,
   className,
+  children,
 }) => {
   const [focus, setFocus] = useState(false);
+  // console.log(containerClassName);
   // console.log(disabled);
   // console.log(className?.includes('px'));
   return (
@@ -27,6 +30,7 @@ const Button = ({
           } rounded-full ${paddingZero ? "p-0" : "p-[4px]"}`}
         >
           <button
+            id={id}
             className={`${
               small ? "px-2 py-1" : "px-3 py-2"
             } disabled:bg-interactive-light-disabled disabled:cursor-not-allowed text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active font-bold rounded-full uppercase flex gap-1 ${className}`}
@@ -44,6 +48,7 @@ const Button = ({
               <></>
             )}
             {text && <div>{text}</div>}
+            {children}
             {rightIcon ? <img src={arrow} alt="right-icon" /> : <></>}
           </button>
         </div>

@@ -1,5 +1,12 @@
-import React from "react";
-import { FaCheck, FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  FaArrowLeft,
+  FaArrowRight,
+  FaCheck,
+  FaFacebookF,
+  FaInstagram,
+  FaYoutube,
+} from "react-icons/fa";
 import Button from "../../components/Button/Button";
 import ReactOwlCarousel from "react-owl-carousel";
 import { SiAirtel } from "react-icons/si";
@@ -14,15 +21,79 @@ import { useNavigate } from "react-router-dom";
 
 const SongPlans = ({ handleRazorpayPayment }) => {
   const navigate = useNavigate();
+  // const [position, setPosition] = useState(0);
+  const positionRef = useRef(0);
+  // const [classList, setClassList] = useState("owl-prev disabled");
+
+  // useEffect(() => {
+  //   console.log(positionRef.current);
+  // }, [positionRef.current]);
+
+  const handlePrevClick = () => {
+    document.querySelector(".song-plans .owl-prev").click();
+    // setClassList(
+    //   document.querySelector(".song-plans .owl-prev").classList.value
+    // );
+  };
+
+  const handleNextClick = () => {
+    document.querySelector(".song-plans .owl-next").click();
+    // console.log(document.querySelector(".song-plans .owl-next"));
+
+    // setClassList(
+    //   document.querySelector(".song-plans .owl-next").classList.value
+    // );
+  };
+
+  const handleSlideChange = (e) => {
+    // console.log(e);
+    if (e.property.value === 0 || typeof e.property.value === "object") {
+      document.getElementById("plans-prev").setAttribute("disabled", true);
+      document.getElementById("plans-next").removeAttribute("disabled");
+    }
+    if (e.property.value === 1) {
+      document.getElementById("plans-next").setAttribute("disabled", true);
+      document.getElementById("plans-prev").removeAttribute("disabled");
+    }
+  };
+
   return (
-    <div className="overflow-hidden py-5 px-[10px]">
+    <div className="overflow-hidden py-5 px-[10px] relative song-plans">
+      <Button
+        containerClassName={
+          "hidden xl:block absolute top-0 bottom-0 my-auto !h-fit !w-fit flex items-center z-10"
+        }
+        className={
+          "text-white w-6 !h-6 !px-0 !py-0 flex items-center justify-center"
+        }
+        onClick={handlePrevClick}
+        // disabled={positionRef.current === 0}
+        id="plans-prev"
+      >
+        <FaArrowLeft className="text-heading-5" />
+      </Button>
+
+      <Button
+        containerClassName={
+          "hidden xl:block absolute top-0 bottom-0 right-2 my-auto !h-fit !w-fit flex items-center z-10"
+        }
+        className={
+          "text-white w-6 !h-6 !px-0 !py-0 flex items-center justify-center"
+        }
+        onClick={handleNextClick}
+        id="plans-next"
+      >
+        <FaArrowRight className="text-heading-5" />
+      </Button>
       <ReactOwlCarousel
-        autoplay={true}
-        autoplayHoverPause
-        autoplayTimeout={1000}
+        // autoplay={true}
+        // autoplayHoverPause
+        // autoplayTimeout={1000}
         // slidesPerView={3}
-        loop={true}
-        navigation
+        onChange={handleSlideChange}
+        loop={false}
+        navigation="true"
+        nav
         // modules={[FreeMode, Navigation, Thumbs]}
         // space={30}
         responsive={{
@@ -37,7 +108,7 @@ const SongPlans = ({ handleRazorpayPayment }) => {
             items: 3,
           },
         }}
-        className="py-2 !overflow-visible mt-4 text-grey-dark"
+        className="py-6 !overflow-hidden mt-4 text-grey-dark xl:!w-5/6 mx-auto"
       >
         <div className="!h-full p-4 shadow-lg mx-2 relative">
           <div
@@ -63,51 +134,17 @@ const SongPlans = ({ handleRazorpayPayment }) => {
               <ul className="flex flex-col gap-1 mt-4">
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>YouTube Music</aside>
+                  <aside>
+                    YouTube Content ID, YouTube Music & YouTube Shorts Covered
+                  </aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>YT Shorts</aside>
+                  <aside>Monetize Your Music in Facebook & Instagram</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Meta(Fb & Insta)</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Triller</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Snapchat</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>TikTok</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>YouTube Content ID</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>YouTube Finger Print</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Earn With Facebook And Instagram</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>YouTube Topic</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Free Custom Label</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Use Your Own ISRC & UPC</aside>
+                  <aside>Get Your Music in Triller, Snapchat & TikTok)</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
@@ -115,45 +152,29 @@ const SongPlans = ({ handleRazorpayPayment }) => {
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Previously Released Songs Accepted</aside>
+                  <aside>Free Custom Label</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Song Migration Accepted</aside>
+                  <aside>100% Copyright Will Be Yours</aside>
+                </li>
+                <li className="flex gap-2 items-center text-paragraph-1">
+                  <FaCheck />
+                  <aside>Get 80% Revenue from the Streamings</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
                   <aside>
-                    90% Royalties From Meta, Triller, TikTok & Snapchat
+                    ForeVision Pro Dashboard with Detailed analytics
                   </aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>ForeVision Dashboard</aside>
+                  <aside>Get lifetime support with zero yearly cost</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Lifetime Support</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>100% Copyright</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Quarterly Report Directly On Dashboard</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Approval Within 2 Hours</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Release Within 24 Hrs</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Availability Lifetime</aside>
+                  <aside>Advanced revenue reports</aside>
                 </li>
               </ul>
             </aside>
@@ -173,123 +194,196 @@ const SongPlans = ({ handleRazorpayPayment }) => {
           >
             ⭐⭐ Best Rated ⭐⭐
           </div>
-          <h4 className="text-heading-4 font-bold">Forevision CRBT+</h4>
-          <h5 className="text-heading-5-bold text-grey-light mt-2">
-            &#8377;699
-          </h5>
 
-          <ul className="flex flex-col gap-1 mt-4">
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>
-                All Indian Apps Covered: Gaana, Hungama, Wynk & Jiosaavn
-              </aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Caller Tunes On JIO, Vi, BSNL, Airtel</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Your Music Will Be Live Everywhere</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Caller Tune Facility</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>All International Apps Covered</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Upload Music In Specific Stores</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Get 90% Lifetime Royalties</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Schedule Your Own Release Date</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Free Custom Label</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>100% Copyright Will Be Yours</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>YouTube Content ID & YouTube Music</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>ForeVision Dashboard</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Lifetime Support</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Get Your Music In Facebook & Instagram</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Earn With Facebook And Instagram</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Song Migration Accepted</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Previously Released Songs Accepted</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Quarterly Report Directly On Dashboard</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Approval Within 3-4 Hrs</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Availability Lifetime</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Zero Yearly Fee</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Including ForeVision Special Service</aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>
-                Get Lyrics In Facebook, Instagram, Spotify, JioSaavn, Google &
-                More
-              </aside>
-            </li>
-            <li className="flex gap-2 text-paragraph-1">
-              <FaCheck />
-              <aside>Platform Playlist Pitch</aside>
-            </li>
-          </ul>
+          <div className="h-full flex flex-col justify-between">
+            <aside>
+              <h4 className="text-heading-4 font-bold">Forevision CRBT+</h4>
+              <h5 className="text-heading-5-bold text-grey-light mt-2">
+                &#8377;699
+              </h5>
 
-          <Button
-            text={"Get Started"}
-            className={
-              "w-full justify-center bg-white !text-interactive-light-hover hover:bg-white-secondary active:bg-white-deactivated focus:bg-white-tertiary"
-            }
-            onClick={() => handleRazorpayPayment(69900)}
-            containerClassName={"mt-5"}
-          ></Button>
+              <ul className="flex flex-col gap-1 mt-4">
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>
+                    All Indian Apps Covered: Gaana, Hungama, Wynk & Jiosaavn
+                  </aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>Caller Tunes On JIO, Vi, BSNL & Airtel</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>Worldwide Reach</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>All International Apps Covered</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>90% Revenue from Streaming platforms</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>85% Revenue from YouTube Platforms</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>Schedule Your Own Release Date</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>Free Custom Label</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>100% Copyright Will Be Yours</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>
+                    YouTube Content ID, YouTube Music & YouTube Shorts Covered
+                  </aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>
+                    ForeVision Pro Dashboard with Detailed analytics
+                  </aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>Get lifetime support with zero yearly cost</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>Monetize Your Music in Facebook & Instagram</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>Lyrics monetization</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>Advanced revenue reports</aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>
+                    Get Lyrics In Facebook, Instagram, Spotify, JioSaavn, Google
+                    & More
+                  </aside>
+                </li>
+                <li className="flex gap-2 text-paragraph-1">
+                  <FaCheck />
+                  <aside>
+                    Various marketing tools with Playlisting options
+                  </aside>
+                </li>
+              </ul>
+            </aside>
+
+            <Button
+              text={"Get Started"}
+              className={"w-full justify-center"}
+              onClick={() => handleRazorpayPayment(69900)}
+            ></Button>
+          </div>
+
+          {/* <div className="h-full flex flex-col justify-between">
+            <h4 className="text-heading-4 font-bold">Forevision CRBT+</h4>
+            <h5 className="text-heading-5-bold text-grey-light mt-2">
+              &#8377;699
+            </h5>
+            <ul className="flex flex-col gap-1 mt-4">
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>
+                  All Indian Apps Covered: Gaana, Hungama, Wynk & Jiosaavn
+                </aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>Caller Tunes On JIO, Vi, BSNL & Airtel</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>Worldwide Reach</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>All International Apps Covered</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>90% Revenue from Streaming platforms</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>85% Revenue from YouTube Platforms</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>Schedule Your Own Release Date</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>Free Custom Label</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>100% Copyright Will Be Yours</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>
+                  YouTube Content ID, YouTube Music & YouTube Shorts Covered
+                </aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>ForeVision Pro Dashboard with Detailed analytics</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>Get lifetime support with zero yearly cost</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>Monetize Your Music in Facebook & Instagram</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>Lyrics monetization</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>Advanced revenue reports</aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>
+                  Get Lyrics In Facebook, Instagram, Spotify, JioSaavn, Google &
+                  More
+                </aside>
+              </li>
+              <li className="flex gap-2 text-paragraph-1">
+                <FaCheck />
+                <aside>Various marketing tools with Playlisting options</aside>
+              </li>
+            </ul>
+
+            <Button
+              text={"Get Started"}
+              className={
+                "w-full justify-center bg-white !text-interactive-light-hover hover:bg-white-secondary active:bg-white-deactivated focus:bg-white-tertiary"
+              }
+              onClick={() => handleRazorpayPayment(69900)}
+              // containerClassName={"mt-5"}
+            ></Button>
+          </div> */}
         </div>
         <div className="!h-full p-4 rounded-lg selection:bg-white selection:text-secondary mx-2 shadow-lg relative">
           <div
@@ -317,19 +411,11 @@ const SongPlans = ({ handleRazorpayPayment }) => {
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>No Caller Tune Facility</aside>
+                  <aside>90% Revenue from Streaming platforms</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Upload Music In Specific Stores</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Get 90% Lifetime Royalties</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Free Custom Label</aside>
+                  <aside>85% Revenue from YouTube Platforms</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
@@ -337,59 +423,41 @@ const SongPlans = ({ handleRazorpayPayment }) => {
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
+                  <aside>Free Custom Label</aside>
+                </li>
+                <li className="flex gap-2 items-center text-paragraph-1">
+                  <FaCheck />
                   <aside>100% Copyright Will Be Yours</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>YouTube Content ID & YouTube Music</aside>
+                  <aside>
+                    YouTube Content ID, YouTube Music & YouTube Shorts Covered
+                  </aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Get Your Music In Facebook & Instagram</aside>
+                  <aside>
+                    ForeVision Pro Dashboard with Detailed analytics
+                  </aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Earn With Facebook And Instagram</aside>
+                  <aside>Get lifetime support with zero yearly cost</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>ForeVision Dashboard</aside>
+                  <aside>Monetize Your Music in Facebook & Instagram</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Lifetime Support</aside>
+                  <aside>Advanced revenue reports</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Quarterly Report Directly On Dashboard</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Approval Within 3-4 Hrs</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Song Migration Accepted</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Previously Released Songs Accepted</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Availability Lifetime</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Zero Yearly Fee</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Including ForeVision Special Service </aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Platform Playlist Pitch</aside>
+                  <aside>
+                    Various marketing tools with Playlisting options
+                  </aside>
                 </li>
               </ul>
             </aside>
@@ -398,6 +466,7 @@ const SongPlans = ({ handleRazorpayPayment }) => {
               text={"Get Started"}
               onClick={() => handleRazorpayPayment(49800)}
               className={"w-full justify-center"}
+              containerClassName={"mt-3"}
             ></Button>
           </div>
         </div>
@@ -422,25 +491,20 @@ const SongPlans = ({ handleRazorpayPayment }) => {
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
                   <aside>
-                    Your Music Will Be Live In JioSaavn, Gaana, Hungama & Wynk
-                    Music.
+                    All Indian Apps Covered: Gaana, Hungama, Wynk & Jiosaavn
                   </aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Caller Tunes On JIO, Vi, BSNL, Airtel</aside>
+                  <aside>Caller Tunes On JIO, Vi, BSNL & Airtel</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Upload Music In Specific Stores</aside>
+                  <aside>90% Revenue from Streaming platforms</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Get 90% Lifetime Royalties</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Free Custom Label</aside>
+                  <aside>85% Revenue from YouTube Platforms</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
@@ -448,51 +512,37 @@ const SongPlans = ({ handleRazorpayPayment }) => {
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
+                  <aside>Free Custom Label</aside>
+                </li>
+                <li className="flex gap-2 items-center text-paragraph-1">
+                  <FaCheck />
                   <aside>100% Copyright Will Be Yours</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Previously Released Songs Accepted</aside>
+                  <aside>
+                    YouTube Content ID, YouTube Music & YouTube Shorts Covered
+                  </aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Song Migration Accepted</aside>
+                  <aside>
+                    ForeVision Pro Dashboard with Detailed analytics
+                  </aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>YouTube Content ID & YouTube Music</aside>
+                  <aside>Get lifetime support with zero yearly cost</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Lifetime Support</aside>
+                  <aside>Advanced revenue reports</aside>
                 </li>
                 <li className="flex gap-2 items-center text-paragraph-1">
                   <FaCheck />
-                  <aside>Quarterly Report Directly On Dashboard</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>ForeVision Dashboard</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Approval Within 3-4 Hrs</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Song Availability Lifetime</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Zero Yearly Fee</aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Including ForeVision Special Service </aside>
-                </li>
-                <li className="flex gap-2 items-center text-paragraph-1">
-                  <FaCheck />
-                  <aside>Platform Playlist Pitch</aside>
+                  <aside>
+                    Various marketing tools with Playlisting options
+                  </aside>
                 </li>
               </ul>
             </aside>
