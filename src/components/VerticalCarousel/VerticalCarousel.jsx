@@ -5,7 +5,8 @@ import arrow from "./../../assets/icons/down-arrow-white.webp";
 // Import Swiper React components
 import "swiper/css";
 import "swiper/css/navigation";
-import Swiper, { Navigation } from "swiper";
+import Swiper from "swiper";
+import Navigation from "swiper/modules";
 
 const VerticalCarousel = ({ className, heading, children }) => {
   const slide = document.getElementsByClassName("swiper-slide");
