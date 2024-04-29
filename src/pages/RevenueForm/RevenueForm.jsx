@@ -220,47 +220,47 @@ function RevenueForm() {
       filename: `Invoice_of_${userData.first_name}_${userData.last_name}.pdf`,
     });
 
-    // const formData = new FormData();
-    // formData.append("file", pdf.output("blob"));
+    const formData = new FormData();
+    formData.append("file", pdf.output("blob"));
 
-    // const config = {
-    //   headers: {
-    //     authorization: sessionStorage.getItem("token"),
-    //   },
-    // };
+    const config = {
+      headers: {
+        authorization: sessionStorage.getItem("token"),
+      },
+    };
 
-    // const { data } = await axios.post(
-    //   "https://api.forevisiondigital.in/store-invoice",
-    //   formData,
-    //   config
-    // );
-    // // console.log(data);
-    // const newBody = { ...formBody, pdfUrl: data.pdfUrl };
-    // // console.log(newBody);
+    const { data } = await axios.post(
+      "https://api.forevisiondigital.in/store-invoice",
+      formData,
+      config
+    );
+    // console.log(data);
+    const newBody = { ...formBody, pdfUrl: data.pdfUrl };
+    // console.log(newBody);
 
-    // axios
-    //   .post(`${backendUrl}withdrawal-request`, newBody, {
-    //     headers: {
-    //       token: sessionStorage.getItem("token"),
-    //     },
-    //   })
-    //   .then(({ data }) => {
-    //     // console.log(data);
-    //     if (data.acknowledged) {
-    //       // e.target.reset();
-    //       setAadharCard("");
-    //       setPanCard("");
-    //       setGst("");
-    //       setCancelledCheque("");
+    axios
+      .post(`${backendUrl}withdrawal-request`, newBody, {
+        headers: {
+          token: sessionStorage.getItem("token"),
+        },
+      })
+      .then(({ data }) => {
+        // console.log(data);
+        if (data.acknowledged) {
+          // e.target.reset();
+          setAadharCard("");
+          setPanCard("");
+          setGst("");
+          setCancelledCheque("");
 
-    //       setConfirmed(false);
-    //       toast.success("Withdrawal Request Placed Successfully", {
-    //         position: "bottom-center",
-    //       });
-    //       navigate("/");
-    //     }
-    //   })
-    //   .catch((e) => console.log(e.message));
+          setConfirmed(false);
+          toast.success("Withdrawal Request Placed Successfully", {
+            position: "bottom-center",
+          });
+          navigate("/");
+        }
+      })
+      .catch((e) => console.log(e.message));
   };
 
   return (
@@ -677,7 +677,7 @@ function RevenueForm() {
             <div className="flex flex-wrap justify-center w-full mx-auto">
               <div className="w-1/2 md:w-1/4 p-1 flex flex-col justify-between">
                 <label className="text-grey mb-1" htmlFor="aadharCard">
-                  Aadhar Card / Any Government Issued ID
+                  Govt. ID
                 </label>
                 <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
                   <label htmlFor="aadharCard">
