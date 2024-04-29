@@ -218,54 +218,49 @@ function RevenueForm() {
   const handlePdf = async () => {
     const pdf = await generatePDF(targetRef, {
       filename: `Invoice_of_${userData.first_name}_${userData.last_name}.pdf`,
-      // overrides: {
-      //   canvas: {
-      //     height: (1500 * 72) / 96,
-      //   },
-      // },
     });
-    // console.log(pdf);
-    const formData = new FormData();
-    formData.append("file", pdf.output("blob"));
 
-    const config = {
-      headers: {
-        authorization: sessionStorage.getItem("token"),
-      },
-    };
+    // const formData = new FormData();
+    // formData.append("file", pdf.output("blob"));
 
-    const { data } = await axios.post(
-      "https://api.forevisiondigital.in/store-invoice",
-      formData,
-      config
-    );
-    // console.log(data);
-    const newBody = { ...formBody, pdfUrl: data.pdfUrl };
-    // console.log(newBody);
+    // const config = {
+    //   headers: {
+    //     authorization: sessionStorage.getItem("token"),
+    //   },
+    // };
 
-    axios
-      .post(`${backendUrl}withdrawal-request`, newBody, {
-        headers: {
-          token: sessionStorage.getItem("token"),
-        },
-      })
-      .then(({ data }) => {
-        // console.log(data);
-        if (data.acknowledged) {
-          // e.target.reset();
-          setAadharCard("");
-          setPanCard("");
-          setGst("");
-          setCancelledCheque("");
+    // const { data } = await axios.post(
+    //   "https://api.forevisiondigital.in/store-invoice",
+    //   formData,
+    //   config
+    // );
+    // // console.log(data);
+    // const newBody = { ...formBody, pdfUrl: data.pdfUrl };
+    // // console.log(newBody);
 
-          setConfirmed(false);
-          toast.success("Withdrawal Request Placed Successfully", {
-            position: "bottom-center",
-          });
-          navigate("/");
-        }
-      })
-      .catch((e) => console.log(e.message));
+    // axios
+    //   .post(`${backendUrl}withdrawal-request`, newBody, {
+    //     headers: {
+    //       token: sessionStorage.getItem("token"),
+    //     },
+    //   })
+    //   .then(({ data }) => {
+    //     // console.log(data);
+    //     if (data.acknowledged) {
+    //       // e.target.reset();
+    //       setAadharCard("");
+    //       setPanCard("");
+    //       setGst("");
+    //       setCancelledCheque("");
+
+    //       setConfirmed(false);
+    //       toast.success("Withdrawal Request Placed Successfully", {
+    //         position: "bottom-center",
+    //       });
+    //       navigate("/");
+    //     }
+    //   })
+    //   .catch((e) => console.log(e.message));
   };
 
   return (

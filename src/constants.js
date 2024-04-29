@@ -22,6 +22,7 @@ import Home from "./pages/Home/Home";
 import Payment from "./pages/Payment/Payment";
 import Pricing from "./pages/Plans/Plans";
 import Plans from "./pages/Plans/Plans";
+import YearlyPlan from "./pages/YearlyPlan/YearlyPlan";
 
 // export const backendUrl = "http://localhost:4000/";
 export const backendUrl = "https://api.forevisiondigital.in/";
@@ -316,6 +317,14 @@ export const routes = [
   //     </RequireAuth>
   //   ),
   // },
+  {
+    path: "/yearly-plan",
+    page: (
+      <RequireAuth>
+        <YearlyPlan />
+      </RequireAuth>
+    ),
+  },
   {
     path: "/payment",
     page: <Payment />,
