@@ -83,11 +83,11 @@ function RevenueForm() {
     try {
       const formData = new FormData();
       formData.append("file", imageFile);
-      const response = await axios.post(
-        `${backendUrl + urlbody}`,
-        formData,
-        config
-      );
+      const response = await axios.post(`${backendUrl + urlbody}`, formData, {
+        headers: {
+          token: sessionStorage.getItem("token") || token,
+        },
+      });
       const { data } = response;
       if (data.url) {
         setfile(data.url);
@@ -132,7 +132,7 @@ function RevenueForm() {
     const confirmAccountNumber = form.confirmAccountNumber.value;
     const AadharCard = form.aadharCard.files[0];
     const PanCardFile = form.panCard.files[0];
-    const GstFile = form.gst.files[0];
+    const GstFile = gst && form.gst.files[0];
     const cancelledChequeFile = form.cancelledCheque.files[0];
     const signatureFile = form.signature.files[0];
     // console.log(taxableValue);
@@ -148,11 +148,9 @@ function RevenueForm() {
       PanCardFile,
       setPanUrl
     );
-    const gstCertUrl = await imageUploading(
-      "upload-gst-certificate",
-      GstFile,
-      setGstUrl
-    );
+    const gstCertUrl =
+      gst &&
+      (await imageUploading("upload-gst-certificate", GstFile, setGstUrl));
     const cancelledChequeUrl = await imageUploading(
       "upload-cancelled-cheques",
       cancelledChequeFile,
@@ -198,7 +196,7 @@ function RevenueForm() {
       confirmAccountNumber,
       aadharUrl: aadharCardUrl,
       panUrl: panCardUrl,
-      gstUrl: gstCertUrl,
+      gstUrl: gst ? gstCertUrl : "",
       cancelledChequeUrl,
       signatureUrl,
     };
@@ -265,29 +263,6 @@ function RevenueForm() {
 
   return (
     <>
-      {confirmed && (
-        <div className="fixed top-0 left-0 backdrop-blur w-screen h-screen z-[9999] flex justify-center overflow-x-auto overflow-y-auto">
-          <div className="bg-white w-[800px] h-[1119px] my-7 shadow-2xl rounded-lg relative">
-            <button
-              className="absolute -right-5 -top-5 text-heading-4"
-              onClick={() => setConfirmed(false)}
-            >
-              &times;
-            </button>
-            <Invoice gst={gst} formBody={formBody} ref={targetRef} />
-
-            <div className="flex justify-center">
-              <Button
-                type={"success"}
-                text={"confirm"}
-                containerClassName={"w-fit mt-3"}
-                onClick={handlePdf}
-              />
-            </div>
-          </div>
-        </div>
-      )}
-
       <section
         className={`w-full lg:w-4/6 mx-auto my-4 text-grey-dark ${
           confirmed && "overflow-y-hidden"
@@ -481,7 +456,8 @@ function RevenueForm() {
                   type={"text"}
                   id={"state"}
                   name={"state"}
-                  label={"State*"}
+                  label={"State" + (ruIndian ? "*" : "")}
+                  required={ruIndian}
                   containerClassName={"w-full md:w-1/4"}
                 />
               )}
@@ -679,11 +655,11 @@ function RevenueForm() {
                 <label className="text-grey mb-1" htmlFor="aadharCard">
                   Govt. ID
                 </label>
-                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                   <label htmlFor="aadharCard">
                     {aadharCard.length ? (
                       <img
-                        className="w-full h-[5rem] mx-auto rounded-xl"
+                        className="w-full mx-auto rounded-xl object-cover"
                         src={aadharCard}
                         alt=""
                       />
@@ -710,11 +686,11 @@ function RevenueForm() {
                 >
                   PAN Card
                 </label>
-                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                   <label htmlFor="panCard">
                     {panCard.length ? (
                       <img
-                        className="w-full h-[5rem] mx-auto rounded-xl"
+                        className="w-full mx-auto rounded-xl object-cover"
                         src={panCard}
                         alt=""
                       />
@@ -743,11 +719,11 @@ function RevenueForm() {
                     </p>
                   )} */}
                 </label>
-                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                   <label htmlFor="cancelledCheque">
                     {cancelledCheque.length ? (
                       <img
-                        className="w-full h-[5rem] mx-auto rounded-xl"
+                        className="w-full object-cover mx-auto rounded-xl"
                         src={cancelledCheque}
                         alt=""
                       />
@@ -780,11 +756,11 @@ function RevenueForm() {
                       </div>
                     )} */}
                   </label>
-                  <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                  <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                     <label htmlFor="gst">
                       {gstCertificate.length ? (
                         <img
-                          className="w-full h-[5rem] mx-auto rounded-xl"
+                          className="w-full object-cover mx-auto rounded-xl"
                           src={gstCertificate}
                           alt=""
                         />
@@ -798,7 +774,7 @@ function RevenueForm() {
                         name="gst"
                         id="gst"
                         type="file"
-                        required={ruIndian}
+                        required={gst}
                         onChange={gsthandle}
                       />{" "}
                     </label>
@@ -820,11 +796,11 @@ function RevenueForm() {
                 )} */}
                   </label>
                 </div>
-                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center">
+                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                   <label htmlFor="signature">
                     {signature.length ? (
                       <img
-                        className="w-full h-[5rem] mx-auto rounded-xl"
+                        className="w-full object-cover mx-auto rounded-xl"
                         src={signature}
                         alt=""
                       />
@@ -861,6 +837,29 @@ function RevenueForm() {
           </div>
         </form>
       </section>
+
+      {confirmed && (
+        <div className="fixed top-0 left-0 backdrop-blur w-screen h-screen z-[9999] flex justify-center overflow-x-auto overflow-y-auto">
+          <div className="bg-white w-[800px] h-[1119px] my-7 shadow-2xl rounded-lg relative">
+            <button
+              className="absolute -right-5 -top-5 text-heading-4"
+              onClick={() => setConfirmed(false)}
+            >
+              &times;
+            </button>
+            <Invoice gst={gst} formBody={formBody} ref={targetRef} />
+
+            <div className="flex justify-center">
+              <Button
+                type={"success"}
+                text={"confirm"}
+                containerClassName={"w-fit mt-3"}
+                onClick={handlePdf}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
