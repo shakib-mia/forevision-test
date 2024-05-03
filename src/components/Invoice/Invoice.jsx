@@ -448,9 +448,7 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                 } mx-auto border-surface-white-line border-b pb-1`}
               >
                 <img
-                  src={
-                    "https://api.forevisiondigital.in/uploads/signatures/file-abc-1714369323855-idea.webp"
-                  }
+                  src={formBody.signatureUrl}
                   className="h-[155px] mx-auto"
                   alt="signature"
                 />
