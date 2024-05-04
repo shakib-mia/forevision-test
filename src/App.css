@@ -166,3 +166,6 @@ a.active:hover svg path {
 #plans-page .owl-stage {
   @apply flex;
 }
+#plans-page .owl-nav {
+  @apply opacity-0;
+}

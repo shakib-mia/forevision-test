@@ -25,7 +25,7 @@ function RevenueForm() {
   const [signature, setSignature] = useState("");
   const [signatureUrl, setSignatureUrl] = useState("");
   const [placeOfSupply, setPlaceOfSupply] = useState("");
-  const { token, userData } = useContext(ProfileContext);
+  const { token, userData, refetch, setRefetch } = useContext(ProfileContext);
   const [confirmed, setConfirmed] = useState(false);
   const [state, setState] = useState("");
   const invoiceRef = useRef(null);
@@ -252,6 +252,7 @@ function RevenueForm() {
           setCancelledCheque("");
 
           setConfirmed(false);
+          setRefetch(!refetch);
           toast.success("Withdrawal Request Placed Successfully", {
             position: "bottom-center",
           });
@@ -283,7 +284,10 @@ function RevenueForm() {
                 <input
                   className="mr-2"
                   type="radio"
-                  onClick={() => setGst(true)}
+                  onClick={() => {
+                    setGst(true);
+                    setRuIndian(true);
+                  }}
                   required
                   name="cgst"
                 />
@@ -306,7 +310,8 @@ function RevenueForm() {
                   className="mr-2"
                   type="radio"
                   onClick={() => setRuIndian(true)}
-                  required
+                  required={!gst}
+                  checked={gst || ruIndian}
                   name="indian"
                 />
                 Yes
@@ -316,7 +321,8 @@ function RevenueForm() {
                   className="mr-2"
                   type="radio"
                   onClick={() => setRuIndian(false)}
-                  required
+                  required={!gst}
+                  disabled={gst}
                   name="indian"
                 />
                 No
@@ -653,7 +659,7 @@ function RevenueForm() {
             <div className="flex flex-wrap justify-center w-full mx-auto">
               <div className="w-1/2 md:w-1/4 p-1 flex flex-col justify-between">
                 <label className="text-grey mb-1" htmlFor="aadharCard">
-                  Govt. ID
+                  Aadhaar Card (Both Side) / Govt. ID
                 </label>
                 <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                   <label htmlFor="aadharCard">

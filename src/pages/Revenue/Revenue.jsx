@@ -34,8 +34,9 @@ const Revenue = () => {
     }
   }, [currentTime]);
 
-  const { userData, token, setToken } = useContext(ProfileContext);
-  // console.log(userData);
+  const { userData, token, setToken, foundRequested } =
+    useContext(ProfileContext);
+  // console.log(foundRequested);
   useEffect(() => {
     if (userData?.first_name || userData?.partner_name) {
       const config = {
@@ -379,7 +380,8 @@ const Revenue = () => {
                       (
                         userData.lifetimeRevenue -
                         (userData.lifetimeDisbursed || 0)
-                      ).toFixed(2) < 1000
+                      ).toFixed(2) < 1000 ||
+                      (foundRequested !== null && foundRequested._id)
                     }
                     onClick={() => navigate("/revenue-form")}
                     text="Request Withdraw"
@@ -446,7 +448,8 @@ const Revenue = () => {
                       (
                         userData.lifetimeRevenue -
                         (userData.lifetimeDisbursed || 0)
-                      ).toFixed(2) < 1000
+                      ).toFixed(2) < 1000 ||
+                      (foundRequested !== null && foundRequested._id)
                     }
                     text={"Request Withdraw"}
                   ></Button>

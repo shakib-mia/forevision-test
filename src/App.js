@@ -22,6 +22,8 @@ function App() {
   const [uId, setUId] = useState("");
   const [token, setToken] = useState(sessionStorage.getItem("token"));
   const [tokenDetails, setTokenDetails] = useState({});
+  const [foundRequested, setFoundRequested] = useState({});
+  const [refetch, setRefetch] = useState(true);
   const navigate = useNavigate();
 
   /* Working api calls starts here */
@@ -60,6 +62,9 @@ function App() {
     uId,
     setUId,
     tokenDetails,
+    foundRequested,
+    refetch,
+    setRefetch,
     // timeStamp,
   };
 
@@ -75,6 +80,7 @@ function App() {
     if (token) {
       axios.get(`${backendUrl}getUserData`, config).then(({ data }) => {
         if (data?.data !== null) {
+          // console.log(data.data);
           setUserData(data.data);
         } else {
           // navigate("/signup-details");
@@ -82,6 +88,12 @@ function App() {
       });
     }
   }, [token]);
+
+  useEffect(() => {
+    axios
+      .get(backendUrl + "check-requested/" + userData.emailId)
+      .then(({ data }) => setFoundRequested(data));
+  }, [userData, refetch]);
 
   /* Working api calls ends here */
 

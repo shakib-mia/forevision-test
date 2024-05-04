@@ -4,7 +4,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 const Invoice = forwardRef(({ formBody, gst }, ref) => {
   const { userData } = useContext(ProfileContext);
   // console.log(userData);
-  // console.log(formBody);
+  console.log(formBody);
   const accountBalance = parseInt(
     userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
   );

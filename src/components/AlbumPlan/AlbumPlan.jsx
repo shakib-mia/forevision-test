@@ -3,21 +3,27 @@ import { FaCheck } from "react-icons/fa";
 import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
 import razorpay from "./../../assets/icons/razorpay.png";
-import phonepe from "./../../assets/icons/phonepe.png";
-import paypal from "./../../assets/icons/paypal.png";
+// import phonepe from "./../../assets/icons/phonepe.png";
+// import paypal from "./../../assets/icons/paypal.png";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const AlbumPlan = ({ handleRazorpayPayment, handlePhonePePayment }) => {
   const [modal, showModal] = useState(false);
+  const initialOptions = {
+    clientId: "test",
+    currency: "USD",
+    intent: "capture",
+  };
 
   return (
     <>
-      <div className="!h-full p-4 rounded-lg bg-gradient-to-br from-secondary to-interactive-light-focus text-white shadow-[0_13px_20px_#aaa] relative -top-3 w-11/12 md:w-1/2 xl:w-1/3 mx-auto mt-7">
+      <div className="!h-fit p-4 rounded-lg bg-gradient-to-br from-secondary to-interactive-light-focus text-white shadow-[0_13px_20px_#aaa] relative -top-3 w-11/12 md:w-1/2 xl:w-10/12 mx-auto mt-7">
         <div
           className="bg-interactive-light-destructive-focus text-white py-1 px-2 inline-block absolute rounded-full"
           style={{ top: -20, right: 16 }}
           id="special"
         >
-          ⭐⭐ Best Rated ⭐⭐
+          🔥 New 🔥
         </div>
         <h4 className="text-heading-4 font-bold">Forevision Album</h4>
         <h5 className="text-heading-5-bold text-grey-light mt-2">&#8377;999</h5>
@@ -170,19 +176,23 @@ const AlbumPlan = ({ handleRazorpayPayment, handlePhonePePayment }) => {
               <img src={razorpay} alt="razorpay" className="w-1/3" />
             </button>
 
-            <button
-              className="w-full flex justify-center py-2 border-2 border-secondary-dark rounded-full mt-2"
+            {/* <button
+              className="w-full flex justify-center py-2 border-2 border-secondary-dark rounded-full my-2"
               onClick={() => handlePhonePePayment(99900)}
             >
               <img src={phonepe} alt="phonepe" className="w-1/3" />
-            </button>
+            </button> */}
 
-            <button
+            {/* <button
               className="w-full flex justify-center py-2 border-2 border-secondary-dark rounded-full mt-2"
               // onClick={() => handleRazorpayPayment(99900)}
             >
               <img src={paypal} alt="paypal" className="w-1/3" />
-            </button>
+            </button> */}
+
+            <PayPalScriptProvider options={initialOptions}>
+              <PayPalButtons />
+            </PayPalScriptProvider>
           </div>
         </Modal>
       )}
