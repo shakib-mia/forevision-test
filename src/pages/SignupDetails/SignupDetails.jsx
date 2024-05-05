@@ -120,9 +120,9 @@ const SignupDetails = () => {
     const userDetailsData = {
       ...signupDetailsData,
       phone_no: selectedCode + signupDetailsData.phone_no,
-      user_email: userData?.user_email,
+      user_email: e.target.email.value,
     };
-    console.log({ userData, userDetailsData });
+    // console.log(e.target.email.value);
 
     // const formData = new FormData();
     // // console.log(signupDetailsData);
@@ -143,6 +143,7 @@ const SignupDetails = () => {
 
     // console.log(userDetailsData);
     // // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
+    // userDetailsData.user_email = e.target.email.value;
     axios
       .post(backendUrl + "post-user-details", userDetailsData)
       .then((res) => {
