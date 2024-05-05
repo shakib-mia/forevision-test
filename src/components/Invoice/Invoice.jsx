@@ -3,15 +3,33 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 
 const Invoice = forwardRef(({ formBody, gst }, ref) => {
   const { userData } = useContext(ProfileContext);
-  // console.log(userData);
+  console.log(userData);
   console.log(formBody);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const date = new Date();
+  // console.log();
   const accountBalance = parseInt(
     userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
   );
   const data = [
     {
       sr_no: 1,
-      productName: "Royalty for the month of July 2023",
+      productName: `Royalty for the month of ${
+        months[date.getMonth()]
+      } ${new Date().getFullYear()}`,
       sac: formBody.serviceAccount,
       taxableValue: formBody.taxableValue || 0,
       cgst: {
@@ -168,7 +186,7 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
       <div className="mt-1">
         <div className="border-y border-surface-white-line h-5">
           <h5 className="text-heading-5-bold text-primary-dark text-center">
-            INVOICE
+            {gst && "TAX"} INVOICE
           </h5>
         </div>
 
@@ -190,18 +208,20 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
 
         <div className="flex divide-x divide-surface-white-line border-b border-surface-white-line">
           <div className="w-7/12 px-3 py-2 font-bold text-subtitle-2">
-            <p>Name - Forevision Digital </p>
+            <p>Name - ForeVision Digital </p>
             <p>Address - Dhandinguri, Raserkuthi, Coochbeher - 736165</p>
             {/* <br />
             <br /> */}
-            <p>GSTIN Number - FLKJW353P4O4</p>
-            <p>PAN Number - </p>
+            <p>GSTIN Number - 19BHDPC1438D1ZU</p>
+            <p>PAN Number - BHDPC1438D</p>
             <p>State - West Bengal</p>
             {/* <p>State Code - 27</p> */}
           </div>
-          <div className="w-5/12 p-3 text-subtitle-2 font-bold">
-            Place of Supply - West Bengal
-          </div>
+          {gst && (
+            <div className="w-5/12 p-3 text-subtitle-2 font-bold">
+              Place of Supply - {formBody.state}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col divide-y divide-surface-white-line border-b border-surface-white-line">
@@ -211,7 +231,7 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                 ? formBody.state === "West Bengal"
                   ? "grid-cols-7"
                   : "grid-cols-6"
-                : "grid-cols-5"
+                : "grid-cols-3"
             } px-3 divide-x divide-surface-white-line text-subtitle-2 font-bold`}
           >
             <div className="text-center flex items-center justify-center">
@@ -220,12 +240,14 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
             <div className="text-center flex items-center justify-center">
               Name of the Product/ Service
             </div>
-            <div className="text-center flex items-center justify-center">
+            {/* <div className="text-center flex items-center justify-center">
               Service Accounting Code (SAC)
-            </div>
-            <div className="text-center flex items-center justify-center">
-              Taxable Value
-            </div>
+            </div> */}
+            {gst && (
+              <div className="text-center flex items-center justify-center">
+                Taxable Value
+              </div>
+            )}
             {gst && (
               <>
                 {formBody.state === "West Bengal" && (
@@ -284,7 +306,7 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                     ? formBody.state === "West Bengal"
                       ? "grid-cols-7"
                       : "grid-cols-6"
-                    : "grid-cols-5"
+                    : "grid-cols-3"
                 } px-3 divide-x divide-surface-white-line text-subtitle-2 font-bold`}
               >
                 <div className="text-center flex items-center justify-center">
@@ -293,12 +315,14 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                 <div className="text-center flex items-center justify-center">
                   {productName}
                 </div>
-                <div className="text-center flex items-center justify-center">
+                {/* <div className="text-center flex items-center justify-center">
                   {sac || "N/A"}
-                </div>
-                <div className="text-center flex items-center justify-center">
-                  {taxableValue}
-                </div>
+                </div> */}
+                {gst && (
+                  <div className="text-center flex items-center justify-center">
+                    {taxableValue}
+                  </div>
+                )}
 
                 {gst && (
                   <>
@@ -366,10 +390,12 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
             <div className="w-5/12 flex flex-col divide-y divide-surface-white-line !border-t-0">
               {/* +++++++++++++++++++++++  HIDE FOR NON GST   ++++++++++++++++++++++++++ */}
 
-              <div className="grid grid-cols-2 divide-x divide-surface-white-line">
-                <p className="p-1">Total amount before tax</p>
-                <p className="p-1">{accountBalance}</p>
-              </div>
+              {gst && (
+                <div className="grid grid-cols-2 divide-x divide-surface-white-line">
+                  <p className="p-1">Total amount before tax</p>
+                  <p className="p-1">{accountBalance}</p>
+                </div>
+              )}
               {gst && formBody.state === "West Bengal" && (
                 <>
                   <div className="grid grid-cols-2 divide-x divide-surface-white-line">
@@ -405,39 +431,59 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                   </p>
                 </div>
               )}
-              <div className="grid grid-cols-2 divide-x divide-surface-white-line">
-                <p className="p-1">Total Amount after tax</p>
-                <p className="p-1">
-                  {gst
-                    ? formBody.state === "West Bengal"
-                      ? accountBalance + 2 * Math.round(accountBalance * 0.09)
-                      : accountBalance + Math.round(accountBalance * 0.18)
-                    : accountBalance}
-                </p>{" "}
-                {/*total amount before tax + total gst*/}
-              </div>
-              <div className="grid grid-cols-2 divide-x divide-surface-white-line">
+              {gst && (
+                <div className="grid grid-cols-2 divide-x divide-surface-white-line">
+                  <p className="p-1">Total Amount after tax</p>
+                  <p className="p-1">
+                    {gst
+                      ? formBody.state === "West Bengal"
+                        ? accountBalance + 2 * Math.round(accountBalance * 0.09)
+                        : accountBalance + Math.round(accountBalance * 0.18)
+                      : accountBalance}
+                  </p>{" "}
+                  {/*total amount before tax + total gst*/}
+                </div>
+              )}
+              {/* <div className="grid grid-cols-2 divide-x divide-surface-white-line">
                 <p className="p-1">GST Payable on Reverse Charge</p>
                 <p className="p-1"></p>
-              </div>
+              </div> */}
             </div>
           </div>
 
           <div className="flex flex-wrap divide-x divide-surface-white-line border-b border-surface-white-line">
             <div className="px-3 pt-2 w-7/12">
               <p>Bank Details :</p>
-              <p>Name of the Bank - BANK OF BARODA</p>
-              <p>Branch - COOCH BEHAR</p>
-              <p>Benificiary Name - FOREVISION DIGITAL</p>
-              <p>Account Type - CURRENT</p>
-              <p>Account Number - 09010200001947</p>
-              <p>IFSC - BARB0COOCHB</p>
+              <p>
+                Name of the Bank -{" "}
+                <span className="uppercase">{formBody.bankName}</span>
+              </p>
+              <p>
+                Branch - <span className="uppercase">{formBody.branch}</span>
+              </p>
+              <p>
+                Beneficiary Name -{" "}
+                <span className="uppercase">{formBody.beneficiaryName}</span>
+              </p>
+              <p>
+                Account Type -{" "}
+                <span className="uppercase">{formBody.accountType}</span>
+              </p>
+              <p>
+                Account Number -{" "}
+                <span className="uppercase">{formBody.accountNumber}</span>
+              </p>
+              <p>
+                IFSC - <span className="uppercase">{formBody.ifscCode}</span>
+              </p>
             </div>
             <div className="w-5/12 flex flex-col p-1">
               <p className="text-center">
                 Certified that the Particulars given above are true & correct
               </p>
-              <p>For - ForeVision Digital</p>
+              <p>
+                For - {userData.first_name} {userData.last_name}
+              </p>
               <p>Authorised Signatory -</p>
 
               <div

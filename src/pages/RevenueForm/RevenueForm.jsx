@@ -388,7 +388,7 @@ function RevenueForm() {
                 label={"Land Mark (Optional)"}
                 id={"landMark"}
                 type={"text"}
-                required={gst}
+                // required={gst}
                 containerClassName={"w-full md:w-1/4"}
               />
             </div>
@@ -483,12 +483,8 @@ function RevenueForm() {
                   label={"Place of Supply*"}
                   id={"placeOfSuppl"}
                   type={"text"}
-                  disabled={state === "Kashmir" || state === "West Bengal"}
-                  value={
-                    state === "Kashmir" || state === "West Bengal"
-                      ? state
-                      : placeOfSupply
-                  }
+                  disabled={true}
+                  value={state}
                   onChange={(e) => setPlaceOfSupply(e.target.value)}
                   containerClassName={gst ? "w-full md:w-2/4" : "w-full"}
                   required={gst}

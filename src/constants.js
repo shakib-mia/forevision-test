@@ -18,7 +18,7 @@ import Profile from "./pages/Profile/Profile";
 import Revenue from "./pages/Revenue/Revenue";
 import RevenueForm from "./pages/RevenueForm/RevenueForm";
 import SongUpload from "./pages/SongUpload/SongUpload";
-// import Home from "./pages/Home/Home";
+import Home from "./pages/Home/Home";
 import Payment from "./pages/Payment/Payment";
 // import Pricing from "./pages/Plans/Plans";
 import Plans from "./pages/Plans/Plans";
@@ -305,7 +305,7 @@ export const routes = [
     path: "/",
     page: (
       <RequireAuth>
-        <Revenue /> {/* will be replaced by <Home /> */}
+        <Home /> {/* will be replaced by <Home /> */}
       </RequireAuth>
     ),
   },

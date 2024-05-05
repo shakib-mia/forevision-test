@@ -49,8 +49,8 @@ const Notifications = () => {
   // console.log(notifications.reverse());
 
   return (
-    <div className="w-full 2xl:w-1/2 bg-grey-light rounded-2xl p-4 h-[392px] overflow-auto relative">
-      <div className="flex justify-between bg-grey-light sticky top-0">
+    <div className="w-full 2xl:w-1/2 bg-grey-light rounded-2xl p-4 pt-0 h-[392px] overflow-auto relative">
+      <div className="flex justify-between bg-grey-light sticky top-0 pt-4 pb-2">
         <h4 className="text-heading-4-bold">Notifications</h4>
         {/* <button>Mark all as read</button> */}
       </div>
@@ -64,15 +64,36 @@ const Notifications = () => {
         <ul className="mt-3 flex flex-col gap-1">
           {notifications.reverse().map((notification, index) => (
             <li
-              title="click to mark as read"
-              className={`text-paragraph-1 p-1 rounded cursor-pointer ${
-                notification.read ? "text-grey" : "bg-grey text-white"
-              }`}
+              title="Click to mark as read"
+              className={`text-paragraph-1 p-1 rounded cursor-pointer flex gap-1 ${
+                notification.read ? "text-grey" : "bg-white text-black"
+              } flex items-center`}
               key={index}
               onClick={() => markAsRead(notification._id, notification)}
-              dangerouslySetInnerHTML={{ __html: notification.message }}
             >
-              {/* {notification.message} */}
+              {/* Dynamically set HTML content in a div */}
+              <div
+                className={`aspect-square rounded-full h-1 ${
+                  notification.read
+                    ? "bg-interactive-light-disabled"
+                    : "bg-interactive-light"
+                }`}
+              ></div>
+              <div className="flex justify-between w-full">
+                <div
+                  dangerouslySetInnerHTML={{ __html: notification.message }}
+                  className="flex-grow"
+                ></div>
+                <div>
+                  {new Date(notification.date * 1000).getDate() > 9 ? "" : 0}
+                  {new Date(notification.date * 1000).getDate()}/
+                  {new Date(notification.date * 1000).getMonth() > 9 ? "" : 0}
+                  {new Date(notification.date * 1000).getMonth() + 1}
+                </div>
+              </div>
+
+              {/* Additional static content in another div */}
+              {/* <div>Additional content here</div> */}
             </li>
           ))}
         </ul>
