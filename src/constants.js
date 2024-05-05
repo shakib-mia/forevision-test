@@ -301,14 +301,14 @@ export const config = {
 export const user = JSON.parse(sessionStorage.getItem("user"));
 
 export const routes = [
-  {
-    path: "/",
-    page: (
-      <RequireAuth>
-        <Home /> {/* will be replaced by <Home /> */}
-      </RequireAuth>
-    ),
-  },
+  // {
+  //   path: "/",
+  //   page: (
+  //     <RequireAuth>
+  //       <Home /> {/* will be replaced by <Home /> */}
+  //     </RequireAuth>
+  //   ),
+  // },
   // {
   //   path: "/home",
   //   page: (
@@ -459,7 +459,7 @@ export const routes = [
     ),
   },
   {
-    path: "/revenue-reports",
+    path: "/",
     page: (
       // <Construction />
       <RequireAuth>
