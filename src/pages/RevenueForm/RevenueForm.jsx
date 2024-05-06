@@ -32,6 +32,8 @@ function RevenueForm() {
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   const [formBody, setFormBody] = useState({});
   const [accountType, setAccountType] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [confirmAccountNumber, setConfirmAccountNumber] = useState("");
 
   // console.log(data);
 
@@ -54,6 +56,8 @@ function RevenueForm() {
     e.target.files[0] &&
       setCancelledCheque(URL.createObjectURL(e.target.files[0]));
   };
+
+  // console.log(accountNumber.length);
 
   const signatureHandle = (e) => {
     e.preventDefault();
@@ -505,7 +509,7 @@ function RevenueForm() {
                   name={"serviceAccount"}
                   label={"Service Accounting Number (SAC)*"}
                   id={"serviceAccount"}
-                  type={"text"}
+                  type={"number"}
                   containerClassName={"w-full md:w-2/4"}
                   required={gst}
                 />
@@ -567,7 +571,7 @@ function RevenueForm() {
 
               <InputField
                 name={"totalAmount"}
-                label={"Taxable Value"}
+                label={gst ? "Taxable Value" : "Total Value"}
                 id={"taxableValue"}
                 type={"number"}
                 required={gst}
@@ -641,16 +645,25 @@ function RevenueForm() {
                 id={"accountNumber"}
                 type={"number"}
                 required={gst}
+                onChange={(e) => setAccountNumber(e.target.value)}
                 // containerClassName={"w-full"}
               />
-              <InputField
-                name={"confirmAccountNumber"}
-                label={"Confirm Account Number*"}
-                id={"confirmAccountNumber"}
-                type={"number"}
-                required={gst}
-                // containerClassName={"w-full"}
-              />
+              <aside>
+                <InputField
+                  name={"confirmAccountNumber"}
+                  label={"Confirm Account Number*"}
+                  id={"confirmAccountNumber"}
+                  type={"number"}
+                  onChange={(e) => setConfirmAccountNumber(e.target.value)}
+                  required={gst}
+                  // containerClassName={"w-full"}
+                />
+                {accountNumber !== confirmAccountNumber && (
+                  <p className="text-button text-interactive-dark-destructive-active mt-1 pl-1">
+                    Account Number Didn't match
+                  </p>
+                )}
+              </aside>
             </div>
             <div className="flex flex-wrap justify-center w-full mx-auto">
               <div className="w-1/2 md:w-1/4 p-1 flex flex-col justify-between">
@@ -835,7 +848,15 @@ function RevenueForm() {
               SAVE AND NEXT
             </button> */}
 
-            <Button type={"submit"}>Submit</Button>
+            <Button
+              type={"submit"}
+              disabled={
+                accountNumber.length === 0 ||
+                accountNumber !== confirmAccountNumber
+              }
+            >
+              Submit
+            </Button>
           </div>
         </form>
       </section>

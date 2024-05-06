@@ -178,9 +178,11 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
           <b>Address -</b> {formBody.address}
         </p>
 
-        <p>
-          <b>GSTIN Number -</b> {formBody.gstinNumber}
-        </p>
+        {gst && (
+          <p>
+            <b>GSTIN Number -</b> {formBody.gstinNumber}
+          </p>
+        )}
       </div>
 
       <div className="mt-1">
@@ -209,7 +211,7 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
         <div className="flex divide-x divide-surface-white-line border-b border-surface-white-line">
           <div className="w-7/12 px-3 py-2 font-bold text-subtitle-2">
             <p>Name - ForeVision Digital </p>
-            <p>Address - Dhandinguri, Raserkuthi, Coochbeher - 736165</p>
+            <p>Address - Coochbehar - 736165</p>
             {/* <br />
             <br /> */}
             <p>GSTIN Number - 19BHDPC1438D1ZU</p>
