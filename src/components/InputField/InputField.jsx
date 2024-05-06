@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import check from "./../../assets/icons/checkbox.webp";
 import { useLocation } from "react-router-dom";
 import SelectInput from "../SelectInput/SelectInput";
@@ -38,6 +38,23 @@ const InputField = ({
   const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
+
+  useEffect(() => {
+    if (type === "number") {
+      const input = document.getElementById(id);
+      const preventScrollChange = (event) => {
+        event.preventDefault();
+      };
+      // Add non-passive event listener to the native input element
+      input.addEventListener("wheel", preventScrollChange, { passive: false });
+      // Clean up: Remove event listener when component unmounts or changes
+      return () => {
+        input.removeEventListener("wheel", preventScrollChange, {
+          passive: false,
+        });
+      };
+    }
+  }, [type, id]); // Empty dependency array means this effect runs only on mount and unmount
 
   return (
     <div className={`relative ${containerClassName}`} id={containerId}>

@@ -3,7 +3,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 
 const Invoice = forwardRef(({ formBody, gst }, ref) => {
   const { userData } = useContext(ProfileContext);
-  console.log(userData);
+  console.log(parseFloat(formBody.taxableValue) * 0.18);
   console.log(formBody);
   const months = [
     "January",
@@ -34,22 +34,22 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
       taxableValue: formBody.taxableValue || 0,
       cgst: {
         rate: 9,
-        amount: Math.round(parseInt(formBody.taxableValue) * 0.09),
+        amount: (parseFloat(formBody.taxableValue) * 0.09).toFixed(2),
       },
       sgst: {
         rate: 9,
-        amount: Math.round(parseInt(formBody.taxableValue) * 0.09),
+        amount: (parseFloat(formBody.taxableValue) * 0.09).toFixed(2),
       },
       igst: {
         rate: 18,
-        amount: Math.round(parseInt(formBody.taxableValue) * 0.18),
+        amount: (parseFloat(formBody.taxableValue) * 0.18).toFixed(2),
       },
       total: gst
         ? formBody.state === "West Bengal"
-          ? parseInt(formBody.taxableValue) +
-            Math.round(2 * parseInt(formBody.taxableValue) * 0.09)
-          : parseInt(formBody.taxableValue) +
-            Math.round(parseInt(formBody.taxableValue) * 0.18)
+          ? parseFloat(formBody.taxableValue) +
+            Math.round(2 * parseFloat(formBody.taxableValue) * 0.09)
+          : parseFloat(formBody.taxableValue) +
+            Math.round(parseFloat(formBody.taxableValue) * 0.18)
         : formBody.taxableValue,
     },
   ];
@@ -175,7 +175,8 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
         </p>
 
         <p>
-          <b>Address -</b> {formBody.address}
+          <b>Address -</b> {formBody.address}, {formBody.streetName},{" "}
+          {formBody.pinCode}, {formBody.city}
         </p>
 
         {gst && (
@@ -211,7 +212,7 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
         <div className="flex divide-x divide-surface-white-line border-b border-surface-white-line">
           <div className="w-7/12 px-3 py-2 font-bold text-subtitle-2">
             <p>Name - ForeVision Digital </p>
-            <p>Address - Coochbehar - 736165</p>
+            <p>Address - Cooch Behar - 736165</p>
             {/* <br />
             <br /> */}
             <p>GSTIN Number - 19BHDPC1438D1ZU</p>
@@ -231,8 +232,8 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
             className={`grid ${
               gst
                 ? formBody.state === "West Bengal"
-                  ? "grid-cols-7"
-                  : "grid-cols-6"
+                  ? "grid-cols-6"
+                  : "grid-cols-5"
                 : "grid-cols-3"
             } px-3 divide-x divide-surface-white-line text-subtitle-2 font-bold`}
           >
@@ -306,8 +307,8 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                 className={`grid ${
                   gst
                     ? formBody.state === "West Bengal"
-                      ? "grid-cols-7"
-                      : "grid-cols-6"
+                      ? "grid-cols-6"
+                      : "grid-cols-5"
                     : "grid-cols-3"
                 } px-3 divide-x divide-surface-white-line text-subtitle-2 font-bold`}
               >
@@ -403,13 +404,13 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                   <div className="grid grid-cols-2 divide-x divide-surface-white-line">
                     <p className="p-1">Add - CGST</p>
                     <p className="p-1">
-                      {gst ? Math.round(accountBalance * 0.09) : "NA"}
+                      {gst ? (accountBalance * 0.09).toFixed(2) : "NA"}
                     </p>
                   </div>
                   <div className="grid grid-cols-2 divide-x divide-surface-white-line">
                     <p className="p-1">Add - SGST</p>
                     <p className="p-1">
-                      {gst ? Math.round(accountBalance * 0.09) : "NA"}
+                      {gst ? (accountBalance * 0.09).toFixed(2) : "NA"}
                     </p>
                   </div>
                 </>
@@ -418,7 +419,7 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                 <div className="grid grid-cols-2 divide-x divide-surface-white-line">
                   <p className="p-1">Add - IGST</p>
                   <p className="p-1">
-                    {gst ? Math.round(accountBalance * 0.18) : "NA"}
+                    {gst ? (accountBalance * 0.18).toFixed(2) : "NA"}
                   </p>
                 </div>
               )}
@@ -428,8 +429,8 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                   {/* (cgst +sgst) / igst */}
                   <p className="p-1">
                     {formBody.state === "West Bengal"
-                      ? 2 * Math.round(accountBalance * 0.09)
-                      : Math.round(accountBalance * 0.18)}
+                      ? 2 * (accountBalance * 0.09).toFixed(2)
+                      : (accountBalance * 0.18).toFixed(2)}
                   </p>
                 </div>
               )}
@@ -439,8 +440,10 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                   <p className="p-1">
                     {gst
                       ? formBody.state === "West Bengal"
-                        ? accountBalance + 2 * Math.round(accountBalance * 0.09)
-                        : accountBalance + Math.round(accountBalance * 0.18)
+                        ? accountBalance +
+                          2 * (accountBalance * 0.09).toFixed(2)
+                        : parseFloat(accountBalance) +
+                          parseFloat((accountBalance * 0.18).toFixed(2))
                       : accountBalance}
                   </p>{" "}
                   {/*total amount before tax + total gst*/}

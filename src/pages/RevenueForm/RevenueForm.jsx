@@ -433,10 +433,9 @@ function RevenueForm() {
                     "Gujarat",
                     "Haryana",
                     "Himachal Pradesh",
-                    "Jammu",
+                    "Jammu & Kashmir",
                     "Jharkhand",
                     "Karnataka",
-                    "Kashmir",
                     "Kerala",
                     "Ladakh",
                     "Lakshadweep",
@@ -575,10 +574,10 @@ function RevenueForm() {
                 id={"taxableValue"}
                 type={"number"}
                 required={gst}
-                value={Math.floor(
+                value={(
                   userData.lifetimeRevenue -
                     (userData.lifetimeDisbursed || 0) || 0
-                )}
+                ).toFixed(2)}
                 disabled={true}
                 containerClassName={"w-full"}
               />
