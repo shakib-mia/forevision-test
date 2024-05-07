@@ -3,7 +3,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 
 const Invoice = forwardRef(({ formBody, gst }, ref) => {
   const { userData } = useContext(ProfileContext);
-  console.log(parseFloat(formBody.taxableValue) * 0.18);
+  // console.log(parseFloat(formBody.taxableValue) * 0.18);
   console.log(formBody);
   const months = [
     "January",
@@ -21,9 +21,9 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
   ];
   const date = new Date();
   // console.log();
-  const accountBalance = parseInt(
+  const accountBalance = parseFloat(
     userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
-  );
+  ).toFixed(2);
   const data = [
     {
       sr_no: 1,
@@ -96,6 +96,7 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
     ];
 
     function convertToWords(n, suffix = "") {
+      console.log(`Converting ${n}`); // Debug output
       let str = "";
       if (n > 19) {
         str +=
@@ -385,10 +386,26 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                         Math.round(2 * parseInt(formBody.taxableValue) * 0.09)
                       : parseInt(formBody.taxableValue) +
                         Math.round(parseInt(formBody.taxableValue) * 0.18)
-                    : formBody.taxableValue
+                    : parseInt(formBody.taxableValue)
                 )}{" "}
               </div>
-              Rupees only
+              Rupees{" "}
+              <span className="capitalize">
+                {numberToWords(
+                  gst
+                    ? formBody.state === "West Bengal"
+                      ? accountBalance +
+                        (2 * (accountBalance * 0.09)).toFixed(2).split(".")[1]
+                      : (
+                          parseFloat(accountBalance) +
+                          parseFloat((accountBalance * 0.18).toFixed(2))
+                        )
+                          .toFixed(2)
+                          .split(".")[1]
+                    : accountBalance.split(".")[1]
+                )}
+              </span>{" "}
+              Paisa only
             </div>
             <div className="w-5/12 flex flex-col divide-y divide-surface-white-line !border-t-0">
               {/* +++++++++++++++++++++++  HIDE FOR NON GST   ++++++++++++++++++++++++++ */}
@@ -441,9 +458,11 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
                     {gst
                       ? formBody.state === "West Bengal"
                         ? accountBalance +
-                          2 * (accountBalance * 0.09).toFixed(2)
-                        : parseFloat(accountBalance) +
-                          parseFloat((accountBalance * 0.18).toFixed(2))
+                          (2 * (accountBalance * 0.09)).toFixed(2)
+                        : (
+                            parseFloat(accountBalance) +
+                            parseFloat((accountBalance * 0.18).toFixed(2))
+                          ).toFixed(2)
                       : accountBalance}
                   </p>{" "}
                   {/*total amount before tax + total gst*/}
