@@ -840,13 +840,6 @@ function RevenueForm() {
           {/* </fieldset> */}
 
           <div className="py-4 text-center">
-            {/* <button
-              type="submit"
-              className=" bottom-3 bg-primary-light p-1 rounded-md text-white"
-            >
-              SAVE AND NEXT
-            </button> */}
-
             <Button
               type={"submit"}
               disabled={
@@ -854,7 +847,7 @@ function RevenueForm() {
                 accountNumber !== confirmAccountNumber
               }
             >
-              Submit
+              Save and Next
             </Button>
           </div>
         </form>

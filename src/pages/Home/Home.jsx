@@ -25,6 +25,10 @@ const Home = () => {
   const navigate = useNavigate();
   const { userData, token } = useContext(ProfileContext);
 
+  // console.log(
+  //   (userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)).toFixed(2)
+  // );
+
   return (
     <div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7">
       <div className="grid grid-cols-1 2xl:grid-cols-3 justify-between space-y-4 2xl:space-y-0 2xl:space-x-2 text-grey-dark">

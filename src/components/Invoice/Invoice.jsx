@@ -164,6 +164,13 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
    
    ****************/
 
+  console.log(
+    (
+      parseFloat(accountBalance) +
+      parseFloat((accountBalance * 0.18).toFixed(2))
+    ).toFixed(2)
+  );
+
   return (
     <div
       className="bg-white w-[800px] h-[1120px] rounded-lg"
