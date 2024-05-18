@@ -22,7 +22,7 @@ const ProfileVerification = () => {
       name: "verified_on_resso_name",
       type: "text",
       required: true,
-      value: user.display_name,
+      // value: user.display_name,
       disabled: true,
     },
     {
@@ -31,7 +31,7 @@ const ProfileVerification = () => {
       name: "verified_on_resso_email",
       type: "email",
       required: true,
-      value: user.user_email,
+      // value: user.user_email,
       disabled: true,
     },
     {
@@ -40,7 +40,7 @@ const ProfileVerification = () => {
       name: "verified_on_resso_usernm",
       type: "email",
       required: true,
-      value: user.user_nicename,
+      // value: user.user_nicename,
       disabled: true,
     },
     {

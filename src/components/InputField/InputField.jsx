@@ -73,9 +73,13 @@ const InputField = ({
                 {label}
               </label>
               <span className="text-black-secondary">
-                {!required && location.pathname === "/signup-details"
-                  ? "Optional"
-                  : ""}
+                {!required ? (
+                  "Optional"
+                ) : (
+                  <span className="text-interactive-light-destructive-focus text-button !font-light">
+                    Required
+                  </span>
+                )}
               </span>
             </div>
           )}

@@ -180,3 +180,23 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+input[type="range"] {
+  @apply w-full h-2 bg-primary-light rounded-lg appearance-none cursor-pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  @apply w-4 h-4 bg-primary rounded-full appearance-none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  @apply w-4 h-4 bg-primary rounded-full appearance-none;
+}
+
+input[type="range"]::-ms-thumb {
+  @apply w-4 h-4 bg-primary rounded-full appearance-none;
+}
+
+input[type="range"]:focus {
+  @apply outline-none;
+}

@@ -325,6 +325,10 @@ const Revenue = () => {
   let result = Object.values(groupedData);
 
   // console.log(songs.filter(item => item.isrc === 'INF232100090'));
+  // console.log(
+  //   (userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)).toFixed(2) >
+  //     100
+  // );
 
   return (
     <SongsContext.Provider value={{ songs }}>
