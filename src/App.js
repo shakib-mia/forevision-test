@@ -99,8 +99,8 @@ function App() {
 
   return (
     <>
-      {/* <Construction /> */}
-      <ProfileContext.Provider value={store}>
+      <Construction />
+      {/* <ProfileContext.Provider value={store}>
         {token ? token.length && <BottomBar /> : <></>}
         {location.pathname !== "/login" &&
           location.pathname !== "/signup" &&
@@ -112,7 +112,7 @@ function App() {
           ))}
         </Routes>
         <ToastContainer />
-      </ProfileContext.Provider>
+      </ProfileContext.Provider> */}
     </>
   );
 }
