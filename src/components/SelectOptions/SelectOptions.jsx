@@ -20,8 +20,10 @@ const SelectOptions = ({
             {label}
           </label>
         )}
-        {required && (
-          <span className="text-interactive-dark-destructive-active text-subtitle-2 !font-normal">
+        {!required ? (
+          <span className="text-button !font-light">Optional</span>
+        ) : (
+          <span className="text-interactive-light-destructive-focus text-button !font-light">
             Required
           </span>
         )}

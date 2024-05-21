@@ -340,7 +340,7 @@ function RevenueForm() {
             <div className="flex flex-col md:flex-row gap-3">
               <InputField
                 name={"vendorName"}
-                label={"Vendor Name*"}
+                label={"Vendor Name"}
                 id={"vandorName"}
                 type={"text"}
                 required={gst}
@@ -348,7 +348,7 @@ function RevenueForm() {
               />
               <InputField
                 name={"invoiceNumber"}
-                label={"Invoice Number*"}
+                label={"Invoice Number"}
                 id={"invoiceNumber"}
                 type={"text"}
                 required={gst}
@@ -356,7 +356,7 @@ function RevenueForm() {
               />
               <InputField
                 name={"invoiceDate"}
-                label={"Invoice Date*"}
+                label={"Invoice Date"}
                 id={"invoiceDate"}
                 type={"date"}
                 // required={gst}
@@ -374,7 +374,7 @@ function RevenueForm() {
             <div className="flex flex-col md:flex-row gap-3">
               <InputField
                 name={"address"}
-                label={"Address*"}
+                label={"Address"}
                 id={"address"}
                 required={gst}
                 type={"address"}
@@ -390,7 +390,7 @@ function RevenueForm() {
               />
               <InputField
                 name={"landMark"}
-                label={"Land Mark (Optional)"}
+                label={"Land Mark"}
                 id={"landMark"}
                 type={"text"}
                 // required={gst}
@@ -400,7 +400,7 @@ function RevenueForm() {
             <div className="flex gap-3 flex-col md:flex-row">
               <InputField
                 name={"pinCode"}
-                label={"Pin Code*"}
+                label={"Pin Code"}
                 id={"pinCode"}
                 type={"number"}
                 required={gst}
@@ -408,7 +408,7 @@ function RevenueForm() {
               />
               <InputField
                 name={"city"}
-                label={"City*"}
+                label={"City"}
                 id={"city"}
                 required={gst}
                 type={"address"}
@@ -416,7 +416,7 @@ function RevenueForm() {
               />
               {ruIndian ? (
                 <SelectOptions
-                  label={"State*"}
+                  label={"State"}
                   name="state"
                   onChange={(e) => setState(e.target.value)}
                   options={[
@@ -459,6 +459,7 @@ function RevenueForm() {
                     "West Bengal",
                   ]}
                   id={"state"}
+                  required={true}
                   containerClassName={"w-full md:w-1/4"}
                 />
               ) : (
@@ -476,7 +477,7 @@ function RevenueForm() {
               <div className="flex gap-3 flex-col md:flex-row mt-6">
                 <InputField
                   name={"gctinNumber"}
-                  label={"GSTIN Number*"}
+                  label={"GSTIN Number"}
                   id={"gctinNumber"}
                   type={"text"}
                   containerClassName={"w-full md:w-2/4"}
@@ -484,7 +485,7 @@ function RevenueForm() {
                 />
                 <InputField
                   name={"placeOfSupply"}
-                  label={"Place of Supply*"}
+                  label={"Place of Supply"}
                   id={"placeOfSuppl"}
                   type={"text"}
                   disabled={true}
@@ -507,7 +508,7 @@ function RevenueForm() {
               {gst && (
                 <InputField
                   name={"serviceAccount"}
-                  label={"Service Accounting Number (SAC)*"}
+                  label={"Service Accounting Number (SAC)"}
                   id={"serviceAccount"}
                   type={"number"}
                   containerClassName={"w-full md:w-2/4"}
@@ -554,7 +555,7 @@ function RevenueForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-5">
               <InputField
                 name={"panNumber"}
-                label={"PAN Number*"}
+                label={"PAN Number"}
                 id={"panNumber"}
                 type={"text"}
                 required={gst}
@@ -594,7 +595,7 @@ function RevenueForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <InputField
                 name={"bankName"}
-                label={"Name of the Bank*"}
+                label={"Name of the Bank"}
                 id={"bankName"}
                 required={gst}
                 type={"text"}
@@ -602,7 +603,7 @@ function RevenueForm() {
               />
               <InputField
                 name={"branch"}
-                label={"Branch*"}
+                label={"Branch"}
                 id={"branch"}
                 type={"text"}
                 required={gst}
@@ -612,7 +613,7 @@ function RevenueForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               <SelectOptions
                 name={"accountType"}
-                label={"Account Type*"}
+                label={"Account Type"}
                 required={gst}
                 id={"accountType"}
                 type={"text"}
@@ -622,7 +623,7 @@ function RevenueForm() {
               />
               <InputField
                 name={"ifscCode"}
-                label={"IFSC*"}
+                label={"IFSC"}
                 id={"ifscCode"}
                 type={"text"}
                 required={gst}
@@ -630,7 +631,7 @@ function RevenueForm() {
               />
               <InputField
                 name={"beneficiaryName"}
-                label={"Beneficiary Name*"}
+                label={"Beneficiary Name"}
                 id={"beneficiaryName"}
                 type={"text"}
                 required={gst}
@@ -641,7 +642,7 @@ function RevenueForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <InputField
                 name={"accountNumber"}
-                label={"Account Number*"}
+                label={"Account Number"}
                 id={"accountNumber"}
                 type={"number"}
                 required={gst}
@@ -651,7 +652,7 @@ function RevenueForm() {
               <aside>
                 <InputField
                   name={"confirmAccountNumber"}
-                  label={"Confirm Account Number*"}
+                  label={"Confirm Account Number"}
                   id={"confirmAccountNumber"}
                   type={"number"}
                   onChange={(e) => setConfirmAccountNumber(e.target.value)}
@@ -667,8 +668,14 @@ function RevenueForm() {
             </div>
             <div className="flex flex-wrap justify-center w-full mx-auto">
               <div className="w-1/2 md:w-1/4 p-1 flex flex-col justify-between">
-                <label className="text-grey mb-1" htmlFor="aadharCard">
+                <label
+                  className="text-grey mb-1 flex justify-between"
+                  htmlFor="aadharCard"
+                >
                   Aadhaar Card (Both Side) / Govt. ID
+                  <span className="text-interactive-light-destructive-focus text-button !font-light">
+                    Required
+                  </span>
                 </label>
                 <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                   <label htmlFor="aadharCard">
@@ -696,10 +703,13 @@ function RevenueForm() {
               </div>
               <div className="w-1/2 md:w-1/4 flex flex-col justify-between p-1">
                 <label
-                  className="text-grey mb-1 text-paragraph-1"
+                  className="text-grey mb-1 text-paragraph-1 flex justify-between"
                   htmlFor="panCard"
                 >
                   PAN Card
+                  <span className="text-interactive-light-destructive-focus text-button !font-light">
+                    Required
+                  </span>
                 </label>
                 <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                   <label htmlFor="panCard">
@@ -726,8 +736,14 @@ function RevenueForm() {
                 </div>
               </div>
               <div className="w-1/2 md:w-1/4 flex flex-col justify-between p-1">
-                <label className="text-grey mb-1" htmlFor="cancelledCheque">
+                <label
+                  className="text-grey mb-1 flex justify-between"
+                  htmlFor="cancelledCheque"
+                >
                   <p>Cancelled Cheque</p>
+                  <span className="text-interactive-light-destructive-focus text-button !font-light">
+                    Required
+                  </span>
                   {/* {ruIndian && (
                     <p className="text-interactive-light-destructive pt-1 text-[12px]">
                       Please fill on the field with Cancelled Cheque
@@ -761,8 +777,14 @@ function RevenueForm() {
               {/* <div className="flex justify-center"> */}
               {gst && (
                 <div className="w-1/2 md:w-1/4 aspect-square flex flex-col justify-between p-1">
-                  <label className="text-grey mb-1" htmlFor="GovtID">
+                  <label
+                    className="text-grey mb-1 flex justify-between"
+                    htmlFor="GovtID"
+                  >
                     <p>GST certificate</p>
+                    <span className="text-interactive-light-destructive-focus text-button !font-light">
+                      Required
+                    </span>
                     {/* {ruIndian && (
                       <div className="w-1/2 p-1">
                         <p className="teeractive-light-destructive pt-1 text-[12px]">
@@ -800,10 +822,13 @@ function RevenueForm() {
               <div className="w-1/2 md:w-1/4 p-1 flex flex-col justify-between aspect-square">
                 <div className="w-full mx-auto">
                   <label
-                    className="text-grey text-subtitle-1"
+                    className="text-grey text-subtitle-1 flex justify-between"
                     htmlFor="signature"
                   >
                     <p>Signature</p>
+                    <span className="text-interactive-light-destructive-focus text-button !font-light">
+                      Required
+                    </span>
                     {/* {ruIndian && (
                   <p className="text-interactive-light-destructive pt-1 text-[12px]">
                     Please fill on the field with Signature
