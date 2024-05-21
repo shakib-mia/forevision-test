@@ -20,6 +20,8 @@ const AudioUI = () => {
   const [audioDuration, setAudioDuration] = useState(0);
   const [startMinutes, setStartMinutes] = useState(0);
   const [startSeconds, setStartSeconds] = useState(0);
+  const [startMinutes2, setStartMinutes2] = useState(0);
+  const [startSeconds2, setStartSeconds2] = useState(0);
   // console.log(file.name);
   const languagesInIndia = [
     "Ahirani",
@@ -95,7 +97,7 @@ const AudioUI = () => {
 
       formData.append("file", file);
       axios
-        .post("http://localhost:5000/upload-song", formData, config)
+        .post("https://api.forevisiondigital.in/upload-song", formData, config)
         .then(({ data }) => setAudioUrl(data.songUrl));
     }
   };
@@ -128,7 +130,7 @@ const AudioUI = () => {
     // console.log(audioUrl.split("/")[audioUrl.split("/").length - 1]);
     axios
       .post(
-        "http://localhost:5000/upload-song/delete/" +
+        "https://api.forevisiondigital.in/upload-song/delete/" +
           audioUrl.split("/")[audioUrl.split("/").length - 1]
       )
       .then((res) => {
@@ -277,18 +279,24 @@ const AudioUI = () => {
         audioDuration={audioDuration}
         startMinutes={startMinutes}
         startSeconds={startSeconds}
+        startMinutes2={startMinutes2}
+        startSeconds2={startSeconds2}
+        setStartMinutes2={setStartMinutes2}
+        setStartSeconds2={setStartSeconds2}
       />
 
       <div className="grid grid-cols-4 gap-3 mt-5 items-baseline">
         <SelectOptions
           placeholder={"Select The Primary Genre"}
           required={true}
+          label={"Primary Genre"}
           // onChange={(e) => console.log(e.target.value)}
           options={["Genre 1", "Genre 2", "Genre 3", "Genre 4", "Genre 5"]}
         />
 
         <SelectOptions
           placeholder={"Select The Secondary Genre"}
+          label={"Secondary Genre"}
           required={true}
           // onChange={(e) => console.log(e.target.value)}
           options={["Genre 1", "Genre 2", "Genre 3", "Genre 4", "Genre 5"]}
@@ -296,16 +304,17 @@ const AudioUI = () => {
 
         <SelectOptions
           placeholder={"Select The Mood"}
+          label={"Mood"}
           required={true}
           // onChange={(e) => console.log(e.target.value)}
           options={["Genre 1", "Genre 2", "Genre 3", "Genre 4", "Genre 5"]}
         />
 
         <InputField
+          label={"Description"}
           placeholder={"Description"}
           required={false}
           // labelClassName={"opacity-0"}
-          label={" "}
         />
       </div>
 

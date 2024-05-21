@@ -299,7 +299,7 @@ const Revenue = () => {
     "ISRC",
     "View",
     "Revenue",
-    "Revenue After Forevision Deduction",
+    "Revenue After ForeVision Deduction",
   ];
 
   const phoneOptions = ["isrc", "song_name", "total_revenue_against_isrc"];
@@ -392,7 +392,7 @@ const Revenue = () => {
                   />
                 </div>
                 <p className="text-subtitle-1 text-interactive-dark-destructive-active tracking-[0.5px] mt-1 italic">
-                  * Updated Till December, 2023
+                  * Updated Till February, 2024
                 </p>
               </div>
 

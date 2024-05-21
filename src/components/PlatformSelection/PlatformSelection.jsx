@@ -15,7 +15,7 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
       headers: { token: sessionStorage.getItem("token") || token },
     };
     axios
-      .get("http://localhost:5000/platforms", config)
+      .get("https://api.forevisiondigital.in/platforms", config)
       .then(({ data }) => {
         setPlatforms(data);
       })

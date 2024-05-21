@@ -22,6 +22,7 @@ const AlbumDetails = () => {
             onChange={(e) =>
               setFormData({ ...formData, contentType: e.target.value })
             }
+            name={"contentType"}
             required
             options={["Album", "Film"]}
           />
@@ -31,6 +32,7 @@ const AlbumDetails = () => {
             type={"number"}
             required={false}
             id={"upc"}
+            name={"upc"}
             // labelClassName={"opacity-0"}
             placeholder={"UPC"}
             label={" "}
@@ -47,13 +49,34 @@ const AlbumDetails = () => {
           <InputField
             type={"file"}
             id={"filmBanner"}
+            required
             name={"filmBanner"}
             placeholder={"Film Banner"}
           />
-          <InputField type={"text"} placeholder={"Film Producer"} />
-          <InputField type={"text"} placeholder={"Actor"} />
-          <InputField type={"text"} placeholder={"Director"} />
-          <InputField type={"date"} label={"Movie Release Date"} />
+          <InputField
+            required
+            name={"filmProducer"}
+            type={"text"}
+            placeholder={"Film Producer"}
+          />
+          <InputField
+            required
+            name={"actor"}
+            type={"text"}
+            placeholder={"Actor"}
+          />
+          <InputField
+            required
+            name={"director"}
+            type={"text"}
+            placeholder={"Director"}
+          />
+          <InputField
+            required
+            name={"movieReleaseDate"}
+            type={"date"}
+            label={"Movie Release Date"}
+          />
         </div>
       )}
 
@@ -79,6 +102,7 @@ const AlbumDetails = () => {
               placeholder={"Select..."}
               // labelClassName={"opacity-0"}
               required={true}
+              name={"albumType"}
               label={" "}
               note={"Album Type"}
               options={["Album", "Single", "Compilation", "Remix"]}
@@ -94,6 +118,7 @@ const AlbumDetails = () => {
             type={"file"}
             // labelClassName={"opacity-0"}
             id={"album-art"}
+            name={"albumArt"}
             onChange={(e) => {
               setFile(e.target.files[0]);
               setFormData({ ...formData, albumArt: e.target.files[0] });
@@ -115,6 +140,7 @@ const AlbumDetails = () => {
               placeholder={"Select..."}
               required={true}
               label={"Record Label"}
+              name={"recordLabel"}
               note={
                 "If you don't have any you can use our name or you can create your own"
               }
@@ -179,6 +205,7 @@ const AlbumDetails = () => {
           onChange={(e) =>
             setFormData({ ...formData, publisher: e.target.value })
           }
+          name={"publisher"}
           options={[
             "ForeVision digital",
             "ForeVision digital",
@@ -193,7 +220,8 @@ const AlbumDetails = () => {
           setScreen("audio");
           // console.log((formData));
         }}
-        disabled={Object.values(formData).length < 7}
+        // disabled={Object.values(formData).length < 7}
+        type={"submit"}
       >
         Save and Next
       </Button>

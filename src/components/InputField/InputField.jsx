@@ -41,6 +41,7 @@ const InputField = ({
   const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
+  // console.log(location.pathname);
 
   // console.log(itemChecked);
 
@@ -72,15 +73,21 @@ const InputField = ({
               <label htmlFor={id} className="ml-0 text-grey">
                 {label}
               </label>
-              <span className="text-black-secondary">
-                {!required ? (
-                  "Optional"
-                ) : (
-                  <span className="text-interactive-light-destructive-focus text-button !font-light">
-                    Required
-                  </span>
-                )}
-              </span>
+              {!(
+                location.pathname === "/login" ||
+                location.pathname === "/signup" ||
+                location.pathname === "/signup-details"
+              ) && (
+                <span className="text-black-secondary">
+                  {!required ? (
+                    <span className="text-button !font-light">Optional</span>
+                  ) : (
+                    <span className="text-interactive-light-destructive-focus text-button !font-light">
+                      Required
+                    </span>
+                  )}
+                </span>
+              )}
             </div>
           )}
           {type !== "file" || type !== "checkbox" ? (
