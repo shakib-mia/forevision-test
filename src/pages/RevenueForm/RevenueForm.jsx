@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 function RevenueForm() {
   const navigate = useNavigate();
-  const [gst, setGst] = useState(false);
+  const [gst, setGst] = useState(true);
   const [ruIndian, setRuIndian] = useState(false);
   const [aadharCard, setAadharCard] = useState("");
   const [aadharUrl, setAadharUrl] = useState("");
@@ -287,6 +287,7 @@ function RevenueForm() {
               <label className="mr-2">
                 <input
                   className="mr-2"
+                  checked
                   type="radio"
                   onClick={() => {
                     setGst(true);
