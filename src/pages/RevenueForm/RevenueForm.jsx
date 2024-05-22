@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 function RevenueForm() {
   const navigate = useNavigate();
-  const [gst, setGst] = useState(true);
+  const [gst, setGst] = useState(false);
   const [ruIndian, setRuIndian] = useState(false);
   const [aadharCard, setAadharCard] = useState("");
   const [aadharUrl, setAadharUrl] = useState("");
@@ -34,6 +34,7 @@ function RevenueForm() {
   const [accountType, setAccountType] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [confirmAccountNumber, setConfirmAccountNumber] = useState("");
+  const [paypal, isPaypal] = useState(false);
 
   // console.log(data);
 
@@ -127,18 +128,18 @@ function RevenueForm() {
     const igstAmount = form.igstAmount?.value;
     const totalAmount = form.totalAmount.value;
     // const totalAmountWord = form.totalAmountWord.value;
-    const bankName = form.bankName.value;
-    const branch = form.branch.value;
-    const accountType = form.accountType.value;
-    const ifscCode = form.ifscCode.value;
-    const beneficiaryName = form.beneficiaryName.value;
-    const accountNumber = form.accountNumber.value;
-    const confirmAccountNumber = form.confirmAccountNumber.value;
-    const AadharCard = form.aadharCard.files[0];
-    const PanCardFile = form.panCard.files[0];
-    const GstFile = gst && form.gst.files[0];
-    const cancelledChequeFile = form.cancelledCheque.files[0];
-    const signatureFile = form.signature.files[0];
+    const bankName = form.bankName?.value;
+    const branch = form.branch?.value;
+    const accountType = form.accountType?.value;
+    const ifscCode = form.ifscCode?.value;
+    const beneficiaryName = form.beneficiaryName?.value;
+    const accountNumber = form.accountNumber?.value;
+    const confirmAccountNumber = form.confirmAccountNumber?.value;
+    const AadharCard = form.aadharCard?.files[0];
+    const PanCardFile = form.panCard?.files[0];
+    const GstFile = gst && form.gst?.files[0];
+    const cancelledChequeFile = form.cancelledCheque?.files[0];
+    const signatureFile = form.signature?.files[0];
     // console.log(taxableValue);
 
     const aadharCardUrl = await imageUploading(
@@ -203,6 +204,7 @@ function RevenueForm() {
       gstUrl: gst ? gstCertUrl : "",
       cancelledChequeUrl,
       signatureUrl,
+      paypalEmailAddress: e.target.paypalEmail?.value,
     };
 
     setFormBody(body);
@@ -282,56 +284,87 @@ function RevenueForm() {
               <h1 className="text-heading-4-bold pb-1">Revenue Withdraw</h1>
               <h1>Please fill the form out to initiate the request</h1>
             </div>
-            <div className=" ">
-              <h1>Are you registered under the CGST 2017 ?</h1>
-              <label className="mr-2">
-                <input
-                  className="mr-2"
-                  checked
-                  type="radio"
-                  onClick={() => {
-                    setGst(true);
-                    setRuIndian(true);
-                  }}
-                  required
-                  name="cgst"
-                />
-                Yes
-              </label>
-              <label className="mr-2">
-                <input
-                  className="mr-2"
-                  type="radio"
-                  onClick={() => setGst(false)}
-                  required
-                  name="cgst"
-                />
-                No
-              </label>
+            <div className="flex flex-col gap-1">
+              <section>
+                <h1>Are you registered under the CGST 2017 ?</h1>
+                <label className="mr-2">
+                  <input
+                    className="mr-2"
+                    // checked
+                    type="radio"
+                    onClick={() => {
+                      setGst(true);
+                      setRuIndian(true);
+                    }}
+                    required
+                    name="cgst"
+                  />
+                  Yes
+                </label>
+                <label className="mr-2">
+                  <input
+                    className="mr-2"
+                    type="radio"
+                    onClick={() => setGst(false)}
+                    required
+                    name="cgst"
+                  />
+                  No
+                </label>
+              </section>
+              <section>
+                <h1>Are you a resident of India?</h1>
+                <label className="mr-2">
+                  <input
+                    className="mr-2"
+                    type="radio"
+                    onClick={() => setRuIndian(true)}
+                    required={!gst}
+                    // checked={gst || ruIndian}
+                    name="indian"
+                  />
+                  Yes
+                </label>
+                <label>
+                  <input
+                    className="mr-2"
+                    type="radio"
+                    onClick={() => setRuIndian(false)}
+                    required={!gst}
+                    disabled={gst}
+                    name="indian"
+                  />
+                  No
+                </label>
+              </section>
 
-              <h1>Are you a resident of India?</h1>
-              <label className="mr-2">
-                <input
-                  className="mr-2"
-                  type="radio"
-                  onClick={() => setRuIndian(true)}
-                  required={!gst}
-                  checked={gst || ruIndian}
-                  name="indian"
-                />
-                Yes
-              </label>
-              <label>
-                <input
-                  className="mr-2"
-                  type="radio"
-                  onClick={() => setRuIndian(false)}
-                  required={!gst}
-                  disabled={gst}
-                  name="indian"
-                />
-                No
-              </label>
+              {!ruIndian && (
+                <section>
+                  <h1>I want to receive my payment through:</h1>
+                  <label className="mr-2">
+                    <input
+                      className="mr-2"
+                      type="radio"
+                      onClick={() => isPaypal(true)}
+                      required={!gst}
+                      // checked={gst || ruIndian}
+                      name="paypal"
+                    />
+                    PayPal
+                  </label>
+                  <label>
+                    <input
+                      className="mr-2"
+                      type="radio"
+                      onClick={() => isPaypal(false)}
+                      required={!gst}
+                      // disabled={gst}
+                      name="paypal"
+                    />
+                    Bank Transaction
+                  </label>
+                </section>
+              )}
             </div>
           </div>
 
@@ -343,7 +376,7 @@ function RevenueForm() {
                 label={"Vendor Name"}
                 id={"vandorName"}
                 type={"text"}
-                required={gst}
+                required={true}
                 containerClassName={"w-full md:w-2/4"}
               />
               <InputField
@@ -351,7 +384,7 @@ function RevenueForm() {
                 label={"Invoice Number"}
                 id={"invoiceNumber"}
                 type={"text"}
-                required={gst}
+                required={true}
                 containerClassName={"w-full md:w-1/4"}
               />
               <InputField
@@ -359,7 +392,7 @@ function RevenueForm() {
                 label={"Invoice Date"}
                 id={"invoiceDate"}
                 type={"date"}
-                // required={gst}
+                // required={true}
                 value={
                   new Date().getFullYear() +
                   "-" +
@@ -376,7 +409,7 @@ function RevenueForm() {
                 name={"address"}
                 label={"Address"}
                 id={"address"}
-                required={gst}
+                required={true}
                 type={"address"}
                 containerClassName={"w-full md:w-2/4"}
               />
@@ -385,7 +418,7 @@ function RevenueForm() {
                 label={"Street Name"}
                 id={"streetName"}
                 type={"address"}
-                required={gst}
+                required={true}
                 containerClassName={"w-full md:w-1/4"}
               />
               <InputField
@@ -403,14 +436,14 @@ function RevenueForm() {
                 label={"Pin Code"}
                 id={"pinCode"}
                 type={"number"}
-                required={gst}
+                required={true}
                 containerClassName={"w-full md:w-1/4"}
               />
               <InputField
                 name={"city"}
                 label={"City"}
                 id={"city"}
-                required={gst}
+                required={true}
                 type={"address"}
                 containerClassName={"w-full md:w-2/4"}
               />
@@ -468,7 +501,7 @@ function RevenueForm() {
                   id={"state"}
                   name={"state"}
                   label={"State" + (ruIndian ? "*" : "")}
-                  required={ruIndian}
+                  required={true}
                   containerClassName={"w-full md:w-1/4"}
                 />
               )}
@@ -481,7 +514,7 @@ function RevenueForm() {
                   id={"gctinNumber"}
                   type={"text"}
                   containerClassName={"w-full md:w-2/4"}
-                  required={gst}
+                  required={true}
                 />
                 <InputField
                   name={"placeOfSupply"}
@@ -492,7 +525,7 @@ function RevenueForm() {
                   value={state}
                   onChange={(e) => setPlaceOfSupply(e.target.value)}
                   containerClassName={gst ? "w-full md:w-2/4" : "w-full"}
-                  required={gst}
+                  required={true}
                 />
               </div>
             )}
@@ -503,8 +536,21 @@ function RevenueForm() {
                 id={"cinNumber"}
                 type={"text"}
                 // required={gst}
-                containerClassName={`${gst ? "w-full md:w-2/4" : "w-full"}`}
+                containerClassName={`${
+                  gst ? "w-full md:w-2/4" : paypal ? "w-1/2" : "w-full"
+                }`}
               />
+              {!gst && !ruIndian && paypal && (
+                <InputField
+                  type={"text"}
+                  label={"PayPal Email Address"}
+                  placeholder={"Enter PayPal Email Here"}
+                  containerClassName={"w-1/2"}
+                  required={paypal}
+                  // onChange={e => setFormBody({...formd})}
+                  name={"paypalEmail"}
+                />
+              )}
               {gst && (
                 <InputField
                   name={"serviceAccount"}
@@ -512,7 +558,7 @@ function RevenueForm() {
                   id={"serviceAccount"}
                   type={"number"}
                   containerClassName={"w-full md:w-2/4"}
-                  required={gst}
+                  required={true}
                 />
               )}
             </div>
@@ -558,8 +604,9 @@ function RevenueForm() {
                 label={"PAN Number"}
                 id={"panNumber"}
                 type={"text"}
-                required={gst}
+                required={true}
                 containerClassName={"w-full"}
+                note={"If you don't have a PAN card, type N/A"}
               />
               {/* <InputField
                 name={"taxableValue"}
@@ -567,7 +614,7 @@ function RevenueForm() {
                 id={"totalAmount"}
                 type={"text"}
                 containerClassName={"w-full"}
-                required={gst}
+                required={true}
               /> */}
 
               <InputField
@@ -575,7 +622,7 @@ function RevenueForm() {
                 label={gst ? "Taxable Value" : "Total Value"}
                 id={"taxableValue"}
                 type={"number"}
-                required={gst}
+                required={false}
                 value={(
                   userData.lifetimeRevenue -
                     (userData.lifetimeDisbursed || 0) || 0
@@ -588,84 +635,88 @@ function RevenueForm() {
               name={"totalAmountWord"}
               label={"Total Amount (in Word)"}
               id={"totalAmountWord"}
-              required={gst}
+              required={true}
               type={"text"}
               containerClassName={"w-2/5"}
             /> */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <InputField
-                name={"bankName"}
-                label={"Name of the Bank"}
-                id={"bankName"}
-                required={gst}
-                type={"text"}
-                // containerClassName={"w-full md:w-1/2"}
-              />
-              <InputField
-                name={"branch"}
-                label={"Branch"}
-                id={"branch"}
-                type={"text"}
-                required={gst}
-                // containerClassName={"w-1/2"}
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              <SelectOptions
-                name={"accountType"}
-                label={"Account Type"}
-                required={gst}
-                id={"accountType"}
-                type={"text"}
-                options={["Savings", "Current"]}
-                onChange={(e) => setAccountType(e.target.value)}
-                // containerClassName={"w-1/3"}
-              />
-              <InputField
-                name={"ifscCode"}
-                label={"IFSC"}
-                id={"ifscCode"}
-                type={"text"}
-                required={gst}
-                // containerClassName={"w-1/3"}
-              />
-              <InputField
-                name={"beneficiaryName"}
-                label={"Beneficiary Name"}
-                id={"beneficiaryName"}
-                type={"text"}
-                required={gst}
-                // containerClassName={"w-1/3"}
-              />
-            </div>
+            {!paypal && (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <InputField
+                    name={"bankName"}
+                    label={"Name of the Bank"}
+                    id={"bankName"}
+                    required={true}
+                    type={"text"}
+                    // containerClassName={"w-full md:w-1/2"}
+                  />
+                  <InputField
+                    name={"branch"}
+                    label={"Branch"}
+                    id={"branch"}
+                    type={"text"}
+                    required={true}
+                    // containerClassName={"w-1/2"}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <SelectOptions
+                    name={"accountType"}
+                    label={"Account Type"}
+                    required={true}
+                    id={"accountType"}
+                    type={"text"}
+                    options={["Savings", "Current"]}
+                    onChange={(e) => setAccountType(e.target.value)}
+                    // containerClassName={"w-1/3"}
+                  />
+                  <InputField
+                    name={"ifscCode"}
+                    label={"IFSC"}
+                    id={"ifscCode"}
+                    type={"text"}
+                    required={true}
+                    // containerClassName={"w-1/3"}
+                  />
+                  <InputField
+                    name={"beneficiaryName"}
+                    label={"Beneficiary Name"}
+                    id={"beneficiaryName"}
+                    type={"text"}
+                    required={true}
+                    // containerClassName={"w-1/3"}
+                  />
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <InputField
-                name={"accountNumber"}
-                label={"Account Number"}
-                id={"accountNumber"}
-                type={"number"}
-                required={gst}
-                onChange={(e) => setAccountNumber(e.target.value)}
-                // containerClassName={"w-full"}
-              />
-              <aside>
-                <InputField
-                  name={"confirmAccountNumber"}
-                  label={"Confirm Account Number"}
-                  id={"confirmAccountNumber"}
-                  type={"number"}
-                  onChange={(e) => setConfirmAccountNumber(e.target.value)}
-                  required={gst}
-                  // containerClassName={"w-full"}
-                />
-                {accountNumber !== confirmAccountNumber && (
-                  <p className="text-button text-interactive-dark-destructive-active mt-1 pl-1">
-                    Account Number Didn't match
-                  </p>
-                )}
-              </aside>
-            </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <InputField
+                    name={"accountNumber"}
+                    label={"Account Number"}
+                    id={"accountNumber"}
+                    type={"number"}
+                    required={true}
+                    onChange={(e) => setAccountNumber(e.target.value)}
+                    // containerClassName={"w-full"}
+                  />
+                  <aside>
+                    <InputField
+                      name={"confirmAccountNumber"}
+                      label={"Confirm Account Number"}
+                      id={"confirmAccountNumber"}
+                      type={"number"}
+                      onChange={(e) => setConfirmAccountNumber(e.target.value)}
+                      required={true}
+                      // containerClassName={"w-full"}
+                    />
+                    {accountNumber !== confirmAccountNumber && (
+                      <p className="text-button text-interactive-dark-destructive-active mt-1 pl-1">
+                        Account Number Didn't match
+                      </p>
+                    )}
+                  </aside>
+                </div>
+              </>
+            )}
             <div className="flex flex-wrap justify-center w-full mx-auto">
               <div className="w-1/2 md:w-1/4 p-1 flex flex-col justify-between">
                 <label
@@ -707,9 +758,13 @@ function RevenueForm() {
                   htmlFor="panCard"
                 >
                   PAN Card
-                  <span className="text-interactive-light-destructive-focus text-button !font-light">
-                    Required
-                  </span>
+                  {ruIndian ? (
+                    <span className="text-interactive-light-destructive-focus text-button !font-light">
+                      Required
+                    </span>
+                  ) : (
+                    <span className="text-button !font-light">Optional</span>
+                  )}
                 </label>
                 <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
                   <label htmlFor="panCard">
@@ -729,51 +784,53 @@ function RevenueForm() {
                       name="panCard"
                       id="panCard"
                       type="file"
-                      required={gst}
+                      required={ruIndian}
                       onChange={panCardhandle}
                     />{" "}
                   </label>
                 </div>
               </div>
-              <div className="w-1/2 md:w-1/4 flex flex-col justify-between p-1">
-                <label
-                  className="text-grey mb-1 flex justify-between"
-                  htmlFor="cancelledCheque"
-                >
-                  <p>Cancelled Cheque</p>
-                  <span className="text-interactive-light-destructive-focus text-button !font-light">
-                    Required
-                  </span>
-                  {/* {ruIndian && (
+              {paypal || (
+                <div className="w-1/2 md:w-1/4 flex flex-col justify-between p-1">
+                  <label
+                    className="text-grey mb-1 flex justify-between"
+                    htmlFor="cancelledCheque"
+                  >
+                    <p>Cancelled Cheque</p>
+                    <span className="text-interactive-light-destructive-focus text-button !font-light">
+                      Required
+                    </span>
+                    {/* {ruIndian && (
                     <p className="text-interactive-light-destructive pt-1 text-[12px]">
                       Please fill on the field with Cancelled Cheque
                     </p>
                   )} */}
-                </label>
-                <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
-                  <label htmlFor="cancelledCheque">
-                    {cancelledCheque.length ? (
-                      <img
-                        className="w-full object-cover mx-auto rounded-xl"
-                        src={cancelledCheque}
-                        alt=""
-                      />
-                    ) : (
-                      <p className="inline-block text-center text-heading-5-bold cursor-pointer">
-                        +
-                      </p>
-                    )}
-                    <input
-                      className="hidden"
-                      name="cancelledCheque"
-                      id="cancelledCheque"
-                      type="file"
-                      required
-                      onChange={cancelledChequehandle}
-                    />{" "}
                   </label>
+                  <div className="w-full aspect-square border-dashed border-4 border-grey rounded-[5px] cursor-pointer flex items-center justify-center overflow-hidden">
+                    <label htmlFor="cancelledCheque">
+                      {cancelledCheque.length ? (
+                        <img
+                          className="w-full object-cover mx-auto rounded-xl"
+                          src={cancelledCheque}
+                          alt=""
+                        />
+                      ) : (
+                        <p className="inline-block text-center text-heading-5-bold cursor-pointer">
+                          +
+                        </p>
+                      )}
+                      <input
+                        className="hidden"
+                        name="cancelledCheque"
+                        id="cancelledCheque"
+                        type="file"
+                        required
+                        onChange={cancelledChequehandle}
+                      />{" "}
+                    </label>
+                  </div>
                 </div>
-              </div>
+              )}
               {/* <div className="flex justify-center"> */}
               {gst && (
                 <div className="w-1/2 md:w-1/4 aspect-square flex flex-col justify-between p-1">
@@ -811,7 +868,7 @@ function RevenueForm() {
                         name="gst"
                         id="gst"
                         type="file"
-                        required={gst}
+                        required={true}
                         onChange={gsthandle}
                       />{" "}
                     </label>
@@ -866,13 +923,7 @@ function RevenueForm() {
           {/* </fieldset> */}
 
           <div className="py-4 text-center">
-            <Button
-              type={"submit"}
-              disabled={
-                accountNumber.length === 0 ||
-                accountNumber !== confirmAccountNumber
-              }
-            >
+            <Button type={"submit"} disabled={false}>
               Save and Next
             </Button>
           </div>
@@ -888,7 +939,12 @@ function RevenueForm() {
             >
               &times;
             </button>
-            <Invoice gst={gst} formBody={formBody} ref={targetRef} />
+            <Invoice
+              gst={gst}
+              formBody={formBody}
+              ruIndian={ruIndian}
+              ref={targetRef}
+            />
 
             <div className="flex justify-center">
               <Button

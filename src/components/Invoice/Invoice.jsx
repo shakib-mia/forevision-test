@@ -1,8 +1,9 @@
 import React, { forwardRef, useContext } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
-const Invoice = forwardRef(({ formBody, gst }, ref) => {
+const Invoice = forwardRef(({ formBody, gst, ruIndian }, ref) => {
   const { userData } = useContext(ProfileContext);
+  // console.log(formBody);
   // console.log(parseFloat(formBody.taxableValue) * 0.18);
   console.log(formBody);
   const months = [
@@ -484,29 +485,42 @@ const Invoice = forwardRef(({ formBody, gst }, ref) => {
 
           <div className="flex flex-wrap divide-x divide-surface-white-line border-b border-surface-white-line">
             <div className="px-3 pt-2 w-7/12">
-              <p>Bank Details :</p>
-              <p>
-                Name of the Bank -{" "}
-                <span className="uppercase">{formBody.bankName}</span>
-              </p>
-              <p>
-                Branch - <span className="uppercase">{formBody.branch}</span>
-              </p>
-              <p>
-                Beneficiary Name -{" "}
-                <span className="uppercase">{formBody.beneficiaryName}</span>
-              </p>
-              <p>
-                Account Type -{" "}
-                <span className="uppercase">{formBody.accountType}</span>
-              </p>
-              <p>
-                Account Number -{" "}
-                <span className="uppercase">{formBody.accountNumber}</span>
-              </p>
-              <p>
-                IFSC - <span className="uppercase">{formBody.ifscCode}</span>
-              </p>
+              {gst && ruIndian ? (
+                <>
+                  <p>Bank Details :</p>
+                  <p>
+                    Name of the Bank -{" "}
+                    <span className="uppercase">{formBody.bankName}</span>
+                  </p>
+                  <p>
+                    Branch -{" "}
+                    <span className="uppercase">{formBody.branch}</span>
+                  </p>
+                  <p>
+                    Beneficiary Name -{" "}
+                    <span className="uppercase">
+                      {formBody.beneficiaryName}
+                    </span>
+                  </p>
+                  <p>
+                    Account Type -{" "}
+                    <span className="uppercase">{formBody.accountType}</span>
+                  </p>
+                  <p>
+                    Account Number -{" "}
+                    <span className="uppercase">{formBody.accountNumber}</span>
+                  </p>
+                  <p>
+                    IFSC -{" "}
+                    <span className="uppercase">{formBody.ifscCode}</span>
+                  </p>
+                </>
+              ) : (
+                <div className="flex gap-1">
+                  <p>PayPal Email Address :</p>
+                  <p>{formBody.paypalEmailAddress}</p>
+                </div>
+              )}
             </div>
             <div className="w-5/12 flex flex-col p-1">
               <p className="text-center">
