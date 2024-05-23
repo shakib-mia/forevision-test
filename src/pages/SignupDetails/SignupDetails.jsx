@@ -11,10 +11,14 @@ import { backendUrl } from "../../constants";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
-  const { userData } = useContext(ProfileContext);
+  const { userData, profileData } = useContext(ProfileContext);
   const [selectedCode, setSelectedCode] = useState("91");
   const [screen, setScreen] = useState("name");
   const navigate = useNavigate();
+  const [signupDetailsData, setSignupDetailsData] = useState({
+    user_email: userData.user_email,
+  });
+  // console.log(userData);
 
   const fields = [
     {
@@ -113,15 +117,16 @@ const SignupDetails = () => {
       .map((i, key) => key % 2 === 0 && i.classList.add("pr-2"));
   }, []);
 
-  const [signupDetailsData, setSignupDetailsData] = useState({});
   const signup = (e) => {
     e.preventDefault();
-    // console.log(userData.Id);
+    // console.log(userData);
     const userDetailsData = {
       ...signupDetailsData,
       phone_no: selectedCode + signupDetailsData.phone_no,
-      user_email: e.target.email.value,
+      user_email: userData.user_email,
     };
+
+    console.log(userDetailsData);
     // console.log(e.target.email.value);
 
     // const formData = new FormData();
@@ -256,12 +261,12 @@ const SignupDetails = () => {
               {...props}
               containerId={id}
               key={id}
-              onChange={(e) =>
+              onChange={(e) => {
                 setSignupDetailsData({
                   ...signupDetailsData,
                   [props.name]: e.target.value,
-                })
-              }
+                });
+              }}
               containerClassName={`mt-3 w-full`}
               // fieldClassName="mr-2"
             />
@@ -296,12 +301,14 @@ const SignupDetails = () => {
             {...fields[4]}
             containerId={fields[4].id}
             key={fields[4].id}
-            onChange={(e) =>
+            onChange={(e) => {
               setSignupDetailsData({
                 ...signupDetailsData,
                 [fields[4].name]: e.target.value,
-              })
-            }
+              });
+
+              console.log(signupDetailsData);
+            }}
             containerClassName={`mt-3 w-full`}
             // fieldClassName="mr-2"
           />
@@ -310,12 +317,14 @@ const SignupDetails = () => {
             {...fields[8]}
             containerId={fields[8].id}
             key={fields[8].id}
-            onChange={(e) =>
+            onChange={(e) => {
               setSignupDetailsData({
                 ...signupDetailsData,
                 [fields[8].name]: e.target.value,
-              })
-            }
+              });
+
+              console.log(signupDetailsData);
+            }}
             containerClassName={`mt-3 w-full`}
             selectedCode={selectedCode}
             setSelectedCode={setSelectedCode}
@@ -345,24 +354,27 @@ const SignupDetails = () => {
             {...fields[3]}
             containerId={fields[3].id}
             key={fields[3].id}
-            onChange={(e) =>
+            onChange={(e) => {
               setSignupDetailsData({
                 ...signupDetailsData,
                 [fields[3].name]: e.target.value,
-              })
-            }
+              });
+
+              console.log(signupDetailsData);
+            }}
             containerClassName={`mt-3 w-full`}
           />
           <InputField
             {...fields[5]}
             containerId={fields[5].id}
             key={fields[5].id}
-            onChange={(e) =>
+            onChange={(e) => {
               setSignupDetailsData({
                 ...signupDetailsData,
                 [fields[5].name]: e.target.value,
-              })
-            }
+              });
+              console.log(signupDetailsData);
+            }}
             containerClassName={`mt-3 w-full`}
           />
         </div>
@@ -392,9 +404,13 @@ const SignupDetails = () => {
             {...fields[6]}
             containerId={fields[6].id}
             key={fields[6].id}
-            onChange={(e) =>
-              (signupDetailsData[fields[6].name] = e.target.value)
-            }
+            onChange={(e) => {
+              setSignupDetailsData({
+                ...signupDetailsData,
+                [fields[6].name]: e.target.value,
+              });
+              console.log(signupDetailsData);
+            }}
             containerClassName={`mt-3 w-full`}
             // fieldClassName="mr-2"
           />
@@ -402,9 +418,13 @@ const SignupDetails = () => {
             {...fields[7]}
             containerId={fields[7].id}
             key={fields[7].id}
-            onChange={(e) =>
-              (signupDetailsData[fields[7].name] = e.target.value)
-            }
+            onChange={(e) => {
+              setSignupDetailsData({
+                ...signupDetailsData,
+                [fields[7].name]: e.target.value,
+              });
+              console.log(signupDetailsData);
+            }}
             containerClassName={`mt-3 w-full`}
             // fieldClassName="mr-2"
           />

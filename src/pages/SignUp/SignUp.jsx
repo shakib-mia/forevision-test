@@ -48,19 +48,25 @@ const SignUp = () => {
     e.preventDefault();
 
     const signupData = {
-      email: e.target['user_email'].value,
-      password: e.target['user_password'].value
-    }
+      email: e.target["user_email"].value,
+      password: e.target["user_password"].value,
+    };
 
-    axios.post(backendUrl + "user-signup", signupData).then(({ data }) => {
-      if (data.acknowledged) {
-        setUId(data.insertedId)
-        setUserData({ ...userData, user_email: signupData.email })
-        navigate("/signup-details")
-      }
-    }).catch(err => toast.error(err.response.data, {
-      position: 'bottom-center'
-    }))
+    axios
+      .post(backendUrl + "user-signup", signupData)
+      .then(({ data }) => {
+        if (data.acknowledged) {
+          setUId(data.insertedId);
+          console.log(signupData.email);
+          setUserData({ ...userData, user_email: signupData.email });
+          navigate("/signup-details");
+        }
+      })
+      .catch((err) =>
+        toast.error(err.response.data, {
+          position: "bottom-center",
+        })
+      );
 
     // const formData = new FormData(e.target);
 
