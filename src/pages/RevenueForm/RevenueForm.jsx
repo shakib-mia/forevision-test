@@ -940,6 +940,7 @@ function RevenueForm() {
               &times;
             </button>
             <Invoice
+              paypal={paypal}
               gst={gst}
               formBody={formBody}
               ruIndian={ruIndian}
