@@ -218,10 +218,10 @@ const AlbumDetails = () => {
         containerClassName={"w-fit mx-auto mt-6"}
         onClick={() => {
           setScreen("audio");
-          // console.log((formData));
+          console.log(formData);
         }}
         // disabled={Object.values(formData).length < 7}
-        type={"submit"}
+        // type={"submit"}
       >
         Save and Next
       </Button>

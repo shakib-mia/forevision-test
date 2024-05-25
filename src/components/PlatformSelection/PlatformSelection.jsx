@@ -1,13 +1,15 @@
 import axios from "axios";
-import { backendUrl, config } from "../../constants";
+import { backendUrl } from "../../constants";
 import React, { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import InputField from "../InputField/InputField";
+import Button from "../Button/Button";
 
 const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
   const [platforms, setPlatforms] = useState([]);
   const { token } = useContext(ProfileContext);
   const [selectedAll, setSelectedAll] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     // console.log(config);
@@ -41,7 +43,7 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
 
   // console.log(handle);
   const handleSelectedPlatform = (e) => {
-    if (e.target.checked) {
+    if (checked) {
       let newSelectedPlatforms = []; // Initialize a temporary array
 
       for (const platform of platforms) {
@@ -51,15 +53,17 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
       }
 
       setSelectedPlatforms(newSelectedPlatforms); // Update state once with the complete list
-      console.log(newSelectedPlatforms); // This should now reflect the full list of added items
+      // console.log(newSelectedPlatforms); // This should now reflect the full list of added items
     } else {
       setSelectedPlatforms([]);
     }
   };
 
   useEffect(() => {
-    setSelectedAll(selectedPlatforms.length === newPlatforms.length);
-  }, [selectedPlatforms, selectedPlatforms.length, newPlatforms]);
+    if (checked) {
+      setSelectedAll(selectedPlatforms.length === newPlatforms.length);
+    }
+  }, [selectedPlatforms, selectedPlatforms.length, newPlatforms, checked]);
 
   // console.log(selectedPlatforms.length === newPlatforms.length);
   return (
@@ -99,19 +103,28 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
           <>Loading...</>
         )} */}
 
-      <label className="flex justify-end items-center cursor-pointer">
-        <InputField
+      {/* <input type="checkbox" name="" id="platformCheck" />
+      <label
+        className="flex justify-end items-center cursor-pointer gap-2"
+        htmlFor="platformCheck"
+      > */}
+      {/* <InputField
           itemChecked={selectedPlatforms.length === newPlatforms.length}
           type={"checkbox"}
-          onChange={handleSelectedPlatform}
-        />{" "}
-        {/* <input
-          type="checkbox"
-          checked={selectedPlatforms.length === 13}
+          id={"platformCheck"}
+          checked={checked}
           onChange={handleSelectedPlatform}
         /> */}
-        Select All
-      </label>
+      <Button
+        containerClassName={"w-fit ml-auto"}
+        onClick={() => {
+          setChecked(!checked);
+          handleSelectedPlatform();
+        }}
+      >
+        {checked ? "Select" : "Selected"} All
+      </Button>
+      {/* </label> */}
 
       {platforms.map((item, key) => (
         <div className={key > 0 && "mt-6"}>
@@ -153,7 +166,7 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
                   }`}
                   alt=""
                 />
-                <h6 className="text-heading-6-bold text-grey-dark">
+                <h6 className="text-heading-6-bold text-grey-dark capitalize">
                   {plat.cat_name}
                 </h6>
               </li>

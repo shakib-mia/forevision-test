@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SongUploadFormContainer from "../../components/SongUploadFormContainer/SongUploadFormContainer";
 
 const SongUploadNew = () => {
-  const [screen, setScreen] = useState("albumDetails");
+  const [screen, setScreen] = useState("distribution");
   return (
     <div className="ml-7 pt-6">
       <h4 className="text-heading-4-bold text-grey">Plan : </h4>

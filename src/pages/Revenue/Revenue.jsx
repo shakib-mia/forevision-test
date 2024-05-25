@@ -13,6 +13,9 @@ import notFound from "../../assets/images/not-found.svg";
 import { backendUrl } from "../../constants";
 import RevenueDetails from "../../components/RevenueDetails/RevenueDetails";
 import { useNavigate } from "react-router-dom";
+import OwlCarousel from "react-owl-carousel";
+import Analytics from "../../components/Analytics/Analytics";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const Revenue = () => {
   const [songs, setSongs] = useState([]);
@@ -99,6 +102,7 @@ const Revenue = () => {
       isrc,
       ...songs.find((item) => item.isrc === isrc),
       total_revenue_against_isrc: grand_total[isrc],
+      total_views_against_isrc: total_lifetime_views[isrc],
     }));
 
     const aggregatedRevenueTotal = Object.keys(final_revenue).map((isrc) => ({
@@ -121,6 +125,8 @@ const Revenue = () => {
     final_after_tds,
     total_lifetime_views,
   } = calculateAggregatedTotals(songs);
+
+  // console.log(total_lifetime_views);
 
   useEffect(() => {
     if (isrcs.length > 0) {
@@ -330,6 +336,7 @@ const Revenue = () => {
   //     100
   // );
 
+  // console.log(aggregatedMusicData);
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
@@ -468,48 +475,76 @@ const Revenue = () => {
           )} */}
 
           {/* PC VIEW */}
-          <div className="hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-            <ul className="grid grid-cols-9 gap-3 sticky top-0 mb-2">
-              {labels.map((item, key) => (
-                <li
-                  key={"label-" + key}
-                  className="capitalize text-center font-semibold"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-
-            {aggregatedMusicData.map((song) => (
-              <ul className="grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
-                {/* list item */}
-                {options.map((item) => {
-                  return (
-                    <li className="text-center">
-                      {typeof song[item] === "number" &&
-                      song[item].toString().split(".").length > 1 ? (
-                        item === "after tds revenue" ? (
-                          final_after_tds[song.isrc].toFixed(8)
-                        ) : (
-                          song[item].toFixed(8)
-                        )
-                      ) : item === "total" ? (
-                        total_lifetime_views[song.isrc]
-                      ) : item === "platformName" ? (
-                        // ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
-                        //   position: "bottom-center"
-                        // })}>See Details</button>
-                        <button onClick={() => setDetails(song.isrc)}>
-                          See Details
-                        </button>
-                      ) : (
-                        song[item]
-                      )}
+          <div className="relative">
+            <Button
+              containerClassName={
+                "absolute top-0 bottom-0 my-auto z-[9999] h-fit !aspect-square"
+              }
+              className={"aspect-square flex justify-center items-center"}
+              onClick={() => {
+                document.getElementsByClassName("owl-prev")[0].click();
+              }}
+            >
+              <FaChevronLeft className="bg-transparent stroke-transparent text-heading-4" />
+            </Button>
+            <Button
+              containerClassName={
+                "absolute right-0 top-0 bottom-0 my-auto z-[9999] h-fit !aspect-square"
+              }
+              className={"aspect-square flex justify-center items-center"}
+              onClick={() =>
+                document.getElementsByClassName("owl-next")[0].click()
+              }
+            >
+              <FaChevronRight className="bg-transparent stroke-transparent text-heading-4" />
+            </Button>
+            <OwlCarousel className="w-full" items={1} nav id="revenue-slider">
+              <div className="hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
+                <ul className="grid grid-cols-9 gap-3 sticky top-0 mb-2">
+                  {labels.map((item, key) => (
+                    <li
+                      key={"label-" + key}
+                      className="capitalize text-center font-semibold"
+                    >
+                      {item}
                     </li>
-                  );
-                })}
-              </ul>
-            ))}
+                  ))}
+                </ul>
+
+                {aggregatedMusicData.map((song) => (
+                  <ul className="grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                    {/* list item */}
+                    {options.map((item) => {
+                      return (
+                        <li className="text-center">
+                          {typeof song[item] === "number" &&
+                          song[item].toString().split(".").length > 1 ? (
+                            item === "after tds revenue" ? (
+                              final_after_tds[song.isrc].toFixed(8)
+                            ) : (
+                              song[item].toFixed(8)
+                            )
+                          ) : item === "total" ? (
+                            total_lifetime_views[song.isrc]
+                          ) : item === "platformName" ? (
+                            // ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
+                            //   position: "bottom-center"
+                            // })}>See Details</button>
+                            <button onClick={() => setDetails(song.isrc)}>
+                              See Details
+                            </button>
+                          ) : (
+                            song[item]
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ))}
+              </div>
+
+              <Analytics songData={aggregatedMusicData} />
+            </OwlCarousel>
           </div>
           {/* details item modal */}
           {details.length ? (

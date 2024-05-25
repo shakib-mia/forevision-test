@@ -2,6 +2,8 @@ import React from "react";
 import RevenueDetailsItem from "../RevenueDetailsItem/RevenueDetailsItem";
 
 const RevenueDetails = ({ setDetails, songs, details }) => {
+  console.log(songs);
+
   const items = songs
     .filter((song) => song.isrc === details)
     .sort((item1, item2) =>

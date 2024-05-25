@@ -68,8 +68,6 @@ function App() {
     // timeStamp,
   };
 
-  // console.log(userData);
-
   useEffect(() => {
     const config = {
       headers: {
@@ -78,7 +76,7 @@ function App() {
     };
 
     if (token) {
-      axios.get(`${backendUrl}getUserData`, config).then(({ data }) => {
+      axios.get(backendUrl + `getUserData`, config).then(({ data }) => {
         if (data?.data !== null) {
           // console.log(data.data);
           setUserData(data.data);
