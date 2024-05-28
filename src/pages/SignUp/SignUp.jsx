@@ -57,7 +57,7 @@ const SignUp = () => {
       .then(({ data }) => {
         if (data.acknowledged) {
           setUId(data.insertedId);
-          console.log(signupData.email);
+          // console.log(signupData.email);
           setUserData({ ...userData, user_email: signupData.email });
           navigate("/signup-details");
         }

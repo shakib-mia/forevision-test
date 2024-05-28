@@ -11,14 +11,14 @@ import { backendUrl } from "../../constants";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
-  const { userData, profileData } = useContext(ProfileContext);
+  const { userData, profileData, token } = useContext(ProfileContext);
   const [selectedCode, setSelectedCode] = useState("91");
   const [screen, setScreen] = useState("name");
   const navigate = useNavigate();
   const [signupDetailsData, setSignupDetailsData] = useState({
     user_email: userData.user_email,
   });
-  // console.log(userData);
+  // console.log(token);
 
   const fields = [
     {
@@ -149,8 +149,15 @@ const SignupDetails = () => {
     // console.log(userDetailsData);
     // // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
     // userDetailsData.user_email = e.target.email.value;
+
+    const config = {
+      headers: {
+        token,
+      },
+    };
+
     axios
-      .post(backendUrl + "post-user-details", userDetailsData)
+      .post(backendUrl + "post-user-details", userDetailsData, config)
       .then((res) => {
         if (res.data.acknowledged) {
           // console.log(res.data);
