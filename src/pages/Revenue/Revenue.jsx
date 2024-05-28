@@ -330,13 +330,26 @@ const Revenue = () => {
   // Convert the groupedData object back to an array if needed
   let result = Object.values(groupedData);
 
-  // console.log(songs.filter(item => item.isrc === 'INF232100090'));
-  // console.log(
-  //   (userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)).toFixed(2) >
-  //     100
-  // );
+  const revenueByPlatform = songs.reduce((acc, song) => {
+    if (!acc[song.platformName]) {
+      acc[song.platformName] = 0;
+    }
+    acc[song.platformName] += song["final revenue"];
+    return acc;
+  }, {});
 
-  // console.log(aggregatedMusicData);
+  const viewsByPlatform = songs.reduce((acc, song) => {
+    if (!acc[song.platformName]) {
+      acc[song.platformName] = 0;
+    }
+    acc[song.platformName] += song.total;
+    return acc;
+  }, {});
+
+  const platformData = { revenueByPlatform, viewsByPlatform };
+
+  // console.log(viewsByPlatform);
+
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
@@ -475,30 +488,22 @@ const Revenue = () => {
           )} */}
 
           {/* PC VIEW */}
-          <div className="relative">
-            <Button
-              containerClassName={
-                "absolute top-0 bottom-0 my-auto z-[9999] h-fit !aspect-square"
-              }
-              className={"aspect-square flex justify-center items-center"}
-              onClick={() => {
-                document.getElementsByClassName("owl-prev")[0].click();
-              }}
-            >
-              <FaChevronLeft className="bg-transparent stroke-transparent text-heading-4" />
-            </Button>
-            <Button
-              containerClassName={
-                "absolute right-0 top-0 bottom-0 my-auto z-[9999] h-fit !aspect-square"
-              }
-              className={"aspect-square flex justify-center items-center"}
-              onClick={() =>
-                document.getElementsByClassName("owl-next")[0].click()
-              }
-            >
-              <FaChevronRight className="bg-transparent stroke-transparent text-heading-4" />
-            </Button>
-            <OwlCarousel className="w-full" items={1} nav id="revenue-slider">
+          {filtered.length > 0 && (
+            <div className="relative">
+              {/* </Button> */}
+              <FaChevronLeft
+                className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[9999] text-white"
+                onClick={() =>
+                  document.getElementsByClassName("owl-prev")[0].click()
+                }
+              />
+              <FaChevronRight
+                className="bg-transparent stroke-transparent text-heading-4 fixed right-5 top-[75vh] cursor-pointer bottom-0 z-[9999] text-white"
+                onClick={() =>
+                  document.getElementsByClassName("owl-next")[0].click()
+                }
+              />
+              {/* <OwlCarousel className="w-full" items={1} nav id="revenue-slider"> */}
               <div className="hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
                 <ul className="grid grid-cols-9 gap-3 sticky top-0 mb-2">
                   {labels.map((item, key) => (
@@ -543,9 +548,13 @@ const Revenue = () => {
                 ))}
               </div>
 
-              <Analytics songData={aggregatedMusicData} />
-            </OwlCarousel>
-          </div>
+              {/* <Analytics
+                  platformData={platformData}
+                  songData={aggregatedMusicData}
+                /> */}
+              {/* </OwlCarousel> */}
+            </div>
+          )}
           {/* details item modal */}
           {details.length ? (
             <RevenueDetails
@@ -669,8 +678,8 @@ const Revenue = () => {
           )}
 
           {filtered.length === 0 && (
-            <div className="text-grey text-center 2xl:hidden">
-              <img src={notFound} className="w-full mx-auto" alt="" />
+            <div className="text-grey text-center 2xl:w-1/2 mx-auto 2xl:text-white">
+              <img src={notFound} className="w-full 2xl:w-1/2 mx-auto" alt="" />
               <h6 className="text-heading-6-bold mb-2">
                 Ooopps.. There is Nothing to show yet !! Upload your content and
                 let it shine ! If you’ve uploaded already , let it perform in
