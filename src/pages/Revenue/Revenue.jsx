@@ -491,7 +491,7 @@ const Revenue = () => {
           {filtered.length > 0 && (
             <div className="relative">
               {/* </Button> */}
-              <FaChevronLeft
+              {/* <FaChevronLeft
                 className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[9999] text-white"
                 onClick={() =>
                   document.getElementsByClassName("owl-prev")[0].click()
@@ -502,7 +502,7 @@ const Revenue = () => {
                 onClick={() =>
                   document.getElementsByClassName("owl-next")[0].click()
                 }
-              />
+              /> */}
               {/* <OwlCarousel className="w-full" items={1} nav id="revenue-slider"> */}
               <div className="hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
                 <ul className="grid grid-cols-9 gap-3 sticky top-0 mb-2">
