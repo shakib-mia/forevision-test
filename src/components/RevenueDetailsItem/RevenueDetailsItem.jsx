@@ -42,20 +42,20 @@ const RevenueDetailsItem = ({ result, details, songs }) => {
 
   // console.log(result);
 
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  // const months = [
+  //   "January",
+  //   "February",
+  //   "March",
+  //   "April",
+  //   "May",
+  //   "June",
+  //   "July",
+  //   "August",
+  //   "September",
+  //   "October",
+  //   "November",
+  //   "December",
+  // ];
 
   return (
     <table className="w-full">
@@ -64,7 +64,7 @@ const RevenueDetailsItem = ({ result, details, songs }) => {
       ))}
 
       {/* <div className="grid grid-cols-2 gap-2"> */}
-      <ResponsiveContainer
+      {/* <ResponsiveContainer
         height={250}
         width={"100%"}
         className={"hidden lg:block"}
@@ -149,7 +149,7 @@ const RevenueDetailsItem = ({ result, details, songs }) => {
             }
           />
         </AreaChart>
-      </ResponsiveContainer>
+      </ResponsiveContainer> */}
       {/* </div> */}
     </table>
   );

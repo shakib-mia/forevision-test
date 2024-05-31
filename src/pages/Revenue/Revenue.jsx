@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import OwlCarousel from "react-owl-carousel";
 import Analytics from "../../components/Analytics/Analytics";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { VscLoading } from "react-icons/vsc";
 
 const Revenue = () => {
   const [songs, setSongs] = useState([]);
@@ -39,7 +40,7 @@ const Revenue = () => {
 
   const { userData, token, setToken, foundRequested } =
     useContext(ProfileContext);
-  // console.log(foundRequested);
+  // console.log(userData);
   useEffect(() => {
     if (userData?.first_name || userData?.partner_name) {
       const config = {
@@ -130,6 +131,7 @@ const Revenue = () => {
 
   useEffect(() => {
     if (isrcs.length > 0) {
+      setBestSong("Loading...");
       // Show the loading toast
       const loadingToast = toast.loading("Loading...", {
         position: "top-center",
@@ -188,6 +190,8 @@ const Revenue = () => {
         // console.log(maxRevenueEarner);
         setBestSong(maxRevenueEarner.song_name);
       });
+    } else {
+      setBestSong("No songs found");
     }
   }, [isrcs.length]);
 
@@ -348,8 +352,6 @@ const Revenue = () => {
 
   const platformData = { revenueByPlatform, viewsByPlatform };
 
-  // console.log(viewsByPlatform);
-
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
@@ -421,7 +423,7 @@ const Revenue = () => {
                 {
                   <RevenueAnalytics
                     heading={"Total Uploads"}
-                    data={isrcs.length}
+                    data={isrcs.length || 0}
                   />
                 }
                 {
@@ -458,9 +460,9 @@ const Revenue = () => {
                   </h4>
                   <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2 relative">
                     &#8377;{" "}
-                    {(
+                    {Math.abs(
                       userData.lifetimeRevenue -
-                      (userData.lifetimeDisbursed || 0)
+                        (userData.lifetimeDisbursed || 0)
                     ).toFixed(2)}
                   </h4>
                 </div>
@@ -488,73 +490,79 @@ const Revenue = () => {
           )} */}
 
           {/* PC VIEW */}
-          {filtered.length > 0 && (
-            <div className="relative">
-              {/* </Button> */}
-              {/* <FaChevronLeft
-                className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[9999] text-white"
-                onClick={() =>
-                  document.getElementsByClassName("owl-prev")[0].click()
-                }
-              />
-              <FaChevronRight
-                className="bg-transparent stroke-transparent text-heading-4 fixed right-5 top-[75vh] cursor-pointer bottom-0 z-[9999] text-white"
-                onClick={() =>
-                  document.getElementsByClassName("owl-next")[0].click()
-                }
-              /> */}
-              {/* <OwlCarousel className="w-full" items={1} nav id="revenue-slider"> */}
-              <div className="hidden 2xl:block mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-                <ul className="grid grid-cols-9 gap-3 sticky top-0 mb-2">
-                  {labels.map((item, key) => (
-                    <li
-                      key={"label-" + key}
-                      className="capitalize text-center font-semibold"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-
-                {aggregatedMusicData.map((song) => (
-                  <ul className="grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
-                    {/* list item */}
-                    {options.map((item) => {
-                      return (
-                        <li className="text-center">
-                          {typeof song[item] === "number" &&
-                          song[item].toString().split(".").length > 1 ? (
-                            item === "after tds revenue" ? (
-                              final_after_tds[song.isrc].toFixed(8)
-                            ) : (
-                              song[item].toFixed(8)
-                            )
-                          ) : item === "total" ? (
-                            total_lifetime_views[song.isrc]
-                          ) : item === "platformName" ? (
-                            // ? <button className='underline hover:no-underline' onClick={() => toast.error("This Feature is Coming Soon", {
-                            //   position: "bottom-center"
-                            // })}>See Details</button>
-                            <button onClick={() => setDetails(song.isrc)}>
-                              See Details
-                            </button>
-                          ) : (
-                            song[item]
-                          )}
+          {isrcs.length > 0 &&
+            (filtered.length ? (
+              <div className="relative">
+                <FaChevronLeft
+                  className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[9999] text-white"
+                  onClick={() =>
+                    document.getElementsByClassName("owl-prev")[0].click()
+                  }
+                />
+                <FaChevronRight
+                  className="bg-transparent stroke-transparent text-heading-4 fixed right-5 top-[75vh] cursor-pointer bottom-0 z-[9999] text-white"
+                  onClick={() =>
+                    document.getElementsByClassName("owl-next")[0].click()
+                  }
+                />
+                <OwlCarousel
+                  className="w-full hidden 2xl:block"
+                  items={1}
+                  nav
+                  id="revenue-slider"
+                >
+                  <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
+                    <ul className="grid grid-cols-9 gap-3 sticky top-0 mb-2">
+                      {labels.map((item, key) => (
+                        <li
+                          key={"label-" + key}
+                          className="capitalize text-center font-semibold"
+                        >
+                          {item}
                         </li>
-                      );
-                    })}
-                  </ul>
-                ))}
-              </div>
+                      ))}
+                    </ul>
 
-              {/* <Analytics
-                  platformData={platformData}
-                  songData={aggregatedMusicData}
-                /> */}
-              {/* </OwlCarousel> */}
-            </div>
-          )}
+                    {aggregatedMusicData.map((song) => (
+                      <ul className="grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                        {/* list item */}
+                        {options.map((item) => {
+                          return (
+                            <li className="text-center">
+                              {typeof song[item] === "number" &&
+                              song[item].toString().split(".").length > 1 ? (
+                                item === "after tds revenue" ? (
+                                  final_after_tds[song.isrc].toFixed(8)
+                                ) : (
+                                  song[item].toFixed(8)
+                                )
+                              ) : item === "total" ? (
+                                total_lifetime_views[song.isrc]
+                              ) : item === "platformName" ? (
+                                <button onClick={() => setDetails(song.isrc)}>
+                                  See Details
+                                </button>
+                              ) : (
+                                song[item]
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    ))}
+                  </div>
+
+                  <Analytics
+                    platformData={platformData}
+                    songData={aggregatedMusicData}
+                  />
+                </OwlCarousel>
+              </div>
+            ) : (
+              <div className="w-full flex justify-center py-7">
+                <VscLoading className="animate-spin text-secondary-light text-heading-1" />
+              </div>
+            ))}
           {/* details item modal */}
           {details.length ? (
             <RevenueDetails
@@ -567,118 +575,140 @@ const Revenue = () => {
             <></>
           )}
 
-          {filtered.length > 0 && (
+          {isrcs.length > 0 ? (
             <div className="2xl:hidden bg-grey-light p-2 rounded-[20px] mt-5">
-              <div className="border border-primary-light rounded-full px-3 text-primary-light py-1 grid grid-cols-3 relative">
-                {phoneOptions.map((item, key) => (
-                  <p
-                    className={`text-paragraph-2 ${
-                      key === 0
-                        ? "text-left"
-                        : key === 1
-                        ? "text-center"
-                        : "text-right"
-                    } font-medium capitalize`}
-                  >
-                    {item.includes("_")
-                      ? item.split("_").join(" ")
-                      : item.split("_").join(" ")}
-                  </p>
-                ))}
-                {/* <p className="text-paragraph-2 font-medium text-center">Song Name</p> */}
-                {/* <label className="text-paragraph-2 text-center font-medium flex items-center justify-center capitalize">{phoneData.split("_").join(" ")} <img src={chevron} className={`transition ${showOptions ? 'rotate-180' : 'rotate-0'}`} alt="chevron" /> <input className="hidden" type="checkbox" onChange={e => setShowOptions(e.target.checked)} /></label>
+              {filtered.length > 0 ? (
+                <>
+                  <div className="border border-primary-light rounded-full px-3 text-primary-light py-1 grid grid-cols-3 relative">
+                    {phoneOptions.map((item, key) => (
+                      <p
+                        className={`text-paragraph-2 ${
+                          key === 0
+                            ? "text-left"
+                            : key === 1
+                            ? "text-center"
+                            : "text-right"
+                        } font-medium capitalize`}
+                      >
+                        {item.includes("_")
+                          ? item.split("_").join(" ")
+                          : item.split("_").join(" ")}
+                      </p>
+                    ))}
+                    {/* <p className="text-paragraph-2 font-medium text-center">Song Name</p> */}
+                    {/* <label className="text-paragraph-2 text-center font-medium flex items-center justify-center capitalize">{phoneData.split("_").join(" ")} <img src={chevron} className={`transition ${showOptions ? 'rotate-180' : 'rotate-0'}`} alt="chevron" /> <input className="hidden" type="checkbox" onChange={e => setShowOptions(e.target.checked)} /></label>
               {showOptions && <div className='w-fit h-[250px] overflow-y-auto flex flex-col items-center absolute left-0 right-0 m-auto bg-white top-[100%] shadow z-[9999]'>
                 {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center px-3 py-1' onClick={() => {
                   setShowOptions(false)
                   setPhoneData(item)
                 }}>{item.split("_").join(" ")}</h6>)}
               </div>} */}
-                {/* <p className="text-paragraph-2 text-right font-medium">Final Revenue</p> */}
-              </div>
+                    {/* <p className="text-paragraph-2 text-right font-medium">Final Revenue</p> */}
+                  </div>
 
-              {aggregatedMusicData.map((song) => (
-                <ul className="grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
-                  {/* list item */}
-                  {phoneOptions.map((item) => {
-                    return (
-                      <li
-                        className="text-center"
-                        onClick={() => setDetails(song.isrc)}
-                      >
-                        {typeof song[item] === "number" &&
-                        song[item].toString().split(".").length > 1 ? (
-                          item === "after tds revenue" ? (
-                            final_after_tds[song.isrc].toFixed(8)
-                          ) : (
-                            song[item].toFixed(2)
-                          )
-                        ) : item === "total" ? (
-                          total_lifetime_views[song.isrc]
-                        ) : item === "platformName" ? (
-                          <button
-                            className="underline hover:no-underline"
-                            onClick={() =>
-                              toast.error("This Feature is Coming Soon", {
-                                position: "bottom-center",
-                              })
-                            }
+                  {aggregatedMusicData.map((song) => (
+                    <ul className="grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                      {/* list item */}
+                      {phoneOptions.map((item) => {
+                        return (
+                          <li
+                            className="text-center"
+                            onClick={() => setDetails(song.isrc)}
                           >
-                            See Details
-                          </button>
-                        ) : (
-                          // ? <button onClick={() => handleExpand(song.isrc)}>See Details</button>
-                          song[item]
-                        )}
-                      </li>
-                    );
-                  })}
-                  {/* details item */}
-                  {details && (
-                    <div className="w-screen h-screen bg-[#00000011] shadow-xl fixed top-0 left-0 z-[9999] flex justify-center items-center">
-                      <div className="w-5/6 h-[80vh] bg-white relative overflow-x-visible rounded-2xl overflow-y-auto p-3">
-                        <button
-                          onClick={() => setDetails("")}
-                          className="sticky text-interactive-light-destructive-focus text-heading-3 top-0"
-                        >
-                          &times;
-                        </button>
-                        {/* //  list heading  */}
-                        <ul className="grid grid-cols-2 gap-3">
-                          {phoneOptionsDetailsHeading.map((item, key) => (
-                            <li key={key} className="capitalize text-center">
-                              {item === "uploadTime"
-                                ? "Month"
-                                : item.includes("_")
-                                ? item.split("_").join(" ")
-                                : item}
-                            </li>
-                          ))}
-                        </ul>
+                            {typeof song[item] === "number" &&
+                            song[item].toString().split(".").length > 1 ? (
+                              item === "after tds revenue" ? (
+                                final_after_tds[song.isrc].toFixed(8)
+                              ) : (
+                                song[item].toFixed(2)
+                              )
+                            ) : item === "total" ? (
+                              total_lifetime_views[song.isrc]
+                            ) : item === "platformName" ? (
+                              <button
+                                className="underline hover:no-underline"
+                                onClick={() =>
+                                  toast.error("This Feature is Coming Soon", {
+                                    position: "bottom-center",
+                                  })
+                                }
+                              >
+                                See Details
+                              </button>
+                            ) : (
+                              // ? <button onClick={() => handleExpand(song.isrc)}>See Details</button>
+                              song[item]
+                            )}
+                          </li>
+                        );
+                      })}
+                      {/* details item */}
+                      {details && (
+                        <div className="w-screen h-screen bg-[#00000011] shadow-xl fixed top-0 left-0 z-[9999] flex justify-center items-center">
+                          <div className="w-5/6 h-[80vh] bg-white relative overflow-x-visible rounded-2xl overflow-y-auto p-3">
+                            <button
+                              onClick={() => setDetails("")}
+                              className="sticky text-interactive-light-destructive-focus text-heading-3 top-0"
+                            >
+                              &times;
+                            </button>
+                            {/* //  list heading  */}
+                            <ul className="grid grid-cols-2 gap-3">
+                              {phoneOptionsDetailsHeading.map((item, key) => (
+                                <li
+                                  key={key}
+                                  className="capitalize text-center"
+                                >
+                                  {item === "uploadTime"
+                                    ? "Month"
+                                    : item.includes("_")
+                                    ? item.split("_").join(" ")
+                                    : item}
+                                </li>
+                              ))}
+                            </ul>
 
-                        {/* //list  */}
-                        {result.map((song2) => (
-                          <ul className="grid grid-cols-2 justify-between">
-                            {/* // list item  */}
-                            {phoneOptionsDetails.map((item) => (
-                              <li className="text-center">
-                                {item === "final revenue"
-                                  ? song2[item].toFixed(4)
-                                  : song2[item]}
-                              </li>
+                            {/* //list  */}
+                            {result.map((song2) => (
+                              <ul className="grid grid-cols-2 justify-between">
+                                {/* // list item  */}
+                                {phoneOptionsDetails.map((item) => (
+                                  <li className="text-center">
+                                    {item === "final revenue"
+                                      ? song2[item].toFixed(4)
+                                      : song2[item]}
+                                  </li>
+                                ))}
+                              </ul>
                             ))}
-                          </ul>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </ul>
-              ))}
-              {/* {<img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />} */}
+                          </div>
+                        </div>
+                      )}
+                    </ul>
+                  ))}
+                  {/* {<img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />} */}
+                </>
+              ) : (
+                <div className="text-center">
+                  <VscLoading className="animate-spin text-secondary-light text-heading-1" />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-grey text-center 2xl:w-1/2 mx-auto 2xl:text-white">
+              <img src={notFound} className="w-full 2xl:w-1/2 mx-auto" alt="" />
+              <h6 className="text-heading-6-bold mb-2">
+                Ooopps.. There is Nothing to show yet !! Upload your content and
+                let it shine ! If you’ve uploaded already , let it perform in
+                the various platforms .
+              </h6>
+
+              <h4 className="text-heading-4-bold">See you soon.</h4>
             </div>
           )}
 
-          {filtered.length === 0 && (
-            <div className="text-grey text-center 2xl:w-1/2 mx-auto 2xl:text-white">
+          {isrcs.length === 0 && (
+            <div className="text-grey text-center 2xl:w-1/2 mx-auto 2xl:text-white 2xl:hidden">
               <img src={notFound} className="w-full 2xl:w-1/2 mx-auto" alt="" />
               <h6 className="text-heading-6-bold mb-2">
                 Ooopps.. There is Nothing to show yet !! Upload your content and
