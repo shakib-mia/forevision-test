@@ -102,8 +102,8 @@ const Revenue = () => {
     const aggregatedMusicData = Object.keys(grand_total).map((isrc) => ({
       isrc,
       ...songs.find((item) => item.isrc === isrc),
-      total_revenue_against_isrc: grand_total[isrc],
-      total_views_against_isrc: total_lifetime_views[isrc],
+      "Total Revenue Against ISRC": grand_total[isrc],
+      "Total Views Against ISRC": total_lifetime_views[isrc],
     }));
 
     const aggregatedRevenueTotal = Object.keys(final_revenue).map((isrc) => ({
@@ -178,13 +178,13 @@ const Revenue = () => {
         const { aggregatedMusicData } = calculateAggregatedTotals(songs);
 
         const finalRevenueValues = aggregatedMusicData.map(
-          (item) => item["total_revenue_against_isrc"]
+          (item) => item["Total Revenue Against ISRC"]
         );
 
         // Find the maximum value
         const maxFinalRevenue = Math.max(...finalRevenueValues);
         const maxRevenueEarner = aggregatedMusicData.find(
-          (item) => item.total_revenue_against_isrc === maxFinalRevenue
+          (item) => item["Total Revenue Against ISRC"] === maxFinalRevenue
         );
 
         // console.log(maxRevenueEarner);
@@ -244,8 +244,8 @@ const Revenue = () => {
   // console.log(total);
   let totalFinalRevenue = 0;
   for (const entry of aggregatedMusicData) {
-    if (!isNaN(entry["total_revenue_against_isrc"])) {
-      totalFinalRevenue += entry["total_revenue_against_isrc"];
+    if (!isNaN(entry["Total Revenue Against ISRC"])) {
+      totalFinalRevenue += entry["Total Revenue Against ISRC"];
     }
     // totalTotal += entry["total"];
   }
@@ -297,7 +297,7 @@ const Revenue = () => {
     "isrc",
     "total",
     "after tds revenue",
-    "total_revenue_against_isrc",
+    "Total Revenue Against ISRC",
   ];
 
   const labels = [
@@ -312,7 +312,7 @@ const Revenue = () => {
     "Revenue After ForeVision Deduction",
   ];
 
-  const phoneOptions = ["isrc", "song_name", "total_revenue_against_isrc"];
+  const phoneOptions = ["isrc", "song_name", "Total Revenue Against ISRC"];
   const phoneOptionsDetailsHeading = ["Platform Name", "Revenue"];
   const phoneOptionsDetails = ["platformName", "final revenue"];
 

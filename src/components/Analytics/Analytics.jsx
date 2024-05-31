@@ -14,9 +14,12 @@ import {
 } from "recharts";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { Line, Pie } from "react-chartjs-2";
+import PlatformsChart from "../PlatformsChart/PlatformsChart";
+// import { Chart as ChartJS, ArcElement } from "chart.js";
 
 const Analytics = ({ songData, platformData }) => {
   const { userData } = useContext(ProfileContext);
+  // ChartJS.register(ArcElement, Tooltip, Legend);
 
   // const chartData = {
   //   labels: platforms,
@@ -71,7 +74,7 @@ const Analytics = ({ songData, platformData }) => {
   // };
 
   // console.log(platformData);
-  const { revenueByPlatform, viewByPlatform } = platformData;
+  const { revenueByPlatform, viewsByPlatform } = platformData;
 
   const revenueArray = Object.entries(revenueByPlatform).map(
     ([platform, revenue]) => {
@@ -79,81 +82,47 @@ const Analytics = ({ songData, platformData }) => {
     }
   );
 
-  console.log(revenueArray);
-  const COLORS = [
-    "#8884d8",
-    "#82ca9d",
-    "#ffc658",
-    "#ff8042",
-    "#00c49f",
-    "#0088fe",
-    "#ffbb28",
-    "#ff6361",
-    "#d0ed57",
-    "#a4de6c",
-    "#d0ed57",
-    "#a4de6c",
-  ];
+  const viewsArray = Object.entries(viewsByPlatform).map(
+    ([platform, views]) => {
+      return { platform, views };
+    }
+  );
 
-  const data01 = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-  ];
-
-  const data02 = [
-    { name: "A1", value: 100 },
-    { name: "A2", value: 300 },
-    { name: "B1", value: 100 },
-    { name: "B2", value: 80 },
-    { name: "B3", value: 40 },
-    { name: "B4", value: 30 },
-    { name: "B5", value: 50 },
-    { name: "C1", value: 100 },
-    { name: "C2", value: 200 },
-    { name: "D1", value: 150 },
-    { name: "D2", value: 50 },
-  ];
+  // const viewArra
+  // console.log(viewsArray);
 
   // const COLORS = [
   //   '#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#00c49f', '#0088fe',
   //   '#ffbb28', '#ff6361', '#d0ed57', '#a4de6c', '#d0ed57', '#a4de6c'
   // ];
 
+  // console.log(revenueArray);
+
   return (
-    <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-      {/* <ResponsiveContainer width={"100%"} height={300}> */}
-      <PieChart width={730} height={250}>
-        <Pie
-          data={data01}
-          dataKey="value"
-          nameKey="name"
-          cx="50%"
-          cy="50%"
-          outerRadius={50}
-          fill="#8884d8"
-        />
-        <Pie
-          data={data02}
-          dataKey="value"
-          nameKey="name"
-          cx="50%"
-          cy="50%"
-          innerRadius={60}
-          outerRadius={80}
-          fill="#82ca9d"
-          label
-        />
-      </PieChart>
-      {/* </ResponsiveContainer> */}
+    <div className="mt-3 px-1 2xl:px-6 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
+      {/* <ResponsiveContainer width={"100%"} height={300}>
+        <BarChart data={revenueArray}>
+          <XAxis dataKey="platform" className="text-button" />
+          <YAxis />
+          <Tooltip />
+          <Bar dataKey="revenue" fill="#2B52DD" />
+        </BarChart>
+      </ResponsiveContainer> */}
+      <div className="flex justify-between mt-6 mb-7">
+        <div className="w-5/12">
+          <PlatformsChart revenueData={revenueArray} label={"Revenue"} />
+        </div>
+        <div className="w-5/12">
+          <PlatformsChart revenueData={viewsArray} label={"Views"} />
+        </div>
+      </div>
 
       <ResponsiveContainer width={"100%"} height={300}>
         <BarChart data={songData}>
           <XAxis dataKey="song_name" className="text-button" />
           <YAxis />
           <Tooltip />
-          <Bar dataKey="total_revenue_against_isrc" fill="#8884d8" />
+          <Bar dataKey="Total Revenue Against ISRC" fill="#2B52DD" />
         </BarChart>
       </ResponsiveContainer>
 
@@ -162,7 +131,7 @@ const Analytics = ({ songData, platformData }) => {
           <XAxis dataKey="song_name" className="text-button" />
           <YAxis />
           <Tooltip />
-          <Bar dataKey="total_views_against_isrc" fill="#82ca9d" />
+          <Bar dataKey="Total Views Against ISRC" fill="#2E844A" />
         </BarChart>
       </ResponsiveContainer>
 

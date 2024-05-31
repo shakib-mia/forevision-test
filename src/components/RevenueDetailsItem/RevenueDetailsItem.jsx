@@ -63,19 +63,13 @@ const RevenueDetailsItem = ({ result, details, songs }) => {
         <MonthStreamCount songs={songs} details={details} i={i} />
       ))}
 
-      {/* <div className="grid grid-cols-2 gap-2"> */}
-      {/* <ResponsiveContainer
+      {/* <div className="grid grid-cols-2 gap-2 items-center"> */}
+      <ResponsiveContainer
         height={250}
         width={"100%"}
         className={"hidden lg:block"}
       >
-        <AreaChart
-          className="mb-5 mt-3"
-          width={750}
-          height={250}
-          data={result}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-        >
+        <AreaChart className="mb-5 mt-3" data={result}>
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#2B52DD" stopOpacity={0.8} />
@@ -113,8 +107,6 @@ const RevenueDetailsItem = ({ result, details, songs }) => {
         className={"hidden lg:block"}
       >
         <AreaChart
-          // width={750}
-          // height={250}
           data={result}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
@@ -149,7 +141,7 @@ const RevenueDetailsItem = ({ result, details, songs }) => {
             }
           />
         </AreaChart>
-      </ResponsiveContainer> */}
+      </ResponsiveContainer>
       {/* </div> */}
     </table>
   );
