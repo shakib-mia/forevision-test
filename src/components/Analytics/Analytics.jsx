@@ -111,9 +111,11 @@ const Analytics = ({ songData, platformData }) => {
       <div className="flex justify-between mt-6 mb-7">
         <div className="w-5/12">
           <PlatformsChart revenueData={revenueArray} label={"Revenue"} />
+          <p className="uppercase text-center mt-3">Revenue By Platforms</p>
         </div>
         <div className="w-5/12">
           <PlatformsChart revenueData={viewsArray} label={"Views"} />
+          <p className="uppercase text-center mt-3">Views By Platforms</p>
         </div>
       </div>
 
