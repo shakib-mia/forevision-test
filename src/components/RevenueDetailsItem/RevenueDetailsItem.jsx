@@ -3,8 +3,6 @@ import MonthStreamCount from "../MonthStreamCount/MonthStreamCount";
 import {
   Area,
   AreaChart,
-  Bar,
-  BarChart,
   CartesianGrid,
   Legend,
   ResponsiveContainer,
