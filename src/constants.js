@@ -28,8 +28,8 @@ import SongUploadNew from "./pages/SongUploadNew/SongUploadNew";
 import SongUploadForm from "./components/SongUploadForm/SongUploadForm";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 
-export const backendUrl = "http://localhost:5100/";
-// export const backendUrl = "https://api.forevisiondigital.in/";
+// export const backendUrl = "http://localhost:5100/";
+export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   {
