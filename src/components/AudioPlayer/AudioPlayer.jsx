@@ -11,6 +11,9 @@ function AudioPlayer({ src }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(0.4);
+  // console.log(
+
+  // );
 
   const audioRef = useRef(null);
   const progressRef = useRef(null);
@@ -74,33 +77,49 @@ function AudioPlayer({ src }) {
   // }, [progress]);
 
   return (
-    <div className="w-4/12 p-3 bg-grey-light rounded-xl text-grey-dark">
-      <div className="flex gap-4">
+    <div className="p-3 bg-grey-light rounded-xl text-grey-dark h-full inline-block w-full relative overflow-hidden">
+      {/* {src.length > 0 || (
+        <div className="w-full h-full absolute top-0 left-0 backdrop-blur z-[9999999999]">
+          No songs has been uploaded yet
+        </div>
+      )} */}
+      <div className="flex flex-col gap-2">
         {formData.albumArt && (
           <img
             src={URL.createObjectURL(formData.albumArt)}
             alt="album-art"
-            className="w-1/5 aspect-square"
+            className="w-full aspect-square mx-auto rounded-xl"
           />
         )}
         {/* </div> */}
-        <aside className="w-2/3 flex flex-col justify-between">
+        <aside className="w-full mx-auto flex flex-col justify-between">
           <audio ref={audioRef} src={src} onTimeUpdate={updateProgress}></audio>
           <aside>
             <h5 className="text-heading-5-bold">{formData.songName}</h5>
-            <h6 className="text-heading-6-bold mt-2">{formData.artistName}</h6>
+            {formData.artists.find(
+              ({ role }) => role === "Singer/Primary Artist"
+            ).name.length ? (
+              <h6 className="text-heading-6-bold mt-2">
+                <span className="font-normal">By</span>{" "}
+                {
+                  formData.artists.find(
+                    ({ role }) => role === "Singer/Primary Artist"
+                  ).name
+                }
+              </h6>
+            ) : (
+              <></>
+            )}
           </aside>
-          <div className="my-2">
-            <span onClick={togglePlayPause} className="cursor-pointer">
-              {isPlaying && progress !== 100 ? <FaPause /> : <FaPlay />}
-            </span>
-          </div>
         </aside>
       </div>
-      <div className="flex items-center gap-3 mt-2">
+      <div className="w-full mx-auto flex items-center gap-3 mt-2">
+        <span onClick={togglePlayPause} className="cursor-pointer w-1/12">
+          {isPlaying && progress !== 100 ? <FaPause /> : <FaPlay />}
+        </span>
         {/* Progress */}
         <div
-          className="progress-bar w-8/12 h-1 bg-grey relative overflow-visible rounded-full cursor-pointer"
+          className="progress-bar w-7/12 h-1 bg-grey relative overflow-visible rounded-full cursor-pointer"
           onClick={handleProgressChange}
         >
           <div
@@ -153,6 +172,10 @@ function AudioPlayer({ src }) {
             className="w-full h-1 rounded-full bg-primary relative cursor-pointer"
             onClick={handleVolumeChange}
           >
+            <div
+              className="bg-interactive-light-confirmation h-full rounded-full pointer-events-none"
+              style={{ width: `${Math.abs(volume) - 5}%` }}
+            ></div>
             <div
               className="h-2 bg-primary-light rounded-full w-2 absolute top-0 bottom-0 m-auto cursor-pointer pointer-events-none"
               style={{ left: `${Math.abs(volume) - 5}%` }}

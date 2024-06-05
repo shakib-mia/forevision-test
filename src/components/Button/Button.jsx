@@ -14,6 +14,9 @@ const Button = ({
   containerClassName,
   className,
   children,
+  onFocus,
+  onBlur,
+  title,
 }) => {
   const [focus, setFocus] = useState(false);
   // console.log(containerClassName);
@@ -30,6 +33,7 @@ const Button = ({
           } rounded-full ${paddingZero ? "p-0" : "p-[4px]"}`}
         >
           <button
+            title={title}
             id={id}
             className={`${
               small ? "px-2 py-1" : "px-3 py-2"
@@ -39,8 +43,15 @@ const Button = ({
               setFocus(true);
             }}
             disabled={disabled}
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
+            type={type}
+            onFocus={() => {
+              setFocus(true);
+              onFocus !== undefined && onFocus();
+            }}
+            onBlur={() => {
+              setFocus(false);
+              onFocus !== undefined && onBlur();
+            }}
           >
             {leftIcon ? (
               <img src={arrow} className="rotate-180" alt="left-icon" />
@@ -63,6 +74,7 @@ const Button = ({
           } rounded-full p-[4px]`}
         >
           <input
+            title={title}
             type="submit"
             disabled={disabled}
             onFocus={() => setFocus(true)}

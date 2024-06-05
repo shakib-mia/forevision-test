@@ -36,6 +36,7 @@ const InputField = ({
   min,
   labelClassName,
   itemChecked,
+  hideRequired,
 }) => {
   const [checked, setChecked] = useState(false);
   const location = useLocation();
@@ -79,13 +80,14 @@ const InputField = ({
                 location.pathname === "/signup-details"
               ) && (
                 <span className="text-black-secondary">
-                  {!required ? (
-                    <span className="text-button !font-light">Optional</span>
-                  ) : (
-                    <span className="text-interactive-light-destructive-focus text-button !font-light">
-                      Required
-                    </span>
-                  )}
+                  {hideRequired ||
+                    (!required ? (
+                      <span className="text-button !font-light">Optional</span>
+                    ) : (
+                      <span className="text-interactive-light-destructive-focus text-button !font-light">
+                        Required
+                      </span>
+                    ))}
                 </span>
               )}
             </div>
@@ -285,7 +287,7 @@ const InputField = ({
               "border-[1px]  border-surface-white-line text-[12px]"
             } rounded-[4px] w-[16px] h-[16px]`}
           >
-            {!checked || !itemChecked || <img src={check} alt="checkbox" />}
+            {!(checked || itemChecked) || <img src={check} alt="checkbox" />}
           </div>
 
           <label

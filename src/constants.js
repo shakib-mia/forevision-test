@@ -28,8 +28,8 @@ import SongUploadNew from "./pages/SongUploadNew/SongUploadNew";
 import SongUploadForm from "./components/SongUploadForm/SongUploadForm";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 
-// export const backendUrl = "http://localhost:5100/";
-export const backendUrl = "https://api.forevisiondigital.in/";
+export const backendUrl = "http://localhost:5100/";
+// export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   {
@@ -347,10 +347,10 @@ export const routes = [
     path: "/payment",
     page: <Payment />,
   },
-  // {
-  //   path: "/plans",
-  //   page: <Plans />,
-  // },
+  {
+    path: "/plans",
+    page: <Plans />,
+  },
   {
     path: "/verified-on-resso",
     page: (

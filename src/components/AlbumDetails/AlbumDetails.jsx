@@ -6,9 +6,11 @@ import SelectOptions from "../SelectOptions/SelectOptions";
 import InputField from "../InputField/InputField";
 import Modal from "../Modal/Modal";
 import CreateRecordLabel from "../CreateRecordLabel/CreateRecordLabel";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const AlbumDetails = () => {
   const { setScreen, setFormData, formData } = useContext(ScreenContext);
+  const { recordLabels } = useContext(ProfileContext);
   const [file, setFile] = useState({});
   const [showRecordLabelForm, setShowRecordLabelForm] = useState(false);
 
@@ -125,7 +127,7 @@ const AlbumDetails = () => {
             }}
             required={true}
             placeholder={file?.name || "Album Art"}
-            accept={".jpg"}
+            accept={".jpg,.png"}
             label={" "}
             note={"Upload your Artwork(3000px X 3000px , .jpg format)"}
           />
@@ -147,11 +149,7 @@ const AlbumDetails = () => {
               onChange={(e) =>
                 setFormData({ ...formData, recordLabel: e.target.value })
               }
-              options={[
-                "ForeVision digital",
-                "ForeVision digital",
-                "ForeVision digital",
-              ]}
+              options={recordLabels}
             />
           </div>
           {/* </div> */}
@@ -217,8 +215,8 @@ const AlbumDetails = () => {
       <Button
         containerClassName={"w-fit mx-auto mt-6"}
         onClick={() => {
-          setScreen("audio");
-          console.log(formData);
+          setScreen("platform");
+          // console.log(formData);
         }}
         // disabled={Object.values(formData).length < 7}
         // type={"submit"}

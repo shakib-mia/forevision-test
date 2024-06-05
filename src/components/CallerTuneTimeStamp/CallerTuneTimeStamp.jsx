@@ -29,6 +29,7 @@ const CallerTuneTimeStamp = ({
             required
             value={startMinutes}
             id={"start-minutes"}
+            note={"For Jio, BSNL, VI & Airtel"}
             containerClassName={"w-full"}
             name={"startMinutes"}
             // max={Math.floor(audioDuration - 45) / 60}
@@ -51,6 +52,7 @@ const CallerTuneTimeStamp = ({
             id={"start-seconds"}
             containerClassName={"w-full"}
             label={"Start Time (Seconds)"}
+            note={"For Jio, BSNL, VI & Airtel"}
             required
             max={audioDuration - 45}
           />
@@ -67,6 +69,7 @@ const CallerTuneTimeStamp = ({
                 : startMinutes
             }
             label={"End Time (Minute)"}
+            note={"For Jio, BSNL, VI & Airtel"}
             required
             containerClassName={"w-full"}
           />
@@ -81,6 +84,7 @@ const CallerTuneTimeStamp = ({
             id={"end-seconds"}
             containerClassName={"w-full"}
             label={"End Time (Seconds)"}
+            note={"For Jio, BSNL, VI & Airtel"}
             required
           />
         </div>
@@ -91,8 +95,9 @@ const CallerTuneTimeStamp = ({
           <InputField
             onChange={(e) => setStartMinutes2(e.target.value)}
             type="number"
-            label={"Start Time (Minute) 2"}
-            required
+            label={"Start Time (Minute)"}
+            note={"For BSNL, VI & Airtel"}
+            // required
             value={startMinutes2}
             id={"start-minutes2"}
             containerClassName={"w-full"}
@@ -116,8 +121,9 @@ const CallerTuneTimeStamp = ({
             type="number"
             id={"start-seconds2"}
             containerClassName={"w-full"}
-            label={"Start Time (Seconds) 2"}
-            required
+            label={"Start Time (Seconds)"}
+            note={"For BSNL, VI & Airtel"}
+            // required
             max={audioDuration - 45}
           />
         </div>
@@ -132,8 +138,9 @@ const CallerTuneTimeStamp = ({
                 ? parseInt(startMinutes2) + 1
                 : startMinutes2
             }
-            label={"End Time (Minute) 2"}
-            required
+            label={"End Time (Minute)"}
+            note={"For BSNL, VI & Airtel"}
+            // required
             containerClassName={"w-full"}
           />
           <InputField
@@ -146,8 +153,9 @@ const CallerTuneTimeStamp = ({
             type="number"
             id={"end-seconds2"}
             containerClassName={"w-full"}
-            label={"End Time (Seconds) 2"}
-            required
+            label={"End Time (Seconds)"}
+            note={"For BSNL, VI & Airtel"}
+            // required
           />
         </div>
       </div>

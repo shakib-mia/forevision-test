@@ -44,7 +44,7 @@ const SelectOptions = ({
           {options.map((option, key) => (
             <option
               key={key + 1}
-              // selected={option.selected || false}
+              selected={option.selected || false}
               value={options.length === 0 ? "Loading..." : option}
               className="border-[1px] p-2 text-paragraph-2"
             >

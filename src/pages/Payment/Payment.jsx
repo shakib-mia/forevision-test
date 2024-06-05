@@ -3,9 +3,13 @@ import React from "react";
 import useRazorpay from "react-razorpay";
 import { backendUrl } from "../../constants";
 import logo from "../../assets/icons/logo.PNG";
+import { useLocation } from "react-router-dom";
 
 const Payment = () => {
   const [Razorpay] = useRazorpay();
+  const location = useLocation();
+
+  // console.log(location.search.split("=")[1]);
 
   const handleRazorpayPayment = async (params) => {
     // const order = await createOrder(params); //  Create order on your backend
@@ -51,7 +55,7 @@ const Payment = () => {
     // rzp1.open();
 
     axios
-      .post(backendUrl + "razorpay", { amount: 200 }) // ============  *** Need to set amount dynamically here ***  ================
+      .post(backendUrl + "razorpay", { amount: location.search.split("=")[1] }) // ============  *** Need to set amount dynamically here ***  ================
       .then(({ data }) => initPayment(data))
       .catch((error) => console.log(error));
   };

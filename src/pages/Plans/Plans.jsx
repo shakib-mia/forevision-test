@@ -15,7 +15,7 @@ const Plans = () => {
   // const [Razorpay] = useRazorpay();
   // const { token } = useContext(ProfileContext);
   const [planName, setPlanName] = useState("");
-  console.log(planName);
+  // console.log(planName);
 
   // const handleRazorpayPayment = async (amount) => {
   //   // const order = await createOrder(params); //  Create order on your backend

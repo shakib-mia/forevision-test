@@ -279,7 +279,7 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
               onClick={() => {
                 setPrice(69900);
                 setPlanName("CRBT+");
-                navigate("/song-upload?crbt+?69900");
+                navigate("/song-upload?CRBT+?69900");
               }}
             ></Button>
           </div>
@@ -455,7 +455,7 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
               onClick={() => {
                 setPrice(49900);
                 setPlanName("CRBT");
-                navigate("/song-upload?forevision-crbt?49900");
+                navigate("/song-upload?forevision-CRBT?49900");
               }}
             ></Button>
           </div>

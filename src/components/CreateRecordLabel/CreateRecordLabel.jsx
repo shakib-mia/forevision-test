@@ -1,13 +1,37 @@
 import React, { useState } from "react";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
+import { FaTimes } from "react-icons/fa";
+// import axios from "axios";
+// import { ProfileContext } from "../../contexts/ProfileContext";
+// import { backendUrl } from "../../constants";
 
 const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
   const [selectedCode, setSelectedCode] = useState("91");
   const [isPerpetual, setIsPerpetual] = useState(false);
+  // const { recordLabels } = useContext(ProfileContext);
+
+  // console.log(recordLabels);
+
+  const handleRecordLabelSubmit = (e) => {
+    e.preventDefault();
+
+    setShowRecordLabelForm(false);
+  };
+
   return (
-    <div className="bg-white p-4 rounded w-1/2 h-5/6 overflow-auto">
-      <h5 className="text-heading-5-bold text-center">
+    <form
+      className="bg-white p-4 rounded w-1/2 h-5/6 overflow-auto relative"
+      onSubmit={handleRecordLabelSubmit}
+    >
+      <button
+        className="text-interactive-light-destructive absolute top-2 right-2"
+        type="button"
+        onClick={() => setShowRecordLabelForm(false)}
+      >
+        <FaTimes />
+      </button>
+      <h5 className="text-heading-5-bold text-center mt-4">
         Create A New Record Label
       </h5>
 
@@ -16,7 +40,9 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         placeholder={"Record Label Name"}
         label={"Name"}
         name={"recordLabelName"}
+        // hideRequired={true}
         id={"record-label-name"}
+        required={true}
       />
 
       <div className="flex gap-3 mt-3">
@@ -28,6 +54,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           selectedCode={selectedCode}
           containerClassName={"w-1/2"}
           id={"phone-no"}
+          required={true}
         />
 
         <InputField
@@ -36,6 +63,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           id={"email"}
           label={"Email id"}
           containerClassName={"w-1/2"}
+          required={true}
         />
       </div>
 
@@ -45,12 +73,14 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         id={"address"}
         label={"Address"}
         containerClassName={"mt-3"}
+        hideRequired={true}
       />
 
       <div className="flex gap-3 mt-3">
         <InputField
           type={"date"}
           containerClassName={"w-1/2"}
+          hideRequired={true}
           label={"Start Date"}
         />
 
@@ -58,6 +88,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           <InputField
             type={"date"}
             containerClassName={"w-1/2"}
+            hideRequired={true}
             label={"End Date"}
           />
         )}
@@ -69,6 +100,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         label={"Perpetual"}
         id={"perpetual"}
         onChange={(e) => setIsPerpetual(e.target.checked)}
+        hideRequired={true}
       />
 
       <InputField
@@ -77,17 +109,18 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         label={"Signatory Person Name"}
         id={"signature"}
         containerClassName={"mt-3"}
+        hideRequired={true}
       />
 
       <div className="flex justify-center">
         <Button
-          //   type={"submit"}
+          type={"submit"}
           text={"Save and Next"}
           containerClassName={"mt-6 mx-auto"}
-          onClick={() => setShowRecordLabelForm(false)}
+          // onClick={() => }
         />
       </div>
-    </div>
+    </form>
   );
 };
 

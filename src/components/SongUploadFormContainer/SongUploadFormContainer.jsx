@@ -7,7 +7,14 @@ import Distribution from "../Distribution/Distribution";
 import AudioUI from "../Audio/Audio";
 
 const SongUploadFormContainer = ({ screen, setScreen }) => {
-  const [formData, setFormData] = useState({});
+  const [artistCount, setArtistCount] = useState(1);
+  const [formData, setFormData] = useState({
+    artists: [
+      { name: "", role: "Singer/Primary Artist" },
+      { name: "", role: "Lyricist" },
+      { name: "", role: "Composer" },
+    ],
+  });
 
   // useEffect(() => {
   //   console.log(screen);
@@ -18,15 +25,14 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
       <ScreenContext.Provider
         value={{ screen, setScreen, formData, setFormData }}
       >
-        {screen === "albumDetails" ? (
-          <AlbumDetails />
-        ) : screen === "audio" ? (
-          <AudioUI />
-        ) : screen === "platform" ? (
-          <Platform />
+        {screen === "albumDetails" ? <AlbumDetails /> : <></>}{" "}
+        {screen === "audio" ? (
+          <AudioUI artistCount={artistCount} setArtistCount={setArtistCount} />
         ) : (
-          <Distribution />
-        )}
+          <></>
+        )}{" "}
+        {screen === "platform" ? <Platform /> : <></>}{" "}
+        {screen === "distribution" ? <Distribution /> : <></>}
       </ScreenContext.Provider>
     </div>
   );

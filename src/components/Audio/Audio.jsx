@@ -1,19 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import Button from "../Button/Button";
 import InputField from "../InputField/InputField";
 import axios from "axios";
-import { backendUrl, config } from "./../../constants";
+import { config } from "./../../constants";
 import SelectOptions from "../SelectOptions/SelectOptions";
 import CallerTuneTimeStamp from "../CallerTuneTimeStamp/CallerTuneTimeStamp";
-import Player from "@madzadev/audio-player";
 import "@madzadev/audio-player/dist/index.css";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
-import Video from "../Video/Video";
 
-const AudioUI = () => {
+import ArtistProfile from "../ArtistProfile/ArtistProfile";
+
+const AudioUI = ({ artistCount, setArtistCount }) => {
   const { setScreen, setFormData, formData } = useContext(ScreenContext);
-  const [alreadyHaveIsrc, setAlreadyHaveIsrc] = useState(false);
+  // const [alreadyHaveIsrc, setAlreadyHaveIsrc] = useState(false);
   const [isrc, setIsrc] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
   const [file, setFile] = useState({});
@@ -22,7 +22,25 @@ const AudioUI = () => {
   const [startSeconds, setStartSeconds] = useState(0);
   const [startMinutes2, setStartMinutes2] = useState(0);
   const [startSeconds2, setStartSeconds2] = useState(0);
-  // console.log(file.name);
+  // const [focused, setFocused] = useState(false);
+  // const [showPlats, setShowPlats] = useState(false);
+
+  const handleArtistNameChange = (index, value) => {
+    const updatedArtists = [...formData.artists];
+    // console.log(updatedArtists);
+    updatedArtists[index].name = value;
+
+    setFormData({ ...formData, artists: updatedArtists });
+  };
+
+  const handleArtistRoleChange = (index, value) => {
+    const updatedArtists = [...formData.artists];
+    updatedArtists[index].role = value;
+    // console.log(updatedArtists[index]);
+
+    setFormData({ ...formData, artists: updatedArtists });
+  };
+
   const languagesInIndia = [
     "Ahirani",
     "Arabic",
@@ -105,7 +123,8 @@ const AudioUI = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setScreen("platform");
+    setScreen("distribution");
+    // console.log(formData);
   };
 
   // const tracks = [
@@ -126,6 +145,13 @@ const AudioUI = () => {
   //   },
   // ];
 
+  const handleRemoveArtist = (index) => {
+    const updatedArtists = formData.artists.filter((_, i) => i !== index);
+    setFormData({ ...formData, artists: updatedArtists });
+
+    // console.log(updatedArtists);
+  };
+
   const handleDelete = (e) => {
     // console.log(audioUrl.split("/")[audioUrl.split("/").length - 1]);
     axios
@@ -140,138 +166,145 @@ const AudioUI = () => {
       });
   };
 
+  /**
+   *
+   * {audioUrl.length > 0 && <AudioPlayer src={audioUrl} />}
+   *
+   *
+   * */
+
   return (
     <form onSubmit={handleSubmit}>
-      <div className="grid grid-cols-3 gap-2 items-center">
-        <InputField
-          label={"Song Name"}
-          onChange={(e) =>
-            setFormData({ ...formData, songName: e.target.value })
-          }
-          required
-          placeholder={"Name"}
-        />
-        <InputField
-          label={"ISRC"}
-          onChange={(e) => {
-            setIsrc(e.target.value);
-            setFormData({ ...formData, isrc });
-          }}
-          placeholder={"ISRC"}
-          // required={alreadyHaveIsrc}
-          // value={isrc}
-          // disabled={!alreadyHaveIsrc}
-        />
-        {/* <div className="flex"></div> */}
-        {/* <InputField
+      <div className="flex gap-2">
+        <div className="w-2/3">
+          <div className="grid grid-cols-2 gap-2 items-center">
+            <InputField
+              label={"Song Name"}
+              onChange={(e) =>
+                setFormData({ ...formData, songName: e.target.value })
+              }
+              required
+              placeholder={"Name"}
+            />
+            <InputField
+              label={"ISRC"}
+              onChange={(e) => {
+                setIsrc(e.target.value);
+                setFormData({ ...formData, isrc });
+              }}
+              placeholder={"ISRC"}
+              // required={alreadyHaveIsrc}
+              // value={isrc}
+              // disabled={!alreadyHaveIsrc}
+            />
+            {/* <div className="flex"></div> */}
+            {/* <InputField
           type={"checkbox"}
           id={"alreadyHaveIsrc"}
           label={"I have my own ISRC"}
           containerClassName={"mt-4"}
           onChange={(e) => setAlreadyHaveIsrc(e.target.checked)}
         /> */}
-      </div>
+          </div>
 
-      <div className="grid grid-cols-3 gap-2 items-center mt-3">
-        {/* <InputField type={"multi-select"} options={["yes", "no"]} /> */}
-        <SelectOptions
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              parentalAdvisory: e.target.value === "yes" ? true : false,
-            })
-          }
-          required={true}
-          options={["no", "yes"]}
-          placeholder={"Select..."}
-          label={"Parent Advisory"}
-        />
-        <SelectOptions
-          placeholder={"Select..."}
-          options={["no", "yes"]}
-          label={"Instrumental"}
-          required={true}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              instrumental: e.target.value === "yes" ? true : false,
-            })
-          }
-        />
-        <SelectOptions
-          options={languagesInIndia}
-          label={"Language"}
-          placeholder={"Select..."}
-          required={true}
-          onChange={(e) =>
-            setFormData({ ...formData, language: e.target.value })
-          }
-        />
-        {/* <InputField type={"multi-select"} options={["yes", "no"]} /> */}
-      </div>
+          <div className="grid grid-cols-3 gap-2 items-center mt-3">
+            {/* <InputField type={"multi-select"} options={["yes", "no"]} /> */}
+            <SelectOptions
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  parentalAdvisory: e.target.value === "yes" ? true : false,
+                })
+              }
+              required={true}
+              options={["no", "yes"]}
+              placeholder={"Select..."}
+              label={"Parent Advisory"}
+            />
+            <SelectOptions
+              placeholder={"Select..."}
+              options={["no", "yes"]}
+              label={"Instrumental"}
+              required={true}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  instrumental: e.target.value === "yes" ? true : false,
+                })
+              }
+            />
+            <SelectOptions
+              options={languagesInIndia}
+              label={"Language"}
+              placeholder={"Select..."}
+              required={true}
+              onChange={(e) =>
+                setFormData({ ...formData, language: e.target.value })
+              }
+            />
+            {/* <InputField type={"multi-select"} options={["yes", "no"]} /> */}
+          </div>
 
-      <div className="mt-4 flex items-center gap-2">
-        <div className="flex gap-2 w-2/3">
-          <InputField
-            label={"Artist Name"}
-            placeholder={"Artist Name"}
-            note={"Artist's Name"}
-            containerClassName={"w-full"}
-            required={true}
-            onChange={(e) =>
-              setFormData({ ...formData, artistName: e.target.value })
+          <div className="mt-4 flex items-end gap-2">
+            <aside className="w-full">
+              {formData.artists.map((artist, key) => (
+                <ArtistProfile
+                  key={key}
+                  id={key}
+                  handleArtistNameChange={handleArtistNameChange}
+                  handleArtistRoleChange={handleArtistRoleChange}
+                  handleRemoveArtist={handleRemoveArtist}
+                  artist={artist}
+                />
+              ))}
+            </aside>
+          </div>
+
+          <Button
+            containerClassName={
+              "!rounded-none w-1/2 relative -bottom-[6px] mt-2"
             }
+            className={
+              "!rounded-none px-4 !py-[12px] w-full text-center justify-center border border-interactive-light"
+            }
+            text={"+ Add Artist"}
+            type={"button"}
+            onClick={() => {
+              setArtistCount((c) => c + 1);
+              formData.artists.push({ name: "", role: "" });
+            }}
           />
 
-          <SelectOptions
-            containerClassName={"w-full"}
-            placeholder={"Select..."}
-            options={[
-              "Singer/Primary Artist",
-              "Ft Artist",
-              "Composer",
-              "Lyricist",
-              "Producer",
-              "Star Cast",
-            ]}
+          {/* <div className="mt-3 flex gap-3"> */}
+          <InputField
+            type={"file"}
+            accept={"audio/*"}
+            label={"Upload"}
+            onChange={handleAudioChange}
+            disabled={!formData.songName}
+            id={"audioUpload"}
             required={true}
-            label={"Select Role"}
+            placeholder={file.name || "Select File"}
+            containerClassName={"mt-3"}
           />
-        </div>
 
-        <Button
-          containerClassName={"!rounded-none w-1/3"}
-          className={"!rounded-none px-4 w-full text-center justify-center"}
-          text={"+ Add Artist"}
-        />
-      </div>
+          {/* {<Player trackList={tracks} />} */}
 
-      {/* {formData.songName?.length && ( */}
-      <div className="mt-5 flex gap-3">
-        <InputField
-          type={"file"}
-          accept={"audio/*"}
-          label={"Upload"}
-          onChange={handleAudioChange}
-          disabled={!formData.songName}
-          id={"audioUpload"}
-          required={true}
-          placeholder={file.name || "Select File"}
-          containerClassName={"w-8/12"}
-        />
-
-        {/* {<Player trackList={tracks} />} */}
-
-        {/* <InputField
+          {/* <InputField
           type={"text"}
           placeholder={"CRBT Cut"}
           label={"crbt"}
           labelClassName={"opacity-0"}
           containerClassName={"w-full"}
         /> */}
-        {audioUrl.length > 0 && <AudioPlayer src={audioUrl} />}
-        {/* <Video /> */}
+
+          {/* <Video /> */}
+          {/* </div> */}
+        </div>
+        <div className="w-1/3">{<AudioPlayer src={audioUrl} />}</div>
       </div>
+      {/* {formData.songName?.length && ( */}
+
       {/* )} */}
       <CallerTuneTimeStamp
         setStartMinutes={setStartMinutes}
@@ -371,7 +404,8 @@ const AudioUI = () => {
         type={"submit"}
         containerClassName={"w-fit mx-auto mt-5"}
         onClick={() => {
-          setScreen("platform");
+          console.log(formData);
+          // setScreen("platform");
         }}
         text={"Save and Next"}
       />

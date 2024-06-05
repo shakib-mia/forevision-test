@@ -24,18 +24,20 @@ function App() {
   const [tokenDetails, setTokenDetails] = useState({});
   const [foundRequested, setFoundRequested] = useState({});
   const [refetch, setRefetch] = useState(true);
+  const [recordLabels, setRecordLabels] = useState([]);
   const navigate = useNavigate();
 
   /* Working api calls starts here */
 
   useEffect(() => {
     if (token) {
+      const config = {
+        headers: {
+          token,
+        },
+      };
       axios
-        .get(backendUrl + "token-time", {
-          headers: {
-            token,
-          },
-        })
+        .get(backendUrl + "token-time", config)
         .then(({ data }) => setTokenDetails(data))
         .catch((err) => {
           if (err.response.data.name === "TokenExpiredError") {
@@ -47,6 +49,9 @@ function App() {
             navigate("/login");
           }
         });
+      axios
+        .get(backendUrl + "record-labels", config)
+        .then(({ data }) => setRecordLabels(data));
     }
   }, [token]);
 
@@ -65,6 +70,7 @@ function App() {
     foundRequested,
     refetch,
     setRefetch,
+    recordLabels,
     // timeStamp,
   };
 
@@ -97,8 +103,8 @@ function App() {
 
   return (
     <>
-      {/* <Construction /> */}
-      <ProfileContext.Provider value={store}>
+      <Construction />
+      {/* <ProfileContext.Provider value={store}>
         {token ? token.length && <BottomBar /> : <></>}
         {location.pathname !== "/login" &&
           location.pathname !== "/signup" &&
@@ -110,7 +116,7 @@ function App() {
           ))}
         </Routes>
         <ToastContainer />
-      </ProfileContext.Provider>
+      </ProfileContext.Provider> */}
     </>
   );
 }
