@@ -492,7 +492,7 @@ const Revenue = () => {
           {/* PC VIEW */}
           {isrcs.length > 0 &&
             (filtered.length ? (
-              <div className="relative">
+              <div className="relative hidden 2xl:block">
                 <FaChevronLeft
                   className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[9999] text-white"
                   onClick={() =>

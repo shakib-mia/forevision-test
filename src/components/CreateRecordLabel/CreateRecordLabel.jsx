@@ -16,7 +16,8 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
   const handleRecordLabelSubmit = (e) => {
     e.preventDefault();
 
-    setShowRecordLabelForm(false);
+    // setShowRecordLabelForm(false);
+    const data = {};
   };
 
   return (
