@@ -12,9 +12,50 @@ const PlatformSelectionItem = ({
     //   console.log("jio saavn");
     // }
     if (selectedPlatforms?.includes(plat.cat_name)) {
-      setSelectedPlatforms([
-        ...selectedPlatforms?.filter((it) => it !== plat.cat_name),
-      ]);
+      if (plat.cat_name === "JioTunes" || plat.cat_name === "JioSaavn") {
+        const deleted = selectedPlatforms.filter((it) => {
+          return it !== "JioTunes" && it !== "JioSaavn";
+        });
+        setSelectedPlatforms(deleted);
+        // setSelectedPlatforms([
+        //   ...selectedPlatforms?.filter(
+        //     (it) => it !== plat.cat_name || it !== "JioSaavn"
+        //   ),
+        // ]);
+      } else if (
+        plat.cat_name === "Airtel" ||
+        plat.cat_name === "Vi" ||
+        plat.cat_name === "BSNL" ||
+        plat.cat_name === "Wynk Music"
+      ) {
+        const deleted = selectedPlatforms.filter((it) => {
+          return (
+            it !== "Airtel" &&
+            it !== "Vi" &&
+            it !== "BSNL" &&
+            it !== "Wynk Music"
+          );
+        });
+        setSelectedPlatforms(deleted);
+      } else if (
+        plat.cat_name === "YouTube Music" &&
+        selectedPlatforms.includes("YouTube Content ID")
+      ) {
+        setSelectedPlatforms([...selectedPlatforms]);
+      } else if (
+        plat.cat_name === "Musixmatch" ||
+        plat.cat_name === "LyricFind"
+      ) {
+        setSelectedPlatforms(
+          selectedPlatforms.filter(
+            (it) => it !== "Musixmatch" && it !== "LyricFind"
+          )
+        );
+      } else {
+        setSelectedPlatforms([
+          ...selectedPlatforms?.filter((it) => it !== plat.cat_name),
+        ]);
+      }
 
       // console.log(plat);
     } else {
@@ -35,6 +76,11 @@ const PlatformSelectionItem = ({
           "BSNL",
           "Wynk Music",
         ]);
+      } else if (
+        plat.cat_name === "Musixmatch" ||
+        plat.cat_name === "LyricFind"
+      ) {
+        setSelectedPlatforms([...selectedPlatforms, "Musixmatch", "LyricFind"]);
       } else if (plat.cat_name === "YouTube Content ID") {
         setSelectedPlatforms([
           ...selectedPlatforms,
@@ -53,6 +99,15 @@ const PlatformSelectionItem = ({
         {item?.platformType}{" "}
         {item?.platformType === "Caller Tune" ? "Partners" : "Platforms"}
       </h5>
+
+      <h6 className="mb-4 text-grey-dark text-center w-5/6 text-heading-6 mx-auto">
+        {item?.platformType === "YouTube"
+          ? "Content you cannot upload to YouTube Content ID includes public domain works, content you don’t own or have exclusive rights to, licensed content, fair use material, shared ownership content, unauthorized derivative works, royalty-free content, fan art, and disputed content."
+          : item?.platformType === "Lyrics"
+          ? "LyricFind and Musixmatch earn royalties by licensing lyrics from rights holders and distributing revenue generated through subscription fees, ad placements, and data licensing agreements, ensuring songwriters and publishers receive compensation for their lyrics' use."
+          : ""}
+      </h6>
+
       <ul className="grid grid-cols-4 gap-4">
         {item?.platforms?.map((plat) => (
           <li
@@ -61,6 +116,10 @@ const PlatformSelectionItem = ({
                 ? "shadow-md"
                 : "shadow-none"
             }`}
+            title={
+              plat.cat_name === "Meta" &&
+              "Including FB & Instagram audio library, shorts, story and reels."
+            }
             onClick={() => handlePlatformSelection(plat)}
           >
             <img

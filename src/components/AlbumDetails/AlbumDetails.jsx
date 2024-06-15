@@ -160,9 +160,11 @@ const AlbumDetails = () => {
             onChange={handleArtFileChange}
             required={true}
             placeholder={file?.name || "Album Art"}
-            accept={".jpg,.png"}
+            accept={".jpg"}
             label={" "}
-            note={"Upload your Artwork(3000px X 3000px , .jpg format)"}
+            note={
+              "Ensure that your artwork is in the dimensions of 3000×3000 pixels and in .jpg format only."
+            }
           />
         </aside>
       </div>

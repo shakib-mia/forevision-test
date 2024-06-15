@@ -414,7 +414,7 @@ const Revenue = () => {
                   />
                 </div>
                 <p className="text-subtitle-1 text-interactive-dark-destructive-active tracking-[0.5px] mt-1 italic">
-                  * Updated Till February, 2024
+                  * Updated Till March, 2024
                 </p>
               </div>
 

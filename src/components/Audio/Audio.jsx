@@ -163,34 +163,34 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
     // console.log(formData);
     formData.paymentStatus = "pending";
     formData.userEmail = userData.user_email;
-    delete formData.user_email;
-    delete formData.audioUrl;
-    delete formData.file;
-    delete formData.status;
+
+    console.log(formData.file);
+
+    const SongFile = new FormData();
+
+    SongFile.append("file", formData.file);
 
     // Perform the file upload
     axios
-      .post(backendUrl + "upload-song", file, config)
-      .then(({ data }) => {
-        // Update formData with the song URL returned from the server
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          songUrl: data.songUrl,
-        }));
-      })
+      .post(backendUrl + "upload-song", SongFile, config)
+      .then(({ data }) => (formData.songUrl = data.songUrl))
       .catch((error) => {
         console.error("Error uploading file:", error);
       });
 
+    delete formData.user_email;
+    delete formData.audioUrl;
+    delete formData.file;
+    delete formData.status;
     console.log(formData);
 
-    // axios
-    //   .post(backendUrl + "upload-song/upload-song-data", formData, config)
-    //   .then(({ data }) => {
-    //     if (data.acknowledged) {
-    //       setScreen("distribution");
-    //     }
-    //   });
+    axios
+      .post(backendUrl + "upload-song/upload-song-data", formData, config)
+      .then(({ data }) => {
+        if (data.acknowledged) {
+          setScreen("distribution");
+        }
+      });
   };
 
   // const tracks = [
@@ -525,11 +525,12 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
           {/* <div className="mt-3 flex gap-3"> */}
           <InputField
             type={"file"}
-            accept={"audio/*"}
-            label={"Upload"}
+            accept={"audio/mp3, audio/wav"}
+            label={"Upload Audio"}
             onChange={handleAudioChange}
             disabled={!formData.songName}
             id={"audioUpload"}
+            note={"Ensure your audio files are in WAV or MP3 formats only."}
             required={true}
             placeholder={formData.file?.name || "Select File"}
             containerClassName={"mt-3"}
