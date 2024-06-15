@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import InputField from "../InputField/InputField";
+import { ScreenContext } from "../../contexts/ScreenContext";
 
 const CallerTuneTimeStamp = ({
   audioDuration,
@@ -12,9 +13,8 @@ const CallerTuneTimeStamp = ({
   startMinutes2,
   startSeconds2,
 }) => {
-  // console.log(audioDuration);
-  // const [startValue, setStartValue] = useState(0)
-  // console.log(Math.floor(audioDuration));
+  const { formData, setFormData } = useContext(ScreenContext);
+
   return (
     <div className="w-full mt-4">
       <label htmlFor="callertune" className="mt-2">
@@ -23,7 +23,18 @@ const CallerTuneTimeStamp = ({
       <div className="flex gap-3 w-full mt-1">
         <div className="flex gap-2 w-full">
           <InputField
-            onChange={(e) => setStartMinutes(e.target.value)}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                startMinutes: startMinutes || 0,
+                endMinutes:
+                  (parseInt(startSeconds) || 0) + 45 >= 60
+                    ? parseInt(startMinutes) + 1
+                    : startMinutes,
+              });
+
+              setStartMinutes(e.target.value);
+            }}
             type="number"
             label={"Start Time (Minute)"}
             required
@@ -32,13 +43,7 @@ const CallerTuneTimeStamp = ({
             note={"For Jio, BSNL, VI & Airtel"}
             containerClassName={"w-full"}
             name={"startMinutes"}
-            // max={Math.floor(audioDuration - 45) / 60}
             min={0}
-            // note={
-            //   Math.floor(audioDuration - 45) / 60 > startMinutes
-            //     ? "invalid minute value"
-            //     : ""
-            // }
           />
           {/* <span>
             {Math.floor(audioDuration - 45) / 60 < startMinutes
@@ -46,7 +51,17 @@ const CallerTuneTimeStamp = ({
               : ""}
           </span> */}
           <InputField
-            onChange={(e) => setStartSeconds(e.target.value)}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                startSeconds: startSeconds || 0,
+                endSeconds:
+                  parseInt(startSeconds) + 45 >= 60
+                    ? Math.abs(60 - (parseInt(startSeconds) + 45))
+                    : parseInt(startSeconds) + 45,
+              });
+              setStartSeconds(e.target.value);
+            }}
             value={startSeconds}
             type="number"
             id={"start-seconds"}
@@ -93,7 +108,17 @@ const CallerTuneTimeStamp = ({
       <div className="flex gap-3 w-full mt-3">
         <div className="flex gap-2 w-full">
           <InputField
-            onChange={(e) => setStartMinutes2(e.target.value)}
+            onChange={(e) => {
+              setStartMinutes2(e.target.value);
+              setFormData({
+                ...formData,
+                startMinutes2: startMinutes2 || 0,
+                endMinutes2:
+                  (parseInt(startSeconds2) || 0) + 45 >= 60
+                    ? parseInt(startMinutes2) + 1
+                    : startMinutes2,
+              });
+            }}
             type="number"
             label={"Start Time (Minute)"}
             note={"For BSNL, VI & Airtel"}
@@ -116,7 +141,18 @@ const CallerTuneTimeStamp = ({
               : ""}
           </span> */}
           <InputField
-            onChange={(e) => setStartSeconds2(e.target.value)}
+            onChange={(e) => {
+              setStartSeconds2(e.target.value);
+
+              setFormData({
+                ...formData,
+                startSeconds2: startSeconds2 || 0,
+                endSeconds2:
+                  parseInt(startSeconds2) + 45 >= 60
+                    ? Math.abs(60 - (parseInt(startSeconds2) + 45))
+                    : parseInt(startSeconds2) + 45,
+              });
+            }}
             value={startSeconds2}
             type="number"
             id={"start-seconds2"}

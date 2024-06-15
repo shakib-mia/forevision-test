@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -18,11 +18,14 @@ import jio from "../../assets/icons/jio.webp";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../components/Modal/Modal";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { PlanContext } from "../../contexts/PlanContext";
 
 const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
   const navigate = useNavigate();
   const [modal, showModal] = useState(false);
   const [price, setPrice] = useState(0);
+  const { setPlanStore } = useContext(PlanContext);
 
   const initialOptions = {
     clientId: "test",
@@ -279,7 +282,12 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
               onClick={() => {
                 setPrice(69900);
                 setPlanName("CRBT+");
-                navigate("/song-upload?CRBT+?69900");
+                setPlanStore((prev) => ({
+                  ...prev,
+                  planName: "CRBT+",
+                  price: 69900,
+                }));
+                navigate("/song-upload?forevision-crbt+?69900");
               }}
             ></Button>
           </div>
@@ -366,6 +374,11 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
               onClick={() => {
                 setPrice(49800);
                 setPlanName("Forevision Pro");
+                setPlanStore((prev) => ({
+                  ...prev,
+                  planName: "ForeVision Pro",
+                  price: 49800,
+                }));
                 navigate("/song-upload?forevision-pro?49800");
               }}
               className={"w-full justify-center"}
@@ -454,8 +467,14 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
               className={"w-full justify-center"}
               onClick={() => {
                 setPrice(49900);
+                setPlanStore((prev) => ({
+                  ...prev,
+                  planName: "CRBT",
+                  price: 49900,
+                }));
+
                 setPlanName("CRBT");
-                navigate("/song-upload?forevision-CRBT?49900");
+                navigate("/song-upload?forevision-crbt?49900");
               }}
             ></Button>
           </div>

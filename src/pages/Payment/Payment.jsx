@@ -1,13 +1,28 @@
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import useRazorpay from "react-razorpay";
-import { backendUrl } from "../../constants";
+import { backendUrl, config } from "../../constants";
 import logo from "../../assets/icons/logo.PNG";
-import { useLocation } from "react-router-dom";
+import razorpay from "./../../assets/icons/razorpay.png";
+import phonepe from "../../assets/icons/phonepe.png";
+import { useLocation, useNavigate } from "react-router-dom";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { PlanContext } from "../../contexts/PlanContext";
 
 const Payment = () => {
   const [Razorpay] = useRazorpay();
   const location = useLocation();
+  const { token } = useContext(ProfileContext);
+  const navigate = useNavigate();
+  const { setPlanStore } = useContext(PlanContext);
+  // console.log(data);
+
+  const initialOptions = {
+    clientId: "test",
+    currency: "USD",
+    intent: "capture",
+  };
 
   // console.log(location.search.split("=")[1]);
 
@@ -72,8 +87,19 @@ const Payment = () => {
       handler: async (response) => {
         try {
           const verifyUrl = backendUrl + "razorpay/verify";
-          const { data } = axios.post(verifyUrl, response);
-          console.log(data);
+          const config = {
+            headers: {
+              token,
+            },
+          };
+          // console.log(config);
+          const res = await axios.post(verifyUrl, response, config);
+          // console.log(res);
+
+          if (res.data.insertCursor.acknowledged) {
+            setPlanStore((prev) => ({ ...prev, ...res.data }));
+            navigate("/payment-success");
+          }
         } catch (error) {
           console.log(error);
         }
@@ -87,9 +113,68 @@ const Payment = () => {
     rzp1.open();
   };
 
+  // const handlePhonePePayment = (amount) => {
+  //   console.log(amount);
+  //   const options = {
+  //     method: "post",
+  //     url: "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
+  //     headers: {
+  //       accept: "text/plain",
+  //       "Content-Type": "application/json",
+  //     },
+  //     data: {
+  //       merchantId: "PGTESTPAYUAT",
+  //       merchantTransactionId: "MT7850590068188104",
+  //       merchantUserId: "MUID123",
+  //       amount: 10000,
+  //       redirectUrl: "https://webhook.site/redirect-url",
+  //       redirectMode: "REDIRECT",
+  //       callbackUrl: "https://webhook.site/callback-url",
+  //       mobileNumber: "9999999999",
+  //       paymentInstrument: {
+  //         type: "PAY_PAGE",
+  //       },
+  //     },
+  //   };
+
+  //   const data = {
+  //     name: "shakib",
+  //     amount: 1,
+  //     number: 91812345679,
+  //     MID: "MID" + Date.now(),
+  //     merchantTransactionId: "T" + Date.now(),
+  //   };
+
+  //   axios
+  //     .post(backendUrl + "phonepe-payment/pay", data)
+  //     .then(({ data }) => {
+  //       console.log(data);
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
+
   return (
-    <div className="ml-7">
-      <button onClick={handleRazorpayPayment}>open razorpay</button>
+    <div className="w-screen h-screen flex justify-center items-center bg-grey-light">
+      <div className="flex flex-col w-10/12 md:w-1/2 xl:w-1/4 relative shadow-xl bg-white rounded-lg">
+        {/* <h5 className="text-heading-5-bold text-white-secondary bg-primary absolute top-0 left-0 w-full p-2 rounded-t-lg">
+          Select Your Payment Method
+        </h5> */}
+
+        <div className="p-4">
+          <button
+            className="w-full flex justify-center py-2 border-2 border-primary rounded-full mb-3" // mt-6 will be here when more methods and header will be added
+            onClick={() => {
+              handleRazorpayPayment(99900);
+            }}
+          >
+            <img src={razorpay} alt="razorpay" className="w-1/3" />
+          </button>
+
+          <PayPalScriptProvider options={initialOptions}>
+            <PayPalButtons />
+          </PayPalScriptProvider>
+        </div>
+      </div>
     </div>
   );
 };

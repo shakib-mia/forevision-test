@@ -7,12 +7,43 @@ import InputField from "../InputField/InputField";
 import Modal from "../Modal/Modal";
 import CreateRecordLabel from "../CreateRecordLabel/CreateRecordLabel";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { backendUrl } from "../../constants";
 
 const AlbumDetails = () => {
   const { setScreen, setFormData, formData } = useContext(ScreenContext);
   const { recordLabels } = useContext(ProfileContext);
   const [file, setFile] = useState({});
   const [showRecordLabelForm, setShowRecordLabelForm] = useState(false);
+
+  const handleDetailSubmit = () => {
+    if (file.name) {
+      setScreen("platform");
+      // setFileError(false)
+    } else {
+      // setFileError(true)
+      // console.log();
+
+      toast.error("File is empty", {
+        position: "bottom-center",
+      });
+    }
+  };
+
+  const handleArtFileChange = (e) => {
+    setFile(e.target.files[0]);
+    // setFormData({ ...formData, albumArt: e.target.files[0] });
+    const albumArt = new FormData();
+
+    albumArt.append("file", e.target.files[0]);
+
+    axios
+      .post(backendUrl + "upload-art-work", albumArt)
+      .then(({ data }) =>
+        setFormData({ ...formData, artWork: data.artWorkUrl })
+      );
+  };
 
   return (
     <>
@@ -27,6 +58,7 @@ const AlbumDetails = () => {
             name={"contentType"}
             required
             options={["Album", "Film"]}
+            value={formData.contentType}
           />
         </aside>
         <aside className="w-1/3">
@@ -37,6 +69,7 @@ const AlbumDetails = () => {
             name={"upc"}
             // labelClassName={"opacity-0"}
             placeholder={"UPC"}
+            value={formData.upc}
             label={" "}
             onChange={(e) => setFormData({ ...formData, upc: e.target.value })}
             note={
@@ -94,6 +127,7 @@ const AlbumDetails = () => {
               note={"Album title"}
               required={true}
               // labelClassName={"opacity-0"}
+              value={formData.albumTitle}
               onChange={(e) =>
                 setFormData({ ...formData, albumTitle: e.target.value })
               }
@@ -108,6 +142,7 @@ const AlbumDetails = () => {
               label={" "}
               note={"Album Type"}
               options={["Album", "Single", "Compilation", "Remix"]}
+              value={formData.albumType}
               onChange={(e) =>
                 setFormData({ ...formData, albumType: e.target.value })
               }
@@ -121,10 +156,8 @@ const AlbumDetails = () => {
             // labelClassName={"opacity-0"}
             id={"album-art"}
             name={"albumArt"}
-            onChange={(e) => {
-              setFile(e.target.files[0]);
-              setFormData({ ...formData, albumArt: e.target.files[0] });
-            }}
+            value={formData.albumArt}
+            onChange={handleArtFileChange}
             required={true}
             placeholder={file?.name || "Album Art"}
             accept={".jpg,.png"}
@@ -142,6 +175,7 @@ const AlbumDetails = () => {
               placeholder={"Select..."}
               required={true}
               label={"Record Label"}
+              value={formData.recordLabel}
               name={"recordLabel"}
               note={
                 "If you don't have any you can use our name or you can create your own"
@@ -200,24 +234,18 @@ const AlbumDetails = () => {
           note={
             "If you don't have any you can use our name or you can create your own"
           }
+          value={formData.publisher}
           onChange={(e) =>
             setFormData({ ...formData, publisher: e.target.value })
           }
           name={"publisher"}
-          options={[
-            "ForeVision digital",
-            "ForeVision digital",
-            "ForeVision digital",
-          ]}
+          options={recordLabels}
         />
       </div>
 
       <Button
         containerClassName={"w-fit mx-auto mt-6"}
-        onClick={() => {
-          setScreen("platform");
-          // console.log(formData);
-        }}
+        onClick={handleDetailSubmit}
         // disabled={Object.values(formData).length < 7}
         // type={"submit"}
       >

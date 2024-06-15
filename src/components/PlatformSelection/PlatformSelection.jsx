@@ -1,15 +1,26 @@
 import axios from "axios";
-import { backendUrl } from "../../constants";
+// import { backendUrl } from "../../constants";
 import React, { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import InputField from "../InputField/InputField";
+// import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
+import { ScreenContext } from "../../contexts/ScreenContext";
+import { useLocation } from "react-router-dom";
+import PlatformSelectionItem from "../PlatformSelectionItem/PlatformSelectionItem";
 
 const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
   const [platforms, setPlatforms] = useState([]);
   const { token } = useContext(ProfileContext);
+  const { setFormData, formData } = useContext(ScreenContext);
   const [selectedAll, setSelectedAll] = useState(false);
   const [checked, setChecked] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    // console.log(selectedPlatforms);
+    setFormData({ ...formData, selectedPlatforms });
+    // console.log(formData);
+  }, [selectedPlatforms?.length, selectedPlatforms]);
 
   useEffect(() => {
     // console.log(config);
@@ -39,9 +50,6 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
     }
   }, [platforms]);
 
-  // console.log(newPlatforms);
-
-  // console.log(handle);
   const handleSelectedPlatform = (e) => {
     if (checked) {
       let newSelectedPlatforms = []; // Initialize a temporary array
@@ -53,7 +61,7 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
       }
 
       setSelectedPlatforms(newSelectedPlatforms); // Update state once with the complete list
-      // console.log(newSelectedPlatforms); // This should now reflect the full list of added items
+      console.log(newSelectedPlatforms); // This should now reflect the full list of added items
     } else {
       setSelectedPlatforms([]);
     }
@@ -61,60 +69,88 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
 
   useEffect(() => {
     if (checked) {
-      setSelectedAll(selectedPlatforms.length === newPlatforms.length);
+      setSelectedAll(
+        selectedPlatforms?.length > 0 &&
+          selectedPlatforms?.length === newPlatforms.length
+      );
     }
-  }, [selectedPlatforms, selectedPlatforms.length, newPlatforms, checked]);
+  }, [selectedPlatforms, selectedPlatforms?.length, newPlatforms, checked]);
 
-  // console.log(selectedPlatforms.length === newPlatforms.length);
+  // console.log();
+  const freeLogic = location.search.length === 0;
+  // console.log(platforms);
+  const freePlatformsArray = platforms
+    .find(({ platformType }) => platformType === "International")
+    ?.platforms.filter(
+      (item) =>
+        item.cat_name === "Meta" ||
+        item.cat_name === "TikTok" ||
+        item.cat_name === "SnapChat" ||
+        item.cat_name === "Triller"
+    );
+
+  const proLogic =
+    (location.search.split("?")[1]?.includes("-")
+      ? location.search.split("?")[1]?.split("-")?.join(" ")
+      : location.search.split("?")[1]) === "forevision pro";
+
+  const crbtLogic =
+    (location.search.split("?")[1]?.includes("-")
+      ? location.search.split("?")[1]?.split("-")?.join(" ")
+      : location.search.split("?")[1]) === "forevision crbt";
+
+  // const common
+  const commonPlatforms = platforms.filter(
+    ({ platformType }) =>
+      platformType === "YouTube" || platformType === "Lyrics"
+  );
+  // console.log(commonPlatforms);
+
+  const proPlatforms = platforms.filter(
+    ({ platformType }) => platformType !== "Caller Tune"
+  );
+
+  // console.log(proPlatforms);
+
+  // console.log(commonPlatforms);
+
+  const crbtPlatforms = [
+    ...platforms.filter(
+      ({ platformType }) =>
+        platformType !== "International" &&
+        platformType !== "YouTube" &&
+        platformType !== "Lyrics"
+    ),
+    ...commonPlatforms,
+  ];
+
+  const freePlatforms = [
+    {
+      platformType: "International",
+      platforms: freePlatformsArray,
+    },
+
+    {
+      platformType: [commonPlatforms[0]?.platformType],
+      platforms: commonPlatforms[0]?.platforms.slice(0, 2),
+    },
+    commonPlatforms[1],
+  ];
+  // console.log(commonPlatforms[0]);
+
+  const logicalPlatforms = proLogic
+    ? proPlatforms
+    : crbtLogic
+    ? crbtPlatforms
+    : freeLogic
+    ? freePlatforms
+    : platforms;
+  // console.log(crbtPlatforms);
+
+  // console.log(freePlatforms);
+
   return (
     <>
-      {/* <ul className="grid grid-cols-4 gap-3 gap-y-4"> */}
-      {/* {platforms.length ? (
-          platforms.map((item) => (
-            <li
-              className={`flex gap-2 transition items-center rounded-xl cursor-pointer p-2 ${
-                selectedPlatforms.includes(item.cat_name)
-                  ? "shadow-md"
-                  : "shadow-none"
-              }`}
-              onClick={() =>
-                selectedPlatforms.includes(item.cat_name)
-                  ? setSelectedPlatforms(
-                      selectedPlatforms.filter((it) => it !== item.cat_name)
-                    )
-                  : setSelectedPlatforms([...selectedPlatforms, item.cat_name])
-              }
-            >
-              <img
-                src={item.cat_image}
-                className={`w-6 h-fit transition ${
-                  selectedPlatforms.includes(item.cat_name)
-                    ? "grayscale-0"
-                    : "grayscale"
-                }`}
-                alt=""
-              />
-              <h6 className="text-heading-6-bold text-grey-dark">
-                {item.cat_name}
-              </h6>
-            </li>
-          ))
-        ) : (
-          <>Loading...</>
-        )} */}
-
-      {/* <input type="checkbox" name="" id="platformCheck" />
-      <label
-        className="flex justify-end items-center cursor-pointer gap-2"
-        htmlFor="platformCheck"
-      > */}
-      {/* <InputField
-          itemChecked={selectedPlatforms.length === newPlatforms.length}
-          type={"checkbox"}
-          id={"platformCheck"}
-          checked={checked}
-          onChange={handleSelectedPlatform}
-        /> */}
       <Button
         containerClassName={"w-fit ml-auto"}
         onClick={() => {
@@ -126,54 +162,13 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
       </Button>
       {/* </label> */}
 
-      {platforms.map((item, key) => (
-        <div className={key > 0 && "mt-6"}>
-          <h5 className="text-heading-5-bold text-center mb-3 text-grey-dark">
-            {item.platformType}{" "}
-            {item.platformType === "Caller Tune" ? "Partners" : "Platforms"}
-          </h5>
-          <ul className="grid grid-cols-4 gap-4">
-            {item.platforms.map((plat) => (
-              <li
-                className={`flex gap-2 transition items-center rounded-xl cursor-pointer p-2 ${
-                  selectedPlatforms.includes(plat.cat_name)
-                    ? "shadow-md"
-                    : "shadow-none"
-                }`}
-                onClick={() =>
-                  selectedPlatforms.includes(plat.cat_name)
-                    ? setSelectedPlatforms(
-                        selectedPlatforms.filter((it) => it !== plat.cat_name)
-                      )
-                    : setSelectedPlatforms([
-                        ...selectedPlatforms,
-                        plat.cat_name,
-                      ])
-                }
-              >
-                <img
-                  src={`${backendUrl}uploads/platforms/${
-                    plat.cat_name === "Hungama"
-                      ? "hungama-music"
-                      : plat.cat_name.includes(" ")
-                      ? plat.cat_name.split(" ").join("-").toLowerCase()
-                      : plat.cat_name.toLowerCase()
-                  }.png`}
-                  className={`w-6 h-fit transition ${
-                    selectedPlatforms.includes(plat.cat_name)
-                      ? "grayscale-0"
-                      : "grayscale"
-                  }`}
-                  alt=""
-                />
-                <h6 className="text-heading-6-bold text-grey-dark capitalize">
-                  {plat.cat_name}
-                </h6>
-              </li>
-            ))}
-          </ul>
-          {/* </h5> */}
-        </div>
+      {logicalPlatforms.map((item, key) => (
+        <PlatformSelectionItem
+          id={key}
+          item={item}
+          selectedPlatforms={selectedPlatforms}
+          setSelectedPlatforms={setSelectedPlatforms}
+        />
       ))}
       {/* </ul> */}
     </>

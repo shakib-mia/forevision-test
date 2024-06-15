@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
 import { FaTimes } from "react-icons/fa";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { backendUrl } from "../../constants";
 // import axios from "axios";
 // import { ProfileContext } from "../../contexts/ProfileContext";
 // import { backendUrl } from "../../constants";
@@ -9,15 +13,41 @@ import { FaTimes } from "react-icons/fa";
 const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
   const [selectedCode, setSelectedCode] = useState("91");
   const [isPerpetual, setIsPerpetual] = useState(false);
+  const { token } = useContext(ProfileContext);
   // const { recordLabels } = useContext(ProfileContext);
 
   // console.log(recordLabels);
 
   const handleRecordLabelSubmit = (e) => {
     e.preventDefault();
+    const config = {
+      headers: {
+        token,
+      },
+    };
 
     // setShowRecordLabelForm(false);
-    const data = {};
+    const data = {
+      "Sub-Label Name": e.target.recordLabelName.value,
+      phoneNo: e.target.phoneNo.value,
+      status: "Active",
+      "Email ID": e.target.email.value,
+      address: e.target.address.value,
+      "Start Date": e.target.startDate.value,
+      "End Date": e.target.endDate?.value || "",
+      signatoryName: e.target.signatoryName.value,
+    };
+
+    axios
+      .post(backendUrl + "record-labels", data, config)
+      .then(({ data }) => console.log(data))
+      .catch((error) =>
+        toast.error(error.response.data, {
+          position: "bottom-center",
+        })
+      );
+
+    // console.log(data);
   };
 
   return (
@@ -52,6 +82,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           placeholder={"Enter your phone no. here"}
           label={"Phone No."}
           setSelectedCode={setSelectedCode}
+          name={"phoneNo"}
           selectedCode={selectedCode}
           containerClassName={"w-1/2"}
           id={"phone-no"}
@@ -61,6 +92,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         <InputField
           type={"email"}
           placeholder={"Enter your email address here"}
+          name={"email"}
           id={"email"}
           label={"Email id"}
           containerClassName={"w-1/2"}
@@ -73,6 +105,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         placeholder={"Enter your address here"}
         id={"address"}
         label={"Address"}
+        name={"address"}
         containerClassName={"mt-3"}
         hideRequired={true}
       />
@@ -82,6 +115,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           type={"date"}
           containerClassName={"w-1/2"}
           hideRequired={true}
+          name={"startDate"}
           label={"Start Date"}
         />
 
@@ -89,6 +123,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           <InputField
             type={"date"}
             containerClassName={"w-1/2"}
+            name={"endDate"}
             hideRequired={true}
             label={"End Date"}
           />
@@ -108,6 +143,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         type={"text"}
         placeholder={"Enter your signature here"}
         label={"Signatory Person Name"}
+        name={"signatoryName"}
         id={"signature"}
         containerClassName={"mt-3"}
         hideRequired={true}

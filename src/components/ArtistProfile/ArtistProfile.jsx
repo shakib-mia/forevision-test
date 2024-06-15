@@ -36,8 +36,10 @@ const ArtistProfile = ({
           placeholder={"Artist Name"}
           containerClassName={"w-full"}
           required={true}
-          value={artist.name}
-          onChange={(e) => handleArtistNameChange(id, e.target.value)}
+          value={formData.artists[id].name}
+          onChange={(e) => {
+            handleArtistNameChange(id, e.target.value);
+          }}
         />
         <SelectOptions
           containerClassName={"w-full"}
@@ -50,8 +52,7 @@ const ArtistProfile = ({
             "Producer",
             "Star Cast",
           ]}
-          selec
-          value={artist.role}
+          value={formData.artists[id].role}
           onChange={(e) => handleArtistRoleChange(id, e.target.value)}
           required={true}
           label={"Select Role"}

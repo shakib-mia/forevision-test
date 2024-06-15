@@ -39,7 +39,7 @@ const Sidebar = () => {
 
   return (
     <aside
-      className="fixed top-0 left-0 h-screen shadow-lg p-2 bg-white w-6 hover:w-[15%] transition-all duration-500 overflow-hidden overflow-y-auto hidden lg:flex lg:flex-col lg:justify-between z-20"
+      className="fixed top-0 left-0 h-screen shadow-lg p-2 bg-white w-6 hover:w-[15%] transition-all duration-500 overflow-hidden overflow-y-auto hidden xl:flex xl:flex-col xl:justify-between z-20"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

@@ -1,18 +1,24 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import Button from "../Button/Button";
 import InputField from "../InputField/InputField";
 import axios from "axios";
-import { config } from "./../../constants";
+import { backendUrl, config } from "./../../constants";
 import SelectOptions from "../SelectOptions/SelectOptions";
 import CallerTuneTimeStamp from "../CallerTuneTimeStamp/CallerTuneTimeStamp";
 import "@madzadev/audio-player/dist/index.css";
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 
 import ArtistProfile from "../ArtistProfile/ArtistProfile";
+import { fileToBase64 } from "../../utils/filetobase64";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { useLocation } from "react-router-dom";
 
 const AudioUI = ({ artistCount, setArtistCount }) => {
   const { setScreen, setFormData, formData } = useContext(ScreenContext);
+  const { userData } = useContext(ProfileContext);
+  const location = useLocation();
+  // console.log(userData);
   // const [alreadyHaveIsrc, setAlreadyHaveIsrc] = useState(false);
   const [isrc, setIsrc] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
@@ -24,6 +30,8 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
   const [startSeconds2, setStartSeconds2] = useState(0);
   // const [focused, setFocused] = useState(false);
   // const [showPlats, setShowPlats] = useState(false);
+  const [genre, setGenre] = useState("Film");
+  const [subGenreOptions, setSubGenreOptions] = useState([]);
 
   const handleArtistNameChange = (index, value) => {
     const updatedArtists = [...formData.artists];
@@ -94,37 +102,95 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
   //   }
   // }, [alreadyHaveIsrc]);
 
-  const handleAudioChange = (event) => {
+  // console.log(formData);
+
+  const handleAudioChange = async (event) => {
     const file = event.target.files[0]; // Get the file
     setFile(file);
+    const data = await fileToBase64(file);
+    setAudioUrl(data);
+    // console.log(data);
+    // sessionStorage.setItem("song", data);
+    // console.log(file.filename);
+
     if (file && file.type.startsWith("audio/")) {
+      // Create an object URL for the audio file
       const audioUrl = URL.createObjectURL(file);
-      setAudioUrl(audioUrl);
+
+      // Update the formData state with the file and audioUrl
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        file,
+      }));
+
+      // Create a new Audio object to get the duration
       const audio = new Audio(audioUrl);
-      // console.log(audioUrl);
+
+      // Wait for the audio metadata to load
       audio.onloadedmetadata = () => {
-        // Access audio duration here
-        setAudioDuration(audio.duration);
-        console.log(`Audio Duration: ${audio.duration} seconds`);
-        // Perform any action with the duration here
+        const duration = audio.duration;
+        setAudioDuration(duration);
 
-        // Remember to revoke the created URL to avoid memory leaks
+        // Revoke the object URL to avoid memory leaks
         URL.revokeObjectURL(audioUrl);
-      };
-      const formData = new FormData();
 
-      formData.append("file", file);
-      axios
-        .post("https://api.forevisiondigital.in/upload-song", formData, config)
-        .then(({ data }) => setAudioUrl(data.songUrl));
+        // Append the file to FormData
+        const fileData = new FormData();
+        fileData.append("file", file);
+
+        // // Perform the file upload
+        // axios
+        //   .post(backendUrl + "upload-song", fileData, config)
+        //   .then(({ data }) => {
+        //     // Update formData with the song URL returned from the server
+        //     setFormData((prevFormData) => ({
+        //       ...prevFormData,
+        //       songUrl: data.songUrl,
+        //     }));
+        //   })
+        //   .catch((error) => {
+        //     console.error("Error uploading file:", error);
+        //   });
+      };
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setScreen("distribution");
+    // setScreen("distribution");
+    localStorage.setItem("song-data", JSON.stringify(formData));
     // console.log(formData);
+    formData.paymentStatus = "pending";
+    formData.userEmail = userData.user_email;
+    delete formData.user_email;
+    delete formData.audioUrl;
+    delete formData.file;
+    delete formData.status;
+
+    // Perform the file upload
+    axios
+      .post(backendUrl + "upload-song", file, config)
+      .then(({ data }) => {
+        // Update formData with the song URL returned from the server
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          songUrl: data.songUrl,
+        }));
+      })
+      .catch((error) => {
+        console.error("Error uploading file:", error);
+      });
+
+    console.log(formData);
+
+    // axios
+    //   .post(backendUrl + "upload-song/upload-song-data", formData, config)
+    //   .then(({ data }) => {
+    //     if (data.acknowledged) {
+    //       setScreen("distribution");
+    //     }
+    //   });
   };
 
   // const tracks = [
@@ -152,19 +218,11 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
     // console.log(updatedArtists);
   };
 
-  const handleDelete = (e) => {
-    // console.log(audioUrl.split("/")[audioUrl.split("/").length - 1]);
-    axios
-      .post(
-        "https://api.forevisiondigital.in/upload-song/delete/" +
-          audioUrl.split("/")[audioUrl.split("/").length - 1]
-      )
-      .then((res) => {
-        if (res.status === 200) {
-          setAudioUrl("");
-        }
-      });
-  };
+  // console.log(
+  //   location.search.split("?")[1]?.includes("-")
+  //     ? location.search.split("?")[1]?.split("-")?.join(" ")
+  //     : location.search.split("?")[1]
+  // );
 
   /**
    *
@@ -172,6 +230,191 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
    *
    *
    * */
+
+  useEffect(() => {
+    const options =
+      genre === "Film"
+        ? [
+            "Devotional",
+            "Dialogue",
+            "Ghazal",
+            "Hip-Hop/ Rap",
+            "Instrumental",
+            "Patriotic",
+            "Remix",
+            "Romantic",
+            "Sad",
+            "Unplugged",
+          ]
+        : genre === "Pop"
+        ? [
+            "Acoustic Pop",
+            "Band Songs",
+            "Bedroom Pop",
+            "Chill Pop",
+            "Contemporary Pop",
+            "Country Pop/ Regional Pop",
+            "Dance Pop",
+            "Electro Pop",
+            "Lo-Fi Pop",
+            "Love  Songs",
+            "Pop Rap",
+            "Pop Singer-Songwriter",
+            "Sad Songs",
+            "Soft Pop",
+          ]
+        : genre === "Indie"
+        ? [
+            "Indian Indie",
+            "Indie Dance",
+            "Indie Folk",
+            "Indie Hip-Hop",
+            "Indie Lo-Fi",
+            "Indie Pop",
+            "Indie Rock",
+            "Indie Singer -Songwriter",
+          ]
+        : genre === "Hip-Hop/Rap"
+        ? [
+            "Alternative Hip-Hop",
+            "Concious Hip-Hop",
+            "Country Rap",
+            "Emo Rap",
+            "Hip-Hop",
+            "Jazz Rap",
+            "Pop Rap",
+            "Trap",
+            "Trap Beats",
+          ]
+        : genre === "Folk"
+        ? [
+            "Ainchaliyan",
+            "Alha",
+            "Atulprasadi",
+            "Baalgeet/ Children Song",
+            "Banvarh",
+            "Barhamasa",
+            "Basant Geet",
+            "Baul Geet",
+            "Bhadu Gaan",
+            "Bhagawati",
+            "Bhand",
+            "Bhangra",
+            "Bhatiali",
+            "Bhavageete",
+            "Bhawaiya",
+            "Bhuta song",
+            "Bihugeet",
+            "Birha",
+            "Borgeet",
+            "Burrakatha",
+            "Chappeli",
+            "Daff",
+            "Dandiya Raas",
+            "Dasakathia",
+            "Deijendrageeti",
+            "Deknni",
+            "Dhamal",
+            "Gadhwali",
+            "Gagor",
+            "Garba",
+            "Ghasiyari Geet",
+            "Ghoomar",
+            "Gidda",
+            "Gugga",
+            "Hafiz Nagma",
+            "Heliam",
+            "Hereileu",
+            "Hori",
+            "Jaanapada Geethe",
+            "Jaita",
+            "Jhoori",
+            "Jhora",
+            "Jhumur",
+            "Jugni",
+            "Kajari",
+            "Kajari/ Kajari /Kajri",
+            "Karwa Chauth Songs",
+            "Khor",
+            "Koligeet",
+            "Kumayuni",
+            "Kummi Paatu",
+            "Lagna Geet /Marriage Song",
+            "Lalongeeti",
+            "Lavani",
+            "Lokgeet",
+            "Loor",
+            "Maand",
+            "Madiga Dappu",
+            "Mando",
+            "Mapilla",
+            "Naatupura Paadalgal",
+            "Naqual",
+            "Nati",
+            "Nautanki",
+            "Nazrulgeeti",
+            "Neuleu",
+            "Nyioga",
+            "Oggu Katha",
+            "Paani Hari",
+            "Pai Song",
+            "Pandavani",
+            "Pankhida",
+            "Patua Sangeet",
+            "Phag Dance",
+            "Powada",
+            "Qawwali",
+            "Rabindra Sangeet",
+            "Rajanikantageeti",
+            "Ramprasadi",
+            "Rasiya",
+            "Rasiya Geet",
+            "Raslila",
+            "Raut Nacha",
+            "Saikuthi Zai",
+            "Sana Lamok",
+            "Shakunakhar-Mangalgeet",
+            "Shyama Sangeet",
+            "Sohar",
+            "Sumangali",
+            "Surma",
+            "Suvvi paatalu",
+            "Tappa",
+            "Teej songs",
+            "Tusu Gaan",
+            "Villu Pattu",
+          ]
+        : genre === "Devotional"
+        ? [
+            "Aarti",
+            "Bhajan",
+            "Carol",
+            "Chalisa",
+            "Chant",
+            "Geet",
+            "Gospel",
+            "Gurbani",
+            "Hymn",
+            "Kirtan",
+            "Kirtan",
+            "Mantra",
+            "Mantra",
+            "Paath",
+            "Qawwals",
+            "Shabd",
+          ]
+        : genre === "Hindustani Classical"
+        ? ["Instrumental", "Vocal "]
+        : genre === "Carnatic Classical"
+        ? ["Instrumental", "Vocal"]
+        : genre === "Ambient / Instrumental"
+        ? ["Soft", "Easy Listening", "Electronic", "Fusion", "Lounge"]
+        : [];
+
+    setSubGenreOptions(options);
+  }, [genre]);
+
+  // console.log(formData);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -184,6 +427,7 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
                 setFormData({ ...formData, songName: e.target.value })
               }
               required
+              value={formData.songName}
               placeholder={"Name"}
             />
             <InputField
@@ -194,7 +438,7 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
               }}
               placeholder={"ISRC"}
               // required={alreadyHaveIsrc}
-              // value={isrc}
+              value={formData.isrc}
               // disabled={!alreadyHaveIsrc}
             />
             {/* <div className="flex"></div> */}
@@ -218,11 +462,13 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
               }
               required={true}
               options={["no", "yes"]}
+              value={formData.parentalAdvisory ? "yes" : "no"}
               placeholder={"Select..."}
               label={"Parent Advisory"}
             />
             <SelectOptions
               placeholder={"Select..."}
+              value={formData.instrumental ? "yes" : "no"}
               options={["no", "yes"]}
               label={"Instrumental"}
               required={true}
@@ -234,6 +480,7 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
               }
             />
             <SelectOptions
+              value={formData.language}
               options={languagesInIndia}
               label={"Language"}
               placeholder={"Select..."}
@@ -247,7 +494,7 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
 
           <div className="mt-4 flex items-end gap-2">
             <aside className="w-full">
-              {formData.artists.map((artist, key) => (
+              {formData?.artists?.map((artist, key) => (
                 <ArtistProfile
                   key={key}
                   id={key}
@@ -284,7 +531,7 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
             disabled={!formData.songName}
             id={"audioUpload"}
             required={true}
-            placeholder={file.name || "Select File"}
+            placeholder={formData.file?.name || "Select File"}
             containerClassName={"mt-3"}
           />
 
@@ -306,47 +553,98 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
       {/* {formData.songName?.length && ( */}
 
       {/* )} */}
-      <CallerTuneTimeStamp
-        setStartMinutes={setStartMinutes}
-        setStartSeconds={setStartSeconds}
-        audioDuration={audioDuration}
-        startMinutes={startMinutes}
-        startSeconds={startSeconds}
-        startMinutes2={startMinutes2}
-        startSeconds2={startSeconds2}
-        setStartMinutes2={setStartMinutes2}
-        setStartSeconds2={setStartSeconds2}
-      />
+      {(location.search.split("?")[1]?.includes("-")
+        ? location.search.split("?")[1]?.split("-")?.join(" ")
+        : location.search.split("?")[1]) !== "forevision pro" ? (
+        <CallerTuneTimeStamp
+          setStartMinutes={setStartMinutes}
+          setStartSeconds={setStartSeconds}
+          audioDuration={audioDuration}
+          startMinutes={startMinutes}
+          startSeconds={startSeconds}
+          startMinutes2={startMinutes2}
+          startSeconds2={startSeconds2}
+          setStartMinutes2={setStartMinutes2}
+          setStartSeconds2={setStartSeconds2}
+        />
+      ) : (
+        <></>
+      )}
 
       <div className="grid grid-cols-4 gap-3 mt-5 items-baseline">
         <SelectOptions
           placeholder={"Select The Primary Genre"}
           required={true}
           label={"Primary Genre"}
-          // onChange={(e) => console.log(e.target.value)}
-          options={["Genre 1", "Genre 2", "Genre 3", "Genre 4", "Genre 5"]}
+          name={"genre"}
+          id={"genre"}
+          value={formData.genre}
+          onChange={(e) => {
+            setGenre(e.target.value);
+            setFormData({ ...formData, genre: e.target.value });
+          }}
+          options={[
+            "Film",
+            "Pop",
+            "Indie",
+            "Hip-Hop/Rap",
+            "Folk",
+            "Devotional",
+            "Hindustani Classical",
+            "Carnatic Classical",
+            "Ambient / Instrumental",
+          ]}
         />
 
         <SelectOptions
           placeholder={"Select The Secondary Genre"}
           label={"Secondary Genre"}
+          name={"subGenre"}
+          id={"subGenre"}
           required={true}
-          // onChange={(e) => console.log(e.target.value)}
-          options={["Genre 1", "Genre 2", "Genre 3", "Genre 4", "Genre 5"]}
+          onChange={(e) =>
+            setFormData({ ...formData, subGenre: e.target.value })
+          }
+          value={formData.subGenre}
+          options={subGenreOptions}
         />
 
         <SelectOptions
-          placeholder={"Select The Mood"}
+          placeholder={"Select The Mood..."}
           label={"Mood"}
           required={true}
+          value={formData.mood}
+          onChange={(e) => setFormData({ ...formData, mood: e.target.value })}
           // onChange={(e) => console.log(e.target.value)}
-          options={["Genre 1", "Genre 2", "Genre 3", "Genre 4", "Genre 5"]}
+          options={[
+            "Romantic",
+            "Happy",
+            "Sad",
+            "Dance",
+            "Bhangra",
+            "Patriotic",
+            "Nostalgic",
+            "Inspirational",
+            "Enthusiastic",
+            "Optimistic",
+            "Passion",
+            "Pessimistic",
+            "Spiritual",
+            "Peppy",
+            "Philosophical",
+            "Mellow",
+            "Calm",
+          ]}
         />
 
         <InputField
           label={"Description"}
           placeholder={"Description"}
           required={false}
+          value={formData.description}
+          onChange={(e) =>
+            setFormData({ ...formData, description: e.target.value })
+          }
           // labelClassName={"opacity-0"}
         />
       </div>
@@ -370,8 +668,9 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
               type={"date"}
               required={true}
               label={" "}
+              value={formData.releaseDate}
               onChange={(e) =>
-                setFormData({ ...formData, time: e.target.value })
+                setFormData({ ...formData, releaseDate: e.target.value })
               }
               note={"Date of Music Release"}
             />
@@ -381,8 +680,9 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
               type={"date"}
               required={true}
               label={" "}
+              value={formData.liveDate}
               onChange={(e) =>
-                setFormData({ ...formData, date: e.target.value })
+                setFormData({ ...formData, liveDate: e.target.value })
               }
               note={"Go Live Date"}
             />
@@ -394,6 +694,7 @@ const AudioUI = ({ artistCount, setArtistCount }) => {
           <InputField
             type={"time"}
             label={" "}
+            value={formData.time}
             onChange={(e) => setFormData({ ...formData, time: e.target.value })}
             note={"Go Live Time"}
           />

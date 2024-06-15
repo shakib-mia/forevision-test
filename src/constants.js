@@ -27,6 +27,7 @@ import YearlyPlan from "./pages/YearlyPlan/YearlyPlan";
 import SongUploadNew from "./pages/SongUploadNew/SongUploadNew";
 import SongUploadForm from "./components/SongUploadForm/SongUploadForm";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
+import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
 
 // export const backendUrl = "http://localhost:5100/";
 export const backendUrl = "https://api.forevisiondigital.in/";
@@ -503,5 +504,10 @@ export const routes = [
   {
     path: "/terms-and-conditions",
     page: <TermsAndConditions />,
+  },
+
+  {
+    path: "/payment-success",
+    page: <PaymentSuccess />,
   },
 ];

@@ -11,6 +11,7 @@ const SelectOptions = ({
   placeholder,
   required,
   name,
+  value,
 }) => {
   return (
     <div className={`input ${containerClassName}`}>
@@ -34,13 +35,10 @@ const SelectOptions = ({
           id={id}
           onChange={onChange}
           name={name}
+          value={value}
           className="input-field bg-surface-white-surface-1 w-full h-full py-[12px] focus:outline-none cursor-pointer capitalize"
         >
-          {placeholder && (
-            <option key={0} value={""}>
-              {placeholder}
-            </option>
-          )}
+          {placeholder && <option key={0}>{placeholder}</option>}
           {options.map((option, key) => (
             <option
               key={key + 1}

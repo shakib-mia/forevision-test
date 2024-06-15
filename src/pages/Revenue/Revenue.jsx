@@ -355,11 +355,11 @@ const Revenue = () => {
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
-        className="bg-[size:100%] bg-no-repeat 2xl:p-4 2xl:pl-7 mb-6 2xl:mb-0"
+        className="bg-[size:100%] bg-no-repeat xl:p-4 xl:pl-7 mb-6 xl:mb-0"
         style={{ backgroundImage: `url(${background})` }}
       >
         <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px]">
-          <div className="flex flex-col 2xl:flex-row gap-3 items-end">
+          <div className="flex flex-col 2xl:flex-row gap-3 items-center 2xl:items-end">
             <div className="w-full 2xl:w-3/4">
               <h4 className="text-heading-4-bold text-grey-dark 2xl:text-white">
                 {greeting} <br />
@@ -418,7 +418,7 @@ const Revenue = () => {
                 </p>
               </div>
 
-              <div className="mt-[32px] grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
+              <div className="mt-[32px] mb-3 2xl:mb-0 grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
                 {/* {data.map((item, key) => <RevenueAnalytics {...item} id={key} key={key} />)} */}
                 {
                   <RevenueAnalytics
@@ -448,13 +448,16 @@ const Revenue = () => {
               {/* </>} */}
             </div>
             {filtered.length > 0 && (
-              <div className="w-full 2xl:w-1/4 h-full 2xl:h-[380px] relative flex flex-col justify-between bg-[length:100%_100%] bg-grey-light 2xl:bg-white rounded-[24px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px]">
-                <div>
-                  <img
+              <div
+                className="w-full max-w-[21rem] 2xl:max-w-[24rem] ml-0 2xl:w-1/4 h-full 2xl:h-[380px] flex flex-col justify-between bg-grey-light 2xl:bg-white rounded-[24px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px] bg-top bg-no-repeat 2xl:bg-contain"
+                style={{ backgroundImage: `url(${balanceBG})` }}
+              >
+                <aside>
+                  {/* <img
                     src={balanceBG}
                     className="absolute w-full h-auto left-0 top-0 z-0"
                     alt=""
-                  />
+                  /> */}
                   <h4 className="text-heading-4-bold text-white 2xl:text-grey relative">
                     Account <br className="2xl:hidden" /> Balance
                   </h4>
@@ -465,7 +468,7 @@ const Revenue = () => {
                         (userData.lifetimeDisbursed || 0)
                     ).toFixed(2)}
                   </h4>
-                </div>
+                </aside>
 
                 <div className="flex justify-center">
                   <Button

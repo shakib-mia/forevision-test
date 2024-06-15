@@ -5,15 +5,14 @@ import play from "./../../assets/icons/play.webp";
 import pause from "./../../assets/icons/pause.webp";
 import sound from "./../../assets/icons/sound.webp";
 import mute from "./../../assets/icons/muted.webp";
+import { formatTime } from "../../utils/formatTime";
 
 function AudioPlayer({ src }) {
   const { formData } = useContext(ScreenContext);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(0.4);
-  // console.log(
-
-  // );
+  const [volume, setVolume] = useState(40);
+  // console.log(formData);
 
   const audioRef = useRef(null);
   const progressRef = useRef(null);
@@ -76,6 +75,10 @@ function AudioPlayer({ src }) {
   //   console.log(progress);
   // }, [progress]);
 
+  // console.log(formData.songUrl);
+
+  // console.log(audioRef.current?.duration);
+
   return (
     <div className="p-3 bg-grey-light rounded-xl text-grey-dark h-full inline-block w-full relative overflow-hidden">
       {/* {src.length > 0 || (
@@ -84,21 +87,25 @@ function AudioPlayer({ src }) {
         </div>
       )} */}
       <div className="flex flex-col gap-2">
-        {formData.albumArt && (
+        {formData.artWork && (
           <img
-            src={URL.createObjectURL(formData.albumArt)}
+            src={formData.artWork}
             alt="album-art"
             className="w-full aspect-square mx-auto rounded-xl"
           />
         )}
         {/* </div> */}
         <aside className="w-full mx-auto flex flex-col justify-between">
-          <audio ref={audioRef} src={src} onTimeUpdate={updateProgress}></audio>
+          <audio
+            ref={audioRef}
+            src={src || formData.songUrl}
+            onTimeUpdate={updateProgress}
+          ></audio>
           <aside>
             <h5 className="text-heading-5-bold">{formData.songName}</h5>
-            {formData.artists.find(
+            {formData?.artists?.find(
               ({ role }) => role === "Singer/Primary Artist"
-            ).name.length ? (
+            )?.name.length ? (
               <h6 className="text-heading-6-bold mt-2">
                 <span className="font-normal">By</span>{" "}
                 {
@@ -113,35 +120,43 @@ function AudioPlayer({ src }) {
           </aside>
         </aside>
       </div>
-      <div className="w-full mx-auto flex items-center gap-3 mt-2">
-        <span onClick={togglePlayPause} className="cursor-pointer w-1/12">
-          {isPlaying && progress !== 100 ? <FaPause /> : <FaPlay />}
-        </span>
-        {/* Progress */}
-        <div
-          className="progress-bar w-7/12 h-1 bg-grey relative overflow-visible rounded-full cursor-pointer"
-          onClick={handleProgressChange}
-        >
+      {src?.length || formData.songUrl?.length ? (
+        <div className="w-full mx-auto flex items-center gap-3 mt-2">
+          <span onClick={togglePlayPause} className="cursor-pointer w-1/12">
+            {isPlaying && progress !== 100 ? <FaPause /> : <FaPlay />}
+          </span>
+
+          {/* Progress */}
           <div
-            className="absolute left-0 top-0 h-full bg-primary-light rounded-full pointer-events-none"
-            style={{ width: `${progress}%` }}
-          ></div>
-          <div
-            id="circle"
-            className="w-2 h-2 rounded-full absolute bg-primary top-0 bottom-0 my-auto pointer-events-none"
-            style={{
-              // height: "20px",
-              // width: "20px",
-              // backgroundColor: "blue",
-              // position: "absolute",
-              left: `${progress - 3}%`,
-              // width: `${progress}%`,
-            }}
-          ></div>
-        </div>
-        {/* Volume */}
-        <div className="w-4/12 flex gap-1 items-center text-heading-6">
-          {/* <input
+            className="progress-bar w-7/12 h-1 bg-grey relative overflow-visible rounded-full cursor-pointer"
+            onClick={handleProgressChange}
+          >
+            <div className="absolute top-[12px] w-full flex justify-between">
+              <aside>{formatTime(audioRef.current?.currentTime)}</aside>
+              <aside>{formatTime(audioRef.current?.duration)}</aside>
+            </div>
+
+            <div
+              className="absolute left-0 top-0 h-full bg-primary-light rounded-full pointer-events-none"
+              style={{ width: `${progress}%` }}
+            ></div>
+            <div
+              id="circle"
+              className="w-2 h-2 rounded-full absolute bg-primary top-0 bottom-0 my-auto pointer-events-none"
+              style={{
+                // height: "20px",
+                // width: "20px",
+                // backgroundColor: "blue",
+                // position: "absolute",
+                left: `${progress - 3}%`,
+                // width: `${progress}%`,
+              }}
+            ></div>
+          </div>
+
+          {/* Volume */}
+          <div className="w-4/12 flex gap-1 items-center text-heading-6">
+            {/* <input
                 type="range"
                 min="0"
                 max="1"
@@ -150,39 +165,42 @@ function AudioPlayer({ src }) {
                 value={volume}
                 onChange={handleVolumeChange}
               /> */}
-          {volume > 0 ? (
-            <FaVolumeUp
-              className="cursor-pointer"
-              onClick={() => {
-                setVolume(0);
+            {volume > 0 ? (
+              <FaVolumeUp
+                className="cursor-pointer"
+                onClick={() => {
+                  setVolume(0);
 
-                audioRef.current.volume = 0;
-              }}
-            />
-          ) : (
-            <FaVolumeMute
-              className="cursor-pointer"
-              onClick={() => {
-                setVolume(40);
-                audioRef.current.volume = 0.4;
-              }}
-            />
-          )}
-          <div
-            className="w-full h-1 rounded-full bg-primary relative cursor-pointer"
-            onClick={handleVolumeChange}
-          >
+                  audioRef.current.volume = 0;
+                }}
+              />
+            ) : (
+              <FaVolumeMute
+                className="cursor-pointer"
+                onClick={() => {
+                  setVolume(40);
+                  audioRef.current.volume = 0.4;
+                }}
+              />
+            )}
             <div
-              className="bg-interactive-light-confirmation h-full rounded-full pointer-events-none"
-              style={{ width: `${Math.abs(volume) - 5}%` }}
-            ></div>
-            <div
-              className="h-2 bg-primary-light rounded-full w-2 absolute top-0 bottom-0 m-auto cursor-pointer pointer-events-none"
-              style={{ left: `${Math.abs(volume) - 5}%` }}
-            ></div>
+              className="w-full h-1 rounded-full bg-primary relative cursor-pointer"
+              onClick={handleVolumeChange}
+            >
+              <div
+                className="bg-interactive-light-confirmation h-full rounded-full pointer-events-none"
+                style={{ width: `${Math.abs(volume) - 5}%` }}
+              ></div>
+              <div
+                className="h-2 bg-primary-light rounded-full w-2 absolute top-0 bottom-0 m-auto cursor-pointer pointer-events-none"
+                style={{ left: `${Math.abs(volume) - 5}%` }}
+              ></div>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

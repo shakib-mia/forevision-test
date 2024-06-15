@@ -8,13 +8,22 @@ import AudioUI from "../Audio/Audio";
 
 const SongUploadFormContainer = ({ screen, setScreen }) => {
   const [artistCount, setArtistCount] = useState(1);
-  const [formData, setFormData] = useState({
-    artists: [
-      { name: "", role: "Singer/Primary Artist" },
-      { name: "", role: "Lyricist" },
-      { name: "", role: "Composer" },
-    ],
-  });
+
+  const intiFormData = JSON.parse(localStorage.getItem("song-data"))?.artists
+    ? JSON.parse(localStorage.getItem("song-data"))
+    : {
+        artists: [
+          { name: "", role: "Singer/Primary Artist" },
+          { name: "", role: "Lyricist" },
+          { name: "", role: "Composer" },
+        ],
+        selectedPlatforms: [],
+        file: {},
+      };
+
+  const [formData, setFormData] = useState(intiFormData);
+
+  // console.log(formData);
 
   // useEffect(() => {
   //   console.log(screen);

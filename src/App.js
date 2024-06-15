@@ -9,6 +9,7 @@ import BottomBar from "./components/BottomBar/BottomBar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { PlanContext } from "./contexts/PlanContext";
 // import Construction from "./pages/Construction/Construction";
 
 function App() {
@@ -94,29 +95,36 @@ function App() {
   }, [token]);
 
   useEffect(() => {
-    axios
-      .get(backendUrl + "check-requested/" + userData.emailId)
-      .then(({ data }) => setFoundRequested(data));
+    if (userData.emailId) {
+      axios
+        .get(backendUrl + "check-requested/" + userData.emailId)
+        .then(({ data }) => setFoundRequested(data));
+    }
   }, [userData, refetch]);
+
+  const [planStore, setPlanStore] = useState({});
 
   /* Working api calls ends here */
 
   return (
     <>
-      {/* <Construction /> */}
-      <ProfileContext.Provider value={store}>
-        {token ? token.length && <BottomBar /> : <></>}
-        {location.pathname !== "/login" &&
-          location.pathname !== "/signup" &&
-          location.pathname !== "/forgot-password" &&
-          location.pathname !== "/signup-details" && <Sidebar />}
-        <Routes>
-          {routes.map(({ page, path }, key) => (
-            <Route key={key} path={path} element={page} />
-          ))}
-        </Routes>
-        <ToastContainer />
-      </ProfileContext.Provider>
+      <Construction />
+      {/* <ProfileContext.Provider value={store}>
+        <PlanContext.Provider value={{ planStore, setPlanStore }}>
+          {token ? token.length && <BottomBar /> : <></>}
+          {location.pathname !== "/login" &&
+            location.pathname !== "/signup" &&
+            location.pathname !== "/forgot-password" &&
+            location.pathname !== "/signup-details" &&
+            !location.pathname.includes("payment") && <Sidebar />}
+          <Routes>
+            {routes.map(({ page, path }, key) => (
+              <Route key={key} path={path} element={page} />
+            ))}
+          </Routes>
+          <ToastContainer />
+        </PlanContext.Provider>
+      </ProfileContext.Provider> */}
     </>
   );
 }

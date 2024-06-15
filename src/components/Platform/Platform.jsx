@@ -3,8 +3,10 @@ import { ScreenContext } from "../../contexts/ScreenContext";
 import Button from "../Button/Button";
 import PlatformSelection from "../PlatformSelection/PlatformSelection";
 const Platform = () => {
-  const { setScreen } = useContext(ScreenContext);
-  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+  const { setScreen, formData } = useContext(ScreenContext);
+  const [selectedPlatforms, setSelectedPlatforms] = useState(
+    formData.selectedPlatforms
+  );
 
   return (
     <>
@@ -13,7 +15,7 @@ const Platform = () => {
         setSelectedPlatforms={setSelectedPlatforms}
       />
       <Button
-        disabled={!selectedPlatforms.length}
+        disabled={!selectedPlatforms?.length}
         containerClassName={"w-fit mx-auto mt-5"}
         onClick={() => setScreen("audio")}
       >
