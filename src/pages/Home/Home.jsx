@@ -36,7 +36,11 @@ const Home = () => {
           <div className="flex flex-col 2xl:flex-row items-center 2xl:items-end justify-center 2xl:justify-between">
             <img src={profile} className="rounded-full w-5/12 mb-0" alt="" />
             <div className="hidden 2xl:block text-center 2xl:text-left">
-              <Button text="Visit Profile" small />
+              <Button
+                text="Visit Profile"
+                onClick={() => navigate("/profile")}
+                small
+              />
             </div>
           </div>
 
@@ -44,11 +48,11 @@ const Home = () => {
             <div className="flex justify-center 2xl:justify-start gap-2 2xl:gap-3">
               <div className="flex gap-2 items-center">
                 <h5 className="text-heading-5">
-                  John Doe
+                  {userData.first_name} {userData.last_name}
                   <div className="border border-grey-dark hidden 2xl:block"></div>
                 </h5>
 
-                <FaPen className="text-paragraph-1" />
+                {/* <FaPen className="text-paragraph-1" /> */}
                 {/* <svg
                   width="24"
                   height="24"
@@ -66,7 +70,7 @@ const Home = () => {
                 </svg> */}
               </div>
 
-              <div className="flex gap-[10px] items-center">
+              {/* <div className="flex gap-[10px] items-center">
                 <a
                   href="https://www.instagram.com/"
                   target="_blank"
@@ -88,7 +92,7 @@ const Home = () => {
                 >
                   <FaTwitter className="text-heading-5" />
                 </a>
-              </div>
+              </div> */}
             </div>
             <p className=" my-1 text-center 2xl:text-left">99 Followers</p>
             <p className="text-button  uppercase mb-1 text-center 2xl:text-left">

@@ -265,7 +265,7 @@ function RevenueForm() {
           navigate("/");
         }
       })
-      .catch((e) => console.log(e.message));
+      .catch((e) => toast.error(e.message));
   };
 
   return (

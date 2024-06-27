@@ -41,6 +41,7 @@ function App() {
         .get(backendUrl + "token-time", config)
         .then(({ data }) => setTokenDetails(data))
         .catch((err) => {
+          // console.log(err.response.data.name);
           if (err.response.data.name === "TokenExpiredError") {
             setToken("");
             sessionStorage.removeItem("token");

@@ -1,33 +1,35 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SongListItem from "../SongListItem/SongListItem";
 import Button from "../Button/Button";
+import { ProfileContext } from "../../contexts/ProfileContext";
 import { useNavigate } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
+import axios from "axios";
+import { config } from "../../constants";
 
 const Uploads = () => {
   const navigate = useNavigate();
+  const [songs, setSongs] = useState([]);
+
+  const { userData } = useContext(ProfileContext);
+
+  useEffect(() => {
+    // const isrcs = userData?.isrc?.split(",");
+    if (userData && userData.isrc) {
+      axios
+        .post("http://localhost:5100/songs", { isrc: userData?.isrc }, config)
+        .then(({ data }) => setSongs(data));
+    }
+  }, [userData.isrc]);
+
   return (
     <div
       className="bg-grey-light p-4 rounded-2xl flex flex-col justify-between !h-[590px]"
       id="song-list"
     >
       <div className="flex flex-col gap-2 h-fit overflow-y-auto">
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="Smokin' till my lungs burn " />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
-        <SongListItem name="peja meghe Bhalobasa" />
+        {songs.map(({ Song }) => (
+          <SongListItem name={Song} />
+        ))}
       </div>
 
       {/* <Swiper
@@ -45,9 +47,12 @@ const Uploads = () => {
       </Swiper> */}
 
       <div className="flex items-center justify-between">
-        <h5 className="text-heading-5-bold text-white">Your Uploads</h5>
+        <h5 className="text-heading-4-bold text-grey-dark">Your Uploads</h5>
 
-        <Button onClick={() => navigate("/")} text="Visit Dashboard"></Button>
+        <Button
+          onClick={() => navigate("/revenue")}
+          text="Visit Dashboard"
+        ></Button>
       </div>
     </div>
   );

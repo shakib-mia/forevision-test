@@ -21,11 +21,12 @@ const Distribution = () => {
   const [signature, setSignature] = useState("");
   const { formData } = useContext(ScreenContext);
   const [orderId, setOrderId] = useState("XXXXX");
+  // console.log(location);
 
   useEffect(() => {
     axios
       .get(backendUrl + "generate-order-id", config)
-      .then(({ data }) => setOrderId(data));
+      .then(({ data }) => setOrderId(data.orderId));
   }, []);
 
   const [accepted, setAccepted] = useState(false);
@@ -135,7 +136,7 @@ const Distribution = () => {
               <aside className="w-1/2 p-2">{userData.user_email}</aside>
             </div> */}
 
-            {
+            {location.search.includes("social") || (
               <form
                 className="flex gap-2 items-end p-2"
                 onSubmit={verifyCouponCode}
@@ -158,9 +159,9 @@ const Distribution = () => {
                   Apply
                 </Button>
               </form>
-            }
+            )}
 
-            {
+            {location.search.includes("social") || (
               <>
                 <div className="flex divide-x divide-[#ddd]">
                   <aside className="w-1/2 p-2">Discount</aside>
@@ -194,7 +195,7 @@ const Distribution = () => {
                   </aside>
                 </div> */}
               </>
-            }
+            )}
           </div>
 
           {/* <label className="flex items-center gap-1 justify-end mt-3 uppercase cursor-pointer">

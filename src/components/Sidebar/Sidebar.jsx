@@ -5,7 +5,7 @@ import logout from "./../../assets/icons/navbar/logout.webp";
 import NavItem from "../NavItem/NavItem";
 import { imageDomain, navItem } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
@@ -80,7 +80,7 @@ const Sidebar = () => {
         />
         {hovered && (
           <>
-            <div className="overflow-hidden whitespace-nowrap">
+            <Link to={"/profile"} className="overflow-hidden whitespace-nowrap">
               <h1 className="text-subtitle-1-bold">
                 {userData?.partner_name ||
                   userData?.first_name + " " + userData?.last_name}
@@ -88,7 +88,7 @@ const Sidebar = () => {
               <p className="text-button text-black-tertiary">
                 {userData?.user_email || userData?.emailId}
               </p>
-            </div>
+            </Link>
 
             <img
               src={logout}

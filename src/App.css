@@ -7,6 +7,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Fasthand&display=swap");
 
 body {
+  @apply h-screen overflow-y-auto;
   font-family: "Roboto", sans-serif;
 }
 
@@ -207,4 +208,20 @@ input[type="range"]:focus {
 .signature {
   /* font-family: "Tillana", system-ui; */
   font-family: "Fasthand", cursive;
+}
+
+.owl-dots {
+  @apply flex justify-center;
+}
+
+#upload-forms .owl-dot {
+  @apply w-4 h-1 bg-primary-light;
+}
+
+#upload-forms .owl-dot.active {
+  @apply bg-primary;
+}
+
+.owl-nav {
+  @apply hidden;
 }

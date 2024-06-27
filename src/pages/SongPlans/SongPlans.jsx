@@ -170,7 +170,7 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
             <Button
               text={"Get Started"}
               className={"w-full justify-center"}
-              onClick={() => navigate("/song-upload")}
+              onClick={() => navigate("/song-upload?social?0")}
             ></Button>
           </div>
         </div>

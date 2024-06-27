@@ -10,50 +10,130 @@ import { gsap } from "gsap";
 import Comment from "../Comment/Comment";
 import user from "./../../assets/images/user.webp";
 import arrowCircle from "../../assets/icons/arrow-circle.webp";
+import { FaApple, FaMusic } from "react-icons/fa";
 
-const Song = ({ name, comments }) => {
+const SongItem = ({
+  Song,
+  jiosaavn,
+  "wynk-music": wynk,
+  gaana,
+  spotify,
+  "apple-music": apple,
+  "amazon-music": amazon,
+  comments,
+}) => {
   const [showDetails, setShowDetails] = useState(false);
   const commentsRef = useRef(null);
 
-  useEffect(() => {
-    if (showDetails) {
-      gsap.to(commentsRef.current, {
-        height: "auto",
-        duration: 0.5,
-      });
-    } else {
-      gsap.to(commentsRef.current, {
-        height: "0",
-        duration: 0.5,
-      });
-    }
-  }, [showDetails]);
+  // console.log(jiosaavn);
+
+  // useEffect(() => {
+  //   if (showDetails) {
+  //     gsap.to(commentsRef.current, {
+  //       height: "auto",
+  //       duration: 0.5,
+  //     });
+  //   } else {
+  //     gsap.to(commentsRef.current, {
+  //       height: "0",
+  //       duration: 0.5,
+  //     });
+  //   }
+  // }, [showDetails]);
 
   return (
-    <div className={`border-b border-white ${showDetails ? 'pb-2' : ''}`}>
+    <div
+      className={`border-b border-white px-2 py-1 ${showDetails ? "pb-2" : ""}`}
+    >
       <div className="flex items-center justify-between py-[11px]">
         <div className="flex items-center gap-[12px]">
-          <img src={playCircle} alt="" />
-          <h6 className="text-white text-heading-6">{name}</h6>
+          {/* <img src={playCircle} alt="" /> */}
+          <FaMusic className="text-white" />
+          <h6 className="text-white text-heading-6">{Song}</h6>
         </div>
 
-        <div className="flex items-center gap-2">
-          <img className="cursor-pointer" src={like} alt="" />
-          <img className="cursor-pointer" src={dislike} alt="" />
-          <img className="cursor-pointer" src={edit} alt="" />
-          {/* <img className="cursor-pointer" src={editBlue} alt="" /> */}
-          <img className="cursor-pointer" src={share} alt="" />
-          <img
-            className={`cursor-pointer transition ${showDetails && "rotate-180"
-              }`}
+        <div className="flex gap-4">
+          <div className="flex gap-2 items-center">
+            {jiosaavn && (
+              <a href={jiosaavn} target="_blank" rel="noreferrer">
+                <img
+                  src="https://api.forevisiondigital.in/uploads/platforms/jiosaavn.png"
+                  alt=""
+                  className="w-3"
+                />
+              </a>
+            )}
+
+            {wynk && (
+              <a href={wynk} target="_blank" rel="noreferrer">
+                <img
+                  src="https://api.forevisiondigital.in/uploads/platforms/wynk-music.png"
+                  alt=""
+                  className="w-3"
+                />
+              </a>
+            )}
+
+            {gaana && (
+              <a href={gaana} target="_blank" rel="noreferrer">
+                <img
+                  src="https://api.forevisiondigital.in/uploads/platforms/gaana.png"
+                  alt=""
+                  className="w-3"
+                />
+              </a>
+            )}
+
+            {spotify && (
+              <a href={spotify} target="_blank" rel="noreferrer">
+                <img
+                  src="https://api.forevisiondigital.in/uploads/platforms/spotify.png"
+                  alt=""
+                  className="w-3"
+                />
+              </a>
+            )}
+
+            {apple && (
+              <a href={apple} target="_blank" rel="noreferrer">
+                {/* <img
+                  src="https://api.forevisiondigital.in/uploads/platforms/apple.png"
+                  alt=""
+                  className="w-3"
+                /> */}
+
+                <FaApple className="text-white text-heading-5" />
+              </a>
+            )}
+            {amazon && (
+              <a href={amazon} target="_blank" rel="noreferrer">
+                <img
+                  src="https://api.forevisiondigital.in/uploads/platforms/amazon-music.png"
+                  alt=""
+                  className="w-3"
+                />
+              </a>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <img className="cursor-pointer" src={like} alt="" />
+            <img className="cursor-pointer" src={dislike} alt="" />
+            <img className="cursor-pointer" src={edit} alt="" />
+            {/* <img className="cursor-pointer" src={editBlue} alt="" /> */}
+            <img className="cursor-pointer" src={share} alt="" />
+            {/* <img
+            className={`cursor-pointer transition ${
+              showDetails && "rotate-180"
+            }`}
             src={downArrowWhite}
             alt=""
             onClick={() => setShowDetails(!showDetails)}
-          />
+          /> */}
+          </div>
         </div>
       </div>
 
-      <div
+      {/* <div
         className="overflow-hidden flex flex-col gap-2 h-0"
         ref={commentsRef}
       >
@@ -69,9 +149,9 @@ const Song = ({ name, comments }) => {
           />
           <img src={arrowCircle} alt="" />
         </form>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default Song;
+export default SongItem;

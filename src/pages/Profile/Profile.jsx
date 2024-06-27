@@ -21,37 +21,13 @@ import settingsWhite from "../../assets/icons/settings-white.webp";
 import LoadingPulse from "../../components/LoadingPulse/LoadingPulse";
 import EditProfile from "../../components/EditProfile/EditProfile";
 import ProfilePicture from "../../components/ProfilePicture/ProfilePicture";
+import Songs from "../../components/Songs/Songs";
 
 const Profile = () => {
-  const { profileData } = useContext(ProfileContext);
+  const { userData } = useContext(ProfileContext);
   const location = useLocation();
   const route = location.pathname.split("/");
   const [edit, setEdit] = useState(false);
-
-  const songs = [
-    {
-      name: "Smokin' till my lungs burn",
-      comments: [
-        {
-          image: user,
-          cmntBody: "What a melody.Keep going”",
-        },
-        {
-          image: user,
-          cmntBody: "What a melody.Keep going”",
-        },
-      ],
-    },
-    {
-      name: "Smokin' till my lungs burn",
-      comments: [
-        {
-          image: user,
-          cmntBody: "What a melody.Keep going”",
-        },
-      ],
-    },
-  ];
 
   const handleFollow = () => {
     console.log("follow");
@@ -60,10 +36,10 @@ const Profile = () => {
   const [details, setDetails] = useState(false);
   const text =
     "Archaeologists uncover the mythical city of Atlantis, but soon realize they are not alone in their discovery as supernatural forces threaten to destroy them Archaeologists uncover the mythical city of Atlantis, but soon realize they are not alone in their discovery as supernatural forces threaten to destroy them";
-  console.log(profileData);
+  // console.log(userData);
   return (
     <div
-      className="w-[90%] m-5 my-2 ml-auto rounded-[20px] overflow-hidden bg-grey-dark"
+      className="w-[90%] m-5 my-2 ml-auto rounded-[20px] overflow-hidden bg-grey-dark h-[98vh]"
       id="profile-container"
     >
       <div className="relative">
@@ -99,36 +75,36 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="flex gap-[60px] p-[60px]">
+      <div className="flex gap-[60px] p-[60px] pb-0">
         <div className="w-9/12 relative top-[-144px]">
           <div className="flex gap-[11px]">
             <div className="pt-4">
-              <ProfilePicture imageUrl={profileData.display_image} />
+              <ProfilePicture imageUrl={userData.display_image} />
             </div>
             <aside className="text-white mt-[91px] w-11/12">
               <div className="flex items-center gap-5">
                 <div className="flex items-center gap-2">
-                  {profileData.display_name ? (
+                  {userData.display_name ? (
                     <h5 className="text-heading-5 underline">
-                      {profileData.display_name}
+                      {userData.display_name}
                     </h5>
-                  ) : profileData.first_name ? (
+                  ) : userData.first_name ? (
                     <h5 className="text-heading-5 underline">
-                      {profileData.first_name} {profileData.last_name}
+                      {userData.first_name} {userData.last_name}
                     </h5>
                   ) : (
                     <LoadingPulse className="w-[200px] h-[30px]" />
                   )}
 
                   {route[route.length - 1] === "profile" &&
-                  profileData.first_name ? (
+                  userData.first_name ? (
                     <img
                       src={profileEdit}
                       onClick={() => setEdit(true)}
                       className="w-3 h-3 cursor-pointer"
                       alt="follow"
                     />
-                  ) : profileData.first_name ? (
+                  ) : userData.first_name ? (
                     <img
                       src={userplus}
                       onClick={handleFollow}
@@ -142,26 +118,26 @@ const Profile = () => {
 
                 <div
                   className={`${
-                    profileData.first_name
+                    userData.first_name
                       ? "flex gap-[10px]"
                       : "grid grid-cols-3 gap-[10px]"
                   }`}
                 >
-                  {profileData.first_name ? (
+                  {userData.first_name ? (
                     <a href="https://www.instagram.com/">
                       <img src={instagram} alt="insta" />
                     </a>
                   ) : (
                     <LoadingPulse className="w-[30px] h-[30px]" />
                   )}
-                  {profileData.first_name ? (
+                  {userData.first_name ? (
                     <a href="https://www.facebook.com/">
                       <img src={facebook} alt="fb" />
                     </a>
                   ) : (
                     <LoadingPulse className="w-[30px] h-[30px]" />
                   )}
-                  {profileData.first_name ? (
+                  {userData.first_name ? (
                     <a href="https://www.twitter.com/">
                       <img src={twitter} alt="twitter" />
                     </a>
@@ -198,12 +174,6 @@ const Profile = () => {
               </p>
             </aside>
           </div>
-
-          <div className="mt-5">
-            {songs.map((props, key) => (
-              <Song {...props} key={key} />
-            ))}
-          </div>
         </div>
         <div className="w-3/12">
           <div className="flex items-center" id="album">
@@ -221,50 +191,50 @@ const Profile = () => {
                 {/* <div> */}
                 <img src={amogh} alt="amogh" />
                 <div className="text-button text-white text-center mt-[4px]">
-                  Amogh symphony
+                  Dummy Album
                 </div>
                 {/* </div> */}
               </div>
               <div className="item">
                 <img src={amogh} alt="amogh" />
                 <div className="text-button text-white text-center mt-[4px]">
-                  Amogh symphony
+                  Dummy Album
                 </div>
               </div>
               <div className="item">
                 <img src={amogh} alt="amogh" />
                 <div className="text-button text-white text-center mt-[4px]">
-                  Amogh symphony
+                  Dummy Album
                 </div>
               </div>
               <div className="item">
                 <img src={amogh} alt="amogh" />
                 <div className="text-button text-white text-center mt-[4px]">
-                  Amogh symphony
+                  Dummy Album
                 </div>
               </div>
               <div className="item">
                 <img src={amogh} alt="amogh" />
                 <div className="text-button text-white text-center mt-[4px]">
-                  Amogh symphony
+                  Dummy Album
                 </div>
               </div>
               <div className="item">
                 <img src={amogh} alt="amogh" />
                 <div className="text-button text-white text-center mt-[4px]">
-                  Amogh symphony
+                  Dummy Album
                 </div>
               </div>
               <div className="item">
                 <img src={amogh} alt="amogh" />
                 <div className="text-button text-white text-center mt-[4px]">
-                  Amogh symphony
+                  Dummy Album
                 </div>
               </div>
               <div className="item">
                 <img src={amogh} alt="amogh" />
                 <div className="text-button text-white text-center mt-[4px]">
-                  Amogh symphony
+                  Dummy Album
                 </div>
               </div>
             </OwlCarousel>
@@ -323,6 +293,10 @@ const Profile = () => {
             </VerticalCarousel> */}
           </div>
         </div>
+      </div>
+
+      <div className="my-2 px-[60px] mx-auto">
+        <Songs />
       </div>
 
       {edit && <EditProfile handleClose={() => setEdit(false)} />}

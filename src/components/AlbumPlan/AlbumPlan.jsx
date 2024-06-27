@@ -1,20 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaCheck } from "react-icons/fa";
 import Button from "../Button/Button";
-import Modal from "../Modal/Modal";
-import razorpay from "./../../assets/icons/razorpay.png";
-// import phonepe from "./../../assets/icons/phonepe.png";
-// import paypal from "./../../assets/icons/paypal.png";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { useNavigate } from "react-router-dom";
 
-const AlbumPlan = ({ handleRazorpayPayment, handlePhonePePayment }) => {
-  const [modal, showModal] = useState(false);
-  const initialOptions = {
-    clientId: "test",
-    currency: "USD",
-    intent: "capture",
-  };
-
+const AlbumPlan = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="!h-fit p-4 rounded-lg bg-gradient-to-br from-secondary to-interactive-light-focus text-white shadow-[0_13px_20px_#aaa] relative -top-3 w-11/12 md:w-1/2 xl:w-10/12 mx-auto mt-7">
@@ -143,59 +133,10 @@ const AlbumPlan = ({ handleRazorpayPayment, handlePhonePePayment }) => {
           className={
             "w-full justify-center bg-white !text-interactive-light-hover hover:bg-white-secondary active:bg-white-deactivated focus:bg-white-tertiary"
           }
-          //   onClick={() => handleRazorpayPayment(99900)}
-          onClick={() => showModal(true)}
+          onClick={() => navigate(`/song-upload?forevision-album?99900`)}
           containerClassName={"mt-5"}
         ></Button>
       </div>
-
-      {modal && (
-        <Modal>
-          <div className="w-11/12 lg:w-1/2 xl:w-1/4 h-3/4 bg-white m-auto relative p-2 rounded-lg">
-            <button
-              className="absolute -top-5 -right-5 text-heading-4 text-interactive-light-destructive-focus"
-              onClick={() => showModal(false)}
-            >
-              &times;
-            </button>
-
-            <h5 className="text-heading-5-bold text-white-secondary bg-primary absolute top-0 left-0 w-full p-2 rounded-t-lg">
-              Select Your Payment Method
-            </h5>
-
-            <button
-              className="w-full flex justify-center py-2 border-2 border-primary rounded-full mt-6"
-              onClick={() => {
-                handleRazorpayPayment(99900);
-                // setTimeout(() => showModal(false), 1000);
-                setTimeout(() => {
-                  showModal(false);
-                }, 700);
-              }}
-            >
-              <img src={razorpay} alt="razorpay" className="w-1/3" />
-            </button>
-
-            {/* <button
-              className="w-full flex justify-center py-2 border-2 border-secondary-dark rounded-full my-2"
-              onClick={() => handlePhonePePayment(99900)}
-            >
-              <img src={phonepe} alt="phonepe" className="w-1/3" />
-            </button> */}
-
-            {/* <button
-              className="w-full flex justify-center py-2 border-2 border-secondary-dark rounded-full mt-2"
-              // onClick={() => handleRazorpayPayment(99900)}
-            >
-              <img src={paypal} alt="paypal" className="w-1/3" />
-            </button> */}
-
-            <PayPalScriptProvider options={initialOptions}>
-              <PayPalButtons />
-            </PayPalScriptProvider>
-          </div>
-        </Modal>
-      )}
     </>
   );
 };
