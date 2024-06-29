@@ -22,10 +22,6 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
         ],
         selectedPlatforms: [],
         file: {},
-        startSeconds: 0,
-        endSeconds: 45,
-        startSeconds2: 0,
-        endSeconds2: 45,
       }
     : [
         {
@@ -36,8 +32,6 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
           ],
           selectedPlatforms: [],
           file: {},
-          startSeconds: 0,
-          endSeconds: 45,
         },
       ];
 

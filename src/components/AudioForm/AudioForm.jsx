@@ -26,10 +26,6 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
   const [audioUrl, setAudioUrl] = useState("");
   const [file, setFile] = useState({});
   const [audioDuration, setAudioDuration] = useState(0);
-  const [startMinutes, setStartMinutes] = useState(0);
-  const [startSeconds, setStartSeconds] = useState(0);
-  const [startMinutes2, setStartMinutes2] = useState(0);
-  const [startSeconds2, setStartSeconds2] = useState(0);
   // const [focused, setFocused] = useState(false);
   // const [showPlats, setShowPlats] = useState(false);
   const [genre, setGenre] = useState("Film");
@@ -139,20 +135,6 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
         // Append the file to FormData
         const fileData = new FormData();
         fileData.append("file", file);
-
-        // // Perform the file upload
-        // axios
-        //   .post(backendUrl + "upload-song", fileData, config)
-        //   .then(({ data }) => {
-        //     // Update formData with the song URL returned from the server
-        //     setFormData((prevFormData) => ({
-        //       ...prevFormData,
-        //       songUrl: data.songUrl,
-        //     }));
-        //   })
-        //   .catch((error) => {
-        //     console.error("Error uploading file:", error);
-        //   });
       };
     }
   };
@@ -161,7 +143,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
     e.preventDefault();
 
     // setScreen("distribution");
-    localStorage.setItem("song-data", JSON.stringify(formData));
+    // localStorage.setItem("song-data", JSON.stringify(formData));
     // console.log(formData);
     formData.paymentStatus = "pending";
     formData.userEmail = userData.user_email;
@@ -201,37 +183,12 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
       });
   };
 
-  // const tracks = [
-  //   {
-  //     url: "https://audioplayer.madza.dev/Madza-Chords_of_Life.mp3",
-  //     title: "Madza - Chords of Life",
-  //     tags: ["house"],
-  //   },
-  //   {
-  //     url: "https://audioplayer.madza.dev/Madza-Late_Night_Drive.mp3",
-  //     title: "Madza - Late Night Drive",
-  //     tags: ["dnb"],
-  //   },
-  //   {
-  //     url: "https://audioplayer.madza.dev/Madza-Persistence.mp3",
-  //     title: "Madza - Persistence",
-  //     tags: ["dubstep"],
-  //   },
-  // ];
-
   const handleRemoveArtist = (index) => {
     const updatedArtists = formData.artists.filter((_, i) => i !== index);
     setFormData({ ...formData, artists: updatedArtists });
 
     // console.log(updatedArtists);
   };
-
-  // console.log(
-  //   location.search.split("?")[1]?.includes("-")
-  //     ? location.search.split("?")[1]?.split("-")?.join(" ")
-  //     : location.search.split("?")[1]
-  // );
-
   /**
    *
    * {audioUrl.length > 0 && <AudioPlayer src={audioUrl} />}
@@ -565,17 +522,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
       {(location.search.split("?")[1]?.includes("-")
         ? location.search.split("?")[1]?.split("-")?.join(" ")
         : location.search.split("?")[1]) !== "forevision pro" ? (
-        <CallerTuneTimeStamp
-          setStartMinutes={setStartMinutes}
-          setStartSeconds={setStartSeconds}
-          audioDuration={audioDuration}
-          startMinutes={startMinutes}
-          startSeconds={startSeconds}
-          startMinutes2={startMinutes2}
-          startSeconds2={startSeconds2}
-          setStartMinutes2={setStartMinutes2}
-          setStartSeconds2={setStartSeconds2}
-        />
+        <CallerTuneTimeStamp audioDuration={audioDuration} />
       ) : (
         <></>
       )}
