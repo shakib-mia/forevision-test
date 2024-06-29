@@ -166,7 +166,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
     formData.paymentStatus = "pending";
     formData.userEmail = userData.user_email;
 
-    console.log(formData.file);
+    console.log(formData);
 
     const SongFile = new FormData();
 
@@ -189,14 +189,14 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
     delete formData.status;
     // console.log(formData);
     // console.log();
-    document.getElementsByClassName("owl-next")[0].click();
+    // document.getElementsByClassName("owl-next")[0].click();
 
     axios
       .post(backendUrl + "upload-song/upload-song-data", formData, config)
       .then(({ data }) => {
         if (data.acknowledged) {
-          setCount(count + 1);
-          //   setScreen("distribution");
+          // setCount(count + 1);
+          setScreen("distribution");
         }
       });
   };
@@ -442,7 +442,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
               label={"ISRC"}
               onChange={(e) => {
                 setIsrc(e.target.value);
-                setFormData({ ...formData, isrc });
+                setFormData({ ...formData, isrc: e.target.value });
               }}
               placeholder={"ISRC"}
               // required={alreadyHaveIsrc}
@@ -711,10 +711,10 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
       </div>
 
       <div className="flex justify-center gap-4 items-center mt-3 mb-5">
-        <FaChevronCircleLeft
+        {/* <FaChevronCircleLeft
           className="text-heading-5 cursor-pointer"
           onClick={() => document.getElementsByClassName("owl-prev")[0].click()}
-        />
+        /> */}
         <Button
           type={"submit"}
           // containerClassName={"mx-auto"}
@@ -723,12 +723,12 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
             // setScreen("platform");
           }}
           disabled={done}
-          text={"Save and Add More"}
+          text={"Save"}
         />
-        <FaChevronCircleRight
+        {/* <FaChevronCircleRight
           className="text-heading-5 cursor-pointer"
           onClick={() => document.getElementsByClassName("owl-next")[0].click()}
-        />
+        /> */}
       </div>
 
       {/* <Button type={"destructive"} text={"delete"} onClick={handleDelete} /> */}

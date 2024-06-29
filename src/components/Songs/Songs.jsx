@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import axios from "axios";
-import { config } from "../../constants";
+import { backendUrl, config } from "../../constants";
 import SongItem from "../Song/Song";
 
 const Songs = () => {
@@ -13,7 +13,7 @@ const Songs = () => {
     // const isrcs = userData?.isrc?.split(",");
     if (userData && userData.isrc) {
       axios
-        .post("http://localhost:5100/songs", { isrc: userData?.isrc }, config)
+        .post(backendUrl + "songs", { isrc: userData?.isrc }, config)
         .then(({ data }) => setSongs(data));
     }
   }, [userData.isrc]);

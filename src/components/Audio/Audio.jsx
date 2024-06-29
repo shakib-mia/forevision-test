@@ -8,26 +8,24 @@ const AudioUI = (props) => {
 
   return (
     <>
-      <ReactOwlCarousel items={1} dots id="upload-forms" nav>
-        {Array.from({ length: count }).map((_, key) => (
-          <AudioForm
-            key={key}
-            id={key}
-            count={count}
-            {...props}
-            setCount={setCount}
-          />
-        ))}
-      </ReactOwlCarousel>
+      {/* {Array.from({ length: count }).map((_, key) => ( */}
+      <AudioForm
+        // key={key}
+        // id={key}
+        count={count}
+        {...props}
+        setCount={setCount}
+      />
+      {/* ))} */}
 
-      <Button
+      {/* <Button
         containerClassName={"w-fit mx-auto mt-5"}
         onClick={() => {
           setCount(count + 1);
           console.log(count);
         }}
         text={"Finish"}
-      />
+      /> */}
     </>
   );
 };

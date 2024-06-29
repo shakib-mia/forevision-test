@@ -65,7 +65,7 @@ const VerticalCarousel = ({ className, heading, children }) => {
   });
 
   return (
-    <div className={className}>
+    <div className={`${className} vertical-carousel`}>
       <div className="text-subtitle-1 font-semibold text-white">{heading}</div>
       <div
         onClick={() =>

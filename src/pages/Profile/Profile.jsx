@@ -68,6 +68,7 @@ const Profile = () => {
                 className="cursor-pointer"
                 alt=""
                 title="Edit your cover photo"
+                onClick={() => setEdit(true)}
               />
             </div>
           </div>

@@ -56,9 +56,9 @@ const CallerTuneTimeStamp = ({
                 ...formData,
                 startSeconds: startSeconds || 0,
                 endSeconds:
-                  parseInt(startSeconds) + 45 >= 60
-                    ? Math.abs(60 - (parseInt(startSeconds) + 45))
-                    : parseInt(startSeconds) + 45,
+                  (parseInt(startSeconds) || 0) + 45 >= 60
+                    ? Math.abs(60 - ((parseInt(startSeconds) || 0) + 45))
+                    : (parseInt(startSeconds) || 0) + 45,
               });
               setStartSeconds(e.target.value);
             }}
@@ -91,7 +91,7 @@ const CallerTuneTimeStamp = ({
           <InputField
             disabled={true}
             value={
-              parseInt(startSeconds) + 45 >= 60
+              (parseInt(startSeconds) || 0) + 45 >= 60
                 ? Math.abs(60 - (parseInt(startSeconds) + 45))
                 : parseInt(startSeconds) + 45
             }
@@ -148,9 +148,9 @@ const CallerTuneTimeStamp = ({
                 ...formData,
                 startSeconds2: startSeconds2 || 0,
                 endSeconds2:
-                  parseInt(startSeconds2) + 45 >= 60
-                    ? Math.abs(60 - (parseInt(startSeconds2) + 45))
-                    : parseInt(startSeconds2) + 45,
+                  (parseInt(startSeconds2) || 0) + 45 >= 60
+                    ? Math.abs(60 - ((parseInt(startSeconds2) || 0) + 45))
+                    : (parseInt(startSeconds2) || 0) + 45,
               });
             }}
             value={startSeconds2}

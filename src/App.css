@@ -85,7 +85,7 @@ aside:hover #profile-container {
   @apply w-[84%];
 } */
 
-.swiper {
+.vertical-carousel .swiper {
   width: 100%;
   height: 100px;
 }
@@ -94,9 +94,9 @@ aside:hover #profile-container {
   @apply mx-auto w-[225px] h-[225px];
 }
 
-.swiper-button-next::after,
-.swiper-button-prev::after,
-.swiper-button-disabled::after {
+.vertical-carousel .swiper-button-next::after,
+.vertical-carousel .swiper-button-prev::after,
+.vertical-carousel .swiper-button-disabled::after {
   @apply hidden;
 }
 

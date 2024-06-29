@@ -147,7 +147,7 @@ const EditProfile = ({ handleClose }) => {
       id="edit-profile"
       closeIcon={true}
       // handleClose={handleClose}
-      whiteContainerclassName="h-3/4 overflow-y-auto overflow-x-hidden relative"
+      whiteContainerClass="h-3/4 overflow-y-auto overflow-x-hidden relative"
     >
       <button
         className="absolute top-1 right-1 text-heading-5 flex items-center justify-center w-3 h-3 rounded-full hover:bg-grey hover:text-white"

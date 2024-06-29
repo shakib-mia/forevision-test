@@ -5,13 +5,16 @@ import AlbumDetails from "../AlbumDetails/AlbumDetails";
 import Platform from "../Platform/Platform";
 import Distribution from "../Distribution/Distribution";
 import AudioUI from "../Audio/Audio";
+import { useLocation } from "react-router-dom";
 
 const SongUploadFormContainer = ({ screen, setScreen }) => {
   const [artistCount, setArtistCount] = useState(1);
+  const location = useLocation();
 
   const intiFormData = JSON.parse(localStorage.getItem("song-data"))?.artists
     ? JSON.parse(localStorage.getItem("song-data"))
-    : {
+    : location.pathname === "/song-upload"
+    ? {
         artists: [
           { name: "", role: "Singer/Primary Artist" },
           { name: "", role: "Lyricist" },
@@ -19,7 +22,24 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
         ],
         selectedPlatforms: [],
         file: {},
-      };
+        startSeconds: 0,
+        endSeconds: 45,
+        startSeconds2: 0,
+        endSeconds2: 45,
+      }
+    : [
+        {
+          artists: [
+            { name: "", role: "Singer/Primary Artist" },
+            { name: "", role: "Lyricist" },
+            { name: "", role: "Composer" },
+          ],
+          selectedPlatforms: [],
+          file: {},
+          startSeconds: 0,
+          endSeconds: 45,
+        },
+      ];
 
   const [formData, setFormData] = useState(intiFormData);
 
@@ -32,7 +52,7 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
   return (
     <div className={`mt-5 px-5 py-6 shadow`}>
       <ScreenContext.Provider
-        value={{ screen, setScreen, formData, setFormData }}
+        value={{ screen, setScreen, setFormData, formData }}
       >
         {screen === "albumDetails" ? <AlbumDetails /> : <></>}{" "}
         {screen === "audio" ? (

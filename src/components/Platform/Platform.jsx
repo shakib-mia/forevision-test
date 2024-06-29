@@ -5,7 +5,7 @@ import PlatformSelection from "../PlatformSelection/PlatformSelection";
 const Platform = () => {
   const { setScreen, formData } = useContext(ScreenContext);
   const [selectedPlatforms, setSelectedPlatforms] = useState(
-    formData.selectedPlatforms
+    formData.selectedPlatforms || []
   );
 
   return (
