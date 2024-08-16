@@ -14,7 +14,7 @@ import user from "./../../assets/images/user.webp";
 // import VerticalCarousel from "../../components/VerticalCarousel/VerticalCarousel";
 import { SwiperSlide } from "swiper/react";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import profileEdit from "./../../assets/icons/profile-edit.webp";
 import notification from "../../assets/icons/notification-white.webp";
 import settingsWhite from "../../assets/icons/settings-white.webp";
@@ -39,26 +39,28 @@ const Profile = () => {
   // console.log(userData);
   return (
     <div
-      className="w-[90%] m-5 my-2 ml-auto rounded-[20px] overflow-hidden bg-grey-dark h-[98vh]"
+      className="w-[95%] m-2 mx-auto lg:m-5 lg:my-2 lg:w-[90%] lg:ml-auto rounded-[20px] overflow-y-auto bg-grey-dark h-[98vh]"
       id="profile-container"
     >
       <div className="relative">
-        <div className="w-full h-full">
+        <div className="w-full h-[8rem] lg:h-full">
           <div className="bg-gradient-to-bl from-black-secondary to-20% to-transparent absolute top-0 left-0 w-full h-full">
             <div className="absolute top-2 right-2">
-              <div className="flex gap-2 items-center  p-1">
+              <div className="flex gap-2 items-center p-1">
                 <img
                   className="cursor-pointer"
                   src={notification}
                   title="Notifications"
                   alt=""
                 />
-                <img
-                  className="cursor-pointer"
-                  src={settingsWhite}
-                  title="Settings"
-                  alt=""
-                />
+                <Link to={"/settings"}>
+                  <img
+                    className="cursor-pointer"
+                    src={settingsWhite}
+                    title="Settings"
+                    alt=""
+                  />
+                </Link>
               </div>
             </div>
 
@@ -72,18 +74,22 @@ const Profile = () => {
               />
             </div>
           </div>
-          <img src={cover} className="w-full" alt="" />
+          <img
+            src={cover}
+            className="object-cover h-[9rem] lg:w-full lg:h-fit"
+            alt=""
+          />
         </div>
       </div>
 
-      <div className="flex gap-[60px] p-[60px] pb-0">
-        <div className="w-9/12 relative top-[-144px]">
-          <div className="flex gap-[11px]">
+      <div className="flex flex-col lg:flex-row lg:gap-[60px] px-2 lg:p-[60px] pb-0">
+        <div className="w-full lg:w-9/12 relative -top-6 lg:top-[-144px]">
+          <div className="flex flex-col lg:flex-row gap-[11px]">
             <div className="pt-4">
               <ProfilePicture imageUrl={userData.display_image} />
             </div>
-            <aside className="text-white mt-[91px] w-11/12">
-              <div className="flex items-center gap-5">
+            <aside className="text-white lg:mt-[8rem] lg:w-11/12">
+              <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-5">
                 <div className="flex items-center gap-2">
                   {userData.display_name ? (
                     <h5 className="text-heading-5 underline">
@@ -148,17 +154,17 @@ const Profile = () => {
                 </div>
               </div>
 
-              <p className="text-[12px] mt-[6px]">99 Followers</p>
+              {/* <p className="text-[12px] mt-[6px]">99 Followers</p>
               <p className="text-[12px] mt-[6px] mb-2 font-bold tracking-[1.25px] uppercase">
                 Rock is my way of exploring music
-              </p>
+              </p> */}
 
-              <p className="text-[12px] w-1/2">
+              <p className="text-[12px] lg:w-1/2 text-center lg:text-left">
                 {text.slice(0, details ? text.length - 1 : 200)}{" "}
                 {!details && "..."}
                 <br />
                 <button
-                  className="flex items-center gap-[6px] mt-1"
+                  className="items-center gap-[6px] mt-1 justify-center lg:justify-start inline-flex w-full"
                   onClick={() => setDetails(!details)}
                 >
                   {details ? (
@@ -176,7 +182,7 @@ const Profile = () => {
             </aside>
           </div>
         </div>
-        <div className="w-3/12">
+        <div className="lg:w-1/4">
           <div className="flex items-center" id="album">
             <OwlCarousel
               className="owl-theme"
@@ -296,7 +302,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="my-2 px-[60px] mx-auto">
+      <div className="mt-2 mb-6 lg:my-2 px-2 lg:px-[60px] mx-auto">
         <Songs />
       </div>
 

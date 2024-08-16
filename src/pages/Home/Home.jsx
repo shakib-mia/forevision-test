@@ -18,6 +18,8 @@ import Notifications from "../../components/Notifications/Notifications";
 import AccountHistory from "../../components/AccountHistory/AccountHistory";
 import Uploads from "../../components/Uploads/Uploads";
 import { FaPen } from "react-icons/fa";
+import RecentUploads from "../../components/RecentUploads/RecentUploads";
+import CreateRecordLabel from "../../components/CreateRecordLabel/CreateRecordLabel";
 
 // import bg from "./../../assets/images/dashboard-bg.webp";
 
@@ -30,7 +32,7 @@ const Home = () => {
   // );
 
   return (
-    <div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7">
+    <div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7 2xl:mt-6">
       <div className="grid grid-cols-1 2xl:grid-cols-3 justify-between space-y-4 2xl:space-y-0 2xl:space-x-2 text-grey-dark">
         <div className="bg-grey-light p-0 2xl:p-4 rounded-2xl">
           <div className="flex flex-col 2xl:flex-row items-center 2xl:items-end justify-center 2xl:justify-between">
@@ -140,9 +142,15 @@ const Home = () => {
         <Uploads />
       </div>
 
-      <div className="flex flex-col 2xl:flex-row mt-2 w-full gap-2 mb-7 2xl:mb-0 text-grey-dark">
+      <div className="flex flex-col 2xl:flex-row mt-2 w-full gap-2 text-grey-dark">
         <AccountHistory />
         <Notifications />
+      </div>
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 mt-2 gap-2">
+        <RecentUploads />
+        {/* <aside className="w-full"></aside> */}
+        <CreateRecordLabel />
       </div>
     </div>
   );

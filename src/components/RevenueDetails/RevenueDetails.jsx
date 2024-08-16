@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useContext, useRef, useState } from "react";
 import RevenueDetailsItem from "../RevenueDetailsItem/RevenueDetailsItem";
+import { IoMdDownload } from "react-icons/io";
+import Button from "../Button/Button";
+import generatePDF from "react-to-pdf";
+import SongDetailsPdfPreview from "../SongDetailsPdfPreview/SongDetailsPdfPreview";
+// import { jsonToExcel } from "../../utils/jsonToExcel";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { utils, write } from "xlsx";
+import { jsonToExcel } from "../../utils/jsonToExcel";
 
 const RevenueDetails = ({ setDetails, songs, details }) => {
+  const detailsRef = useRef(null);
+  const [preview, showPreview] = useState(false);
+  const { userData } = useContext(ProfileContext);
+  // console.log(userData);
   const items = songs
     .filter((song) => song.isrc === details)
     .sort((item1, item2) =>
@@ -34,11 +46,36 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
 
   // console.log(result);
 
+  const createPdf = async () => {
+    // headerElement.style.display = "none";
+
+    const pdf = await generatePDF(detailsRef, {
+      filename: `Revenue_Details_of_${result[0].song_name}.pdf`,
+      page: {
+        // default is 'A4'
+        format: "A4",
+        // scale: 2,
+        // format: "letter",
+        // default is 'portrait'
+        orientation: "portrait",
+      },
+    });
+
+    showPreview(false);
+    setDetails("");
+
+    // console.log(pdf);
+  };
+
   return (
     <>
-      <div className="w-screen h-screen fixed top-0 left-0 z-[9999] flex justify-center items-center backdrop-blur-[1px]">
+      <div
+        className={`w-screen h-screen fixed top-0 left-0 z-[9999] flex justify-center items-center backdrop-blur-[1px] flex-col ${
+          preview ? "opacity-0" : "opacity-100"
+        }`}
+      >
         <div
-          className="w-3/5 h-[80vh] relative overflow-x-visible rounded-2xl overflow-y-auto p-3 px-5"
+          className="w-11/12 xl:w-3/5 h-[80vh] relative overflow-x-visible rounded-2xl overflow-y-auto p-2 xl:p-3 xl:px-5"
           style={{ backgroundColor: "#ffffffd9" }}
         >
           <button
@@ -60,22 +97,23 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
               />
             </svg>
           </button>
-          <div className="ml-4 mt-2">
+
+          <div className="xl:ml-4 xl:mt-2">
             <p
-              style={{ fontSize: "37.9px", lineheight: "24px" }}
-              className="ml-3 mb-3 text-heading-6-bold text-grey-dark my-1"
+              // style={{ fontSize: "37.9px", lineheight: "24px" }}
+              className="xl:ml-3 xl:mb-3 text-heading-6-bold xl:text-heading-4-bold text-grey-dark my-1"
             >
-              {result[0].song_name}
+              {result[0]?.song_name}
             </p>
             <p
-              style={{ fontSize: "37.9px", lineheight: "24px" }}
-              className="ml-3 text-heading-6-bold text-grey-dark"
+              // style={{ fontSize: "37.9px", lineheight: "24px" }}
+              className="xl:ml-3 text-heading-6-bold xl:text-heading-4-bold text-grey-dark"
             >
               {result[0].isrc}
             </p>
           </div>
           {/* //  list heading  */}
-          <ul className="grid grid-cols-3 gap-3 mt-5 mb-2 text-heading-6-bold text-grey-dark">
+          <ul className="grid grid-cols-3 gap-3 mt-5 mb-2 text-subtitle-1 xl:text-heading-6-bold text-grey-dark items-center">
             {options.map((item, key) => (
               <li
                 key={key}
@@ -102,7 +140,36 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
           {/* List */}
           <RevenueDetailsItem result={result} details={details} songs={songs} />
         </div>
+        <div className="hidden lg:flex justify-center mt-2 gap-3">
+          <Button
+            containerClassName={"flex items-center"}
+            // disabled={!loaded}
+            onClick={() => showPreview(true)}
+          >
+            DOWNLOAD PDF <IoMdDownload className="text-paragraph-1" />
+          </Button>
+
+          <Button
+            containerClassName={"flex items-center"}
+            // disabled={!loaded}
+            onClick={() =>
+              jsonToExcel(
+                songs,
+                `Revenue_Details_of_${result[0].song_name}.xlsx`
+              )
+            }
+          >
+            DOWNLOAD EXCEL <IoMdDownload className="text-paragraph-1" />
+          </Button>
+        </div>
       </div>
+      {preview && (
+        <SongDetailsPdfPreview
+          setDetails={setDetails}
+          details={details}
+          songs={songs}
+        />
+      )}
     </>
   );
 };

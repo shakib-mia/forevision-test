@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useRazorpay from "react-razorpay";
 import { backendUrl, config } from "../../constants";
 import logo from "../../assets/icons/logo.PNG";
@@ -9,20 +9,39 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { PlanContext } from "../../contexts/PlanContext";
+import { ScreenContext } from "../../contexts/ScreenContext";
 
 const Payment = () => {
   const [Razorpay] = useRazorpay();
   const location = useLocation();
   const { token } = useContext(ProfileContext);
   const navigate = useNavigate();
-  const { setPlanStore } = useContext(PlanContext);
+  const [songData, setSongData] = useState({});
+  const { formData } = useContext(ScreenContext);
+  const { setPlanStore, planStore } = useContext(PlanContext);
+  // console.log();
+  // console.log(planStore);
   // console.log(data);
+  // console.log();
+  const songId = location.search.split("?")[2].split("=")[1];
+  // console.log(songId);
 
   const initialOptions = {
     clientId: "test",
     currency: "USD",
     intent: "capture",
   };
+
+  useEffect(() => {
+    // console.log(location.search.split("?")[2].split("=")[1]);
+    axios
+      .get(
+        backendUrl +
+          "songs/by-order-id/" +
+          location.search.split("?")[2].split("=")[1]
+      )
+      .then(({ data }) => setSongData(data));
+  }, []);
 
   // console.log(location.search.split("=")[1]);
 
@@ -66,18 +85,20 @@ const Payment = () => {
     //   alert(response.error.metadata.order_id);
     //   alert(response.error.metadata.payment_id);
     // });
-
+    // console.log();
     // rzp1.open();
 
     axios
-      .post(backendUrl + "razorpay", { amount: location.search.split("=")[1] }) // ============  *** Need to set amount dynamically here ***  ================
+      .post(backendUrl + "razorpay", {
+        amount: parseInt(location.search.split("?")[1].split("=")[1]),
+      }) // ============  *** Need to set amount dynamically here ***  ================
       .then(({ data }) => initPayment(data))
       .catch((error) => console.log(error));
   };
-
+  // console.log(location);
   const initPayment = (data) => {
     const options = {
-      key: "rzp_test_ltnS4Oawf8bRte",
+      key: "rzp_test_3Tvb4i0zxX8t5m",
       amount: data.amount,
       currency: data.currency,
       name: data.name,
@@ -85,6 +106,9 @@ const Payment = () => {
       image: logo,
       order_id: data.id,
       handler: async (response) => {
+        // response.songId =
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+          response;
         try {
           const verifyUrl = backendUrl + "razorpay/verify";
           const config = {
@@ -98,7 +122,24 @@ const Payment = () => {
 
           if (res.data.insertCursor.acknowledged) {
             setPlanStore((prev) => ({ ...prev, ...res.data }));
-            navigate("/payment-success");
+            // navigate("/payment-success");
+            // clg;
+            songData.order_id = razorpay_order_id;
+            songData.payment_id = razorpay_payment_id;
+            songData.status = "paid";
+            axios
+              .put(
+                backendUrl +
+                  "songs/by-order-id/" +
+                  location.search.split("?")[2].split("=")[1],
+                songData
+              )
+              .then(({ data }) => {
+                if (data.acknowledged) {
+                  console.log("navigating....");
+                  navigate("/payment-success");
+                }
+              });
           }
         } catch (error) {
           console.log(error);
@@ -112,6 +153,7 @@ const Payment = () => {
     const rzp1 = new Razorpay(options);
     rzp1.open();
   };
+  // console.log();
 
   // const handlePhonePePayment = (amount) => {
   //   console.log(amount);

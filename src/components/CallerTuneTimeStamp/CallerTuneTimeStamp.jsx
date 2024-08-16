@@ -1,25 +1,45 @@
 import React, { useContext, useState } from "react";
 import InputField from "../InputField/InputField";
 import { ScreenContext } from "../../contexts/ScreenContext";
+import { useLocation } from "react-router-dom";
 
-const CallerTuneTimeStamp = ({ audioDuration }) => {
-  const [startMinutes, setStartMinutes] = useState(0);
-  const [startSeconds, setStartSeconds] = useState(0);
-  const [startMinutes2, setStartMinutes2] = useState(0);
-  const [startSeconds2, setStartSeconds2] = useState(0);
+const CallerTuneTimeStamp = ({ audioDuration, id }) => {
+  const location = useLocation();
   const { formData, setFormData } = useContext(ScreenContext);
+  const [startMinutes, setStartMinutes] = useState(
+    location.pathname === "/album-upload"
+      ? formData.songs[id].startMinutes
+      : formData.startMinutes
+  );
+  const [startSeconds, setStartSeconds] = useState(
+    location.pathname === "/album-upload"
+      ? formData.songs[id].startSeconds
+      : formData.startSeconds
+  );
+  const [startMinutes2, setStartMinutes2] = useState(
+    location.pathname === "/album-upload"
+      ? formData.songs[id].startMinutes2
+      : formData.startMinutes2
+  );
+  const [startSeconds2, setStartSeconds2] = useState(
+    location.pathname === "/album-upload"
+      ? formData.songs[id].startSeconds2
+      : formData.startSeconds2
+  );
+
+  // console.log(formData.songs[id]);
 
   return (
     <div className="w-full mt-4">
-      <div className="flex gap-3 w-full mt-1">
-        <aside className="w-1/2">
+      <div className="flex flex-col lg:flex-row gap-3 w-full mt-1">
+        <aside className="w-full lg:w-1/2">
           <div className="mt-2 mb-1">Select Caller Tune Time (1)</div>
-          <div className="flex gap-3">
+          <div className="flex flex-col lg:flex-row gap-3">
             <InputField
               type="number"
               label={"Start Time (Minute)"}
               required
-              // value={startMinutes}
+              value={startMinutes}
               id={"start-minutes"}
               note={"For Jio, BSNL, VI & Airtel"}
               containerClassName={"w-full"}
@@ -28,14 +48,25 @@ const CallerTuneTimeStamp = ({ audioDuration }) => {
               min={0}
               onChange={(e) => {
                 setStartMinutes(e.target.value);
-                setFormData({
-                  ...formData,
-                  startMinutes: e.target.value ? parseInt(e.target.value) : 0,
-                });
+                // setFormData({
+                //   ...formData,
+                //   startMinutes: e.target.value ? parseInt(e.target.value) : 0,
+                // });
+
+                if (location.pathname === "/album-upload") {
+                  formData.songs[id].startMinutes = e.target.value
+                    ? parseInt(e.target.value)
+                    : 0;
+                } else {
+                  formData.startMinutes = e.target.value
+                    ? parseInt(e.target.value)
+                    : 0;
+                }
+                // console.log(formData.songs[id]);
               }}
             />
             <InputField
-              // value={startSeconds}
+              value={startSeconds}
               type="number"
               id={"start-seconds"}
               containerClassName={"w-full"}
@@ -44,25 +75,35 @@ const CallerTuneTimeStamp = ({ audioDuration }) => {
               placeholder={"Enter Caller Tune Time"}
               onChange={(e) => {
                 setStartSeconds(e.target.value);
-                setFormData({
-                  ...formData,
-                  startSeconds: e.target.value ? parseInt(e.target.value) : 0,
-                });
+                // setFormData({
+                //   ...formData,
+                //   startSeconds: e.target.value ? parseInt(e.target.value) : 0,
+                // });
+
+                if (location.pathname === "/album-upload") {
+                  formData.songs[id].startSeconds = e.target.value
+                    ? parseInt(e.target.value)
+                    : 0;
+                } else {
+                  formData.startSeconds = e.target.value
+                    ? parseInt(e.target.value)
+                    : 0;
+                }
               }}
               required
-              max={audioDuration - 45}
+              // max={audioDuration - 45}
             />
           </div>
         </aside>
 
-        <aside className="w-1/2">
+        <aside className="w-full lg:w-1/2">
           <div className="mt-2 mb-1">Select Caller Tune Time (2)</div>
-          <div className="flex gap-3">
+          <div className="flex flex-col lg:flex-row gap-3">
             <InputField
               type="number"
               label={"Start Time (Minute)"}
               required
-              // value={startMinutes2}
+              value={startMinutes2}
               id={"start-minutes2"}
               note={"For BSNL, VI & Airtel"}
               containerClassName={"w-full"}
@@ -71,14 +112,24 @@ const CallerTuneTimeStamp = ({ audioDuration }) => {
               min={0}
               onChange={(e) => {
                 setStartMinutes2(e.target.value);
-                setFormData({
-                  ...formData,
-                  startMinutes2: e.target.value ? parseInt(e.target.value) : 0,
-                });
+                // setFormData({
+                //   ...formData,
+                //   startMinutes2: e.target.value ? parseInt(e.target.value) : 0,
+                // });
+
+                if (location.pathname === "/album-upload") {
+                  formData.songs[id].startMinutes2 = e.target.value
+                    ? parseInt(e.target.value)
+                    : 0;
+                } else {
+                  formData.startMinutes2 = e.target.value
+                    ? parseInt(e.target.value)
+                    : 0;
+                }
               }}
             />
             <InputField
-              // value={startSeconds2}
+              value={startSeconds2}
               type="number"
               id={"start-seconds2"}
               containerClassName={"w-full"}
@@ -87,13 +138,23 @@ const CallerTuneTimeStamp = ({ audioDuration }) => {
               note={"For BSNL, VI & Airtel"}
               onChange={(e) => {
                 setStartSeconds2(e.target.value);
-                setFormData({
-                  ...formData,
-                  startSeconds2: e.target.value ? parseInt(e.target.value) : 0,
-                });
+                // setFormData({
+                //   ...formData,
+                //   startSeconds2: e.target.value ? parseInt(e.target.value) : 0,
+                // });
+
+                if (location.pathname === "/album-upload") {
+                  formData.songs[id].startSeconds2 = e.target.value
+                    ? parseInt(e.target.value)
+                    : 0;
+                } else {
+                  formData.startSeconds2 = e.target.value
+                    ? parseInt(e.target.value)
+                    : 0;
+                }
               }}
               required
-              max={audioDuration - 45}
+              // max={audioDuration - 45}
             />
           </div>
         </aside>

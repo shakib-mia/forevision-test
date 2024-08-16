@@ -157,11 +157,9 @@ const Plans = () => {
         Plans We Offer
       </h3>
 
-      <p className="lg:w-1/2 my-2 text-grey-dark mx-auto text-center">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquid unde
-        illum laborum cumque, quibusdam saepe quasi perspiciatis nam ratione
-        possimus!
-      </p>
+      <h6 className="lg:w-1/2 my-2 text-grey-dark mx-auto text-center text-heading-6">
+        To Upload a Song, Please Choose a Plan Below
+      </h6>
 
       <div className="flex justify-center items-center gap-1">
         <p>Song</p>
@@ -170,26 +168,116 @@ const Plans = () => {
       </div>
 
       {checked ? (
-        <div className="grid grid-cols-2 items-center">
-          <aside className="pl-7 flex flex-col justify-between">
-            <h2 className="text-heading-2-bold">Lorem, ipsum.</h2>
-            <p className="mt-5">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
-              sapiente, repellendus, omnis eaque consectetur earum atque et
-              doloribus dignissimos provident praesentium quia. Dicta maxime
-              provident exercitationem dolore eum, voluptate eveniet asperiores
-              atque reiciendis, ut maiores, minima quis hic quia! Doloremque
-              sint, facilis distinctio repudiandae eveniet ratione veritatis
-              culpa provident? Id!
+        <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 lg:mt-5">
+          <aside className="px-2 lg:pl-7 text-grey-dark">
+            <h2 className="text-heading-5-bold lg:text-heading-2-bold">
+              Album for Everyone
+            </h2>
+            <p className="mt-2 lg:mt-5">
+              Get Your Music to the World for Just ₹999! What’s Included in the
+              ₹999 Album Package? Distribute your album to all major music
+              platforms including Spotify, Apple Music, Amazon Music, and more.
             </p>
 
-            <img
+            <ul className="mt-2 flex flex-col gap-1">
+              <li>
+                <b>Unlimited Releases:</b> Release as many tracks as you want
+                under this album package.
+              </li>
+
+              <li>
+                <b>Comprehensive Analytics:</b> Access detailed reports on your
+                music’s performance, including plays, downloads, and earnings.
+              </li>
+
+              <li>
+                <b>More Royalties:</b> Keep 90% of the revenue from all
+                platforms and 85% from YouTube platforms on your music earnings.
+              </li>
+
+              <li>
+                <b>Artist Support:</b> Get dedicated support from our team to
+                help you navigate the music distribution process.
+              </li>
+
+              <li>
+                <b>Marketing Tools:</b> Utilize our marketing resources to
+                promote your album, including social media templates and
+                promotional advice.
+              </li>
+
+              <li>
+                <b>Metadata Management:</b> We take care of all the necessary
+                metadata to ensure your tracks are correctly listed and
+                searchable on all platforms.
+              </li>
+
+              <li>
+                <b>Playlist Pitching:</b> Submit your songs for consideration to
+                popular playlists to increase your exposure.
+              </li>
+            </ul>
+
+            {/* <h5 className="text-heading-5-bold mt-4 mb-2">
+              Why Choose ForeVision Digital
+            </h5>
+
+            <ul className="flex flex-col gap-1">
+              <li>
+                <b>Marketing Tools:</b> Utilize our marketing resources to
+                promote your album, including social media templates and
+                promotional advice.
+              </li>
+
+              <li>
+                <b>Marketing Tools:</b> Utilize our marketing resources to
+                promote your album, including social media templates and
+                promotional advice.
+              </li>
+
+              <li>
+                <b>Marketing Tools:</b> Utilize our marketing resources to
+                promote your album, including social media templates and
+                promotional advice.
+              </li>
+
+              <li>
+                <b>Marketing Tools:</b> Utilize our marketing resources to
+                promote your album, including social media templates and
+                promotional advice.
+              </li>
+
+              <li>
+                <b>Marketing Tools:</b> Utilize our marketing resources to
+                promote your album, including social media templates and
+                promotional advice.
+              </li>
+
+              <li>
+                <b>Marketing Tools:</b> Utilize our marketing resources to
+                promote your album, including social media templates and
+                promotional advice.
+              </li>
+
+              <li>
+                <b>Marketing Tools:</b> Utilize our marketing resources to
+                promote your album, including social media templates and
+                promotional advice.
+              </li>
+
+              <li>
+                <b>Marketing Tools:</b> Utilize our marketing resources to
+                promote your album, including social media templates and
+                promotional advice.
+              </li>
+            </ul> */}
+            {/* <img
               src={
                 "https://betterstudio.com/wp-content/uploads/2019/05/1-1-instagram-1024x1024.jpg"
               }
               className="mt-4"
-              alt=""
-            />
+              alt="" 
+            />*/}
           </aside>
           <AlbumPlan
           // handleRazorpayPayment={handleRazorpayPayment}

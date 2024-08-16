@@ -93,14 +93,16 @@ const PlatformSelectionItem = ({
     }
   };
 
+  // console.log(item);
+
   return (
-    <div className={id > 0 && "mt-6"}>
-      <h5 className="text-heading-5-bold text-center mb-3 text-grey-dark">
+    <div className={id > 0 && "mt-3 lg:mt-6"}>
+      <h5 className="text-heading-6-bold lg:text-heading-5-bold text-center mb-3 text-grey-dark">
         {item?.platformType}{" "}
         {item?.platformType === "Caller Tune" ? "Partners" : "Platforms"}
       </h5>
 
-      <h6 className="mb-4 text-grey-dark text-center w-5/6 text-heading-6 mx-auto">
+      <h6 className="mb-2 lg:mb-4 text-grey-dark text-center lg:w-5/6 text-paragraph-2 lg:text-heading-6 mx-auto">
         {item?.platformType === "YouTube"
           ? "Content you cannot upload to YouTube Content ID includes public domain works, content you don’t own or have exclusive rights to, licensed content, fair use material, shared ownership content, unauthorized derivative works, royalty-free content, fan art, and disputed content."
           : item?.platformType === "Lyrics"
@@ -108,10 +110,14 @@ const PlatformSelectionItem = ({
           : ""}
       </h6>
 
-      <ul className="grid grid-cols-4 gap-4">
+      <ul
+        className={`grid ${
+          item.platformType === "YouTube" ? "grid-cols-1" : "grid-cols-2"
+        } lg:grid-cols-4 gap-2 lg:gap-4`}
+      >
         {item?.platforms?.map((plat) => (
           <li
-            className={`flex gap-2 transition items-center rounded-xl cursor-pointer p-2 ${
+            className={`flex gap-2 justify-center lg:justify-normal transition items-center rounded-xl cursor-pointer p-2 ${
               selectedPlatforms?.includes(plat.cat_name)
                 ? "shadow-md"
                 : "shadow-none"
@@ -130,14 +136,14 @@ const PlatformSelectionItem = ({
                   ? plat.cat_name.split(" ").join("-").toLowerCase()
                   : plat.cat_name.toLowerCase()
               }.png`}
-              className={`w-5 h-fit transition ${
+              className={`w-3 h-3 lg:w-5 lg:h-5 transition object-contain ${
                 selectedPlatforms?.includes(plat.cat_name)
                   ? "grayscale-0"
                   : "grayscale"
               }`}
               alt=""
             />
-            <h6 className="text-heading-6-bold text-grey-dark capitalize">
+            <h6 className="text-paragraph-2 font-bold lg:text-heading-6-bold text-grey-dark capitalize whitespace-nowrap">
               {plat.cat_name}
             </h6>
           </li>

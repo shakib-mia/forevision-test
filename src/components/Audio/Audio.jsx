@@ -14,6 +14,7 @@ const AudioUI = (props) => {
         // id={key}
         count={count}
         {...props}
+        id={props.id}
         setCount={setCount}
       />
       {/* ))} */}

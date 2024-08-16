@@ -12,7 +12,7 @@ function AudioPlayer({ src }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(40);
-  // console.log(formData);
+  console.log(src.length);
 
   const audioRef = useRef(null);
   const progressRef = useRef(null);
@@ -98,7 +98,7 @@ function AudioPlayer({ src }) {
         <aside className="w-full mx-auto flex flex-col justify-between">
           <audio
             ref={audioRef}
-            src={src || formData.songUrl}
+            src={src.length ? src : formData.songUrl}
             onTimeUpdate={updateProgress}
           ></audio>
           <aside>

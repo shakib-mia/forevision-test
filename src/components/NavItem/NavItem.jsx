@@ -19,7 +19,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
             } p-1 rounded-md`}
           >
             <div className="flex gap-[10px] items-center">
-              {icon}
+              <span className="fill-white">{icon}</span>
               {hovered && <h2>{text}</h2>}
             </div>
 

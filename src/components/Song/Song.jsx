@@ -43,13 +43,15 @@ const SongItem = ({
 
   return (
     <div
-      className={`border-b border-white px-2 py-1 ${showDetails ? "pb-2" : ""}`}
+      className={`border-b border-white lg:px-2 py-1 ${
+        showDetails ? "pb-2" : ""
+      }`}
     >
-      <div className="flex items-center justify-between py-[11px]">
-        <div className="flex items-center gap-[12px]">
+      <div className="flex items-center justify-between py-[4px] lg:py-[11px]">
+        <div className="flex items-center gap-[4px] lg:gap-[12px]">
           {/* <img src={playCircle} alt="" /> */}
           <FaMusic className="text-white" />
-          <h6 className="text-white text-heading-6">{Song}</h6>
+          <h6 className="text-white lg:text-heading-6">{Song}</h6>
         </div>
 
         <div className="flex gap-4">
@@ -59,7 +61,7 @@ const SongItem = ({
                 <img
                   src="https://api.forevisiondigital.in/uploads/platforms/jiosaavn.png"
                   alt=""
-                  className="w-3"
+                  className="w-2 lg:w-3"
                 />
               </a>
             )}
@@ -69,7 +71,7 @@ const SongItem = ({
                 <img
                   src="https://api.forevisiondigital.in/uploads/platforms/wynk-music.png"
                   alt=""
-                  className="w-3"
+                  className="w-2 lg:w-3"
                 />
               </a>
             )}
@@ -79,7 +81,7 @@ const SongItem = ({
                 <img
                   src="https://api.forevisiondigital.in/uploads/platforms/gaana.png"
                   alt=""
-                  className="w-3"
+                  className="w-2 lg:w-3"
                 />
               </a>
             )}
@@ -89,7 +91,7 @@ const SongItem = ({
                 <img
                   src="https://api.forevisiondigital.in/uploads/platforms/spotify.png"
                   alt=""
-                  className="w-3"
+                  className="w-2 lg:w-3"
                 />
               </a>
             )}
@@ -99,7 +101,7 @@ const SongItem = ({
                 {/* <img
                   src="https://api.forevisiondigital.in/uploads/platforms/apple.png"
                   alt=""
-                  className="w-3"
+                  className="w-2 lg:w-3"
                 /> */}
 
                 <FaApple className="text-white text-heading-5" />
@@ -110,12 +112,12 @@ const SongItem = ({
                 <img
                   src="https://api.forevisiondigital.in/uploads/platforms/amazon-music.png"
                   alt=""
-                  className="w-3"
+                  className="w-2 lg:w-3"
                 />
               </a>
             )}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2">
             <img className="cursor-pointer" src={like} alt="" />
             <img className="cursor-pointer" src={dislike} alt="" />
             <img className="cursor-pointer" src={edit} alt="" />

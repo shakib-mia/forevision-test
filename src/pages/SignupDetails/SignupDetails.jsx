@@ -11,14 +11,15 @@ import { backendUrl } from "../../constants";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
-  const { userData, profileData, token } = useContext(ProfileContext);
+  const { userData, profileData, setUserData, token } =
+    useContext(ProfileContext);
   const [selectedCode, setSelectedCode] = useState("91");
   const [screen, setScreen] = useState("name");
   const navigate = useNavigate();
   const [signupDetailsData, setSignupDetailsData] = useState({
     user_email: userData.user_email,
   });
-  // console.log(token);
+  // console.log(userData);
 
   const fields = [
     {
@@ -27,6 +28,8 @@ const SignupDetails = () => {
       label: "First Name",
       type: "text",
       placeholder: "First Name",
+      value: userData.first_name,
+      onChange: (e) => setUserData({ ...userData, first_name: e.target.value }),
       required: true,
     },
     {
@@ -35,6 +38,8 @@ const SignupDetails = () => {
       label: "Last Name",
       type: "text",
       placeholder: "Last Name",
+      onChange: (e) => setUserData({ ...userData, last_name: e.target.value }),
+
       required: true,
     },
     {

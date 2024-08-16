@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AuthBody from "../../components/AuthBody/AuthBody";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
@@ -7,6 +7,9 @@ import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { toast } from "react-toastify";
 import { backendUrl } from "../../constants";
+import { FcGoogle } from "react-icons/fc";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +18,58 @@ const SignUp = () => {
   // const location = useLocation();
   const navigate = useNavigate();
   const { setUId, setUserData, userData } = useContext(ProfileContext);
+  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+
   // console.log(location.pathname);
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+      setUserData({
+        ...userData,
+        user_email: user.user.email,
+        last_name:
+          user.user.displayName.split(" ")[
+            user.user.displayName.split(" ").length - 1
+          ],
+
+        first_name: user.user.displayName
+          .split(" ")
+          .slice(0, user.user.displayName.split(" ").length - 1),
+      });
+      // console.log(userData);
+
+      const signupData = {
+        email: user.user.email,
+        first_name: user.user.displayName
+          .split(" ")
+          .slice(0, user.user.displayName.split(" ").length - 1)
+          .join(" "),
+        last_name:
+          user.user.displayName.split(" ")[
+            user.user.displayName.split(" ").length - 1
+          ],
+        display_image: user.user.photoURL,
+      };
+
+      // console.log(signupData);
+
+      axios
+        .post(backendUrl + "user-signup", signupData)
+        .then(({ data }) => {
+          if (data.acknowledged) {
+            setUId(data.insertedId);
+            // console.log(signupData.email);
+            setUserData({ ...userData, user_email: signupData.email });
+            navigate("/signup-details");
+          }
+        })
+        .catch((err) =>
+          toast.error(err.response.data, {
+            position: "bottom-center",
+          })
+        );
+    }
+  }, [user]);
 
   const fields = [
     {
@@ -48,7 +102,7 @@ const SignUp = () => {
     e.preventDefault();
 
     const signupData = {
-      email: e.target["user_email"].value,
+      email: e.target["user_email"].value.toLowerCase(),
       password: e.target["user_password"].value,
     };
 
@@ -105,6 +159,21 @@ const SignUp = () => {
           }
         />
       </div>
+
+      <div className="my-2 flex items-center gap-3 mx-auto">
+        <div className="h-[1px] w-full bg-grey-light"></div>
+        <div>OR</div>
+        <div className="h-[1px] w-full bg-grey-light"></div>
+      </div>
+
+      <button
+        type="button"
+        className="mb-2 flex gap-2 text-heading-6 w-full font-semibold items-center border border-grey-light py-2 rounded-lg justify-center mx-auto hover:bg-interactive-light transition hover:text-white"
+        onClick={() => signInWithGoogle()}
+      >
+        <FcGoogle />
+        <span className="font-sans">Continue with Google</span>
+      </button>
 
       {/* <div className="text-center">
         <Link

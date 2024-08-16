@@ -2,9 +2,12 @@ import React from "react";
 
 const SongUploadProgress = ({ setScreen, screen }) => {
   return (
-    <div className="flex gap-5 mt-5">
+    <div
+      className="w-full overflow-x-auto flex gap-5 mt-5"
+      id="upload-progress"
+    >
       <h4
-        className="text-heading-4-bold text-grey-dark flex items-center cursor-pointer"
+        className="text-heading-6-bold lg:text-heading-4-bold text-grey-dark flex items-center cursor-pointer whitespace-nowrap"
         onClick={() => setScreen("albumDetails")}
       >
         <aside
@@ -28,7 +31,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
       </h4>
 
       <h4
-        className="text-heading-4-bold text-grey flex items-center cursor-pointer"
+        className="text-heading-6-bold lg:text-heading-4-bold text-grey flex items-center cursor-pointer whitespace-nowrap"
         onClick={() => setScreen("platform")}
       >
         <aside
@@ -52,7 +55,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
       </h4>
 
       <h4
-        className="text-heading-4-bold flex items-center cursor-pointer"
+        className="text-heading-6-bold lg:text-heading-4-bold flex items-center cursor-pointer whitespace-nowrap"
         onClick={() => setScreen("audio")}
       >
         <aside
@@ -76,7 +79,31 @@ const SongUploadProgress = ({ setScreen, screen }) => {
       </h4>
 
       <h4
-        className="text-heading-4-bold text-grey flex items-center cursor-pointer"
+        className="text-heading-6-bold lg:text-heading-4-bold text-grey flex items-center cursor-pointer whitespace-nowrap"
+        onClick={() => setScreen("preview")}
+      >
+        <aside
+          className={
+            screen === "preview"
+              ? "text-interactive-dark-destructive-active"
+              : "text-interactive-dark-destructive-focus"
+          }
+        >
+          04
+        </aside>
+        <aside
+          className={
+            screen === "preview"
+              ? "border-b-2 border-interactive-dark-destructive-active text-grey-dark"
+              : "text-grey"
+          }
+        >
+          PREVIEW
+        </aside>
+      </h4>
+
+      <h4
+        className="text-heading-6-bold lg:text-heading-4-bold text-grey flex items-center cursor-pointer whitespace-nowrap"
         onClick={() => setScreen("distribution")}
       >
         <aside
@@ -86,7 +113,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
               : "text-interactive-dark-destructive-focus"
           }
         >
-          04
+          05
         </aside>
         <aside
           className={

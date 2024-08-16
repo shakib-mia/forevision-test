@@ -6,6 +6,7 @@ import NavItem from "../NavItem/NavItem";
 import { imageDomain, navItem } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { Link, useNavigate } from "react-router-dom";
+import { MdLogout } from "react-icons/md";
 
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
@@ -39,12 +40,14 @@ const Sidebar = () => {
 
   return (
     <aside
-      className="fixed top-0 left-0 h-screen shadow-lg p-2 bg-white w-6 hover:w-[15%] transition-all duration-500 overflow-hidden overflow-y-auto hidden xl:flex xl:flex-col xl:justify-between z-20"
+      className="fixed top-0 left-0 h-screen shadow-lg p-2 bg-[#000] w-6 hover:w-[15%] transition-all duration-500 overflow-hidden overflow-y-auto hidden xl:flex xl:flex-col xl:justify-between z-[999]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <section>
-        <img src={logo} alt="logo" id="navbarLogo" className="w-fit h-fit" />
+        <Link to={"/"}>
+          <img src={logo} alt="logo" id="navbarLogo" className="w-fit h-fit" />
+        </Link>
 
         {/* <div className="mt-4 flex items-center justify-center flex-col">
           <div className="relative w-full">
@@ -63,14 +66,14 @@ const Sidebar = () => {
           </div>
         </div> */}
 
-        <div className="mt-[48px] flex flex-col gap-2 whitespace-nowrap">
+        <div className="mt-[48px] flex flex-col gap-2 whitespace-nowrap text-white">
           {navItem.map((props, key) => (
             <NavItem {...props} key={key} hovered={hovered} />
           ))}
         </div>
       </section>
 
-      <div className="mb-0 border-t-[1px] border-surface-white-line pt-[20px] flex items-center gap-1">
+      <div className="mb-0 border-t-[1px] border-surface-white-line pt-[20px] flex items-center gap-1 text-white">
         <img
           src={
             userData?.display_image ? imageDomain + userData?.display_image : ""
@@ -85,15 +88,19 @@ const Sidebar = () => {
                 {userData?.partner_name ||
                   userData?.first_name + " " + userData?.last_name}
               </h1>
-              <p className="text-button text-black-tertiary">
+              <p className="text-button">
                 {userData?.user_email || userData?.emailId}
               </p>
             </Link>
-
-            <img
+            {/* <img
               src={logout}
               alt=""
               className="ml-auto cursor-pointer w-2 h-2"
+              onClick={handleLogout}
+            /> */}
+
+            <MdLogout
+              className="ml-auto cursor-pointer"
               onClick={handleLogout}
             />
           </>

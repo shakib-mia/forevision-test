@@ -15,67 +15,6 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
   const [selectedAll, setSelectedAll] = useState(false);
   const [checked, setChecked] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    // console.log(selectedPlatforms);
-    setFormData({ ...formData, selectedPlatforms });
-    // console.log(formData);
-  }, [selectedPlatforms?.length, selectedPlatforms]);
-
-  useEffect(() => {
-    // console.log(config);
-    const config = {
-      headers: { token: sessionStorage.getItem("token") || token },
-    };
-    axios
-      .get("https://api.forevisiondigital.in/platforms", config)
-      .then(({ data }) => {
-        setPlatforms(data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  // console.log(platforms);
-  const [newPlatforms, setNewPlatforms] = useState([]);
-
-  useEffect(() => {
-    if (platforms.length > 0) {
-      const tempNewPlatforms = [];
-      for (const platform of platforms) {
-        for (const { cat_name } of platform.platforms) {
-          tempNewPlatforms.push(cat_name); // Add items to the temporary array
-        }
-      }
-      setNewPlatforms(tempNewPlatforms); // Update state with the complete list
-    }
-  }, [platforms]);
-
-  const handleSelectedPlatform = (e) => {
-    if (checked) {
-      let newSelectedPlatforms = []; // Initialize a temporary array
-
-      for (const platform of platforms) {
-        for (const { cat_name } of platform.platforms) {
-          newSelectedPlatforms.push(cat_name); // Add items to the temporary array
-        }
-      }
-
-      setSelectedPlatforms(newSelectedPlatforms); // Update state once with the complete list
-      console.log(newSelectedPlatforms); // This should now reflect the full list of added items
-    } else {
-      setSelectedPlatforms([]);
-    }
-  };
-
-  useEffect(() => {
-    if (checked) {
-      setSelectedAll(
-        selectedPlatforms?.length > 0 &&
-          selectedPlatforms?.length === newPlatforms.length
-      );
-    }
-  }, [selectedPlatforms, selectedPlatforms?.length, newPlatforms, checked]);
-
   // console.log();
   const freeLogic = location.search.split("?")[2] === "0";
   // console.log(location.search.split("?")[2] === "0");
@@ -146,6 +85,67 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
     ? freePlatforms
     : platforms;
 
+  useEffect(() => {
+    // console.log(selectedPlatforms);
+    setFormData({ ...formData, selectedPlatforms });
+    // console.log(formData);
+  }, [selectedPlatforms?.length, selectedPlatforms]);
+
+  useEffect(() => {
+    // console.log(config);
+    const config = {
+      headers: { token: sessionStorage.getItem("token") || token },
+    };
+    axios
+      .get("https://api.forevisiondigital.in/platforms", config)
+      .then(({ data }) => {
+        setPlatforms(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  // console.log(platforms);
+  const [newPlatforms, setNewPlatforms] = useState([]);
+
+  useEffect(() => {
+    if (platforms.length > 0) {
+      const tempNewPlatforms = [];
+      for (const platform of platforms) {
+        for (const { cat_name } of platform.platforms) {
+          tempNewPlatforms.push(cat_name); // Add items to the temporary array
+        }
+      }
+      setNewPlatforms(tempNewPlatforms); // Update state with the complete list
+    }
+  }, [platforms]);
+
+  const handleSelectedPlatform = () => {
+    const newChecked = !checked;
+    setChecked(newChecked);
+
+    if (newChecked) {
+      let newSelectedPlatforms = [];
+      for (const platform of logicalPlatforms) {
+        for (const { cat_name } of platform.platforms) {
+          newSelectedPlatforms.push(cat_name);
+        }
+      }
+      setSelectedPlatforms(newSelectedPlatforms);
+      // console.log(newSelectedPlatforms);
+    } else {
+      setSelectedPlatforms([]);
+    }
+  };
+
+  useEffect(() => {
+    if (checked) {
+      setSelectedAll(
+        selectedPlatforms?.length > 0 &&
+          selectedPlatforms?.length === newPlatforms.length
+      );
+    }
+  }, [selectedPlatforms, selectedPlatforms?.length, newPlatforms, checked]);
+
   // let logicalPlatforms = [];
 
   // // switch()
@@ -169,13 +169,10 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
   return (
     <>
       <Button
-        containerClassName={"w-fit ml-auto"}
-        onClick={() => {
-          setChecked(!checked);
-          handleSelectedPlatform();
-        }}
+        containerClassName={"w-fit mx-auto lg:ml-auto"}
+        onClick={handleSelectedPlatform}
       >
-        {checked ? "Select" : "Selected"} All
+        {checked ? "Deselect All" : "Select All"}
       </Button>
       {/* </label> */}
 

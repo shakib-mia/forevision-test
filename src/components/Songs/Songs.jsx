@@ -1,19 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import axios from "axios";
-import { backendUrl, config } from "../../constants";
+import { backendUrl } from "../../constants";
 import SongItem from "../Song/Song";
 
 const Songs = () => {
   const [songs, setSongs] = useState([]);
-
-  const { userData } = useContext(ProfileContext);
+  console.log(songs);
+  const { userData, token } = useContext(ProfileContext);
 
   useEffect(() => {
-    // const isrcs = userData?.isrc?.split(",");
+    const config = {
+      headers: {
+        token: sessionStorage.getItem("token") || token,
+      },
+    };
+
     if (userData && userData.isrc) {
       axios
-        .post(backendUrl + "songs", { isrc: userData?.isrc }, config)
+        .get(backendUrl + "songs", config)
         .then(({ data }) => setSongs(data));
     }
   }, [userData.isrc]);

@@ -123,6 +123,18 @@ module.exports = {
         DEFAULT: "#22C55E",
         light: "#86EFAC",
       },
+      warning: {
+        DEFAULT: "#EAC608",
+        light: "#FFED8E",
+      },
+      info: {
+        light: "#BFDBFE",
+        DEFAULT: "#60A5FA",
+      },
+      error: {
+        DEFAULT: "#F87171",
+        light: "#FECACA",
+      },
     },
 
     fontSize: {

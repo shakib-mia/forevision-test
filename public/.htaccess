@@ -5,24 +5,24 @@
 #   RewriteCond %{REQUEST_FILENAME} !-l RewriteRule . /index.html [L]
 # </IfModule>
 
-# <IfModule mod_rewrite.c>
-#     RewriteEngine On
-#     RewriteBase /
-#     RewriteRule ^index\.html$ - [L]
-#     RewriteCond %{SERVER_PORT} 80
-#     RewriteRule ^(.*)$ https://beta.forevisiondigital.com/$1 [R,L]
-#     RewriteCond %{REQUEST_FILENAME} !-f
-#     RewriteCond %{REQUEST_FILENAME} !-d
-#     RewriteCond %{REQUEST_FILENAME} !-l
-#     RewriteRule . /index.html [L]
-# </IfModule>
-
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
     RewriteRule ^index\.html$ - [L]
+    RewriteCond %{SERVER_PORT} 80
+    RewriteRule ^(.*)$ https://dashboard.forevisiondigital.com/$1 [R,L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-l
-    RewriteRule ^(.+)$ index.html [L]
+    RewriteRule . /index.html [L]
 </IfModule>
+
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteBase /
+#     RewriteRule ^index\.html$ - [L]
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteCond %{REQUEST_FILENAME} !-l
+#     RewriteRule ^(.+)$ index.html [L]
+# </IfModule>

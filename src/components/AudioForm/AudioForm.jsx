@@ -12,15 +12,19 @@ import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import ArtistProfile from "../ArtistProfile/ArtistProfile";
 import { fileToBase64 } from "../../utils/filetobase64";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import { useLocation } from "react-router-dom";
-import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { PlanContext } from "../../contexts/PlanContext";
 
-const AudioForm = ({ setArtistCount, setCount, count }) => {
+const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
   const { setScreen, setFormData, formData } = useContext(ScreenContext);
+  const { planStore, setPlanStore } = useContext(PlanContext);
   const { userData } = useContext(ProfileContext);
-  const [done, setDone] = useState(false);
+  // const [done, setDone] = useState(false);
   const location = useLocation();
-  // console.log(userData);
+  // console.log(id);
+  // console.log();
+  const [fileName, setFileName] = useState("");
   // const [alreadyHaveIsrc, setAlreadyHaveIsrc] = useState(false);
   const [isrc, setIsrc] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
@@ -28,23 +32,63 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
   const [audioDuration, setAudioDuration] = useState(0);
   // const [focused, setFocused] = useState(false);
   // const [showPlats, setShowPlats] = useState(false);
-  const [genre, setGenre] = useState("Film");
+  const [genre, setGenre] = useState("");
+  const [subGenre, setSubGenre] = useState("");
+  const [mood, setMood] = useState("");
+  const [description, setDescription] = useState("");
+  const [songUrl, setSongUrl] = useState("");
   const [subGenreOptions, setSubGenreOptions] = useState([]);
 
   const handleArtistNameChange = (index, value) => {
-    const updatedArtists = [...formData.artists];
-    // console.log(updatedArtists);
-    updatedArtists[index].name = value;
+    if (location.pathname === "/album-upload") {
+      // Handle the case where formData is an array of objects
+      // console.log(formData.songs[id]);
+      // const updatedFormData = formData.songs[id].artists.map((item, idx) => {
+      //   if (idx === id) {
+      //     item.name = value;
+      //     const updatedArtists = [{ ...item }];
+      //     updatedArtists[index].name = value;
+      //     // console.log(updatedArtists);
 
-    setFormData({ ...formData, artists: updatedArtists });
+      //     // console.log(item);
+
+      //     // console.log(formData.songs[id]);
+      //     // return { ...item, artists: updatedArtists };
+      //   }
+      //   // return item;
+      // });
+      formData.songs[id].artists[index].name = value;
+      setFormData(formData);
+      // console.log(formData.songs[id].artists[index]);
+      // setFormData(updatedFormData);
+    } else {
+      // Handle the case where formData is a single object
+      const updatedArtists = [...formData.artists];
+      updatedArtists[index].name = value;
+      setFormData({ ...formData, artists: updatedArtists });
+    }
   };
 
   const handleArtistRoleChange = (index, value) => {
-    const updatedArtists = [...formData.artists];
-    updatedArtists[index].role = value;
-    // console.log(updatedArtists[index]);
-
-    setFormData({ ...formData, artists: updatedArtists });
+    // console.log(index, value);
+    if (location.pathname === "/album-upload") {
+      // Handle the case where formData is an array of objects
+      const updatedFormData = formData.songs.map((item, idx) => {
+        if (idx === id) {
+          const updatedArtists = [...item.artists];
+          updatedArtists[index].role = value;
+          return { ...item, artists: updatedArtists };
+        }
+        return item;
+      });
+      setFormData(updatedFormData);
+      // console.log(updatedFormData);
+    } else {
+      // Handle the case where formData is a single object
+      const updatedArtists = [...formData.artists];
+      updatedArtists[index].role = value;
+      setFormData({ ...formData, artists: updatedArtists });
+    }
   };
 
   const languagesInIndia = [
@@ -102,41 +146,94 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
 
   // console.log(formData);
 
-  const handleAudioChange = async (event) => {
+  const handleAudioChange = async (event, _id) => {
     const file = event.target.files[0]; // Get the file
     setFile(file);
     const data = await fileToBase64(file);
     setAudioUrl(data);
-    // console.log(data);
-    // sessionStorage.setItem("song", data);
-    // console.log(file.filename);
+
+    const toastId = toast.loading("Uploading audio...", {
+      position: "bottom-center",
+    });
+    console.log(file.name);
+    setFileName(file.name);
 
     if (file && file.type.startsWith("audio/")) {
-      // Create an object URL for the audio file
-      const audioUrl = URL.createObjectURL(file);
+      const SongFile = new FormData();
+      SongFile.append("file", file);
 
-      // Update the formData state with the file and audioUrl
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        file,
-      }));
+      // Perform the file upload
+      try {
+        const response = await axios.post(
+          backendUrl + "upload-song",
+          SongFile,
+          config
+        );
+        formData.songUrl = response.data.songUrl;
+        setSongUrl(response.data.songUrl);
 
-      // Create a new Audio object to get the duration
-      const audio = new Audio(audioUrl);
+        // Update toast to successful
+        toast.update(toastId, {
+          render: "Audio uploaded successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000, // Close toast after 3 seconds
+        });
+      } catch (error) {
+        console.error("Error uploading file:", error);
 
-      // Wait for the audio metadata to load
-      audio.onloadedmetadata = () => {
-        const duration = audio.duration;
-        setAudioDuration(duration);
-
-        // Revoke the object URL to avoid memory leaks
-        URL.revokeObjectURL(audioUrl);
-
-        // Append the file to FormData
-        const fileData = new FormData();
-        fileData.append("file", file);
-      };
+        // Update toast to error
+        toast.update(toastId, {
+          render: "Error uploading audio. Please try again.",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      }
     }
+
+    // if (file && file.type.startsWith("audio/")) {
+    //   // Create an object URL for the audio file
+    //   const audioUrl = URL.createObjectURL(file);
+
+    //   // Update the formData state with the file and audioUrl
+    //   if (location.pathname === "/album-upload") {
+    //     // setFormData((prevFormData) => ({
+    //     //   ...prevFormData,
+    //     //   file,
+    //     // }));
+
+    //     // formData[parseInt(event.target.id.split("_")[1])].file =
+    //     //   event.target.files[0];
+    //     console.log(event.target.files[0]);
+    //     formData.songs[parseInt(event.target.id.split("_")[1])].file =
+    //       event.target.files[0];
+    //     // );
+    //     setFormData({ ...formData });
+    //     // console.log();
+    //   } else {
+    //     setFormData((prevFormData) => ({
+    //       ...prevFormData,
+    //       file,
+    //     }));
+    //   }
+
+    //   // Create a new Audio object to get the duration
+    const audio = new Audio(songUrl);
+
+    // Wait for the audio metadata to load
+    audio.onloadedmetadata = () => {
+      const duration = audio.duration;
+      setAudioDuration(duration);
+
+      // Revoke the object URL to avoid memory leaks
+      URL.revokeObjectURL(songUrl);
+
+      // Append the file to FormData
+      const fileData = new FormData();
+      fileData.append("file", file);
+    };
+    // }
   };
 
   const handleSubmit = (e) => {
@@ -145,50 +242,105 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
     // setScreen("distribution");
     // localStorage.setItem("song-data", JSON.stringify(formData));
     // console.log(formData);
-    formData.paymentStatus = "pending";
-    formData.userEmail = userData.user_email;
+    if (location.pathname === "/album-upload") {
+      formData.songs[id].status = "pending";
+      formData.songs[id].userEmail = userData.user_email;
 
-    console.log(formData);
+      const SongFile = new FormData();
 
-    const SongFile = new FormData();
+      SongFile.append("file", formData.songs[id].file);
 
-    SongFile.append("file", formData.file);
+      // Perform the file upload
+      // axios
+      //   .post(backendUrl + "upload-song", SongFile, config)
+      //   .then(({ data }) => {
+      //     formData.songUrl = data.songUrl;
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error uploading file:", error);
+      //   });
 
-    // Perform the file upload
-    axios
-      .post(backendUrl + "upload-song", SongFile, config)
-      .then(({ data }) => {
-        formData.songUrl = data.songUrl;
-        setDone(true);
-      })
-      .catch((error) => {
-        console.error("Error uploading file:", error);
-      });
+      delete formData.user_email;
+      delete formData.audioUrl;
+      delete formData.file;
+      delete formData.status;
 
-    delete formData.user_email;
-    delete formData.audioUrl;
-    delete formData.file;
-    delete formData.status;
-    // console.log(formData);
-    // console.log();
-    // document.getElementsByClassName("owl-next")[0].click();
+      formData.price = 99900;
 
-    axios
-      .post(backendUrl + "upload-song/upload-song-data", formData, config)
-      .then(({ data }) => {
-        if (data.acknowledged) {
-          // setCount(count + 1);
-          setScreen("distribution");
-        }
-      });
+      axios
+        .post(backendUrl + "recent-uploads", formData, config)
+        .then(({ data }) => {
+          if (data.acknowledged) {
+            // setCount(count + 1);
+            location.pathname !== "/album-upload"
+              ? setScreen("distribution")
+              : setCollapsed(true);
+          }
+        });
+    } else {
+      formData.status = "pending";
+      formData.userEmail = userData.user_email;
+
+      console.log(formData);
+
+      const SongFile = new FormData();
+
+      SongFile.append("file", formData.file);
+
+      // // Perform the file upload
+      // axios
+      //   .post(backendUrl + "upload-song", SongFile, config)
+      //   .then(({ data }) => {
+      //     formData.songUrl = data.songUrl;
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error uploading file:", error);
+      //   });
+
+      delete formData.user_email;
+      delete formData.audioUrl;
+      delete formData.file;
+      delete formData.status;
+      // console.log(formData);
+      formData.price = location.search.split("?")[2];
+      formData.planName = location.search.split("?")[1];
+      // console.log();
+      // document.getElementsByClassName("owl-next")[0].click();
+      setScreen("preview");
+      // axios
+      //   .post(backendUrl + "recent-uploads", formData, config)
+      //   .then(({ data }) => {
+      //     if (data.acknowledged) {
+      //       // setCount(count + 1);
+      //       location.pathname !== "/album-upload"
+      //         ? setScreen("preview")
+      //         : setCollapsed(true);
+      //     }
+      //   });
+    }
   };
 
   const handleRemoveArtist = (index) => {
-    const updatedArtists = formData.artists.filter((_, i) => i !== index);
-    setFormData({ ...formData, artists: updatedArtists });
+    let updatedArtists;
 
-    // console.log(updatedArtists);
+    // Determine the source of artists based on the pathname
+    if (location.pathname === "/album-upload") {
+      // Handle the case where formData is an array of objects
+      updatedArtists = formData.songs[id].artists.filter((_, i) => i !== index);
+      // Update the specific entry within the formData array
+      const updatedFormData = formData.map((item, idx) =>
+        idx === id ? { ...item, artists: updatedArtists } : item
+      );
+      setFormData(updatedFormData);
+    } else {
+      // Handle the case where formData is a single object
+      updatedArtists = formData.artists.filter((_, i) => i !== index);
+      setFormData({ ...formData, artists: updatedArtists });
+    }
+
+    // console.log(formData);
   };
+
   /**
    *
    * {audioUrl.length > 0 && <AudioPlayer src={audioUrl} />}
@@ -198,7 +350,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
 
   useEffect(() => {
     const options =
-      genre === "Film"
+      genre === "Film" || formData.genre === "Film"
         ? [
             "Devotional",
             "Dialogue",
@@ -211,7 +363,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
             "Sad",
             "Unplugged",
           ]
-        : genre === "Pop"
+        : genre === "Pop" || formData.genre === "Pop"
         ? [
             "Acoustic Pop",
             "Band Songs",
@@ -228,7 +380,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
             "Sad Songs",
             "Soft Pop",
           ]
-        : genre === "Indie"
+        : genre === "Indie" || formData.genre === "Indie"
         ? [
             "Indian Indie",
             "Indie Dance",
@@ -239,7 +391,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
             "Indie Rock",
             "Indie Singer -Songwriter",
           ]
-        : genre === "Hip-Hop/Rap"
+        : genre === "Hip-Hop/Rap" || formData.genre === "Hip-Hop/Rap"
         ? [
             "Alternative Hip-Hop",
             "Concious Hip-Hop",
@@ -251,7 +403,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
             "Trap",
             "Trap Beats",
           ]
-        : genre === "Folk"
+        : genre === "Folk" || formData.genre === "Folk"
         ? [
             "Ainchaliyan",
             "Alha",
@@ -349,7 +501,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
             "Tusu Gaan",
             "Villu Pattu",
           ]
-        : genre === "Devotional"
+        : genre === "Devotional" || formData.genre === "Devotional"
         ? [
             "Aarti",
             "Bhajan",
@@ -368,38 +520,74 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
             "Qawwals",
             "Shabd",
           ]
-        : genre === "Hindustani Classical"
+        : genre === "Hindustani Classical" ||
+          formData.genre === "Hindustani Classical"
         ? ["Instrumental", "Vocal "]
-        : genre === "Carnatic Classical"
+        : genre === "Carnatic Classical" ||
+          formData.genre === "Carnatic Classical"
         ? ["Instrumental", "Vocal"]
-        : genre === "Ambient / Instrumental"
+        : genre === "Ambient / Instrumental" ||
+          formData.genre === "Ambient / Instrumental"
         ? ["Soft", "Easy Listening", "Electronic", "Fusion", "Lounge"]
         : [];
 
     setSubGenreOptions(options);
-  }, [genre]);
+  }, [genre, formData.genre]);
+
+  // console.log(formData.songs[id]?.file);
+  const filename =
+    location.pathname === "/album-upload"
+      ? formData.songs[id].file?.name
+      : formData.file?.name;
+  // console.log(filename);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0];
+  };
 
   // console.log(formData);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex gap-2">
-        <div className="w-2/3">
-          <div className="grid grid-cols-2 gap-2 items-center">
+    <form onSubmit={handleSubmit} className="pb-6 lg:pb-0">
+      {/* {id} */}
+      <div className="flex flex-col lg:flex-row gap-2">
+        <div className="w-full lg:w-2/3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 items-center">
             <InputField
               label={"Song Name"}
-              onChange={(e) =>
-                setFormData({ ...formData, songName: e.target.value })
-              }
+              onChange={(e) => {
+                // console.log(formData.songs[id]);
+                // console.log(id);
+                // location.pathname === "/album-upload" || setFormData()
+                if (location.pathname === "/album-upload") {
+                  formData.songs[id].songName = e.target.value;
+                  setFormData({ ...formData });
+                  console.log(formData.songs[id].songName.length);
+                } else {
+                  setFormData({ ...formData, songName: e.target.value });
+                }
+              }}
               required
-              value={formData.songName}
+              value={
+                location.pathname === "/album-upload"
+                  ? formData.songs[id]?.songName
+                  : formData?.songName
+              }
               placeholder={"Name"}
             />
             <InputField
               label={"ISRC"}
               onChange={(e) => {
                 setIsrc(e.target.value);
-                setFormData({ ...formData, isrc: e.target.value });
+                // setFormData({ ...formData, isrc: e.target.value });
+                if (location.pathname === "/album-upload") {
+                  formData.songs[id].isrc = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({ ...formData, isrc: e.target.value });
+                }
               }}
               placeholder={"ISRC"}
               // required={alreadyHaveIsrc}
@@ -416,15 +604,24 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
           /> */}
           </div>
 
-          <div className="grid grid-cols-3 gap-2 items-center mt-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 items-center mt-3">
             {/* <InputField type={"multi-select"} options={["yes", "no"]} /> */}
             <SelectOptions
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  parentalAdvisory: e.target.value === "yes" ? true : false,
-                })
-              }
+              onChange={(e) => {
+                // setFormData({
+                //   ...formData,
+                //   parentalAdvisory: e.target.value === "yes" ? true : false,
+                // });
+                if (location.pathname === "/album-upload") {
+                  formData.songs[id].parentalAdvisory = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({
+                    ...formData,
+                    parentalAdvisory: e.target.value,
+                  });
+                }
+              }}
               required={true}
               options={["no", "yes"]}
               value={formData.parentalAdvisory ? "yes" : "no"}
@@ -437,12 +634,18 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
               options={["no", "yes"]}
               label={"Instrumental"}
               required={true}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  instrumental: e.target.value === "yes" ? true : false,
-                })
-              }
+              onChange={(e) => {
+                // setFormData({
+                //   ...formData,
+                //   instrumental: e.target.value === "yes" ? true : false,
+                // });
+                if (location.pathname === "/album-upload") {
+                  formData.songs[id].instrumental = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({ ...formData, instrumental: e.target.value });
+                }
+              }}
             />
             <SelectOptions
               value={formData.language}
@@ -450,25 +653,43 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
               label={"Language"}
               placeholder={"Select..."}
               required={true}
-              onChange={(e) =>
-                setFormData({ ...formData, language: e.target.value })
-              }
+              onChange={(e) => {
+                // setFormData({ ...formData, language: e.target.value });
+                if (location.pathname === "/album-upload") {
+                  formData.songs[id].language = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({ ...formData, language: e.target.value });
+                }
+              }}
             />
             {/* <InputField type={"multi-select"} options={["yes", "no"]} /> */}
           </div>
 
           <div className="mt-4 flex items-end gap-2">
             <aside className="w-full">
-              {formData?.artists?.map((artist, key) => (
-                <ArtistProfile
-                  key={key}
-                  id={key}
-                  handleArtistNameChange={handleArtistNameChange}
-                  handleArtistRoleChange={handleArtistRoleChange}
-                  handleRemoveArtist={handleRemoveArtist}
-                  artist={artist}
-                />
-              ))}
+              {location.pathname === "/album-upload"
+                ? formData.songs[id]?.artists?.map((artist, key) => (
+                    <ArtistProfile
+                      key={key}
+                      id={key}
+                      // handleArtistNameChange={handleArtistNameChange}
+                      handleArtistRoleChange={handleArtistRoleChange}
+                      handleRemoveArtist={handleRemoveArtist}
+                      artist={artist}
+                      formId={id}
+                    />
+                  ))
+                : formData?.artists?.map((artist, key) => (
+                    <ArtistProfile
+                      key={key}
+                      id={key}
+                      handleArtistNameChange={handleArtistNameChange}
+                      handleArtistRoleChange={handleArtistRoleChange}
+                      handleRemoveArtist={handleRemoveArtist}
+                      artist={artist}
+                    />
+                  ))}
             </aside>
           </div>
 
@@ -483,7 +704,9 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
             type={"button"}
             onClick={() => {
               setArtistCount((c) => c + 1);
-              formData.artists.push({ name: "", role: "" });
+              location.pathname === "/album-upload"
+                ? formData.songs[id].artists.push({ name: "", role: "" })
+                : formData.artists.push({ name: "", role: "" });
             }}
           />
 
@@ -492,12 +715,16 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
             type={"file"}
             accept={"audio/mp3, audio/wav"}
             label={"Upload Audio"}
-            onChange={handleAudioChange}
-            disabled={!formData.songName}
-            id={"audioUpload"}
+            onChange={(e) => handleAudioChange(e, id)}
+            disabled={
+              location.pathname === "/album-upload"
+                ? !formData.songs[id].songName?.length
+                : !formData?.songName?.length
+            }
+            id={"audioUpload_" + id}
             note={"Ensure your audio files are in WAV or MP3 formats only."}
             required={true}
-            placeholder={formData.file?.name || "Select File"}
+            placeholder={fileName || "Select File"}
             containerClassName={"mt-3"}
           />
 
@@ -514,7 +741,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
           {/* <Video /> */}
           {/* </div> */}
         </div>
-        <div className="w-1/3">{<AudioPlayer src={audioUrl} />}</div>
+        <div className="w-full lg:w-1/3">{<AudioPlayer src={audioUrl} />}</div>
       </div>
       {/* {formData.songName?.length && ( */}
 
@@ -522,23 +749,33 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
       {(location.search.split("?")[1]?.includes("-")
         ? location.search.split("?")[1]?.split("-")?.join(" ")
         : location.search.split("?")[1]) !== "forevision pro" ? (
-        <CallerTuneTimeStamp audioDuration={audioDuration} />
+        <CallerTuneTimeStamp audioDuration={audioDuration} id={id} />
       ) : (
         <></>
       )}
 
-      <div className="grid grid-cols-4 gap-3 mt-5 items-baseline">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mt-5 items-baseline">
         <SelectOptions
           placeholder={"Select The Primary Genre"}
           required={true}
           label={"Primary Genre"}
           name={"genre"}
           id={"genre"}
-          value={formData.genre}
           onChange={(e) => {
             setGenre(e.target.value);
-            setFormData({ ...formData, genre: e.target.value });
+            // setFormData({ ...formData, subGenre: e.target.value })
+            if (location.pathname === "/album-upload") {
+              formData.songs[id].genre = e.target.value;
+            } else {
+              formData.genre = e.target.value;
+            }
           }}
+          value={
+            genre ||
+            (location.pathname === "/album-upload"
+              ? formData.songs[id].genre
+              : formData.genre)
+          }
           options={[
             "Film",
             "Pop",
@@ -558,10 +795,21 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
           name={"subGenre"}
           id={"subGenre"}
           required={true}
-          onChange={(e) =>
-            setFormData({ ...formData, subGenre: e.target.value })
+          onChange={(e) => {
+            setSubGenre(e.target.value);
+            // setFormData({ ...formData, subGenre: e.target.value })
+            if (location.pathname === "/album-upload") {
+              formData.songs[id].subGenre = e.target.value;
+            } else {
+              formData.subGenre = e.target.value;
+            }
+          }}
+          value={
+            subGenre ||
+            (location.pathname === "/album-upload"
+              ? formData.songs[id].subGenre
+              : formData.subGenre)
           }
-          value={formData.subGenre}
           options={subGenreOptions}
         />
 
@@ -569,8 +817,21 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
           placeholder={"Select The Mood..."}
           label={"Mood"}
           required={true}
-          value={formData.mood}
-          onChange={(e) => setFormData({ ...formData, mood: e.target.value })}
+          onChange={(e) => {
+            setMood(e.target.value);
+            // setFormData({ ...formData, subGenre: e.target.value })
+            if (location.pathname === "/album-upload") {
+              formData.songs[id].mood = e.target.value;
+            } else {
+              formData.mood = e.target.value;
+            }
+          }}
+          value={
+            mood ||
+            (location.pathname === "/album-upload"
+              ? formData.songs[id].mood
+              : formData.mood)
+          }
           // onChange={(e) => console.log(e.target.value)}
           options={[
             "Romantic",
@@ -597,17 +858,27 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
           label={"Description"}
           placeholder={"Description"}
           required={false}
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
+          // value={formData.description}
+          onChange={(e) => {
+            setDescription(e.target.value);
+            // setFormData({ ...formData, subGenre: e.target.value })
+            if (location.pathname === "/album-upload") {
+              formData.songs[id].description = e.target.value;
+              setFormData({ ...formData });
+            } else {
+              formData.description = e.target.value;
+              setFormData({ ...formData });
+            }
+          }}
+          value={description || formData.description}
+
           // labelClassName={"opacity-0"}
         />
       </div>
 
-      <div className="flex gap-4 items-center mt-4">
-        <aside className="w-2/3 flex items-baseline gap-4">
-          <div className="w-1/2">
+      <div className="flex flex-col lg:flex-row gap-4 items-center mt-4">
+        <aside className="w-full lg:w-2/3 flex flex-col lg:flex-row items-baseline gap-4">
+          <div className="w-full lg:w-1/2">
             {/* <SelectOptions
                 labelClassName={"font-medium text-subtitle-2 !text-black"}
                 label={"Publisher"}
@@ -621,38 +892,93 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
                 ]}
               /> */}
             <InputField
-              type={"date"}
+              type="date"
               required={true}
-              label={" "}
-              value={formData.releaseDate}
-              onChange={(e) =>
-                setFormData({ ...formData, releaseDate: e.target.value })
+              label=" "
+              value={
+                location.pathname === "/album-upload"
+                  ? formData.songs[id].releaseDate
+                    ? formatDate(formData.songs[id].releaseDate)
+                    : ""
+                  : formData.releaseDate
+                  ? formatDate(formData.releaseDate)
+                  : ""
               }
-              note={"Date of Music Release"}
+              onChange={(e) =>
+                location.pathname === "/album-upload"
+                  ? (formData.songs[id].releaseDate = e.target.value)
+                  : setFormData({ ...formData, releaseDate: e.target.value })
+              }
+              note="Date of Music Release"
             />
           </div>
-          <div className="w-1/2">
+          <div className="w-full lg:w-1/2">
             <InputField
+              type="date"
+              required={true}
+              label=" "
+              value={
+                location.pathname === "/album-upload"
+                  ? formData.songs[id].liveDate
+                    ? formatDate(formData.songs[id].liveDate)
+                    : ""
+                  : formData.liveDate
+                  ? formatDate(formData.liveDate)
+                  : ""
+              }
+              onChange={(e) =>
+                location.pathname === "/album-upload"
+                  ? (formData.songs[id].liveDate = e.target.value)
+                  : setFormData({ ...formData, liveDate: e.target.value })
+              }
+              note="Go Live Date"
+            />
+            {/* <InputField
               type={"date"}
               required={true}
               label={" "}
               value={formData.liveDate}
               onChange={(e) =>
-                setFormData({ ...formData, liveDate: e.target.value })
+                // setFormData({ ...formData, liveDate: e.target.value })
+                location.pathname === "/album-upload"
+                  ? (formData.songs[id].liveDate = e.target.value)
+                  : formData.liveDate
               }
               note={"Go Live Date"}
-            />
+            /> */}
           </div>
           {/* </div> */}
         </aside>
 
-        <aside className="w-1/3">
-          <InputField
+        <aside className="w-full lg:w-1/3">
+          {/* <InputField
             type={"time"}
             label={" "}
             value={formData.time}
-            onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+            onChange={(e) => {
+              setFormData({ ...formData, time: e.target.value });
+              location.pathname === "/album-upload"
+                ? (formData.songs[id].time = e.target.value)
+                : (formData.time = e.target.value);
+            }}
             note={"Go Live Time"}
+          /> */}
+
+          <InputField
+            type="time"
+            required={true}
+            label=" "
+            value={
+              location.pathname === "/album-upload"
+                ? formData.songs[id].time || ""
+                : formData.time || ""
+            }
+            onChange={(e) =>
+              location.pathname === "/album-upload"
+                ? (formData.songs[id].time = e.target.value)
+                : setFormData({ ...formData, time: e.target.value })
+            }
+            note="Go live time"
           />
         </aside>
       </div>
@@ -669,7 +995,7 @@ const AudioForm = ({ setArtistCount, setCount, count }) => {
             console.log(formData);
             // setScreen("platform");
           }}
-          disabled={done}
+          // disabled={done}
           text={"Save"}
         />
         {/* <FaChevronCircleRight

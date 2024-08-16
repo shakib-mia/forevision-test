@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaRupeeSign } from "react-icons/fa";
+import { PlanContext } from "../../contexts/PlanContext";
 
 const GSTCalculator = ({ location }) => {
   // Extract the total price in paise from the URL
-  const totalPriceInPaise = parseInt(location.search.split("?")[2], 10);
+  const { planStore } = useContext(PlanContext);
+  const totalPriceInPaise = parseInt(planStore.price, 10);
 
   // Convert the total price from paise to rupees
   const totalPrice = totalPriceInPaise / 100;

@@ -225,3 +225,7 @@ input[type="range"]:focus {
 .owl-nav {
   @apply hidden;
 }
+
+#upload-progress::-webkit-scrollbar {
+  @apply w-0 h-0;
+}

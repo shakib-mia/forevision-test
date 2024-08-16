@@ -9,15 +9,21 @@ import CreateRecordLabel from "../CreateRecordLabel/CreateRecordLabel";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { backendUrl } from "../../constants";
+import { backendUrl, config } from "../../constants";
+import { useLocation } from "react-router-dom";
+import { checkImageDimensions } from "../../utils/checkImageDimension";
+import Swal from "sweetalert2";
 
 const AlbumDetails = () => {
   const { setScreen, setFormData, formData } = useContext(ScreenContext);
   const { recordLabels } = useContext(ProfileContext);
   const [file, setFile] = useState({});
+  const [filmBanner, setFilmBanner] = useState({});
   const [showRecordLabelForm, setShowRecordLabelForm] = useState(false);
+  const location = useLocation();
 
   const handleDetailSubmit = () => {
+    console.log(formData);
     if (file.name) {
       setScreen("platform");
       // setFileError(false)
@@ -31,24 +37,55 @@ const AlbumDetails = () => {
     }
   };
 
-  const handleArtFileChange = (e) => {
+  const handleArtFileChange = async (e) => {
     setFile(e.target.files[0]);
+    // setFormData({ ...formData, albumArt: e.target.files[0] });
+    const albumArt = new FormData();
+    const data = await checkImageDimensions(e.target.files[0], 3000, 3000);
+
+    // console.log(data);
+    if (data) {
+      albumArt.append("file", e.target.files[0]);
+
+      axios
+        .post(backendUrl + "upload-art-work", albumArt)
+        .then(({ data }) =>
+          setFormData({ ...formData, artWork: data.artWorkUrl })
+        );
+    } else {
+      // toast.error("Image size should be 3000x3000");
+      Swal.fire({
+        title: "Size mismatch!",
+        html: `
+          Image size should be 3000&times;3000
+        `,
+        icon: "error",
+        confirmButtonText: "Got It",
+      });
+    }
+  };
+
+  const handleBannerFileChange = async (e) => {
+    setFilmBanner(e.target.files[0]);
+    // console.log(filmBanner.name);
     // setFormData({ ...formData, albumArt: e.target.files[0] });
     const albumArt = new FormData();
 
     albumArt.append("file", e.target.files[0]);
 
     axios
-      .post(backendUrl + "upload-art-work", albumArt)
+      .post(backendUrl + "upload-film-banner", albumArt, config)
       .then(({ data }) =>
-        setFormData({ ...formData, artWork: data.artWorkUrl })
+        setFormData({ ...formData, filmBanner: data.artWorkUrl })
       );
   };
 
+  // alert(location.pathname);
+
   return (
-    <>
-      <div className="flex gap-4">
-        <aside className="w-2/3">
+    <div className="pb-7">
+      <div className="flex flex-col lg:flex-row gap-2 lg:gap-4">
+        <aside className="w-full lg:w-2/3">
           <SelectOptions
             placeholder={"Select..."}
             label={"Content Type"}
@@ -61,7 +98,7 @@ const AlbumDetails = () => {
             value={formData.contentType}
           />
         </aside>
-        <aside className="w-1/3">
+        <aside className="w-full lg:w-1/3">
           <InputField
             type={"number"}
             required={false}
@@ -69,9 +106,12 @@ const AlbumDetails = () => {
             name={"upc"}
             // labelClassName={"opacity-0"}
             placeholder={"UPC"}
-            value={formData.upc}
+            value={formData.UPC}
             label={" "}
-            onChange={(e) => setFormData({ ...formData, upc: e.target.value })}
+            onChange={(e) => {
+              setFormData({ ...formData, UPC: e.target.value });
+              console.log(formData);
+            }}
             note={
               "If you have one put it here, if you don't one will be provided"
             }
@@ -80,46 +120,61 @@ const AlbumDetails = () => {
       </div>
 
       {formData.contentType === "Film" && (
-        <div className="grid grid-cols-3 gap-4 mt-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4 mt-2">
           <InputField
             type={"file"}
             id={"filmBanner"}
             required
             name={"filmBanner"}
-            placeholder={"Film Banner"}
+            accept={"image/*"}
+            placeholder={filmBanner?.name || "Film Banner"}
+            // value={filmBanner.name}
+            onChange={handleBannerFileChange}
           />
           <InputField
             required
             name={"filmProducer"}
             type={"text"}
             placeholder={"Film Producer"}
+            onChange={(e) =>
+              setFormData({ ...formData, filmProducer: e.target.value })
+            }
           />
           <InputField
             required
             name={"actor"}
             type={"text"}
             placeholder={"Actor"}
+            onChange={(e) =>
+              setFormData({ ...formData, actor: e.target.value })
+            }
           />
           <InputField
             required
             name={"director"}
             type={"text"}
             placeholder={"Director"}
+            onChange={(e) =>
+              setFormData({ ...formData, director: e.target.value })
+            }
           />
           <InputField
             required
             name={"movieReleaseDate"}
             type={"date"}
             label={"Movie Release Date"}
+            onChange={(e) =>
+              setFormData({ ...formData, movieReleaseDate: e.target.value })
+            }
           />
         </div>
       )}
 
-      <div className="flex gap-4 items-baseline">
-        <aside className="w-2/3 flex items-baseline gap-4">
+      <div className="flex gap-2 lg:gap-4 flex-col lg:flex-row items-baseline">
+        <aside className="w-full lg:w-2/3 flex flex-col lg:flex-row items-baseline gap-2 lg:gap-4">
           {/* <SelectOptions label={"Content Type"} options={[1, 2, 3, 4]} /> */}
           {/* <div className="flex items-baseline"> */}
-          <div className="w-1/2">
+          <div className="w-full lg:w-1/2">
             <InputField
               name={"title"}
               label={" "}
@@ -133,7 +188,7 @@ const AlbumDetails = () => {
               }
             />
           </div>
-          <div className="w-1/2">
+          <div className="w-full lg:w-1/2">
             <SelectOptions
               placeholder={"Select..."}
               // labelClassName={"opacity-0"}
@@ -141,7 +196,11 @@ const AlbumDetails = () => {
               name={"albumType"}
               label={" "}
               note={"Album Type"}
-              options={["Album", "Single", "Compilation", "Remix"]}
+              options={
+                location.pathname === "/album-upload"
+                  ? ["Album", "Compilation", "Remix"]
+                  : ["Album", "Single", "Compilation", "Remix"]
+              }
               value={formData.albumType}
               onChange={(e) =>
                 setFormData({ ...formData, albumType: e.target.value })
@@ -150,7 +209,7 @@ const AlbumDetails = () => {
           </div>
           {/* </div> */}
         </aside>
-        <aside className="w-1/3">
+        <aside className="w-full lg:w-1/3">
           <InputField
             type={"file"}
             // labelClassName={"opacity-0"}
@@ -169,8 +228,8 @@ const AlbumDetails = () => {
         </aside>
       </div>
 
-      <div className="flex gap-4 items-center mt-4">
-        <aside className="w-2/3 flex items-baseline gap-4">
+      <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 items-center mt-4">
+        <aside className="w-full lg:w-2/3 flex items-baseline gap-2 lg:gap-4">
           <div className="w-full">
             <SelectOptions
               labelClassName={"font-medium text-subtitle-2 !text-black"}
@@ -190,7 +249,7 @@ const AlbumDetails = () => {
           </div>
           {/* </div> */}
         </aside>
-        <aside className="w-1/3">
+        <aside className="w-full lg:w-1/3">
           {/* <InputField
             type={"file"}
             // labelClassName={"opacity-0"}
@@ -227,7 +286,7 @@ const AlbumDetails = () => {
           ></Button>
         </aside>
       </div>
-      <div className="w-1/2 mt-3">
+      <div className="lg:w-1/2 mt-3">
         <SelectOptions
           placeholder={"Select..."}
           labelClassName={"font-medium text-subtitle-2 !text-black"}
@@ -246,7 +305,7 @@ const AlbumDetails = () => {
       </div>
 
       <Button
-        containerClassName={"w-fit mx-auto mt-6"}
+        containerClassName={"w-fit mx-auto lg:mt-6"}
         onClick={handleDetailSubmit}
         // disabled={Object.values(formData).length < 7}
         // type={"submit"}
@@ -259,7 +318,7 @@ const AlbumDetails = () => {
           <CreateRecordLabel setShowRecordLabelForm={setShowRecordLabelForm} />
         </Modal>
       )}
-    </>
+    </div>
   );
 };
 

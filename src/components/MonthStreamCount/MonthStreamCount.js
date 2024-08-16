@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-const MonthStreamCount = ({ songs, details, i }) => {
-  const [platform, setPlatform] = useState("");
+const MonthStreamCount = ({ songs, details, i, open }) => {
+  const [platform, setPlatform] = useState(open ? i.platformName : "");
 
   let songsByPlatform = [];
   songs.forEach((s) => {
@@ -44,41 +44,48 @@ const MonthStreamCount = ({ songs, details, i }) => {
     "December",
   ];
   return (
-    <details onClick={() => setPlatform(i.platformName)} className="group">
+    <details
+      onClick={() => setPlatform(i.platformName)}
+      className="group overflow-hidden"
+      open={open}
+    >
       <summary className="cursor-pointer list-none">
-        <tr className="text-center flex justify-between items-center p-1 hover:bg-grey-light rounded-2xl">
-          <td className="w-1/3 flex items-center ml-3">
-            <span className="mr-2 transition group-open:rotate-180 group-open:text-interactive-light-destructive-focus">
-              <svg
-                fill="none"
-                height="24"
-                shape-rendering="geometricPrecision"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-                width="24"
-              >
-                <path d="M6 9l6 6 6-6"></path>
-              </svg>
+        <tr className="text-center flex justify-between items-center p-1 hover:bg-grey-light rounded-2xl px-0 xl:px-1">
+          <td className="w-1/3 flex items-center justify-center">
+            <span className="xl:mr-2 transition group-open:rotate-180 group-open:text-interactive-light-destructive-focus">
+              {open || (
+                <svg
+                  fill="none"
+                  height="24"
+                  shape-rendering="geometricPrecision"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  className="hidden xl:block"
+                >
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              )}
             </span>
             {i.platformName}
           </td>
           <td className="w-1/3">{i.total}</td>
-          <td className="w-1/3">{i["final revenue"]}</td>
+          <td className="w-1/3">{i["final revenue"].toFixed(5)}</td>
         </tr>
       </summary>
-      <div className="w-full flex justify-end">
+      <div className="w-full flex justify-center">
         <table className="w-11/12 text-center my-1">
           {countByMonth.map((d) => (
-            <tr style={{ color: "#78B0FD" }}>
+            <tr className="text-interactive-light" key={d.date}>
               <td className="w-1/3">
                 {months[new Date(d.date).getMonth()]}{" "}
                 {new Date(d.date).getFullYear()}
               </td>
               <td className="w-1/3">{d.count}</td>
-              <td className="w-1/3">{d.revenue}</td>
+              <td className="w-1/3">{d.revenue.toFixed(4)}</td>
             </tr>
           ))}
         </table>

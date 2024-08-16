@@ -593,6 +593,7 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
           const audio = new Audio(audioUrl);
 
           audio.onloadedmetadata = () => {
+            console.log(audio);
             // Access audio duration here
             setAudioDuration(audio.duration);
             console.log(`Audio Duration: ${audio.duration} seconds`);

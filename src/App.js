@@ -10,6 +10,9 @@ import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { PlanContext } from "./contexts/PlanContext";
+import "sweetalert2/src/sweetalert2.scss";
+import Navbar from "./components/Navbar/Navbar";
+
 // import Construction from "./pages/Construction/Construction";
 
 function App() {
@@ -41,7 +44,7 @@ function App() {
         .get(backendUrl + "token-time", config)
         .then(({ data }) => setTokenDetails(data))
         .catch((err) => {
-          // console.log(err.response.data.name);
+          console.log(err.response.data.name);
           if (err.response.data.name === "TokenExpiredError") {
             setToken("");
             sessionStorage.removeItem("token");
@@ -103,21 +106,31 @@ function App() {
     }
   }, [userData, refetch]);
 
-  const [planStore, setPlanStore] = useState({});
+  // console.log(location.search.split("?"));
+
+  const [planStore, setPlanStore] = useState({
+    planName: location.search?.split("?")[1],
+    price: location.search?.split("?")[2],
+  });
 
   /* Working api calls ends here */
 
   return (
-    <>
-      {/* <Construction /> */}
-      <ProfileContext.Provider value={store}>
+    <div className="bg-white w-screen h-screen">
+      <Construction />
+      {/* <ProfileContext.Provider value={store}>
         <PlanContext.Provider value={{ planStore, setPlanStore }}>
           {token ? token.length && <BottomBar /> : <></>}
           {location.pathname !== "/login" &&
             location.pathname !== "/signup" &&
             location.pathname !== "/forgot-password" &&
             location.pathname !== "/signup-details" &&
-            !location.pathname.includes("payment") && <Sidebar />}
+            !location.pathname.includes("payment") && (
+              <>
+                <Sidebar />
+                {location.pathname !== "/profile" && <Navbar />}
+              </>
+            )}
           <Routes>
             {routes.map(({ page, path }, key) => (
               <Route key={key} path={path} element={page} />
@@ -125,8 +138,8 @@ function App() {
           </Routes>
           <ToastContainer />
         </PlanContext.Provider>
-      </ProfileContext.Provider>
-    </>
+      </ProfileContext.Provider> */}
+    </div>
   );
 }
 

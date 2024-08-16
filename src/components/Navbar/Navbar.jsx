@@ -1,30 +1,28 @@
 import React from "react";
-// import logo from "./../../assets/images/logo.webp";
-import profile from "./../../assets/images/profile.webp";
-import notification from "./../../assets/icons/notification.webp";
-import settings from "./../../assets/icons/settings.webp";
-// import Button from "../Button/Button";
+import { IoSettingsOutline } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
-
   return (
-    <nav className="flex pl-[30px] pr-[60px] py-[6px] items-center justify-end fixed top-0 w-full">
-      <ul className="flex gap-[58px] text-primary-light items-center">
+    <nav className="hidden xl:flex pl-[30px] pr-[60px] py-2 items-center justify-end fixed top-0 w-full bg-[#000] z-[99] shadow-lg">
+      <ul className="flex gap-[58px] text-white items-center">
         <Link
           to="/settings"
           className="text-paragraph-1 flex items-center gap-1"
         >
-          <img src={settings} alt="" />
+          {/* <img src={settings} alt="" /> */}
+          <IoSettingsOutline />
           Settings
         </Link>
-        <li className="text-paragraph-1 flex items-center gap-1 cursor-pointer">
+        {/* <li className="text-paragraph-1 flex items-center gap-1 cursor-pointer">
           <img src={notification} alt="" />
           Notifications
-        </li>
+        </li> */}
         <li className="text-paragraph-1">
           <Link to="/profile">
-            <img src={profile} alt="profile" />
+            {/* <img src={profile} alt="profile" /> */}
+            <CgProfile className="text-heading-6" />
           </Link>
         </li>
       </ul>

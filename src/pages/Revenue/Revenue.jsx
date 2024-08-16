@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import background from "../../assets/images/background.png";
 import Button from "../../components/Button/Button";
 import RevenueAnalytics from "../../components/RevenueAnalytics/RevenueAnalytics";
@@ -17,6 +17,11 @@ import OwlCarousel from "react-owl-carousel";
 import Analytics from "../../components/Analytics/Analytics";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { VscLoading } from "react-icons/vsc";
+import Navbar from "../../components/Navbar/Navbar";
+import { jsonToCsv } from "../../utils/jsonToCsv";
+import * as XLSX from "xlsx";
+import { IoMdDownload } from "react-icons/io";
+import generatePDF, { usePDF } from "react-to-pdf";
 
 const Revenue = () => {
   const [songs, setSongs] = useState([]);
@@ -27,6 +32,9 @@ const Revenue = () => {
   // const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const [bestSong, setBestSong] = useState("Loading...");
+  const [loaded, setLoaded] = useState(false);
+  // const pdfBody = useRef(null);
+  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
 
   useEffect(() => {
     if (currentTime >= 0 && currentTime < 12) {
@@ -74,6 +82,7 @@ const Revenue = () => {
     songs?.forEach((music) => {
       const { isrc } = music;
       if (grand_total.hasOwnProperty(isrc)) {
+        // console.log(music);
         grand_total[isrc] += parseFloat(music["final revenue"]);
       } else {
         grand_total[isrc] = parseFloat(music["final revenue"]);
@@ -105,6 +114,8 @@ const Revenue = () => {
       "Total Revenue Against ISRC": grand_total[isrc],
       "Total Views Against ISRC": total_lifetime_views[isrc],
     }));
+
+    // console.log(grand_total);
 
     const aggregatedRevenueTotal = Object.keys(final_revenue).map((isrc) => ({
       isrc,
@@ -187,8 +198,9 @@ const Revenue = () => {
           (item) => item["Total Revenue Against ISRC"] === maxFinalRevenue
         );
 
-        // console.log(maxRevenueEarner);
-        setBestSong(maxRevenueEarner.song_name);
+        setLoaded(true);
+        // console.log(aggregatedMusicData);
+        setBestSong(maxRevenueEarner?.song_name);
       });
     } else {
       setBestSong("No songs found");
@@ -240,10 +252,11 @@ const Revenue = () => {
   //   }, 0);
   // }
 
-  // console.log(calculateTotal('final revenue'));
+  // console.log(calculateTotal('finalRevenue'));
   // console.log(total);
   let totalFinalRevenue = 0;
   for (const entry of aggregatedMusicData) {
+    // console.log(entry);
     if (!isNaN(entry["Total Revenue Against ISRC"])) {
       totalFinalRevenue += entry["Total Revenue Against ISRC"];
     }
@@ -300,6 +313,18 @@ const Revenue = () => {
     "Total Revenue Against ISRC",
   ];
 
+  const options2 = [
+    "song_name",
+    // "platformName",
+    "album",
+    "track_artist",
+    "label",
+    "isrc",
+    "total",
+    "after tds revenue",
+    "Total Revenue Against ISRC",
+  ];
+
   const labels = [
     "Song Name",
     "Platform Name",
@@ -312,33 +337,46 @@ const Revenue = () => {
     "Revenue After ForeVision Deduction",
   ];
 
-  const phoneOptions = ["isrc", "song_name", "Total Revenue Against ISRC"];
+  const labels2 = [
+    "Song Name",
+    // "Platform Name",
+    "Album",
+    "Artist",
+    "Label",
+    "ISRC",
+    "View",
+    "Revenue",
+    "Revenue After ForeVision Deduction",
+  ];
+
+  const phoneOptions = ["isrc", "song_name", "after tds revenue"];
   const phoneOptionsDetailsHeading = ["Platform Name", "Revenue"];
-  const phoneOptionsDetails = ["platformName", "final revenue"];
+  const phoneOptionsDetails = ["platformName", "after tds revenue"];
 
   const items = songs
     .filter((song) => song.isrc === details)
     .sort((item1, item2) =>
-      item1.platformName.localeCompare(item2.platformName)
+      item1.platformName?.localeCompare(item2.platformName)
     );
 
   let groupedData = items.reduce((acc, cur) => {
     if (!acc[cur.platformName]) {
-      acc[cur.platformName] = { ...cur, "final revenue": 0, total: 0 };
+      acc[cur.platformName] = { ...cur, finalRevenue: 0, total: 0 };
     }
-    acc[cur.platformName]["final revenue"] += cur["final revenue"];
+    acc[cur.platformName]["finalRevenue"] += cur["finalRevenue"];
     acc[cur.platformName].total += cur.total;
     return acc;
   }, {});
 
   // Convert the groupedData object back to an array if needed
   let result = Object.values(groupedData);
-
+  // console.log(result);
+  // console.log(songs);
   const revenueByPlatform = songs.reduce((acc, song) => {
     if (!acc[song.platformName]) {
       acc[song.platformName] = 0;
     }
-    acc[song.platformName] += song["final revenue"];
+    acc[song.platformName] += song["after tds revenue"];
     return acc;
   }, {});
 
@@ -352,10 +390,70 @@ const Revenue = () => {
 
   const platformData = { revenueByPlatform, viewsByPlatform };
 
+  const getExcel = () => {
+    // console.log(aggregatedMusicData);
+    aggregatedMusicData.map((item) => {
+      delete item["after tds revenue"];
+      delete item["final revenue"];
+      delete item.platformName;
+      delete item.uploadDate;
+      delete item.date;
+    });
+
+    // console.log(aggregatedMusicData);
+    // Step 1: Create CSV content
+    // const csvContent = jsonToCsv(aggregatedMusicData);
+
+    // Step 2: Convert JSON to a worksheet
+    const worksheet = XLSX.utils.json_to_sheet(aggregatedMusicData);
+
+    // Step 3: Create a new workbook and append the worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    // Step 4: Write the workbook to a binary string
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    // Step 5: Create a Blob from the binary string
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+
+    // Step 6: Generate a URL for the Blob and trigger the download
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ForeVision Digital - Revenue Report of ${userData.first_name} ${userData.last_name}.xlsx`; // Set the file name
+    a.style.display = "none"; // Hide the anchor element
+    document.body.appendChild(a); // Append the anchor to the body
+    a.click(); // Programmatically click the anchor to trigger the download
+    document.body.removeChild(a); // Remove the anchor from the document
+    URL.revokeObjectURL(url); // Clean up the URL object
+  };
+
+  const createPdf = async () => {
+    // headerElement.style.display = "none";
+
+    const pdf = await generatePDF(targetRef, {
+      filename: `ForeVision Digital - Revenue Report of ${userData.first_name} ${userData.last_name}.pdf`,
+      page: {
+        // default is 'A4'
+        format: "A4",
+        // scale: 2,
+        // format: "letter",
+        // default is 'portrait'
+        orientation: "portrait",
+      },
+    });
+
+    console.log(pdf);
+  };
+  // console.log(aggregatedMusicData);
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
-        className="bg-[size:100%] bg-no-repeat xl:p-4 xl:pl-7 mb-6 xl:mb-0"
+        className="bg-[size:100%] bg-no-repeat lg:!pt-6 xl:p-4 xl:pl-7 mb-6 xl:mb-0"
         style={{ backgroundImage: `url(${background})` }}
       >
         <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px]">
@@ -495,15 +593,15 @@ const Revenue = () => {
           {/* PC VIEW */}
           {isrcs.length > 0 &&
             (filtered.length ? (
-              <div className="relative hidden 2xl:block">
+              <div className="relative">
                 <FaChevronLeft
-                  className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[9999] text-white"
+                  className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[9999] text-white hidden xl:block"
                   onClick={() =>
                     document.getElementsByClassName("owl-prev")[0].click()
                   }
                 />
                 <FaChevronRight
-                  className="bg-transparent stroke-transparent text-heading-4 fixed right-5 top-[75vh] cursor-pointer bottom-0 z-[9999] text-white"
+                  className="bg-transparent stroke-transparent text-heading-4 fixed right-5 top-[75vh] cursor-pointer bottom-0 z-[9999] text-white hidden xl:block"
                   onClick={() =>
                     document.getElementsByClassName("owl-next")[0].click()
                   }
@@ -515,44 +613,217 @@ const Revenue = () => {
                   id="revenue-slider"
                 >
                   <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-                    <ul className="grid grid-cols-9 gap-3 sticky top-0 mb-2">
-                      {labels.map((item, key) => (
-                        <li
-                          key={"label-" + key}
-                          className="capitalize text-center font-semibold"
-                        >
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-
-                    {aggregatedMusicData.map((song) => (
-                      <ul className="grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
-                        {/* list item */}
-                        {options.map((item) => {
-                          return (
-                            <li className="text-center">
-                              {typeof song[item] === "number" &&
-                              song[item].toString().split(".").length > 1 ? (
-                                item === "after tds revenue" ? (
-                                  final_after_tds[song.isrc].toFixed(8)
-                                ) : (
-                                  song[item].toFixed(8)
-                                )
-                              ) : item === "total" ? (
-                                total_lifetime_views[song.isrc]
-                              ) : item === "platformName" ? (
-                                <button onClick={() => setDetails(song.isrc)}>
-                                  See Details
-                                </button>
-                              ) : (
-                                song[item]
-                              )}
-                            </li>
-                          );
-                        })}
+                    <div className="flex justify-end gap-1">
+                      <Button disabled={!loaded} onClick={getExcel}>
+                        DOWNLOAD EXCEL
+                        <IoMdDownload className="text-paragraph-1" />
+                      </Button>
+                      <Button
+                        containerClassName={"flex items-center"}
+                        disabled={!loaded}
+                        onClick={createPdf}
+                      >
+                        DOWNLOAD PDF{" "}
+                        <IoMdDownload className="text-paragraph-1" />
+                      </Button>
+                    </div>
+                    <div className="mt-3">
+                      <ul className="grid-cols-9 gap-3 sticky top-0 mb-2 hidden xl:grid">
+                        {labels.map((item, key) => (
+                          <li
+                            key={"label-" + key}
+                            className="capitalize text-center font-semibold"
+                          >
+                            {item}
+                          </li>
+                        ))}
                       </ul>
-                    ))}
+
+                      <ul className="grid-cols-3 gap-3 sticky top-0 mb-2 grid xl:hidden">
+                        {phoneOptions.map((item, key) => (
+                          <li
+                            key={"label-" + key}
+                            className="capitalize text-center font-semibold"
+                          >
+                            {item.includes("_")
+                              ? item.split("_").join(" ")
+                              : item.split("_").join(" ")}
+                          </li>
+                        ))}
+                      </ul>
+
+                      {aggregatedMusicData.map((song) => (
+                        <>
+                          <ul className="hidden xl:grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                            {/* list item */}
+                            {options.map((item) => {
+                              return (
+                                <li className="text-center">
+                                  {/* {console.log(song)} */}
+                                  {typeof song[item] === "number" &&
+                                  song[item].toString().split(".").length >
+                                    1 ? (
+                                    item === "after tds revenue" ? (
+                                      final_after_tds[song.isrc].toFixed(8)
+                                    ) : (
+                                      song[item].toFixed(8)
+                                    )
+                                  ) : item === "total" ? (
+                                    total_lifetime_views[song.isrc]
+                                  ) : item === "platformName" ? (
+                                    <button
+                                      onClick={() => setDetails(song.isrc)}
+                                    >
+                                      See Details
+                                    </button>
+                                  ) : (
+                                    song[item]
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+
+                          <ul className="xl:hidden grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                            {phoneOptions.map((item) => {
+                              return (
+                                <li
+                                  className="text-center"
+                                  onClick={() => setDetails(song.isrc)}
+                                >
+                                  {typeof song[item] === "number" &&
+                                  song[item].toString().split(".").length >
+                                    1 ? (
+                                    item === "after tds revenue" ? (
+                                      final_after_tds[song.isrc].toFixed(3)
+                                    ) : (
+                                      song[item].toFixed(8)
+                                    )
+                                  ) : item === "total" ? (
+                                    total_lifetime_views[song.isrc]
+                                  ) : item === "platformName" ? (
+                                    <button
+                                      onClick={() => setDetails(song.isrc)}
+                                    >
+                                      See Details
+                                    </button>
+                                  ) : (
+                                    song[item]
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </>
+                      ))}
+                    </div>
+
+                    {loaded && (
+                      <div className="mt-3 p-7 absolute -z-50" ref={targetRef}>
+                        <div className="flex items-center justify-between mb-6 text-grey-dark">
+                          <aside>
+                            <h3 className="text-heading-3-bold">
+                              ForeVision Digital
+                            </h3>
+                            <h4 className="text-heading-4-bold">
+                              Revenue Report
+                            </h4>
+                            <h5 className="text-heading-5-bold">
+                              {userData.first_name} {userData.last_name}
+                            </h5>
+                          </aside>
+                          <aside className="text-right w-2/12">
+                            <p>
+                              Date:{" "}
+                              {new Date().getDate() < 10
+                                ? "0" + new Date().getDate()
+                                : new Date().getDate()}
+                              /
+                              {new Date().getMonth() + 1 < 10
+                                ? "0" + (new Date().getMonth() + 1)
+                                : new Date().getMonth()}
+                              /{new Date().getFullYear()}
+                            </p>
+                            <p>
+                              {userData.billing_address},{" "}
+                              {userData.billing_city},{" "}
+                              {userData.billing_country}
+                            </p>
+
+                            <p>{userData.postal_code}</p>
+                          </aside>
+                        </div>
+                        <ul className="grid grid-cols-8 gap-0 sticky top-0 mb-2">
+                          {labels2.map((item, key) => (
+                            <li
+                              key={"label-" + key}
+                              className="capitalize text-center font-semibold"
+                            >
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+
+                        {aggregatedMusicData.map((song) => (
+                          <ul className="grid grid-cols-3 2xl:grid-cols-8 gap-0 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                            {/* list item */}
+                            {options2.map((item) => {
+                              return (
+                                <li className="text-center hidden 2xl:block">
+                                  {/* {console.log(song)} */}
+                                  {typeof song[item] === "number" &&
+                                  song[item].toString().split(".").length >
+                                    1 ? (
+                                    item === "after tds revenue" ? (
+                                      final_after_tds[song.isrc].toFixed(8)
+                                    ) : (
+                                      song[item].toFixed(8)
+                                    )
+                                  ) : item === "total" ? (
+                                    total_lifetime_views[song.isrc]
+                                  ) : item === "platformName" ? (
+                                    <button
+                                      onClick={() => setDetails(song.isrc)}
+                                    >
+                                      See Details
+                                    </button>
+                                  ) : (
+                                    song[item]
+                                  )}
+                                </li>
+                              );
+                            })}
+
+                            {phoneOptions.map((item) => {
+                              return (
+                                <li className="text-center 2xl:hidden">
+                                  {/* {console.log(song)} */}
+                                  {typeof song[item] === "number" &&
+                                  song[item].toString().split(".").length >
+                                    1 ? (
+                                    item === "after tds revenue" ? (
+                                      final_after_tds[song.isrc].toFixed(8)
+                                    ) : (
+                                      song[item].toFixed(8)
+                                    )
+                                  ) : item === "total" ? (
+                                    total_lifetime_views[song.isrc]
+                                  ) : item === "platformName" ? (
+                                    <button
+                                      onClick={() => setDetails(song.isrc)}
+                                    >
+                                      See Details
+                                    </button>
+                                  ) : (
+                                    song[item]
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <Analytics
@@ -578,7 +849,7 @@ const Revenue = () => {
             <></>
           )}
 
-          {isrcs.length > 0 ? (
+          {/* {isrcs.length > 0 ? (
             <div className="2xl:hidden bg-grey-light p-2 rounded-[20px] mt-5">
               {filtered.length > 0 ? (
                 <>
@@ -598,20 +869,11 @@ const Revenue = () => {
                           : item.split("_").join(" ")}
                       </p>
                     ))}
-                    {/* <p className="text-paragraph-2 font-medium text-center">Song Name</p> */}
-                    {/* <label className="text-paragraph-2 text-center font-medium flex items-center justify-center capitalize">{phoneData.split("_").join(" ")} <img src={chevron} className={`transition ${showOptions ? 'rotate-180' : 'rotate-0'}`} alt="chevron" /> <input className="hidden" type="checkbox" onChange={e => setShowOptions(e.target.checked)} /></label>
-              {showOptions && <div className='w-fit h-[250px] overflow-y-auto flex flex-col items-center absolute left-0 right-0 m-auto bg-white top-[100%] shadow z-[9999]'>
-                {options.map((item, key) => <h6 key={key} className='text-subtitle-1-bold text-grey-dark text-center px-3 py-1' onClick={() => {
-                  setShowOptions(false)
-                  setPhoneData(item)
-                }}>{item.split("_").join(" ")}</h6>)}
-              </div>} */}
-                    {/* <p className="text-paragraph-2 text-right font-medium">Final Revenue</p> */}
                   </div>
 
                   {aggregatedMusicData.map((song) => (
                     <ul className="grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
-                      {/* list item */}
+                      //  list item 
                       {phoneOptions.map((item) => {
                         return (
                           <li
@@ -639,23 +901,35 @@ const Revenue = () => {
                                 See Details
                               </button>
                             ) : (
-                              // ? <button onClick={() => handleExpand(song.isrc)}>See Details</button>
                               song[item]
                             )}
                           </li>
                         );
                       })}
-                      {/* details item */}
+                      // details item 
                       {details && (
                         <div className="w-screen h-screen bg-[#00000011] shadow-xl fixed top-0 left-0 z-[9999] flex justify-center items-center">
                           <div className="w-5/6 h-[80vh] bg-white relative overflow-x-visible rounded-2xl overflow-y-auto p-3">
                             <button
                               onClick={() => setDetails("")}
-                              className="sticky text-interactive-light-destructive-focus text-heading-3 top-0"
+                              className="absolute text-interactive-light-destructive-focus text-heading-3 top-2 right-2"
                             >
-                              &times;
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
+                                  d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3ZM1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L12 10.5858L14.2929 8.29289C14.6834 7.90237 15.3166 7.90237 15.7071 8.29289C16.0976 8.68342 16.0976 9.31658 15.7071 9.70711L13.4142 12L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L12 13.4142L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L10.5858 12L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z"
+                                  fill="black"
+                                />
+                              </svg>
                             </button>
-                            {/* //  list heading  */}
+                             //  list heading  
                             <ul className="grid grid-cols-2 gap-3">
                               {phoneOptionsDetailsHeading.map((item, key) => (
                                 <li
@@ -671,13 +945,13 @@ const Revenue = () => {
                               ))}
                             </ul>
 
-                            {/* //list  */}
+                          //list  
                             {result.map((song2) => (
                               <ul className="grid grid-cols-2 justify-between">
-                                {/* // list item  */}
+                               // list item 
                                 {phoneOptionsDetails.map((item) => (
                                   <li className="text-center">
-                                    {item === "final revenue"
+                                    {item === "after tds revenue"
                                       ? song2[item].toFixed(4)
                                       : song2[item]}
                                   </li>
@@ -689,7 +963,6 @@ const Revenue = () => {
                       )}
                     </ul>
                   ))}
-                  {/* {<img src={chevron} onClick={() => item === 8 ? setItem(songs.length - 1) : setItem(8)} className={`mx-auto ${item !== 8 ? 'rotate-180' : 'rotate-0'}`} alt="" />} */}
                 </>
               ) : (
                 <div className="text-center">
@@ -708,7 +981,7 @@ const Revenue = () => {
 
               <h4 className="text-heading-4-bold">See you soon.</h4>
             </div>
-          )}
+          )} */}
 
           {isrcs.length === 0 && (
             <div className="text-grey text-center 2xl:w-1/2 mx-auto 2xl:text-white 2xl:hidden">

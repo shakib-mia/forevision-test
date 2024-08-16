@@ -10,6 +10,7 @@ import finishImage from "./../../assets/images/almost-done.png";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import GSTCalculator from "../GstCalculator/GstCalculator";
+import { PlanContext } from "../../contexts/PlanContext";
 
 const Distribution = () => {
   const location = useLocation();
@@ -19,8 +20,11 @@ const Distribution = () => {
   const [discountData, setDiscountData] = useState({});
   const { userData } = useContext(ProfileContext);
   const [signature, setSignature] = useState("");
-  const { formData } = useContext(ScreenContext);
+  const { formData, setScreen } = useContext(ScreenContext);
   const [orderId, setOrderId] = useState("XXXXX");
+  const { planStore } = useContext(PlanContext);
+  // console.log(planStore);
+
   // console.log(location);
 
   useEffect(() => {
@@ -60,7 +64,7 @@ const Distribution = () => {
   const handlePayLater = () => {
     // console.log(formData);
     formData.planName = location.search.split("?")[1];
-    formData.paymentStatus = "pending";
+    formData.status = "pending";
     formData.orderId = orderId;
     delete formData.file;
     console.log(formData);
@@ -70,19 +74,47 @@ const Distribution = () => {
       .then(({ data }) => {
         if (data.acknowledged) {
           toast.success("Order has been saved for later uses.");
+          navigate("/");
         }
       });
   };
 
+  // console.log(location.search.split("?")[2]);
   const handleSubmit = () => {
     const price = parseFloat(location.search.split("?")[2]) / 100;
-    navigate(
-      `/payment?price=${
-        discountData.discountPercentage
-          ? discountPrice
-          : location.search.split("?")[2]
-      }`
-    );
+
+    formData.orderId = orderId;
+
+    // axios
+    //   .post(backendUrl + "upload-song/upload-song-data", formData, config)
+    //   .then(({ data }) => {
+    //     if (data.acknowledged) {
+    //       navigate(
+    //         `/payment?price=${
+    //           discountData.discountPercentage
+    //             ? discountPrice
+    //             : location.search.split("?")[2]
+    //         }?id=${orderId}`
+    //       );
+    //     }
+    //   });
+
+    axios
+      .post(backendUrl + "recent-uploads", formData, config)
+      .then(({ data }) => {
+        if (data.acknowledged) {
+          // setCount(count + 1);
+          // setScreen("preview");
+          // : setCollapsed(true);
+          navigate(
+            `/payment?price=${
+              discountData.discountPercentage
+                ? discountPrice
+                : location.search.split("?")[2]
+            }?id=${orderId}`
+          );
+        }
+      });
   };
 
   return (
@@ -101,7 +133,7 @@ const Distribution = () => {
             <div className="flex divide-x divide-[#ddd] bg-grey-light">
               <aside className="w-1/2 p-2">Plan Name</aside>
               <aside className="w-1/2 p-2 capitalize">
-                {location.search.split("?")[1]?.split("-")?.join(" ")}
+                {planStore.planName}
               </aside>
             </div>
 
@@ -161,41 +193,42 @@ const Distribution = () => {
               </form>
             )}
 
-            {location.search.includes("social") || (
-              <>
-                <div className="flex divide-x divide-[#ddd]">
-                  <aside className="w-1/2 p-2">Discount</aside>
-                  <aside className="w-1/2 p-2">
-                    {discountData.discountPercentage
-                      ? discountData.discountPercentage + "%"
-                      : "N/A"}
-                  </aside>
-                </div>
+            {location.search.includes("social") ||
+              (discountData.discountPercentage && (
+                <>
+                  <div className="flex divide-x divide-[#ddd]">
+                    <aside className="w-1/2 p-2">Discount</aside>
+                    <aside className="w-1/2 p-2">
+                      {discountData.discountPercentage
+                        ? discountData.discountPercentage + "%"
+                        : "N/A"}
+                    </aside>
+                  </div>
 
-                <div className="flex divide-x divide-[#ddd] bg-grey-light">
-                  <aside className="w-1/2 p-2">Save</aside>
-                  <aside className="w-1/2 p-2 flex font-bold items-center">
-                    <FaRupeeSign className="text-subtitle-2" />
-                    {saved}
-                  </aside>
-                </div>
+                  <div className="flex divide-x divide-[#ddd] bg-grey-light">
+                    <aside className="w-1/2 p-2">Save</aside>
+                    <aside className="w-1/2 p-2 flex font-bold items-center">
+                      <FaRupeeSign className="text-subtitle-2" />
+                      {saved}
+                    </aside>
+                  </div>
 
-                <div className="flex divide-x divide-[#ddd]">
-                  <aside className="w-1/2 p-2">Price After Discount</aside>
-                  <aside className="w-1/2 p-2 flex items-center">
-                    <FaRupeeSign className="text-subtitle-2" />{" "}
-                    <span className="font-bold">{discountPrice / 100}</span>
-                  </aside>
-                </div>
+                  <div className="flex divide-x divide-[#ddd]">
+                    <aside className="w-1/2 p-2">Price After Discount</aside>
+                    <aside className="w-1/2 p-2 flex items-center">
+                      <FaRupeeSign className="text-subtitle-2" />{" "}
+                      <span className="font-bold">{discountPrice / 100}</span>
+                    </aside>
+                  </div>
 
-                {/* <div className="flex divide-x divide-[#ddd] bg-grey-light">
+                  {/* <div className="flex divide-x divide-[#ddd] bg-grey-light">
                   <aside className="w-1/2 p-2">Plan Name</aside>
                   <aside className="w-1/2 p-2">
                     {location.search.split("?")[1]}
                   </aside>
                 </div> */}
-              </>
-            )}
+                </>
+              ))}
           </div>
 
           {/* <label className="flex items-center gap-1 justify-end mt-3 uppercase cursor-pointer">
@@ -210,7 +243,10 @@ const Distribution = () => {
           <div className="w-1/2 mt-5 ml-auto text-center">
             <textarea
               // name=""
-              onChange={(e) => setSignature(e.target.value)}
+              onChange={(e) => {
+                setSignature(e.target.value);
+                formData.signature = e.target.value;
+              }}
               placeholder="Sign Here..."
               className="border-b resize-none text-heading-5 w-full focus:outline-none signature placeholder:font-sans text-center pb-3"
               // id=""
@@ -220,7 +256,10 @@ const Distribution = () => {
             <label className="cursor-pointer">
               <input
                 type="checkbox"
-                onChange={(e) => setAccepted(e.target.checked)}
+                onChange={(e) => {
+                  setAccepted(e.target.checked);
+                  formData.accepted = e.target.checked;
+                }}
               />{" "}
               I Accept the{" "}
               <Link
@@ -247,7 +286,7 @@ const Distribution = () => {
               containerClassName={"mt-4"}
               disabled={!accepted || !signature.length}
             >
-              Save & Pay Later
+              Save As Draft
             </Button>
           </div>
 

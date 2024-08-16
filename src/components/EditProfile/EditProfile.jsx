@@ -124,7 +124,7 @@ const EditProfile = ({ handleClose }) => {
 
     newArr
       .slice(0, 5)
-      .map((i, key) => key % 2 === 0 && i.classList.add("pr-2"));
+      .map((i, key) => key % 2 === 0 && i.classList.add("lg:pr-2"));
   }, []);
 
   const edit = (e) => {
@@ -147,7 +147,7 @@ const EditProfile = ({ handleClose }) => {
       id="edit-profile"
       closeIcon={true}
       // handleClose={handleClose}
-      whiteContainerClass="h-3/4 overflow-y-auto overflow-x-hidden relative"
+      whiteContainerClass="h-3/4 overflow-y-auto overflow-x-hidden relative lg:!w-1/2 !mx-auto"
     >
       <button
         className="absolute top-1 right-1 text-heading-5 flex items-center justify-center w-3 h-3 rounded-full hover:bg-grey hover:text-white"
@@ -157,7 +157,7 @@ const EditProfile = ({ handleClose }) => {
       </button>
       <ProfilePicture imageUrl={profileData.display_image} editable={true} />
 
-      <div className="flex flex-wrap px-3" id="form">
+      <div className="flex flex-col lg:flex-row flex-wrap lg:px-3" id="form">
         {fields.map((props, id) =>
           (id + 1) % 3 === 0 ? (
             <>
@@ -200,7 +200,7 @@ const EditProfile = ({ handleClose }) => {
               {...props}
               containerId={id}
               key={id}
-              containerClassName={`mt-3 w-1/2`}
+              containerClassName={`mt-3 w-full lg:w-1/2`}
               // fieldClassName="mr-2"
             />
           )

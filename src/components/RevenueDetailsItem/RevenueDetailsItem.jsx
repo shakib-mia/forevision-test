@@ -11,7 +11,7 @@ import {
   YAxis,
 } from "recharts";
 
-const RevenueDetailsItem = ({ result, details, songs }) => {
+const RevenueDetailsItem = ({ result, details, songs, open }) => {
   const [platform, setPlatform] = useState("");
 
   let songsByPlatform = [];
@@ -58,7 +58,7 @@ const RevenueDetailsItem = ({ result, details, songs }) => {
   return (
     <table className="w-full">
       {result.map((i) => (
-        <MonthStreamCount songs={songs} details={details} i={i} />
+        <MonthStreamCount songs={songs} details={details} i={i} open={open} />
       ))}
 
       {/* <div className="grid grid-cols-2 gap-2 items-center"> */}

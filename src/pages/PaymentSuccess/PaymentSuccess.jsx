@@ -2,10 +2,13 @@ import React, { useContext } from "react";
 import bg from "../../assets/images/dashboard-bg.webp";
 import { PlanContext } from "../../contexts/PlanContext";
 import { FaCheck, FaRupeeSign } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "../../components/Button/Button";
 
 const PaymentSuccess = () => {
   const { planStore } = useContext(PlanContext);
-  console.log(planStore);
+  const navigate = useNavigate();
+  // console.log(planStore);
   return (
     <div
       className="h-screen w-screen flex justify-center items-center bg-cover bg-no-repeat"
@@ -34,6 +37,27 @@ const PaymentSuccess = () => {
             {planStore.razorpay_payment_id}
           </h6>
         </div>
+
+        {/* <div className="text-center mt-4">
+          Back to{" "}
+          <Link
+            className="text-interactive-light underline hover:text-interactive-light-hover hover:no-underline"
+            to={"/"}
+          >
+            Home
+          </Link>
+        </div> */}
+
+        <Button
+          type={"success"}
+          containerClassName={"mt-4 w-full"}
+          onClick={() => navigate("/")}
+          className={
+            "w-full justify-center !bg-interactive-light-confirmation hover:!bg-interactive-light-confirmation-hover active:!bg-interactive-light-confirmation-active"
+          }
+        >
+          Back to Home
+        </Button>
       </div>
     </div>
   );
