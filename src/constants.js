@@ -40,8 +40,8 @@ import { LuHome, LuUserCheck2 } from "react-icons/lu";
 import { FaUserCheck } from "react-icons/fa";
 import KYC from "./pages/KYC/KYC";
 
-export const backendUrl = "http://localhost:5000/";
-// export const backendUrl = "https://api.forevisiondigital.in/";
+// export const backendUrl = "http://localhost:5000/";
+export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   // {
