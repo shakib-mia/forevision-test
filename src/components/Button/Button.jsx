@@ -67,7 +67,7 @@ const Button = ({
 
       {type === "submit" && (
         <div
-          className={`border-[2px] inline-block ${containerClassName} ${
+          className={`border-[2px] cursor-pointer inline-block ${containerClassName} ${
             focus && !disabled
               ? "border-interactive-light-focus"
               : "border-transparent"
@@ -81,7 +81,7 @@ const Button = ({
             onBlur={() => setFocus(false)}
             className={`${
               small ? "px-2 py-1" : "px-3 py-2"
-            } disabled:bg-interactive-light-disabled disabled:cursor-not-allowed text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active focus:outline outline-offset-4 outline-2 outline-interactive-light-focus font-bold rounded-full uppercase flex gap-1 disabled:text-grey ${className}`}
+            } disabled:bg-interactive-light-disabled cursor-pointer disabled:cursor-not-allowed text-white bg-interactive-light text-button hover:bg-interactive-light-hover focus:bg-interactive-light-focus active:bg-interactive-light-active focus:outline outline-offset-4 outline-2 outline-interactive-light-focus font-bold rounded-full uppercase flex gap-1 disabled:text-grey ${className}`}
             value={text}
           />
         </div>

@@ -25,6 +25,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
   const letterHeadRef = useRef(null);
   const [submitted, setSubmitted] = useState(false);
   // console.log(recordLabels);
+  // console.log(userData);
 
   const handleRecordLabelSubmit = async (e) => {
     e.preventDefault();
@@ -61,33 +62,34 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
     console.log(pdf);
     const formData = new FormData();
     formData.append("file", pdf);
-    axios
-      .post(backendUrl + "upload-letterhead", formData)
-      .then(({ data }) => console.log(data));
 
-    axios
-      .post(backendUrl + "record-labels", data, config)
-      .then(({ data }) => {
-        if (data.acknowledged) {
-          // window.location.reload();
-          e.target.reset();
-          setSubmitted(false);
+    // axios
+    //   .post(backendUrl + "upload-letterhead", formData)
+    //   .then(({ data }) => console.log(data));
 
-          Swal.fire({
-            title: "Record Label Submitted Successfully",
-            // confirmButtonColor: "#2B52DD",
-            customClass: {
-              confirmButton:
-                "px-[44px] !py-[12px] !text-white !outline-[2px] !outline-interactive-light !bg-interactive-light !text-button hover:!bg-interactive-light-hover active:!bg-interactive-light-active focus:!bg-interactive-light-focus !font-bold !rounded-full !cursor-pointer !uppercase disabled:!bg-interactive-light-disabled disabled:!cursor-not-allowed",
-            },
-          });
-        }
-      })
-      .catch((error) =>
-        toast.error(error.response.data, {
-          position: "bottom-center",
-        })
-      );
+    // axios
+    //   .post(backendUrl + "record-labels", data, config)
+    //   .then(({ data }) => {
+    //     if (data.acknowledged) {
+    //       // window.location.reload();
+    //       e.target.reset();
+    //       setSubmitted(false);
+
+    //       Swal.fire({
+    //         title: "Record Label Submitted Successfully",
+    //         // confirmButtonColor: "#2B52DD",
+    //         customClass: {
+    //           confirmButton:
+    //             "px-[44px] !py-[12px] !text-white !outline-[2px] !outline-interactive-light !bg-interactive-light !text-button hover:!bg-interactive-light-hover active:!bg-interactive-light-active focus:!bg-interactive-light-focus !font-bold !rounded-full !cursor-pointer !uppercase disabled:!bg-interactive-light-disabled disabled:!cursor-not-allowed",
+    //         },
+    //       });
+    //     }
+    //   })
+    //   .catch((error) =>
+    //     toast.error(error.response.data, {
+    //       position: "bottom-center",
+    //     })
+    //   );
 
     // console.log(data);
   };
@@ -211,7 +213,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           text={"Submit"}
           containerClassName={"mt-6 mx-auto"}
           // onClick={() => }
-          disabled={submitted}
+          // disabled={submitted}
         />
       </div>
 

@@ -55,7 +55,7 @@ const SelectOptions = ({
           ))}
         </select>
       </div> */}
-      <div className="relative border-[1px] border-surface-white-line text-[12px] mt-1 resize-none bg-surface-white-surface-1 focus:bg-surface-white w-full px-[16px] focus:outline-interactive-light-focus rounded-[4px] placeholder:text-black-secondary text-paragraph-2">
+      <div className="relative border-[2px] border-surface-white-line text-[12px] mt-1 resize-none bg-surface-white-surface-1 focus:bg-surface-white w-full px-[16px] focus:outline-interactive-light-focus rounded-[4px] placeholder:text-black-secondary text-paragraph-2">
         <select
           id={id}
           onChange={onChange}

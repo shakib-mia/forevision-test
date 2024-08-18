@@ -36,17 +36,14 @@ const InputField = ({
   min,
   labelClassName,
   itemChecked,
+  fileName,
   hideRequired,
 }) => {
   const [checked, setChecked] = useState(false);
   const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
-  // console.log(location.pathname);
-
-  // console.log(itemChecked);
-
-  // console.log(countryCodes.all());
+  console.log(fileName);
 
   useEffect(() => {
     if (type === "number") {
@@ -108,8 +105,8 @@ const InputField = ({
               <div
                 className={`${
                   type !== "multi-select" &&
-                  `border-[1px] ${
-                    label ? "mt-1" : ""
+                  `${label ? "mt-1" : ""}  ${
+                    type === "file" ? "border-2" : "border-[1px]"
                   } border-surface-white-line text-[12px] ${
                     disabled
                       ? "bg-interactive-light-disabled"
@@ -125,7 +122,7 @@ const InputField = ({
                         disabled ? "cursor-not-allowed" : "cursor-pointer"
                       }`}
                     >
-                      {placeholder}
+                      {fileName || placeholder}
 
                       <svg
                         width="16"
@@ -189,10 +186,13 @@ const InputField = ({
                         <div className="absolute top-4 h-7 overflow-y-auto w-7 bg-white p-2 shadow-xl z-10">
                           {countryCodes
                             .all()
-                            // .sort((a, b) => a > b)
+                            .sort((a, b) =>
+                              a.countryNameEn.localeCompare(b.countryNameEn)
+                            )
                             .map((code) => (
                               <CountryCodeItem
                                 setSelectedCode={setSelectedCode}
+                                {...code}
                                 countryCodes={code.countryCallingCode}
                               />
                             ))}

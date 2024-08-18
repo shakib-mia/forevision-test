@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import jsPDF from "jspdf";
 import { forwardRef } from "react";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const Letterhead = forwardRef(
   ({ subLabelName, mainLabelName, formData }, ref) => {
+    const { userData } = useContext(ProfileContext);
+
     //   const [date, setDate] = useState(new Date().toLocaleDateString());
 
     //   const generatePDF = () => {
@@ -28,12 +31,22 @@ const Letterhead = forwardRef(
     //     doc.save("letterhead.pdf");
     //   };
 
+    console.log(userData);
+
     return (
       <div className="bg-white py-2 rounded text-heading-4" ref={ref}>
-        <p className="text-center italic">
+        <div className="p-6">
+          {userData.first_name} {userData.last_name}
+          <br />
+          {userData.emailId} <br />
+          {userData.phone_no} <br />
+          {userData.billing_address}, {userData.billing_city},{" "}
+          {userData.billing_country} - {userData.postal_code} <br />
+        </div>
+        {/* <p className="text-center italic">
           (to be printed on Sub-Label Letterhead)
-        </p>
-        <div className="text-end mr-2 my-1">
+        </p> */}
+        <div className="text-end mr-6 my-1">
           Date:{" "}
           {new Date().getDate() <= 9
             ? "0" + new Date().getDate()
@@ -49,7 +62,7 @@ const Letterhead = forwardRef(
           TO WHOMSOEVER IT MAY CONCERN
         </div>
 
-        <p className="p-3">
+        <p className="p-6">
           This is to inform that we{" "}
           <b>{formData["Sub-Label Name"] || "undefined"}</b> have licensed our
           content Exclusively to <b>ForeVision Digital</b> for monetization of
@@ -60,7 +73,7 @@ const Letterhead = forwardRef(
           operators for the territory of world, on terms as detailed below –
         </p>
 
-        <ul className="p-3 pt-0">
+        <ul className="p-6 pt-0">
           <li>License Type – Exclusive</li>
           <li>Content – All Past catalogue and Future new releases.</li>
           <li>Territory – Worldwide</li>
@@ -72,11 +85,12 @@ const Letterhead = forwardRef(
           </li>
         </ul>
 
-        <div className="pl-3">
+        <div className="pl-6">
           <p>Regards,</p>
           <p>
             For <b>{formData["Sub-Label Name"] || "undefined"}</b>
           </p>
+          <br />
           <br />
           <p>(stamp and sign)</p>
         </div>
