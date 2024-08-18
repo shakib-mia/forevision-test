@@ -83,7 +83,7 @@ const Sidebar = () => {
         />
         {hovered && (
           <>
-            <Link to={"/profile"} className="overflow-hidden whitespace-nowrap">
+            {/* <Link to={"/profile"} className="overflow-hidden whitespace-nowrap">
               <h1 className="text-subtitle-1-bold">
                 {userData?.partner_name ||
                   userData?.first_name + " " + userData?.last_name}
@@ -91,7 +91,16 @@ const Sidebar = () => {
               <p className="text-button">
                 {userData?.user_email || userData?.emailId}
               </p>
-            </Link>
+            </Link> */}
+            <div className="overflow-hidden whitespace-nowrap">
+              <h1 className="text-subtitle-1-bold">
+                {userData?.partner_name ||
+                  userData?.first_name + " " + userData?.last_name}
+              </h1>
+              <p className="text-button">
+                {userData?.user_email || userData?.emailId}
+              </p>
+            </div>
             {/* <img
               src={logout}
               alt=""
