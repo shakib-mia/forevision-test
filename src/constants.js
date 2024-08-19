@@ -39,6 +39,8 @@ import { GoTag } from "react-icons/go";
 import { LuHome, LuUserCheck2 } from "react-icons/lu";
 import { FaUserCheck } from "react-icons/fa";
 import KYC from "./pages/KYC/KYC";
+import { IoMdAnalytics } from "react-icons/io";
+import Analytics from "./components/Analytics/Analytics";
 
 // export const backendUrl = "http://localhost:5000/";
 export const backendUrl = "https://api.forevisiondigital.in/";
@@ -54,6 +56,11 @@ export const navItem = [
     text: "Revenue",
     path: "/",
   },
+  // {
+  //   icon: <IoMdAnalytics className="text-[24px]" />,
+  //   text: "Analytics",
+  //   path: "/analytics",
+  // },
   // {
   //   icon: (
   //     <svg
@@ -291,10 +298,10 @@ export const routes = [
       </RequireAuth>
     ),
   },
-  // {
-  //   path: "/analytics",
-  //   page: <Analytics />,
-  // },
+  {
+    path: "/analytics",
+    page: <Analytics />,
+  },
   {
     path: "/payment",
     page: <Payment />,

@@ -450,6 +450,7 @@ const Revenue = () => {
     console.log(pdf);
   };
   // console.log(aggregatedMusicData);
+  // console.log(aggregatedMusicData);
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
@@ -512,7 +513,7 @@ const Revenue = () => {
                   />
                 </div>
                 <p className="text-subtitle-1 text-interactive-dark-destructive-active tracking-[0.5px] mt-1 italic">
-                  * Updated Till March, 2024
+                  * Updated Till April, 2024
                 </p>
               </div>
 
@@ -613,7 +614,7 @@ const Revenue = () => {
                   id="revenue-slider"
                 >
                   <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-                    {/* <div className="flex justify-end gap-1">
+                    <div className="flex justify-end gap-1">
                       <Button disabled={!loaded} onClick={getExcel}>
                         DOWNLOAD EXCEL
                         <IoMdDownload className="text-paragraph-1" />
@@ -626,7 +627,7 @@ const Revenue = () => {
                         DOWNLOAD PDF{" "}
                         <IoMdDownload className="text-paragraph-1" />
                       </Button>
-                    </div> */}
+                    </div>
                     <div className="mt-3">
                       <ul className="grid-cols-9 gap-3 sticky top-0 mb-2 hidden xl:grid">
                         {labels.map((item, key) => (
@@ -719,7 +720,10 @@ const Revenue = () => {
                     </div>
 
                     {loaded && (
-                      <div className="mt-3 p-7 absolute -z-50" ref={targetRef}>
+                      <div
+                        className="mt-3 p-7 absolute -z-50 -top-7 left-0"
+                        ref={targetRef}
+                      >
                         <div className="flex items-center justify-between mb-6 text-grey-dark">
                           <aside>
                             <h3 className="text-heading-3-bold">
@@ -765,7 +769,7 @@ const Revenue = () => {
                         </ul>
 
                         {aggregatedMusicData.map((song) => (
-                          <ul className="grid grid-cols-3 2xl:grid-cols-8 gap-0 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                          <ul className="grid grid-cols-3 2xl:grid-cols-8 gap-0 text-grey-dark py-1 rounded-md mb-1">
                             {/* list item */}
                             {options2.map((item) => {
                               return (
