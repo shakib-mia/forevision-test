@@ -191,7 +191,7 @@ const Login = () => {
         />
       </div>
 
-      <div className="my-2 flex items-center gap-3 mx-auto">
+      {/* <div className="my-2 flex items-center gap-3 mx-auto">
         <div className="h-[1px] w-full bg-grey-light"></div>
         <div>OR</div>
         <div className="h-[1px] w-full bg-grey-light"></div>
@@ -204,7 +204,7 @@ const Login = () => {
       >
         <FcGoogle />
         <span className="font-sans">Continue with Google</span>
-      </button>
+      </button> */}
       {/* </div> */}
 
       <div className="text-center">
