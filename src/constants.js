@@ -43,8 +43,8 @@ import { IoMdAnalytics } from "react-icons/io";
 import Analytics from "./components/Analytics/Analytics";
 import BulkUpload from "./pages/BulkUpload/BulkUpload";
 
-export const backendUrl = "http://localhost:5000/";
-// export const backendUrl = "https://api.forevisiondigital.in/";
+// export const backendUrl = "http://localhost:5000/";
+export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   // {
