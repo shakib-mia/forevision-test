@@ -41,9 +41,10 @@ import { FaUserCheck } from "react-icons/fa";
 import KYC from "./pages/KYC/KYC";
 import { IoMdAnalytics } from "react-icons/io";
 import Analytics from "./components/Analytics/Analytics";
+import BulkUpload from "./pages/BulkUpload/BulkUpload";
 
-// export const backendUrl = "http://localhost:5000/";
-export const backendUrl = "https://api.forevisiondigital.in/";
+export const backendUrl = "http://localhost:5000/";
+// export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   // {
@@ -56,11 +57,11 @@ export const navItem = [
     text: "Revenue",
     path: "/",
   },
-  // {
-  //   icon: <IoMdAnalytics className="text-[24px]" />,
-  //   text: "Analytics",
-  //   path: "/analytics",
-  // },
+  {
+    icon: <IoMdAnalytics className="text-[24px]" />,
+    text: "Analytics",
+    path: "/analytics",
+  },
   // {
   //   icon: (
   //     <svg
@@ -280,6 +281,11 @@ export const routes = [
   //     </RequireAuth>
   //   ),
   // },
+
+  {
+    path: "/bulk-upload",
+    page: <BulkUpload />,
+  },
 
   {
     path: "/all-songs",
