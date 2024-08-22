@@ -232,7 +232,7 @@ const AlbumDetails = () => {
         <aside className="w-full lg:w-2/3 flex items-baseline gap-2 lg:gap-4">
           <div className="w-full">
             <SelectOptions
-              labelClassName={"font-medium text-subtitle-2 !text-black"}
+              // labelClassName={"font-medium text-subtitle-2 !text-black"}
               placeholder={"Select..."}
               required={true}
               label={"Record Label"}
@@ -289,7 +289,7 @@ const AlbumDetails = () => {
       <div className="lg:w-1/2 mt-3">
         <SelectOptions
           placeholder={"Select..."}
-          labelClassName={"font-medium text-subtitle-2 !text-black"}
+          // labelClassName={"font-medium text-subtitle-2 !text-black"}
           required={true}
           label={"Publisher"}
           note={

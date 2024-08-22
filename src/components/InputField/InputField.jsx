@@ -43,7 +43,7 @@ const InputField = ({
   const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
-  console.log(fileName);
+  // console.log(fileName);
 
   useEffect(() => {
     if (type === "number") {

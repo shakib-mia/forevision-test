@@ -149,8 +149,11 @@ const Analytics = ({ songData }) => {
   const calculateAggregatedTotals = (songs) => {
     const grand_total = {};
     const final_revenue = {};
-    const final_after_tds = {};
-    const total_lifetime_views = {};
+    // console.log(songs);
+    // const final_after_tds = {};
+    // const total_lifetime_views = {};
+
+    console.log(songs);
 
     songs?.forEach((music) => {
       const { isrc } = music;
@@ -162,60 +165,60 @@ const Analytics = ({ songData }) => {
       }
 
       // Calculate music_after_tds_revenue total
-      if (final_revenue.hasOwnProperty(isrc)) {
-        final_after_tds[isrc] = parseFloat(final_after_tds[isrc])
-          ? parseFloat(final_after_tds[isrc]) +
-            parseFloat(music["after tds revenue"])
-          : 0 + parseFloat(music["after tds revenue"]);
-        total_lifetime_views[isrc] = parseFloat(total_lifetime_views[isrc])
-          ? parseFloat(total_lifetime_views[isrc]) + parseFloat(music["total"])
-          : 0 + parseFloat(music["total"]);
-      } else {
-        final_after_tds[isrc] = parseFloat(final_after_tds[isrc])
-          ? parseFloat(final_after_tds[isrc]) +
-            parseFloat(music["after tds revenue"])
-          : 0 + parseFloat(music["after tds revenue"]);
-        total_lifetime_views[isrc] = parseFloat(total_lifetime_views[isrc])
-          ? parseFloat(total_lifetime_views[isrc]) + parseFloat(music["total"])
-          : 0 + parseFloat(music["total"]);
-      }
+      // if (final_revenue.hasOwnProperty(isrc)) {
+      //   final_after_tds[isrc] = parseFloat(final_after_tds[isrc])
+      //     ? parseFloat(final_after_tds[isrc]) +
+      //       parseFloat(music["after tds revenue"])
+      //     : 0 + parseFloat(music["after tds revenue"]);
+      //   total_lifetime_views[isrc] = parseFloat(total_lifetime_views[isrc])
+      //     ? parseFloat(total_lifetime_views[isrc]) + parseFloat(music["total"])
+      //     : 0 + parseFloat(music["total"]);
+      // } else {
+      //   final_after_tds[isrc] = parseFloat(final_after_tds[isrc])
+      //     ? parseFloat(final_after_tds[isrc]) +
+      //       parseFloat(music["after tds revenue"])
+      //     : 0 + parseFloat(music["after tds revenue"]);
+      //   total_lifetime_views[isrc] = parseFloat(total_lifetime_views[isrc])
+      //     ? parseFloat(total_lifetime_views[isrc]) + parseFloat(music["total"])
+      //     : 0 + parseFloat(music["total"]);
+      // }
     });
 
     const aggregatedMusicData = Object.keys(grand_total).map((isrc) => ({
       isrc,
       ...songs.find((item) => item.isrc === isrc),
       "Total Revenue Against ISRC": grand_total[isrc],
-      "Total Views Against ISRC": total_lifetime_views[isrc],
+      // "Total Views Against ISRC": total_lifetime_views[isrc],
     }));
 
     // console.log(grand_total);
 
-    const aggregatedRevenueTotal = Object.keys(final_revenue).map((isrc) => ({
-      isrc,
-      ...songs.find((item) => item.isrc === isrc),
-      "after tds revenue": final_revenue[isrc],
-    }));
+    // const aggregatedRevenueTotal = Object.keys(final_revenue).map((isrc) => ({
+    //   isrc,
+    //   ...songs.find((item) => item.isrc === isrc),
+    //   "after tds revenue": final_revenue[isrc],
+    // }));
 
     return {
       aggregatedMusicData,
-      aggregatedRevenueTotal,
-      final_after_tds,
-      total_lifetime_views,
+      // aggregatedRevenueTotal,
+      // final_after_tds,
+      // total_lifetime_views,
     };
   };
 
   const {
     aggregatedMusicData,
-    aggregatedRevenueTotal,
-    final_after_tds,
-    total_lifetime_views,
+    // aggregatedRevenueTotal,
+    // final_after_tds,
+    // total_lifetime_views,
   } = calculateAggregatedTotals(songs);
 
   console.log(aggregatedMusicData);
 
   return (
-    <div className="mt-3 px-1 2xl:px-6 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-      <div className="flex justify-between mt-6 mb-7">
+    <div className="mt-3 px-1 2xl:px-6 py-1 2xl:py-4 rounded-[10px] overflow-auto">
+      <div className="flex justify-between mt-6 mb-7 w-4/5 mx-auto">
         <div className="w-5/12">
           <PlatformsChart revenueData={revenueArray} label={"Revenue"} />
           <p className="uppercase text-center mt-3">
@@ -228,33 +231,35 @@ const Analytics = ({ songData }) => {
         </div>
       </div>
 
-      <ResponsiveContainer width={"100%"} height={300}>
-        <BarChart data={aggregatedMusicData}>
-          <XAxis dataKey="song_name" className="text-button" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="Total Revenue Against ISRC" fill="#2B52DD" />
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="w-4/5 mx-auto">
+        <ResponsiveContainer width={"100%"} height={300}>
+          <BarChart data={aggregatedMusicData}>
+            <XAxis dataKey="song_name" className="text-button" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="Total Revenue Against ISRC" fill="#2B52DD" />
+          </BarChart>
+        </ResponsiveContainer>
 
-      <ResponsiveContainer width={"100%"} height={300}>
-        <BarChart data={aggregatedMusicData}>
-          <XAxis dataKey="song_name" className="text-button" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="Total Views Against ISRC" fill="#2E844A" />
-        </BarChart>
-      </ResponsiveContainer>
+        <ResponsiveContainer width={"100%"} height={300}>
+          <BarChart data={aggregatedMusicData}>
+            <XAxis dataKey="song_name" className="text-button" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="Total Views Against ISRC" fill="#2E844A" />
+          </BarChart>
+        </ResponsiveContainer>
 
-      <div className="flex gap-3 justify-center mt-5">
-        <div className="flex gap-1 items-center">
-          <div className="bg-[#8884d8] w-1 h-1"></div>
-          <h5>Total Revenues</h5>
-        </div>
+        <div className="flex gap-3 justify-center mt-5">
+          <div className="flex gap-1 items-center">
+            <div className="bg-[#8884d8] w-1 h-1"></div>
+            <h5>Total Revenues</h5>
+          </div>
 
-        <div className="flex gap-1 items-center">
-          <div className="bg-[#82ca9d] w-1 h-1"></div>
-          <h5>Total Views</h5>
+          <div className="flex gap-1 items-center">
+            <div className="bg-[#82ca9d] w-1 h-1"></div>
+            <h5>Total Views</h5>
+          </div>
         </div>
       </div>
     </div>
