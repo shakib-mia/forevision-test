@@ -57,11 +57,11 @@ export const navItem = [
     text: "Revenue",
     path: "/",
   },
-  {
-    icon: <IoMdAnalytics className="text-[24px]" />,
-    text: "Analytics",
-    path: "/analytics",
-  },
+  // {
+  //   icon: <IoMdAnalytics className="text-[24px]" />,
+  //   text: "Analytics",
+  //   path: "/analytics",
+  // },
   // {
   //   icon: (
   //     <svg

@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import SongUploadFormContainer from "../../components/SongUploadFormContainer/SongUploadFormContainer";
 import { Navigate, useLocation } from "react-router-dom";
 import SongUploadProgress from "../../components/SongUploadProgress/SongUploadProgress";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { checkTheDateIsBefore } from "../../utils/checkTheDateIsBefore";
 
 const SongUploadNew = () => {
   const [screen, setScreen] = useState("albumDetails");
   const location = useLocation();
+  const { userData } = useContext(ProfileContext);
+
+  if (userData !== null) {
+    console.log(checkTheDateIsBefore(userData.yearlyPlanEndDate));
+  }
 
   if (!location.search.includes("?")) {
     return <Navigate to="/plans" state={{ from: location }} replace></Navigate>;

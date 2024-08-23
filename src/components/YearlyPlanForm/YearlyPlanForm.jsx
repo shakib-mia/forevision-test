@@ -37,6 +37,7 @@ const YearlyPlanForm = () => {
       name: "totalReleasedSong",
       id: "totalReleasedSong",
       label: "Total Released Song",
+      type: "text",
     },
     {
       placeholder: "Total Revenue Earned",
@@ -131,18 +132,20 @@ const YearlyPlanForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full lg:w-1/2 overflow-y-auto bg-white p-2 lg:p-4 h-1/2 lg:h-full"
+      className="w-full overflow-y-auto bg-white h-full"
     >
       {fields.map((field) => (
         <InputField
-          labelClassName={"!text-white"}
-          containerClassName={"mt-2"}
+          // labelClassName={"!text-white"}
+          containerClassName={"mt-4"}
           key={field.id}
+          // type={"text"}
+          // className="text-black"
           {...field}
         />
       ))}
 
-      <div className="flex justify-center my-2">
+      <div className="flex justify-center mt-2">
         <Button type={"submit"}>Submit</Button>
       </div>
     </form>

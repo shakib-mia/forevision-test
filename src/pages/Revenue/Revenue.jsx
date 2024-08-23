@@ -376,9 +376,11 @@ const Revenue = () => {
     if (!acc[song.platformName]) {
       acc[song.platformName] = 0;
     }
-    acc[song.platformName] += song["after tds revenue"];
+    acc[song.platformName] += song["final revenue"];
     return acc;
   }, {});
+
+  console.log(revenueByPlatform);
 
   const viewsByPlatform = songs.reduce((acc, song) => {
     if (!acc[song.platformName]) {
@@ -457,7 +459,7 @@ const Revenue = () => {
         className="bg-[size:100%] bg-no-repeat lg:!pt-6 xl:p-4 xl:pl-7 mb-6 xl:mb-0"
         style={{ backgroundImage: `url(${background})` }}
       >
-        <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] py-5 rounded-[20px]">
+        <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] pt-5 pb-7 rounded-[20px]">
           <div className="flex flex-col 2xl:flex-row gap-3 items-center 2xl:items-end">
             <div className="w-full 2xl:w-3/4">
               <h4 className="text-heading-4-bold text-grey-dark 2xl:text-white">
@@ -595,7 +597,7 @@ const Revenue = () => {
           {isrcs.length > 0 &&
             (filtered.length ? (
               <div className="relative">
-                {/* <FaChevronLeft
+                <FaChevronLeft
                   className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[9999] text-white hidden xl:block"
                   onClick={() =>
                     document.getElementsByClassName("owl-prev")[0].click()
@@ -612,9 +614,9 @@ const Revenue = () => {
                   items={1}
                   nav
                   id="revenue-slider"
-                > */}
-                <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-                  {/* <div className="flex justify-end gap-1">
+                >
+                  <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
+                    {/* <div className="flex justify-end gap-1">
                     <Button disabled={!loaded} onClick={getExcel}>
                       DOWNLOAD EXCEL
                       <IoMdDownload className="text-paragraph-1" />
@@ -627,130 +629,9 @@ const Revenue = () => {
                       DOWNLOAD PDF <IoMdDownload className="text-paragraph-1" />
                     </Button>
                   </div> */}
-                  <div className="mt-3">
-                    <ul className="grid-cols-9 gap-3 sticky top-0 mb-2 hidden xl:grid">
-                      {labels.map((item, key) => (
-                        <li
-                          key={"label-" + key}
-                          className="capitalize text-center font-semibold"
-                        >
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <ul className="grid-cols-3 gap-3 sticky top-0 mb-2 grid xl:hidden">
-                      {phoneOptions.map((item, key) => (
-                        <li
-                          key={"label-" + key}
-                          className="capitalize text-center font-semibold"
-                        >
-                          {item.includes("_")
-                            ? item.split("_").join(" ")
-                            : item.split("_").join(" ")}
-                        </li>
-                      ))}
-                    </ul>
-
-                    {aggregatedMusicData.map((song) => (
-                      <>
-                        <ul className="hidden xl:grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
-                          {/* list item */}
-                          {options.map((item) => {
-                            return (
-                              <li className="text-center">
-                                {/* {console.log(song)} */}
-                                {typeof song[item] === "number" &&
-                                song[item].toString().split(".").length > 1 ? (
-                                  item === "after tds revenue" ? (
-                                    final_after_tds[song.isrc].toFixed(8)
-                                  ) : (
-                                    song[item].toFixed(8)
-                                  )
-                                ) : item === "total" ? (
-                                  total_lifetime_views[song.isrc]
-                                ) : item === "platformName" ? (
-                                  <button onClick={() => setDetails(song.isrc)}>
-                                    See Details
-                                  </button>
-                                ) : (
-                                  song[item]
-                                )}
-                              </li>
-                            );
-                          })}
-                        </ul>
-
-                        <ul className="xl:hidden grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
-                          {phoneOptions.map((item) => {
-                            return (
-                              <li
-                                className="text-center"
-                                onClick={() => setDetails(song.isrc)}
-                              >
-                                {typeof song[item] === "number" &&
-                                song[item].toString().split(".").length > 1 ? (
-                                  item === "after tds revenue" ? (
-                                    final_after_tds[song.isrc].toFixed(3)
-                                  ) : (
-                                    song[item].toFixed(8)
-                                  )
-                                ) : item === "total" ? (
-                                  total_lifetime_views[song.isrc]
-                                ) : item === "platformName" ? (
-                                  <button onClick={() => setDetails(song.isrc)}>
-                                    See Details
-                                  </button>
-                                ) : (
-                                  song[item]
-                                )}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </>
-                    ))}
-                  </div>
-
-                  {loaded && (
-                    <div
-                      className="mt-3 p-7 absolute -z-50 -top-7 left-0"
-                      ref={targetRef}
-                    >
-                      <div className="flex items-center justify-between mb-6 text-grey-dark">
-                        <aside>
-                          <h3 className="text-heading-3-bold">
-                            ForeVision Digital
-                          </h3>
-                          <h4 className="text-heading-4-bold">
-                            Revenue Report
-                          </h4>
-                          <h5 className="text-heading-5-bold">
-                            {userData.first_name} {userData.last_name}
-                          </h5>
-                        </aside>
-                        <aside className="text-right w-2/12">
-                          <p>
-                            Date:{" "}
-                            {new Date().getDate() < 10
-                              ? "0" + new Date().getDate()
-                              : new Date().getDate()}
-                            /
-                            {new Date().getMonth() + 1 < 10
-                              ? "0" + (new Date().getMonth() + 1)
-                              : new Date().getMonth()}
-                            /{new Date().getFullYear()}
-                          </p>
-                          <p>
-                            {userData.billing_address}, {userData.billing_city},{" "}
-                            {userData.billing_country}
-                          </p>
-
-                          <p>{userData.postal_code}</p>
-                        </aside>
-                      </div>
-                      <ul className="grid grid-cols-8 gap-0 sticky top-0 mb-2">
-                        {labels2.map((item, key) => (
+                    <div className="mt-3">
+                      <ul className="grid-cols-9 gap-3 sticky top-0 mb-2 hidden xl:grid">
+                        {labels.map((item, key) => (
                           <li
                             key={"label-" + key}
                             className="capitalize text-center font-semibold"
@@ -760,67 +641,201 @@ const Revenue = () => {
                         ))}
                       </ul>
 
-                      {aggregatedMusicData.map((song) => (
-                        <ul className="grid grid-cols-3 2xl:grid-cols-8 gap-0 text-grey-dark py-1 rounded-md mb-1">
-                          {/* list item */}
-                          {options2.map((item) => {
-                            return (
-                              <li className="text-center hidden 2xl:block">
-                                {/* {console.log(song)} */}
-                                {typeof song[item] === "number" &&
-                                song[item].toString().split(".").length > 1 ? (
-                                  item === "after tds revenue" ? (
-                                    final_after_tds[song.isrc].toFixed(8)
-                                  ) : (
-                                    song[item].toFixed(8)
-                                  )
-                                ) : item === "total" ? (
-                                  total_lifetime_views[song.isrc]
-                                ) : item === "platformName" ? (
-                                  <button onClick={() => setDetails(song.isrc)}>
-                                    See Details
-                                  </button>
-                                ) : (
-                                  song[item]
-                                )}
-                              </li>
-                            );
-                          })}
+                      <ul className="grid-cols-3 gap-3 sticky top-0 mb-2 grid xl:hidden">
+                        {phoneOptions.map((item, key) => (
+                          <li
+                            key={"label-" + key}
+                            className="capitalize text-center font-semibold"
+                          >
+                            {item.includes("_")
+                              ? item.split("_").join(" ")
+                              : item.split("_").join(" ")}
+                          </li>
+                        ))}
+                      </ul>
 
-                          {phoneOptions.map((item) => {
-                            return (
-                              <li className="text-center 2xl:hidden">
-                                {/* {console.log(song)} */}
-                                {typeof song[item] === "number" &&
-                                song[item].toString().split(".").length > 1 ? (
-                                  item === "after tds revenue" ? (
-                                    final_after_tds[song.isrc].toFixed(8)
+                      {aggregatedMusicData.map((song) => (
+                        <>
+                          <ul className="hidden xl:grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                            {/* list item */}
+                            {options.map((item) => {
+                              return (
+                                <li className="text-center">
+                                  {/* {console.log(song)} */}
+                                  {typeof song[item] === "number" &&
+                                  song[item].toString().split(".").length >
+                                    1 ? (
+                                    item === "after tds revenue" ? (
+                                      final_after_tds[song.isrc].toFixed(8)
+                                    ) : (
+                                      song[item].toFixed(8)
+                                    )
+                                  ) : item === "total" ? (
+                                    total_lifetime_views[song.isrc]
+                                  ) : item === "platformName" ? (
+                                    <button
+                                      onClick={() => setDetails(song.isrc)}
+                                    >
+                                      See Details
+                                    </button>
                                   ) : (
-                                    song[item].toFixed(8)
-                                  )
-                                ) : item === "total" ? (
-                                  total_lifetime_views[song.isrc]
-                                ) : item === "platformName" ? (
-                                  <button onClick={() => setDetails(song.isrc)}>
-                                    See Details
-                                  </button>
-                                ) : (
-                                  song[item]
-                                )}
-                              </li>
-                            );
-                          })}
-                        </ul>
+                                    song[item]
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+
+                          <ul className="xl:hidden grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                            {phoneOptions.map((item) => {
+                              return (
+                                <li
+                                  className="text-center"
+                                  onClick={() => setDetails(song.isrc)}
+                                >
+                                  {typeof song[item] === "number" &&
+                                  song[item].toString().split(".").length >
+                                    1 ? (
+                                    item === "after tds revenue" ? (
+                                      final_after_tds[song.isrc].toFixed(3)
+                                    ) : (
+                                      song[item].toFixed(8)
+                                    )
+                                  ) : item === "total" ? (
+                                    total_lifetime_views[song.isrc]
+                                  ) : item === "platformName" ? (
+                                    <button
+                                      onClick={() => setDetails(song.isrc)}
+                                    >
+                                      See Details
+                                    </button>
+                                  ) : (
+                                    song[item]
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </>
                       ))}
                     </div>
-                  )}
-                </div>
 
-                {/* <Analytics
+                    {loaded && (
+                      <div
+                        className="mt-3 p-7 absolute -z-50 -top-7 left-0"
+                        ref={targetRef}
+                      >
+                        <div className="flex items-center justify-between mb-6 text-grey-dark">
+                          <aside>
+                            <h3 className="text-heading-3-bold">
+                              ForeVision Digital
+                            </h3>
+                            <h4 className="text-heading-4-bold">
+                              Revenue Report
+                            </h4>
+                            <h5 className="text-heading-5-bold">
+                              {userData.first_name} {userData.last_name}
+                            </h5>
+                          </aside>
+                          <aside className="text-right w-2/12">
+                            <p>
+                              Date:{" "}
+                              {new Date().getDate() < 10
+                                ? "0" + new Date().getDate()
+                                : new Date().getDate()}
+                              /
+                              {new Date().getMonth() + 1 < 10
+                                ? "0" + (new Date().getMonth() + 1)
+                                : new Date().getMonth()}
+                              /{new Date().getFullYear()}
+                            </p>
+                            <p>
+                              {userData.billing_address},{" "}
+                              {userData.billing_city},{" "}
+                              {userData.billing_country}
+                            </p>
+
+                            <p>{userData.postal_code}</p>
+                          </aside>
+                        </div>
+                        <ul className="grid grid-cols-8 gap-0 sticky top-0 mb-2">
+                          {labels2.map((item, key) => (
+                            <li
+                              key={"label-" + key}
+                              className="capitalize text-center font-semibold"
+                            >
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+
+                        {aggregatedMusicData.map((song) => (
+                          <ul className="grid grid-cols-3 2xl:grid-cols-8 gap-0 text-grey-dark py-1 rounded-md mb-1">
+                            {/* list item */}
+                            {options2.map((item) => {
+                              return (
+                                <li className="text-center hidden 2xl:block">
+                                  {/* {console.log(song)} */}
+                                  {typeof song[item] === "number" &&
+                                  song[item].toString().split(".").length >
+                                    1 ? (
+                                    item === "after tds revenue" ? (
+                                      final_after_tds[song.isrc].toFixed(8)
+                                    ) : (
+                                      song[item].toFixed(8)
+                                    )
+                                  ) : item === "total" ? (
+                                    total_lifetime_views[song.isrc]
+                                  ) : item === "platformName" ? (
+                                    <button
+                                      onClick={() => setDetails(song.isrc)}
+                                    >
+                                      See Details
+                                    </button>
+                                  ) : (
+                                    song[item]
+                                  )}
+                                </li>
+                              );
+                            })}
+
+                            {phoneOptions.map((item) => {
+                              return (
+                                <li className="text-center 2xl:hidden">
+                                  {/* {console.log(song)} */}
+                                  {typeof song[item] === "number" &&
+                                  song[item].toString().split(".").length >
+                                    1 ? (
+                                    item === "after tds revenue" ? (
+                                      final_after_tds[song.isrc].toFixed(8)
+                                    ) : (
+                                      song[item].toFixed(8)
+                                    )
+                                  ) : item === "total" ? (
+                                    total_lifetime_views[song.isrc]
+                                  ) : item === "platformName" ? (
+                                    <button
+                                      onClick={() => setDetails(song.isrc)}
+                                    >
+                                      See Details
+                                    </button>
+                                  ) : (
+                                    song[item]
+                                  )}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <Analytics
                     platformData={platformData}
                     songData={aggregatedMusicData}
-                  /> */}
-                {/* </OwlCarousel> */}
+                  />
+                </OwlCarousel>
               </div>
             ) : (
               <div className="w-full flex justify-center py-7">

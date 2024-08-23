@@ -99,13 +99,13 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
   return (
     <form
       className={`${
-        location.pathname === "/"
+        location.pathname === "/home" || location.pathname === "/"
           ? "bg-grey-light p-4 rounded-2xl"
           : "bg-white p-4 rounded w-11/12 lg:w-1/2 h-5/6 overflow-auto relative"
       }`}
       onSubmit={handleRecordLabelSubmit}
     >
-      {location.pathname === "/" || (
+      {location.pathname === "/home" || location.pathname === "/" || (
         <button
           className="text-interactive-light-destructive absolute top-2 right-2"
           type="button"
@@ -116,7 +116,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       )}
       <h5
         className={
-          location.pathname === "/"
+          location.pathname === "/home" || location.pathname === "/"
             ? "text-heading-4-bold text-grey-dark mb-2"
             : "text-heading-5-bold text-center mt-4"
         }
