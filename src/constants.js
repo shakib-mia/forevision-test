@@ -83,11 +83,11 @@ export const navItem = [
   //   text: "Dashboard",
   //   path: "/dashboard",
   // },
-  {
-    icon: <BsUpload className="text-heading-6" />,
-    text: "Song Upload",
-    path: "/song-upload",
-  },
+  // {
+  //   icon: <BsUpload className="text-heading-6" />,
+  //   text: "Song Upload",
+  //   path: "/song-upload",
+  // },
   // {
   //   icon: (
   //     // <svg
