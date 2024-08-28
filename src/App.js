@@ -127,8 +127,8 @@ function App() {
             location.pathname !== "/signup-details" &&
             !location.pathname.includes("payment") && (
               <>
-                <Sidebar />
-                {location.pathname !== "/profile" && <Navbar />}
+                {store.token && <Sidebar />}
+                {store.token && location.pathname !== "/profile" && <Navbar />}
               </>
             )}
           <Routes>

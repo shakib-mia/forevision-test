@@ -9,36 +9,37 @@ import { backendUrl } from "../../constants";
 import { useLocation } from "react-router-dom";
 import Letterhead from "../LetterHead/LetterHead";
 import Modal from "../Modal/Modal";
-import generatePDF from "react-to-pdf";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import Swal from "sweetalert2";
-// import axios from "axios";
-// import { ProfileContext } from "../../contexts/ProfileContext";
-// import { backendUrl } from "../../constants";
 
 const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
   const [selectedCode, setSelectedCode] = useState("91");
   const [isPerpetual, setIsPerpetual] = useState(false);
   const { token, userData } = useContext(ProfileContext);
-  // const { recordLabels } = useContext(ProfileContext);
-  const [formData, setFormData] = useState({});
-  const [showModal, setShowModal] = useState(false);
-  const letterHeadRef = useRef(null);
+  const [recordLabelData, setRecordLabelData] = useState({});
   const [submitted, setSubmitted] = useState(false);
-  // console.log(recordLabels);
-  // console.log(userData);
+  const letterHeadRef = useRef(null);
+  const location = useLocation();
+
+  const generatePDF = async () => {
+    const element = letterHeadRef.current;
+    const canvas = await html2canvas(element);
+    const data = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF();
+    const imgProperties = pdf.getImageProperties(data);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+
+    pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+    return pdf.output("blob");
+  };
 
   const handleRecordLabelSubmit = async (e) => {
     e.preventDefault();
-
     setSubmitted(true);
 
-    const config = {
-      headers: {
-        token,
-      },
-    };
-
-    // setShowRecordLabelForm(false);
     const data = {
       "Sub-Label Name": e.target.recordLabelName.value,
       phoneNo: e.target.phoneNo.value,
@@ -49,52 +50,61 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       signatoryName: e.target.signatoryName.value,
     };
 
-    setFormData(data);
-    // setShowModal(true);
-    // console.log(letterHeadRef);
-    const pdf = await generatePDF(letterHeadRef, {
-      filename: `LetterHead of ${e.target.recordLabelName.value}.pdf`,
-      page: {
-        format: "letter",
-      },
-    });
+    setRecordLabelData(data);
 
-    console.log(pdf);
-    const formData = new FormData();
-    formData.append("file", pdf);
+    try {
+      const pdfBlob = await generatePDF();
+      const fileName = `LetterHead of ${data["Sub-Label Name"]}.pdf`;
 
-    // axios
-    //   .post(backendUrl + "upload-letterhead", formData)
-    //   .then(({ data }) => console.log(data));
+      // Offer download to user
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(pdfBlob);
+      link.download = fileName;
+      link.click();
 
-    // axios
-    //   .post(backendUrl + "record-labels", data, config)
-    //   .then(({ data }) => {
-    //     if (data.acknowledged) {
-    //       // window.location.reload();
-    //       e.target.reset();
-    //       setSubmitted(false);
+      // Upload PDF
+      const formData = new FormData();
+      formData.append("file", pdfBlob, fileName);
 
-    //       Swal.fire({
-    //         title: "Record Label Submitted Successfully",
-    //         // confirmButtonColor: "#2B52DD",
-    //         customClass: {
-    //           confirmButton:
-    //             "px-[44px] !py-[12px] !text-white !outline-[2px] !outline-interactive-light !bg-interactive-light !text-button hover:!bg-interactive-light-hover active:!bg-interactive-light-active focus:!bg-interactive-light-focus !font-bold !rounded-full !cursor-pointer !uppercase disabled:!bg-interactive-light-disabled disabled:!cursor-not-allowed",
-    //         },
-    //       });
-    //     }
-    //   })
-    //   .catch((error) =>
-    //     toast.error(error.response.data, {
-    //       position: "bottom-center",
-    //     })
-    //   );
+      await axios.post(backendUrl + "upload-letterhead", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          token,
+        },
+      });
 
-    // console.log(data);
+      // Submit record label data
+      const config = { headers: { token } };
+      const response = await axios.post(
+        backendUrl + "record-labels",
+        data,
+        config
+      );
+
+      if (response.data.acknowledged) {
+        e.target.reset();
+        setSubmitted(false);
+
+        Swal.fire({
+          title: "Record Label Submitted Successfully",
+          text: "The PDF has been downloaded and uploaded to the server.",
+          icon: "success",
+          customClass: {
+            confirmButton: "custom-class-settings",
+          },
+        });
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data || "An error occurred. Please try again.",
+        {
+          position: "bottom-center",
+        }
+      );
+    } finally {
+      setSubmitted(false);
+    }
   };
-
-  const location = useLocation();
 
   return (
     <form
@@ -124,12 +134,12 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         Create A New Record Label
       </h5>
 
+      {/* Your existing form fields */}
       <InputField
         type={"text"}
         placeholder={"Record Label Name"}
         label={"Name"}
         name={"recordLabelName"}
-        // hideRequired={true}
         id={"record-label-name"}
         required={true}
       />
@@ -179,23 +189,6 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           label={"Start Date"}
         />
 
-        {/* {!isPerpetual && ( */}
-        {/* <InputField
-          type={"date"}
-          containerClassName={"w-1/2"}
-          name={"endDate"}
-          hideRequired={true}
-          label={"End Date"}
-        /> */}
-        {/* )} */}
-        {/* <InputField
-            type={"checkbox"}
-            containerClassName={"mt-1"}
-            label={"Perpetual"}
-            id={"perpetual"}
-            onChange={(e) => setIsPerpetual(e.target.checked)}
-            hideRequired={true}
-          /> */}
         <InputField
           type={"text"}
           placeholder={"Enter your signature here"}
@@ -210,20 +203,19 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       <div className="flex justify-center">
         <Button
           type={"submit"}
-          text={"Submit"}
+          text={submitted ? "Submitting..." : "Submit"}
           containerClassName={"mt-6 mx-auto"}
-          // onClick={() => }
-          // disabled={submitted}
+          disabled={submitted}
         />
       </div>
 
-      {/* {showModal && ( */}
       <div className="opacity-0 relative -z-[9999999999999999]">
         <Modal>
-          <Letterhead formData={formData} ref={letterHeadRef} />
+          <div ref={letterHeadRef}>
+            <Letterhead formData={recordLabelData} />
+          </div>
         </Modal>
       </div>
-      {/* )} */}
     </form>
   );
 };

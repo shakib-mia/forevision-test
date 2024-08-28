@@ -42,6 +42,7 @@ import KYC from "./pages/KYC/KYC";
 import { IoMdAnalytics } from "react-icons/io";
 import Analytics from "./components/Analytics/Analytics";
 import BulkUpload from "./pages/BulkUpload/BulkUpload";
+import SocialLinks from "./pages/SocialLinks/SocialLinks";
 
 // export const backendUrl = "http://localhost:5000/";
 export const backendUrl = "https://api.forevisiondigital.in/";
@@ -82,13 +83,11 @@ export const navItem = [
   //   text: "Dashboard",
   //   path: "/dashboard",
   // },
-  // {
-  //   icon: (
-  //     <BsUpload className="text-heading-6" />
-  //   ),
-  //   text: "Song Upload",
-  //   path: "/song-upload",
-  // },
+  {
+    icon: <BsUpload className="text-heading-6" />,
+    text: "Song Upload",
+    path: "/song-upload",
+  },
   // {
   //   icon: (
   //     // <svg
@@ -487,6 +486,10 @@ export const routes = [
   {
     path: "/settings",
     page: <Settings />,
+  },
+  {
+    path: "/share/:user_id/:song_id",
+    page: <SocialLinks />,
   },
   {
     path: "/kyc",

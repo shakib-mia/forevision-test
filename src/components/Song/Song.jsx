@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import playCircle from "../../assets/icons/play-circle.webp";
 import like from "../../assets/icons/like.webp";
 import dislike from "../../assets/icons/dislike.webp";
@@ -11,20 +11,29 @@ import Comment from "../Comment/Comment";
 import user from "./../../assets/images/user.webp";
 import arrowCircle from "../../assets/icons/arrow-circle.webp";
 import { FaApple, FaMusic } from "react-icons/fa";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { Link, useNavigate } from "react-router-dom";
+import EditSong from "../EditSong/EditSong";
 
-const SongItem = ({
-  Song,
-  jiosaavn,
-  "wynk-music": wynk,
-  gaana,
-  spotify,
-  "apple-music": apple,
-  "amazon-music": amazon,
-  comments,
-}) => {
+const SongItem = ({ song }) => {
   const [showDetails, setShowDetails] = useState(false);
   const commentsRef = useRef(null);
-
+  const navigate = useNavigate();
+  // console.log(_id);
+  const { userData } = useContext(ProfileContext);
+  // console.log(data);
+  const [editId, setEditId] = useState("");
+  const {
+    Song,
+    jiosaavn,
+    "wynk-music": wynk,
+    gaana,
+    spotify,
+    "apple-music": apple,
+    "amazon-music": amazon,
+    comments,
+    _id,
+  } = song;
   // console.log(jiosaavn);
 
   // useEffect(() => {
@@ -40,6 +49,8 @@ const SongItem = ({
   //     });
   //   }
   // }, [showDetails]);
+
+  console.log(song);
 
   return (
     <div
@@ -120,9 +131,22 @@ const SongItem = ({
           <div className="hidden lg:flex items-center gap-2">
             <img className="cursor-pointer" src={like} alt="" />
             <img className="cursor-pointer" src={dislike} alt="" />
-            <img className="cursor-pointer" src={edit} alt="" />
+            <img
+              className="cursor-pointer"
+              onClick={() => setEditId(_id)}
+              src={edit}
+              alt=""
+            />
             {/* <img className="cursor-pointer" src={editBlue} alt="" /> */}
-            <img className="cursor-pointer" src={share} alt="" />
+            <button
+              disabled={
+                !(apple || amazon || spotify || gaana || wynk || jiosaavn)
+              }
+              className="disabled:opacity-25 disabled:cursor-not-allowed"
+              onClick={() => navigate(`/share/${userData._id}/${_id}`)}
+            >
+              <img src={share} alt="" />
+            </button>
             {/* <img
             className={`cursor-pointer transition ${
               showDetails && "rotate-180"
@@ -134,6 +158,8 @@ const SongItem = ({
           </div>
         </div>
       </div>
+
+      {editId.length > 0 && <EditSong setEditId={setEditId} songData={song} />}
 
       {/* <div
         className="overflow-hidden flex flex-col gap-2 h-0"

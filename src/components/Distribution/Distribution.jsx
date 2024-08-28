@@ -25,7 +25,7 @@ const Distribution = () => {
   const { planStore } = useContext(PlanContext);
   // console.log(planStore);
 
-  // console.log(location);
+  // console.log();
 
   useEffect(() => {
     axios
@@ -102,7 +102,7 @@ const Distribution = () => {
     axios
       .post(backendUrl + "recent-uploads", formData, config)
       .then(({ data }) => {
-        if (data.acknowledged) {
+        if (data.acknowledged && !location.search.includes("yearly-plan")) {
           // setCount(count + 1);
           // setScreen("preview");
           // : setCollapsed(true);
@@ -113,6 +113,10 @@ const Distribution = () => {
                 : location.search.split("?")[2]
             }?id=${orderId}`
           );
+        }
+
+        if (location.search.includes("yearly-plan")) {
+          navigate("/");
         }
       });
   };
@@ -138,8 +142,12 @@ const Distribution = () => {
             </div>
 
             <div className="flex divide-x divide-[#ddd]">
-              <aside className="w-1/2 p-2">Price:</aside>
-              {/* <aside className="w-1/2 p-2 flex items-center">
+              {location.search.includes("yearly-plan") ? (
+                <p className="p-2 w-full text-center">Yearly Plan</p>
+              ) : (
+                <>
+                  <aside className="w-1/2 p-2">Price:</aside>
+                  {/* <aside className="w-1/2 p-2 flex items-center">
                 <FaRupeeSign className="text-subtitle-2" />{" "}
                 <span className="font-bold flex items-center">
                   {location.search.split("?")[2] / 100} (Includes {"   "}
@@ -148,7 +156,9 @@ const Distribution = () => {
                   18% GST )
                 </span>
               </aside> */}
-              <GSTCalculator location={location} />
+                  <GSTCalculator location={location} />
+                </>
+              )}
             </div>
 
             <div className="flex divide-x divide-[#ddd] bg-grey-light">
@@ -168,30 +178,31 @@ const Distribution = () => {
               <aside className="w-1/2 p-2">{userData.user_email}</aside>
             </div> */}
 
-            {location.search.includes("social") || (
-              <form
-                className="flex gap-2 items-end p-2"
-                onSubmit={verifyCouponCode}
-              >
-                <InputField
-                  hideRequired
-                  fieldClassName={
-                    error &&
-                    "border-interactive-dark-destructive outline-interactive-dark-destructive"
-                  }
-                  containerClassName={"w-full"}
-                  onChange={(e) => setError(false)}
-                  placeholder={"Coupon Code"}
-                  name={"couponCode"}
-                />
-                <Button
-                  className={"!rounded-none"}
-                  containerClassName={"!p-0 !border-none"}
+            {location.search.includes("social") ||
+              location.search.includes("yearly-plan") || (
+                <form
+                  className="flex gap-2 items-end p-2"
+                  onSubmit={verifyCouponCode}
                 >
-                  Apply
-                </Button>
-              </form>
-            )}
+                  <InputField
+                    hideRequired
+                    fieldClassName={
+                      error &&
+                      "border-interactive-dark-destructive outline-interactive-dark-destructive"
+                    }
+                    containerClassName={"w-full"}
+                    onChange={(e) => setError(false)}
+                    placeholder={"Coupon Code"}
+                    name={"couponCode"}
+                  />
+                  <Button
+                    className={"!rounded-none"}
+                    containerClassName={"!p-0 !border-none"}
+                  >
+                    Apply
+                  </Button>
+                </form>
+              )}
 
             {location.search.includes("social") ||
               (discountData.discountPercentage && (
@@ -272,14 +283,25 @@ const Distribution = () => {
           </div>
 
           <div className="flex gap-2 justify-center">
-            <Button
-              type={"button"}
-              onClick={handleSubmit}
-              containerClassName={"mt-4"}
-              disabled={!accepted || !signature.length}
-            >
-              Proceed to Checkout
-            </Button>
+            {location.search.includes("yearly-plan") ? (
+              <Button
+                type={"button"}
+                onClick={handleSubmit}
+                containerClassName={"mt-4"}
+                disabled={!accepted || !signature.length}
+              >
+                Submit
+              </Button>
+            ) : (
+              <Button
+                type={"button"}
+                onClick={handleSubmit}
+                containerClassName={"mt-4"}
+                disabled={!accepted || !signature.length}
+              >
+                Proceed to Checkout
+              </Button>
+            )}
             <Button
               type={"button"}
               onClick={handlePayLater}

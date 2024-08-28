@@ -20,6 +20,8 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
       item1.platformName.localeCompare(item2.platformName)
     );
 
+  // console.log({ songs, items });
+
   let groupedData = items.reduce((acc, cur) => {
     if (!acc[cur.platformName]) {
       acc[cur.platformName] = { ...cur, "final revenue": 0, total: 0 };
@@ -65,6 +67,39 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
     setDetails("");
 
     // console.log(pdf);
+  };
+
+  const convertToExcel = () => {
+    // console.log(items);
+    // const newItems = items.map(item => item.Views = item.total)
+    const newItems = [];
+    for (const item of items) {
+      item.ISRC = item.isrc;
+      item.Album = item.album;
+      item["Song Name"] = item.song_name;
+      item.Artist = item.track_artist;
+      item.Label = item.label;
+      item["Platform Name"] = item.platformName;
+      item.Views = item.total;
+      item.Revenue = item["after tds revenue"];
+      item["Revenue After ForeVision Deduction"] = item["final revenue"];
+      delete item.uploadDate;
+      delete item.total;
+      delete item["after tds revenue"];
+      delete item["final revenue"];
+      delete item.platformName;
+      delete item.isrc;
+      delete item.label;
+      delete item.song_name;
+      delete item.track_artist;
+      delete item.date;
+      delete item.album;
+
+      newItems.push(item);
+    }
+
+    console.log(newItems);
+    jsonToExcel(newItems, `Revenue_Details_of_${result[0].song_name}.xlsx`);
   };
 
   return (
@@ -152,12 +187,7 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
           <Button
             containerClassName={"flex items-center"}
             // disabled={!loaded}
-            onClick={() =>
-              jsonToExcel(
-                songs,
-                `Revenue_Details_of_${result[0].song_name}.xlsx`
-              )
-            }
+            onClick={convertToExcel}
           >
             DOWNLOAD EXCEL <IoMdDownload className="text-paragraph-1" />
           </Button>

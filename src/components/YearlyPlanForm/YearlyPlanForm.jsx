@@ -137,7 +137,7 @@ const YearlyPlanForm = () => {
       {fields.map((field) => (
         <InputField
           // labelClassName={"!text-white"}
-          containerClassName={"mt-4"}
+          containerClassName={"mt-1 lg:mt-4"}
           key={field.id}
           // type={"text"}
           // className="text-black"

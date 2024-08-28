@@ -16,7 +16,9 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
   const [checked, setChecked] = useState(false);
   const location = useLocation();
   // console.log();
-  const freeLogic = location.search.split("?")[2] === "0";
+  const freeLogic =
+    location.search.split("?")[1] !== "yearly-plan" &&
+    location.search.split("?")[2] === "0";
   // console.log(location.search.split("?")[2] === "0");
   const freePlatformsArray = platforms
     .find(({ platformType }) => platformType === "International")
@@ -37,6 +39,10 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
     (location.search.split("?")[1]?.includes("-")
       ? location.search.split("?")[1]?.split("-")?.join(" ")
       : location.search.split("?")[1]) === "forevision crbt";
+
+  // const yearlyLogic = location.search.split("?")[1] === "yearly-plan";
+
+  // console.log(platforms);
 
   // const common
   const commonPlatforms = platforms.filter(
@@ -84,6 +90,9 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
     : freeLogic
     ? freePlatforms
     : platforms;
+
+  console.log(platforms);
+  // console.log(logicalPlatforms);
 
   useEffect(() => {
     // console.log(selectedPlatforms);
@@ -145,26 +154,6 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
       );
     }
   }, [selectedPlatforms, selectedPlatforms?.length, newPlatforms, checked]);
-
-  // let logicalPlatforms = [];
-
-  // // switch()
-
-  // if (proLogic) {
-  //   logicalPlatforms = proLogic;
-  // }
-
-  // if (crbtLogic) {
-  //   logicalPlatforms = crbtPlatforms;
-  // }
-
-  // if (freeLogic) {
-  //   logicalPlatforms = freePlatforms;
-  // }
-
-  // console.log(crbtPlatforms);
-
-  // console.log(freePlatforms);
 
   return (
     <>

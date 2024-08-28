@@ -15,6 +15,21 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PlanContext } from "../../contexts/PlanContext";
+import Swal from "sweetalert2";
+
+// Function to get audio duration
+const getAudioDuration = (file) => {
+  return new Promise((resolve, reject) => {
+    const audio = new Audio();
+    audio.addEventListener("loadedmetadata", () => {
+      resolve(audio.duration);
+    });
+    audio.addEventListener("error", (error) => {
+      reject(error);
+    });
+    audio.src = URL.createObjectURL(file);
+  });
+};
 
 const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
   const { setScreen, setFormData, formData } = useContext(ScreenContext);
@@ -152,71 +167,54 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
     const data = await fileToBase64(file);
     setAudioUrl(data);
 
-    const toastId = toast.loading("Uploading audio...", {
-      position: "bottom-center",
-    });
-    console.log(file.name);
     setFileName(file.name);
 
-    if (file && file.type.startsWith("audio/")) {
-      const SongFile = new FormData();
-      SongFile.append("file", file);
+    const audioLength = await getAudioDuration(file);
+    // console.log(`Audio length: ${audioLength} seconds`);
 
-      // Perform the file upload
-      try {
-        const response = await axios.post(
-          backendUrl + "upload-song",
-          SongFile,
-          config
-        );
-        formData.songUrl = response.data.songUrl;
-        setSongUrl(response.data.songUrl);
+    if (audioLength > 60) {
+      const toastId = toast.loading("Uploading audio...", {
+        position: "bottom-center",
+      });
+      if (file && file.type.startsWith("audio/")) {
+        const SongFile = new FormData();
+        SongFile.append("file", file);
 
-        // Update toast to successful
-        toast.update(toastId, {
-          render: "Audio uploaded successfully!",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000, // Close toast after 3 seconds
-        });
-      } catch (error) {
-        console.error("Error uploading file:", error);
+        // Perform the file upload
+        try {
+          const response = await axios.post(
+            backendUrl + "upload-song",
+            SongFile,
+            config
+          );
+          formData.songUrl = response.data.songUrl;
+          setSongUrl(response.data.songUrl);
 
-        // Update toast to error
-        toast.update(toastId, {
-          render: "Error uploading audio. Please try again.",
-          type: "error",
-          isLoading: false,
-          autoClose: 3000,
-        });
+          // Update toast to successful
+          toast.update(toastId, {
+            render: "Audio uploaded successfully!",
+            type: "success",
+            isLoading: false,
+            autoClose: 3000, // Close toast after 3 seconds
+          });
+        } catch (error) {
+          console.error("Error uploading file:", error);
+
+          // Update toast to error
+          toast.update(toastId, {
+            render: "Error uploading audio. Please try again.",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          });
+        }
       }
+    } else {
+      Swal.fire({
+        title: "Audio must be greater than 60 seconds",
+        confirmButtonColor: "#2B52DD",
+      });
     }
-
-    // if (file && file.type.startsWith("audio/")) {
-    //   // Create an object URL for the audio file
-    //   const audioUrl = URL.createObjectURL(file);
-
-    //   // Update the formData state with the file and audioUrl
-    //   if (location.pathname === "/album-upload") {
-    //     // setFormData((prevFormData) => ({
-    //     //   ...prevFormData,
-    //     //   file,
-    //     // }));
-
-    //     // formData[parseInt(event.target.id.split("_")[1])].file =
-    //     //   event.target.files[0];
-    //     console.log(event.target.files[0]);
-    //     formData.songs[parseInt(event.target.id.split("_")[1])].file =
-    //       event.target.files[0];
-    //     // );
-    //     setFormData({ ...formData });
-    //     // console.log();
-    //   } else {
-    //     setFormData((prevFormData) => ({
-    //       ...prevFormData,
-    //       file,
-    //     }));
-    //   }
 
     //   // Create a new Audio object to get the duration
     const audio = new Audio(songUrl);

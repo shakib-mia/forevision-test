@@ -29,18 +29,31 @@ const AuthBody = ({
         backgroundImage:
           location.pathname === "/profile" ||
           location.pathname === "/all-songs" ||
+          location.pathname === "/home" ||
+          location.pathname === "/" ||
           `url(${bg})`,
       }}
     >
-      <div className="flex flex-col xl:flex-row items-center justify-center h-full w-full backdrop-blur-sm">
+      <div
+        className="flex flex-col xl:flex-row items-center justify-center h-full w-full backdrop-blur-sm"
+        onClick={handleClose}
+      >
         {location.pathname === "/profile" ||
-          location.pathname === "/all-songs" || <div className="w-1/2"></div>}
+          location.pathname === "/all-songs" ||
+          location.pathname === "/home" ||
+          location.pathname === "/" || <div className="w-1/2"></div>}
         <div
           className={`w-11/12 xl:w-1/3 shadow-md xl:shadow-xl p-3 rounded-[22px] bg-white relative ${whiteContainerClass}`}
+          onClick={(e) => e.stopPropagation()}
         >
           {closeIcon && (
             <button
-              className="absolute -right-3 -top-3 text-heading-5 bg-white w-4 h-4 rounded-full flex items-center justify-center text-interactive-light-destructive"
+              type="button"
+              className={`${
+                whiteContainerClass && whiteContainerClass.includes("overflow")
+                  ? "right-1 top-1"
+                  : "-right-3 -top-3"
+              } absolute text-heading-5 bg-white w-4 h-4 rounded-full flex items-center justify-center text-interactive-light-destructive`}
               onClick={handleClose}
             >
               &times;

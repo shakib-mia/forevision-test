@@ -25,8 +25,8 @@ const Songs = () => {
 
   return (
     <>
-      {songs.map((props, key) => (
-        <SongItem {...props} key={key} />
+      {songs.map((song, key) => (
+        <SongItem song={song} key={key} />
       ))}
     </>
   );

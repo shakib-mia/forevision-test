@@ -4,15 +4,15 @@ const YearlyPlanText = () => {
   return (
     <div className="relative">
       <div className="sticky top-0 left-0 py-4 bg-interactive-light">
-        <h3 className="text-heading-4-bold xl:text-[55px] text-white inline-block">
+        <h3 className="text-heading-4-bold xl:text-[55px] text-white text-center xl:text-left">
           ForeVision Digital
         </h3>
 
-        <h1 className="text-heading-4-bold xl:text-heading-1-bold text-white">
+        <h1 className="text-heading-5-bold xl:text-heading-1-bold text-white text-center xl:text-left">
           Yearly Plan
         </h1>
 
-        <h5 className="text-heading-5-bold">
+        <h5 className="text-heading-6 text-center xl:text-left mt-3 xl:text-heading-5-bold">
           Unlock Unlimited Potential with Our Yearly Plan
         </h5>
       </div>

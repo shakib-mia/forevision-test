@@ -7,7 +7,7 @@ import { backendUrl, config } from "../../constants";
 
 const EditSongForm = ({ updatedData, setUpdatedData }) => {
   const [recordLabels, setRecordLabels] = useState([]);
-  console.log(updatedData);
+  // console.log(updatedData);
   useEffect(() => {
     axios
       .get(backendUrl + "record-labels", config)

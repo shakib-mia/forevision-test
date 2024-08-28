@@ -349,7 +349,7 @@ const Revenue = () => {
     "Revenue After ForeVision Deduction",
   ];
 
-  const phoneOptions = ["isrc", "song_name", "after tds revenue"];
+  const phoneOptions = ["isrc", "song_name", "Total Revenue Against ISRC"];
   const phoneOptionsDetailsHeading = ["Platform Name", "Revenue"];
   const phoneOptionsDetails = ["platformName", "after tds revenue"];
 
@@ -393,45 +393,49 @@ const Revenue = () => {
   const platformData = { revenueByPlatform, viewsByPlatform };
 
   const getExcel = () => {
-    // console.log(aggregatedMusicData);
+    aggregatedMusicData.map((item) => {
+      item.Album = item.album;
+      item.ISRC = item.isrc;
+      item["Record Label"] = item.label;
+      item.Song = item.song_name;
+      item["Track Artist"] = item.track_artist;
+    });
     aggregatedMusicData.map((item) => {
       delete item["after tds revenue"];
       delete item["final revenue"];
       delete item.platformName;
       delete item.uploadDate;
       delete item.date;
+      delete item.total;
+      delete item.album;
+      delete item.isrc;
+      delete item.label;
+      delete item.song_name;
+      delete item.track_artist;
     });
 
-    // console.log(aggregatedMusicData);
-    // Step 1: Create CSV content
-    // const csvContent = jsonToCsv(aggregatedMusicData);
-
-    // Step 2: Convert JSON to a worksheet
+    console.log(aggregatedMusicData);
     const worksheet = XLSX.utils.json_to_sheet(aggregatedMusicData);
 
-    // Step 3: Create a new workbook and append the worksheet
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
-    // Step 4: Write the workbook to a binary string
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
       type: "array",
     });
 
-    // Step 5: Create a Blob from the binary string
     const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
 
-    // Step 6: Generate a URL for the Blob and trigger the download
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `ForeVision Digital - Revenue Report of ${userData.first_name} ${userData.last_name}.xlsx`; // Set the file name
-    a.style.display = "none"; // Hide the anchor element
-    document.body.appendChild(a); // Append the anchor to the body
-    a.click(); // Programmatically click the anchor to trigger the download
-    document.body.removeChild(a); // Remove the anchor from the document
-    URL.revokeObjectURL(url); // Clean up the URL object
+    a.download = `ForeVision Digital - Revenue Report of ${userData.first_name} ${userData.last_name}.xlsx`;
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const createPdf = async () => {
@@ -452,7 +456,7 @@ const Revenue = () => {
     console.log(pdf);
   };
   // console.log(aggregatedMusicData);
-  // console.log(aggregatedMusicData);
+  console.log(aggregatedMusicData);
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
@@ -598,13 +602,13 @@ const Revenue = () => {
             (filtered.length ? (
               <div className="relative">
                 <FaChevronLeft
-                  className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[9999] text-white hidden xl:block"
+                  className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[99] text-white hidden xl:block"
                   onClick={() =>
                     document.getElementsByClassName("owl-prev")[0].click()
                   }
                 />
                 <FaChevronRight
-                  className="bg-transparent stroke-transparent text-heading-4 fixed right-5 top-[75vh] cursor-pointer bottom-0 z-[9999] text-white hidden xl:block"
+                  className="bg-transparent stroke-transparent text-heading-4 fixed right-5 top-[75vh] cursor-pointer bottom-0 z-[99] text-white hidden xl:block"
                   onClick={() =>
                     document.getElementsByClassName("owl-next")[0].click()
                   }
@@ -617,18 +621,19 @@ const Revenue = () => {
                 >
                   <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
                     {/* <div className="flex justify-end gap-1">
-                    <Button disabled={!loaded} onClick={getExcel}>
-                      DOWNLOAD EXCEL
-                      <IoMdDownload className="text-paragraph-1" />
-                    </Button>
-                    <Button
-                      containerClassName={"flex items-center"}
-                      disabled={!loaded}
-                      onClick={createPdf}
-                    >
-                      DOWNLOAD PDF <IoMdDownload className="text-paragraph-1" />
-                    </Button>
-                  </div> */}
+                      <Button disabled={!loaded} onClick={getExcel}>
+                        DOWNLOAD EXCEL
+                        <IoMdDownload className="text-paragraph-1" />
+                      </Button>
+                      <Button
+                        containerClassName={"flex items-center"}
+                        disabled={!loaded}
+                        onClick={createPdf}
+                      >
+                        DOWNLOAD PDF{" "}
+                        <IoMdDownload className="text-paragraph-1" />
+                      </Button>
+                    </div> */}
                     <div className="mt-3">
                       <ul className="grid-cols-9 gap-3 sticky top-0 mb-2 hidden xl:grid">
                         {labels.map((item, key) => (
@@ -649,7 +654,9 @@ const Revenue = () => {
                           >
                             {item.includes("_")
                               ? item.split("_").join(" ")
-                              : item.split("_").join(" ")}
+                              : item === "Total Revenue Against ISRC"
+                              ? "Revenue After ForeVision Deduction"
+                              : item}
                           </li>
                         ))}
                       </ul>
@@ -696,8 +703,8 @@ const Revenue = () => {
                                   {typeof song[item] === "number" &&
                                   song[item].toString().split(".").length >
                                     1 ? (
-                                    item === "after tds revenue" ? (
-                                      final_after_tds[song.isrc].toFixed(3)
+                                    item === "Total Revenue Against ISRC" ? (
+                                      song[item].toFixed(3)
                                     ) : (
                                       song[item].toFixed(8)
                                     )
@@ -843,7 +850,7 @@ const Revenue = () => {
               </div>
             ))}
           {/* details item modal */}
-          {details.length ? (
+          {details?.length ? (
             <RevenueDetails
               setDetails={setDetails}
               options={options}
