@@ -46,7 +46,7 @@ const KYC = () => {
       };
 
       const res = await axios.post(
-        "http://localhost:5000/upload-govt-id",
+        backendUrl + "upload-govt-id",
         govtId,
         config
       );
