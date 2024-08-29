@@ -460,7 +460,7 @@ const Revenue = () => {
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
-        className="bg-[size:100%] bg-no-repeat lg:!pt-6 xl:p-4 xl:pl-7 mb-6 xl:mb-0"
+        className="bg-[size:100%] bg-no-repeat lg:!pt-6 xl:p-4 xl:!pt-7 xl:pl-7 mb-6 xl:mb-0"
         style={{ backgroundImage: `url(${background})` }}
       >
         <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] pt-5 pb-7 rounded-[20px]">
@@ -620,7 +620,7 @@ const Revenue = () => {
                   id="revenue-slider"
                 >
                   <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-                    {/* <div className="flex justify-end gap-1">
+                    <div className="flex justify-end gap-1">
                       <Button disabled={!loaded} onClick={getExcel}>
                         DOWNLOAD EXCEL
                         <IoMdDownload className="text-paragraph-1" />
@@ -633,7 +633,7 @@ const Revenue = () => {
                         DOWNLOAD PDF{" "}
                         <IoMdDownload className="text-paragraph-1" />
                       </Button>
-                    </div> */}
+                    </div>
                     <div className="mt-3">
                       <ul className="grid-cols-9 gap-3 sticky top-0 mb-2 hidden xl:grid">
                         {labels.map((item, key) => (

@@ -12,6 +12,7 @@ import axios from "axios";
 import { PlanContext } from "./contexts/PlanContext";
 import "sweetalert2/src/sweetalert2.scss";
 import Navbar from "./components/Navbar/Navbar";
+import { checkTheDateIsBefore } from "./utils/checkTheDateIsBefore";
 
 // import Construction from "./pages/Construction/Construction";
 
@@ -114,6 +115,8 @@ function App() {
   });
 
   /* Working api calls ends here */
+
+  // console.log(userData);
 
   return (
     <div className="bg-white w-screen h-screen">

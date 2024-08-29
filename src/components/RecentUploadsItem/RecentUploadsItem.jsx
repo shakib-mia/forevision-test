@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaCheckCircle, FaMusic } from "react-icons/fa";
 import { CiStreamOn } from "react-icons/ci";
 import Button from "../Button/Button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PlanContext } from "../../contexts/PlanContext";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -10,9 +10,12 @@ import { backendUrl, config } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { BsSendArrowUp } from "react-icons/bs";
 import { TbCopyrightOff, TbMusicOff } from "react-icons/tb";
+import EditSong from "../EditSong/EditSong";
+import { RiEditBoxLine } from "react-icons/ri";
 
 const RecentUploadsItem = (props) => {
   //   console.log(props);
+  const location = useLocation();
   const navigate = useNavigate();
   const {
     songName,
@@ -28,6 +31,7 @@ const RecentUploadsItem = (props) => {
   // console.log(props);
   const { token } = useContext(ProfileContext);
   const [reason, setReason] = useState("");
+  const [editId, setEditId] = useState("");
 
   const handleRefundRequest = () => {
     const updated = { ...props };
@@ -87,80 +91,93 @@ const RecentUploadsItem = (props) => {
   }, [reason]);
 
   return (
-    <div className="grid grid-cols-3 items-center text-center">
+    <div className="grid grid-cols-2 items-center text-center">
+      {/* {editId.length > 0 && <EditSong setEditId={setEditId} songData={props} />} */}
       <div className="flex gap-1 items-center">
         <FaMusic />
         <div>{songName}</div>
       </div>
-      {payment_id ? (
-        <p
-          className="text-subtitle-1 flex gap-1 items-center justify-center capitalize w-full"
-          title={payment_id}
-        >
-          <span
-            className={
-              status === "streaming"
-                ? "text-interactive-light"
-                : status === "paid"
-                ? "text-interactive-light-confirmation-focus"
-                : status === "sent-to-stores"
-                ? "text-interactive-light-confirmation"
-                : status === "copyright-infringed"
-                ? "text-interactive-light-destructive"
-                : status === "taken-down"
-                ? "text-interactive-dark-destructive"
-                : ""
-            }
+      <aside className="flex items-center">
+        <RiEditBoxLine
+          className="cursor-pointer"
+          onClick={() => navigate("/edit-song/" + _id)}
+          title="Edit"
+          data-tooltip-id={"edit" + _id}
+          data-tooltip-content={`Edit`}
+          data-tooltip-place="top"
+        />
+        {payment_id ? (
+          <p
+            className="text-subtitle-1 flex gap-1 items-center justify-center capitalize w-full"
+            title={payment_id}
           >
-            {status}
-          </span>
-          {status === "paid" ? (
-            <FaCheckCircle className="text-interactive-light-confirmation-focus" />
-          ) : status === "Sent to Stores" ? (
-            <BsSendArrowUp className="text-interactive-light-confirmation" />
-          ) : status === "streaming" ? (
-            <CiStreamOn className="text-interactive-light w-3 h-3" />
-          ) : status === "copyright-infringed" ? (
-            <TbCopyrightOff className="text-interactive-light-destructive w-3 h-3" />
-          ) : status === "taken-down" ? (
-            <TbMusicOff className="text-interactive-dark-destructive w-3 h-3" />
-          ) : (
-            <></>
-          )}
-        </p>
-      ) : (
-        <Button
-          containerClassName={"mx-auto"}
-          small={true}
-          disabled={price === "0"}
-          onClick={() => {
-            price > 0 && navigate(`/payment?price=${price}?id=${_id}`);
-            // setPlanStore({ planName, price });
-          }}
-        >
-          Pay Now
-        </Button>
-      )}
+            <span
+              className={
+                status === "streaming"
+                  ? "text-interactive-light"
+                  : status === "paid"
+                  ? "text-interactive-light-confirmation-focus"
+                  : status === "sent-to-stores"
+                  ? "text-interactive-light-confirmation"
+                  : status === "copyright-infringed"
+                  ? "text-interactive-light-destructive"
+                  : status === "taken-down"
+                  ? "text-interactive-dark-destructive"
+                  : ""
+              }
+            >
+              {status}
+            </span>
+            {status === "paid" ? (
+              <FaCheckCircle className="text-interactive-light-confirmation-focus" />
+            ) : status === "Sent to Stores" ? (
+              <BsSendArrowUp className="text-interactive-light-confirmation" />
+            ) : status === "streaming" ? (
+              <CiStreamOn className="text-interactive-light w-3 h-3" />
+            ) : status === "copyright-infringed" ? (
+              <TbCopyrightOff className="text-interactive-light-destructive w-3 h-3" />
+            ) : status === "taken-down" ? (
+              <TbMusicOff className="text-interactive-dark-destructive w-3 h-3" />
+            ) : (
+              <></>
+            )}
+          </p>
+        ) : (
+          <Button
+            containerClassName={"mx-auto"}
+            small={true}
+            disabled={price === "0"}
+            onClick={() => {
+              price > 0 && navigate(`/payment?price=${price}?id=${_id}`);
+              // setPlanStore({ planName, price });
+            }}
+          >
+            Pay Now
+          </Button>
+        )}
+      </aside>
 
-      {status === "taken-down" || status === "copyright-infringed" ? (
+      {/* {status === "taken-down" || status === "copyright-infringed" ? (
         <></>
       ) : (
-        <Button
-          containerClassName={
-            "mx-auto focus:border-interactive-light-destructive-focus"
-          }
-          disabled={requested}
-          small={true}
-          onClick={handleReason}
-          // containerClassName=''
-          className={
-            "bg-interactive-light-destructive hover:!bg-interactive-light-destructive-hover focus:!bg-interactive-light-destructive-focus active:!bg-interactive-light-destructive-active disabled:hover:!bg-interactive-light-destructive-disabled disabled:!bg-interactive-light-destructive-disabled"
-          }
-          type={"destructive"}
-        >
-          Refund
-        </Button>
-      )}
+        location.pathname !== "/home" && (
+          <Button
+            containerClassName={
+              "mx-auto focus:border-interactive-light-destructive-focus"
+            }
+            disabled={requested}
+            small={true}
+            onClick={handleReason}
+            // containerClassName=''
+            className={
+              "bg-interactive-light-destructive hover:!bg-interactive-light-destructive-hover focus:!bg-interactive-light-destructive-focus active:!bg-interactive-light-destructive-active disabled:hover:!bg-interactive-light-destructive-disabled disabled:!bg-interactive-light-destructive-disabled"
+            }
+            type={"destructive"}
+          >
+            Refund
+          </Button>
+        )
+      )} */}
     </div>
   );
 };

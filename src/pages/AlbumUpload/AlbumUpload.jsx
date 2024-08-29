@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AlbumDetails from "../../components/AlbumDetails/AlbumDetails";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import AudioUI from "../../components/Audio/Audio";
@@ -10,6 +10,7 @@ import AlbumAudio from "../../components/AlbumAudio/AlbumAudio";
 import Button from "../../components/Button/Button";
 import Modal from "../../components/Modal/Modal";
 import Preview from "../../components/Preview/Preview";
+import { PlanContext } from "../../contexts/PlanContext";
 
 const AlbumUpload = () => {
   const [intiFormData, setInitFormData] = useState([
@@ -57,7 +58,7 @@ const AlbumUpload = () => {
   const [modal, showModal] = useState(false);
 
   return (
-    <div className="lg:w-11/12 ml-auto">
+    <div className="lg:w-11/12 ml-auto pt-5">
       <SongUploadProgress screen={screen} setScreen={setScreen} />
       <div className={`mt-5 px-5 py-6 shadow`}>
         <h4 className="text-heading-4-bold text-grey capitalize mb-4">

@@ -19,7 +19,7 @@ const PreviewDetails = ({ albumData }) => {
     setIsPlaying(!isPlaying);
   };
 
-  return location.pathname === "/song-upload" ? (
+  return location.pathname !== "/album-upload" ? (
     <div className="bg-surface-white-surface-1 min-h-screen p-4 mx-auto w-full">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="flex flex-col lg:flex-row">

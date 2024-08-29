@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
-import logo from "./../../assets/images/logo2.webp";
+// import logo from "./../../assets/images/logo2.webp";
 // import search from "./../../assets/icons/navbar/search.webp";
 import logout from "./../../assets/icons/navbar/logout.webp";
 import NavItem from "../NavItem/NavItem";
 import { imageDomain, navItem } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 
 const Sidebar = () => {
@@ -45,9 +45,9 @@ const Sidebar = () => {
       onMouseLeave={handleMouseLeave}
     >
       <section>
-        <Link to={"/"}>
+        {/* <Link to={"/"}>
           <img src={logo} alt="logo" id="navbarLogo" className="w-fit h-fit" />
-        </Link>
+        </Link> */}
 
         {/* <div className="mt-4 flex items-center justify-center flex-col">
           <div className="relative w-full">
@@ -66,7 +66,7 @@ const Sidebar = () => {
           </div>
         </div> */}
 
-        <div className="mt-[48px] flex flex-col gap-2 whitespace-nowrap text-white">
+        <div className="mt-6 flex flex-col gap-2 whitespace-nowrap text-white">
           {navItem.map((props, key) => (
             <NavItem {...props} key={key} hovered={hovered} />
           ))}

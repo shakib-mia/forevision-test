@@ -44,7 +44,7 @@ import Analytics from "./components/Analytics/Analytics";
 import BulkUpload from "./pages/BulkUpload/BulkUpload";
 import SocialLinks from "./pages/SocialLinks/SocialLinks";
 
-// export const backendUrl = "http://localhost:5000/";
+// export const backendUrl = "http://localhost:5100/";
 export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
@@ -402,6 +402,15 @@ export const routes = [
     page: (
       <RequireAuth>
         <SignupDetails />
+      </RequireAuth>
+    ),
+  },
+
+  {
+    path: "/edit-song/:_id",
+    page: (
+      <RequireAuth>
+        <SongUploadNew />
       </RequireAuth>
     ),
   },

@@ -8,11 +8,14 @@ import AudioUI from "../Audio/Audio";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Preview from "../Preview/Preview";
 import { PlanContext } from "../../contexts/PlanContext";
+import axios from "axios";
+import { backendUrl } from "../../constants";
 
 const SongUploadFormContainer = ({ screen, setScreen }) => {
   const [artistCount, setArtistCount] = useState(1);
   const location = useLocation();
   const { planStore } = useContext(PlanContext);
+  const [data, setData] = useState({});
 
   const intiFormData = JSON.parse(localStorage.getItem("song-data"))?.artists
     ? JSON.parse(localStorage.getItem("song-data"))
@@ -38,9 +41,19 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
         },
       ];
 
-  const [formData, setFormData] = useState(intiFormData);
+  // let [logicalData, setLogicalData] = useState({});
 
-  // console.log(formData);
+  const [formData, setFormData] = useState({});
+
+  useEffect(() => {
+    if (location.pathname.includes("edit-song")) {
+      axios
+        .get(backendUrl + "songs/" + location.pathname.split("/")[2])
+        .then(({ data }) => setFormData(data));
+    }
+  }, []);
+
+  // console.log(data);
 
   // useEffect(() => {
   //   console.log(screen);
