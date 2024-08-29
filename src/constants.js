@@ -39,7 +39,7 @@ import { GoTag } from "react-icons/go";
 import { LuHome, LuUserCheck2 } from "react-icons/lu";
 import { FaUserCheck } from "react-icons/fa";
 import KYC from "./pages/KYC/KYC";
-import { IoMdAnalytics } from "react-icons/io";
+import { IoMdAnalytics, IoMdHome } from "react-icons/io";
 import Analytics from "./components/Analytics/Analytics";
 import BulkUpload from "./pages/BulkUpload/BulkUpload";
 import SocialLinks from "./pages/SocialLinks/SocialLinks";
@@ -49,7 +49,7 @@ export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   {
-    icon: <LuHome className="text-[24px]" />,
+    icon: <IoMdHome className="text-[24px]" />,
     text: "Home",
     path: "/",
   },
