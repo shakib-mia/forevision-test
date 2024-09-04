@@ -38,6 +38,8 @@ const InputField = ({
   itemChecked,
   fileName,
   hideRequired,
+  dangerNote,
+  successNote,
 }) => {
   const [checked, setChecked] = useState(false);
   const location = useLocation();
@@ -319,7 +321,17 @@ const InputField = ({
         />
       )}
 
-      <p className="text-subtitle-2 text-grey-dark">{note}</p>
+      <p
+        className={`text-subtitle-2 ${
+          dangerNote ? "text-interactive-light-destructive" : "text-grey-dark "
+        } ${
+          successNote
+            ? "text-interactive-light-confirmation"
+            : "text-grey-dark "
+        }`}
+      >
+        {note}
+      </p>
     </div>
   );
 };

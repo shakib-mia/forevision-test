@@ -4,16 +4,60 @@ import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import check from "./../../assets/icons/checkbox.webp";
 import { ProfileContext } from "../../contexts/ProfileContext";
-// import { imageDomain } from "../../constants";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
-// import axios from "axios";
-// import { toast } from "react-toastify";
+import cover from "./../../assets/images/artist-cover.webp";
+import axios from "axios";
+import { backendUrl } from "../../constants";
+import { TbCameraUp } from "react-icons/tb";
+import Swal from "sweetalert2";
 
 const EditProfile = ({ handleClose }) => {
-  const [checked, setChecked] = useState(false);
-  const { profileData } = useContext(ProfileContext);
-  const [formData, setFormData] = useState(profileData);
-  // console.log(profileData);
+  const { userData, token } = useContext(ProfileContext);
+  const [formData, setFormData] = useState(userData);
+  const [originalData] = useState(userData); // Store the initial user data for comparison
+  const [isChanged, setIsChanged] = useState(false); // Track if form data has changed
+  const [available, setAvailable] = useState(true);
+  const [hideNote, setHideNote] = useState(false);
+  const [userIds, setUserIds] = useState([]);
+  // const [profileData, setProfileData] = useState(formData);
+
+  useEffect(() => {
+    axios
+      .get(backendUrl + "generate-user-id")
+      .then(({ data }) => setUserIds(data));
+  }, []);
+
+  const handleUserIdChange = (e) => {
+    const updatedFormData = { ...formData, "user-id": e.target.value };
+    setFormData(updatedFormData);
+    checkForChanges(updatedFormData);
+
+    if (e.target.value === userData["user-id"]) {
+      setHideNote(true);
+    } else {
+      setHideNote(false);
+      setAvailable(!userIds.includes(e.target.value));
+    }
+  };
+
+  useEffect(() => {
+    checkForChanges(formData);
+    // console.log(formData);
+  }, [formData]);
+
+  const handleFieldChange = (field, value) => {
+    const updatedFormData = { ...formData, [field]: value };
+    setFormData(updatedFormData);
+    checkForChanges(updatedFormData);
+  };
+
+  const checkForChanges = (updatedFormData) => {
+    const isDataChanged = Object.keys(updatedFormData).some(
+      (key) => updatedFormData[key] !== originalData[key]
+    );
+    setIsChanged(isDataChanged);
+  };
+
   const fields = [
     {
       id: "firstName",
@@ -23,7 +67,7 @@ const EditProfile = ({ handleClose }) => {
       placeholder: "First Name",
       required: true,
       value: formData.first_name,
-      onChange: (e) => setFormData({ first_name: e.target.value }),
+      onChange: (e) => handleFieldChange("first_name", e.target.value),
     },
     {
       id: "lastName",
@@ -33,7 +77,20 @@ const EditProfile = ({ handleClose }) => {
       placeholder: "Last Name",
       required: true,
       value: formData.last_name,
-      onChange: (e) => setFormData({ last_name: e.target.value }),
+      onChange: (e) => handleFieldChange("last_name", e.target.value),
+    },
+    {
+      id: "userId",
+      name: "user-id",
+      label: "User ID",
+      type: "text",
+      placeholder: "abc123",
+      required: false,
+      value: formData["user-id"],
+      onChange: handleUserIdChange,
+      note: hideNote || (available ? "Available" : "Already in Use"),
+      dangerNote: !available,
+      successNote: available,
     },
     {
       id: "recordLabel",
@@ -43,7 +100,7 @@ const EditProfile = ({ handleClose }) => {
       placeholder: "Example: ForeVision Digital",
       required: false,
       value: formData.company_label,
-      onChange: (e) => setFormData({ company_label: e.target.value }),
+      onChange: (e) => handleFieldChange("company_label", e.target.value),
     },
     {
       id: "address",
@@ -53,17 +110,7 @@ const EditProfile = ({ handleClose }) => {
       placeholder: "Enter Here",
       required: true,
       value: formData.billing_address,
-      onChange: (e) => setFormData({ billing_address: e.target.value }),
-    },
-    {
-      id: "alternateEmail",
-      name: "alternateEmail",
-      label: "Alternate Email",
-      type: "email",
-      placeholder: "abc@example.com",
-      value: profileData.user_email,
-      disabled: true,
-      required: true,
+      onChange: (e) => handleFieldChange("billing_address", e.target.value),
     },
     {
       id: "city",
@@ -73,7 +120,7 @@ const EditProfile = ({ handleClose }) => {
       placeholder: "City Name",
       required: true,
       value: formData.billing_city,
-      onChange: (e) => setFormData({ billing_city: e.target.value }),
+      onChange: (e) => handleFieldChange("billing_city", e.target.value),
     },
     {
       id: "country",
@@ -83,7 +130,7 @@ const EditProfile = ({ handleClose }) => {
       placeholder: "India",
       required: true,
       value: formData.billing_country,
-      onChange: (e) => setFormData({ billing_country: e.target.value }),
+      onChange: (e) => handleFieldChange("billing_country", e.target.value),
     },
     {
       id: "postalCode",
@@ -93,13 +140,8 @@ const EditProfile = ({ handleClose }) => {
       placeholder: "700001",
       required: true,
       value: formData.postal_code,
-      onChange: (e) => setFormData({ postal_code: e.target.value }),
+      onChange: (e) => handleFieldChange("postal_code", e.target.value),
     },
-    // {
-    //   id: "save",
-    //   type: "checkbox",
-    //   label: "Save this information for next time",
-    // },
     {
       id: "phone",
       name: "phone_no",
@@ -108,86 +150,132 @@ const EditProfile = ({ handleClose }) => {
       placeholder: "+91",
       required: true,
       value: formData.phone_no,
-      onChange: (e) => setFormData({ phone_no: e.target.value }),
-      // pattern: /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g,
+      onChange: (e) => handleFieldChange("phone_no", e.target.value),
     },
   ];
 
-  /* ===========================   GAP FOR DOUBLE INPUT FIELD   ================================ */
-  useEffect(() => {
-    const newArr = [];
-    document.getElementById("form").childNodes.forEach((el) => {
-      // console.log(el.classList.value.includes("w-1/2"));
-      el.classList.value.includes("w-1/2") && newArr.push(el);
-    });
-    // console.log(newArr);
-
-    newArr
-      .slice(0, 5)
-      .map((i, key) => key % 2 === 0 && i.classList.add("lg:pr-2"));
-  }, []);
-
   const edit = (e) => {
     e.preventDefault();
-    // console.log(profileData.Id);
+    if (isChanged) {
+      console.log(formData);
+      // Perform the save operation as form data has changed
+      // console.log("Form data has changed, submitting the form...");
+      axios
+        .put(backendUrl + "profile/" + formData.user_email, formData)
+        .then(({ data }) => {
+          if (data.acknowledged) {
+            window.location.reload();
+          }
+        });
+    } else {
+      console.log("No changes detected, not submitting.");
+    }
+  };
 
-    // const formData = new FormData(e.target);
-    // console.log(Object.entries(formData));
-    // console.log(phoneValidity.test(e.target.phone.value));
+  const handleCoverPhotoUpload = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      // console.log("file select", setProfileData);
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const imageUrl = event.target.result;
+
+        // Display the image in SweetAlert
+        Swal.fire({
+          title: "Your selected image",
+          imageUrl: imageUrl,
+          imageAlt: "Selected Image",
+          showCancelButton: true,
+          confirmButtonText: "Confirm",
+          confirmButtonColor: "#22683E",
+          customClass: {
+            popup: "custom-swal-zindex-popup", // Custom class for the modal
+            backdrop: "custom-swal-zindex-backdrop", // Custom class for the dark overlay
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const config = {
+              headers: {
+                authorization: token,
+              },
+            };
+
+            const coverFile = new FormData();
+            coverFile.append("file", file);
+
+            // console.log("before upload", setProfileData);
+            axios
+              .post(backendUrl + "upload-cover-photo", coverFile, config)
+              .then(({ data }) => {
+                // // console.log("After upload:", setProfileData);
+                // // if (setProfileData) {
+                // setFormData({ ...formData, display_image: data.url });
+                // // } else {
+                // //   console.error("setProfileData is undefined after upload");
+                // // }
+
+                // formData.cover_photo = data.url;
+                setFormData({ ...formData, cover_photo: data.url });
+                console.log(formData);
+              });
+          }
+        });
+      };
+
+      // Read the file as a data URL
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
     <AuthBody
       heading="Edit Profile"
-      // altDescription="Already Have an Account?"
-      // altText="Log in"
-      // altLink="/login"
       onSubmit={edit}
       className="backdrop-blur fixed top-0 left-0 z-[9999]"
       id="edit-profile"
       closeIcon={true}
-      // handleClose={handleClose}
+      handleClose={handleClose}
       whiteContainerClass="h-3/4 overflow-y-auto overflow-x-hidden relative lg:!w-1/2 !mx-auto"
     >
-      <button
-        className="absolute top-1 right-1 text-heading-5 flex items-center justify-center w-3 h-3 rounded-full hover:bg-grey hover:text-white"
-        onClick={handleClose}
-      >
-        &times;
-      </button>
-      <ProfilePicture imageUrl={profileData.display_image} editable={true} />
+      <div className="relative">
+        <img
+          src={formData.cover_photo || cover}
+          className="rounded-t-lg w-full h-[12rem] object-cover"
+          alt=""
+        />
 
-      <div className="flex flex-col lg:flex-row flex-wrap lg:px-3" id="form">
+        <label
+          // htmlFor=""
+          className="absolute bottom-1 right-1 cursor-pointer bg-white p-1 rounded-md group overflow-hidden transition"
+        >
+          <div className="relative flex items-center gap-1">
+            <TbCameraUp className="text-heading-6" />
+            <span className="absolute group-hover:static whitespace-nowrap left-4 transition">
+              Upload Cover Photo
+            </span>
+          </div>
+
+          <input
+            type="file"
+            onChange={handleCoverPhotoUpload}
+            className="hidden"
+          />
+        </label>
+      </div>
+      <div className="absolute top-7 left-5">
+        <ProfilePicture
+          imageUrl={userData.display_image || formData.display_image}
+          profileData={formData}
+          editable={true}
+          setProfileData={setFormData}
+        />
+      </div>
+      <div className="flex flex-col lg:flex-row flex-wrap mt-6" id="form">
         {fields.map((props, id) =>
           (id + 1) % 3 === 0 ? (
             <>
-              {props.name === "phone" && (
-                <div className="flex w-fit gap-[8px] items-center mt-3 -mb-3">
-                  <input
-                    type="checkbox"
-                    required={true}
-                    id={id}
-                    className="hidden"
-                    onChange={(e) => setChecked(e.target.checked)}
-                  />
-
-                  <div
-                    className={`${
-                      !checked &&
-                      "border-[1px]  border-surface-white-line text-[12px]"
-                    } rounded-[4px] w-[16px] h-[16px]`}
-                  >
-                    {checked && <img src={check} alt="checkbox" />}
-                  </div>
-
-                  <label
-                    htmlFor={id}
-                    className="text-black-primary text-subtitle-2 font-medium"
-                  >
-                    Save this information for next time
-                  </label>
-                </div>
-              )}
               <InputField
                 {...fields[id]}
                 key={id}
@@ -200,21 +288,19 @@ const EditProfile = ({ handleClose }) => {
               {...props}
               containerId={id}
               key={id}
-              containerClassName={`mt-3 w-full lg:w-1/2`}
+              containerClassName={`mt-3 w-full lg:w-1/2 ${
+                (id - 1) % 3 === 0 ? "pl-1" : "pr-1"
+              }`}
               // fieldClassName="mr-2"
             />
           )
         )}
       </div>
-      {/* </div> */}
-      {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
       <div className="mt-3 mb-2 text-center">
         <Button
           type="submit"
           text="Submit"
-          // disabled={
-          //   !(email.length > 0 && password.length && password === confirmPass)
-          // }
+          disabled={!isChanged || !available}
         />
       </div>
     </AuthBody>

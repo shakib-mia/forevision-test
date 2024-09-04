@@ -7,7 +7,7 @@ const AlbumPlan = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className="!h-fit p-4 rounded-lg bg-gradient-to-br from-secondary to-interactive-light-focus text-white shadow-[0_13px_20px_#aaa] relative w-11/12 md:w-1/2 xl:w-10/12 mx-auto">
+      <div className="!h-fit p-4 rounded-lg mb-7 bg-gradient-to-br from-secondary to-interactive-light-focus text-white shadow-[0_13px_20px_#aaa] relative w-11/12 md:w-1/2 xl:w-10/12 mx-auto">
         <div
           className="bg-interactive-light-destructive-focus text-white py-1 px-2 inline-block absolute rounded-full"
           style={{ top: -20, right: 16 }}

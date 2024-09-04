@@ -26,17 +26,21 @@ import CreateRecordLabel from "../../components/CreateRecordLabel/CreateRecordLa
 const Home = () => {
   const navigate = useNavigate();
   const { userData, token } = useContext(ProfileContext);
-
+  console.log(userData);
   // console.log(
   //   (userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)).toFixed(2)
   // );
 
   return (
-    <div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7 2xl:mt-6">
+    <div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7 2xl:mt-7">
       <div className="grid grid-cols-1 2xl:grid-cols-3 justify-between space-y-4 2xl:space-y-0 2xl:space-x-2 text-grey-dark">
-        <div className="bg-grey-light p-0 2xl:p-4 rounded-2xl">
+        <div className="bg-grey-light p-2 2xl:p-4 rounded-2xl">
           <div className="flex flex-col 2xl:flex-row items-center 2xl:items-end justify-center 2xl:justify-between">
-            <img src={profile} className="rounded-full w-5/12 mb-0" alt="" />
+            <img
+              src={userData.display_image || profile}
+              className="rounded-full w-5/12 mb-0"
+              alt=""
+            />
             <div className="hidden 2xl:block text-center 2xl:text-left">
               <Button
                 text="Visit Profile"

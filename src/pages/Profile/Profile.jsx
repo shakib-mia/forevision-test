@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import cover from "./../../assets/images/artist-cover.webp";
 import userplus from "./../../assets/icons/user-plus.webp";
 import facebook from "./../../assets/icons/social/facebook.webp";
@@ -22,10 +22,40 @@ import LoadingPulse from "../../components/LoadingPulse/LoadingPulse";
 import EditProfile from "../../components/EditProfile/EditProfile";
 import ProfilePicture from "../../components/ProfilePicture/ProfilePicture";
 import Songs from "../../components/Songs/Songs";
+import axios from "axios";
+import { backendUrl } from "../../constants";
 
 const Profile = () => {
   const { userData } = useContext(ProfileContext);
   const location = useLocation();
+  const [profileData, setProfileData] = useState(
+    location.pathname === "/profile" ? userData : {}
+  );
+
+  // clg;
+
+  useEffect(() => {
+    // Extract the userId from the URL
+    const userId = location.pathname.split("/")[2];
+
+    if (userId) {
+      // Fetch the profile data using the userId
+      axios
+        .get(`${backendUrl}profile/${userId}`)
+        .then(({ data }) => {
+          setProfileData(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching profile data:", error);
+        });
+    } else if (location.pathname === "/profile") {
+      // If no userId in the URL and pathname is "/profile", use userData
+      setProfileData(userData);
+    }
+  }, [location.pathname, userData]); // Add dependencies
+
+  // console.log(profileData);
+
   const route = location.pathname.split("/");
   const [edit, setEdit] = useState(false);
 
@@ -36,14 +66,15 @@ const Profile = () => {
   const [details, setDetails] = useState(false);
   const text =
     "Archaeologists uncover the mythical city of Atlantis, but soon realize they are not alone in their discovery as supernatural forces threaten to destroy them Archaeologists uncover the mythical city of Atlantis, but soon realize they are not alone in their discovery as supernatural forces threaten to destroy them";
-  // console.log(userData);
+  // console.log(profileData);
+
   return (
     <div
       className="w-[95%] m-2 mx-auto lg:m-5 lg:my-2 lg:w-[90%] lg:ml-auto rounded-[20px] overflow-y-auto bg-grey-dark h-[98vh]"
       id="profile-container"
     >
       <div className="relative">
-        <div className="w-full h-[8rem] lg:h-full">
+        <div className="w-full h-[12rem] lg:h-full">
           <div className="bg-gradient-to-bl from-black-secondary to-20% to-transparent absolute top-0 left-0 w-full h-full">
             <div className="absolute top-2 right-2">
               <div className="flex gap-2 items-center p-1">
@@ -64,7 +95,7 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="absolute bottom-2 right-2">
+            <div className="absolute bottom-1 right-1 lg:bottom-2 lg:right-2">
               <img
                 src={profileEdit}
                 className="cursor-pointer"
@@ -75,43 +106,43 @@ const Profile = () => {
             </div>
           </div>
           <img
-            src={cover}
-            className="object-cover h-[9rem] lg:w-full lg:h-fit"
+            src={profileData.cover_photo || cover}
+            className="object-cover w-full h-[12rem] lg:h-[18rem]"
             alt=""
           />
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row lg:gap-[60px] px-2 lg:p-[60px] pb-0">
-        <div className="w-full lg:w-9/12 relative -top-6 lg:top-[-144px]">
+      <div className="flex flex-col lg:flex-row lg:gap-[60px] px-2 lg:p-[60px] pb-0 relative">
+        <div className="w-full lg:w-9/12 absolute lg:relative -top-7 lg:top-[-144px]">
           <div className="flex flex-col lg:flex-row gap-[11px]">
             <div className="pt-4">
-              <ProfilePicture imageUrl={userData.display_image} />
+              <ProfilePicture
+                imageUrl={profileData.display_image}
+                profileData={profileData}
+                // setProfileData={setProfileData}
+              />
             </div>
             <aside className="text-white lg:mt-[8rem] lg:w-11/12">
               <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-5">
                 <div className="flex items-center gap-2">
-                  {userData.display_name ? (
+                  {profileData.first_name ? (
                     <h5 className="text-heading-5 underline">
-                      {userData.display_name}
-                    </h5>
-                  ) : userData.first_name ? (
-                    <h5 className="text-heading-5 underline">
-                      {userData.first_name} {userData.last_name}
+                      {profileData.first_name} {profileData.last_name}
                     </h5>
                   ) : (
                     <LoadingPulse className="w-[200px] h-[30px]" />
                   )}
 
                   {route[route.length - 1] === "profile" &&
-                  userData.first_name ? (
+                  profileData.first_name ? (
                     <img
                       src={profileEdit}
                       onClick={() => setEdit(true)}
                       className="w-3 h-3 cursor-pointer"
                       alt="follow"
                     />
-                  ) : userData.first_name ? (
+                  ) : profileData.first_name ? (
                     <img
                       src={userplus}
                       onClick={handleFollow}
@@ -125,26 +156,26 @@ const Profile = () => {
 
                 <div
                   className={`${
-                    userData.first_name
+                    profileData.first_name
                       ? "flex gap-[10px]"
                       : "grid grid-cols-3 gap-[10px]"
                   }`}
                 >
-                  {userData.first_name ? (
+                  {profileData.first_name ? (
                     <a href="https://www.instagram.com/">
                       <img src={instagram} alt="insta" />
                     </a>
                   ) : (
                     <LoadingPulse className="w-[30px] h-[30px]" />
                   )}
-                  {userData.first_name ? (
+                  {profileData.first_name ? (
                     <a href="https://www.facebook.com/">
                       <img src={facebook} alt="fb" />
                     </a>
                   ) : (
                     <LoadingPulse className="w-[30px] h-[30px]" />
                   )}
-                  {userData.first_name ? (
+                  {profileData.first_name ? (
                     <a href="https://www.twitter.com/">
                       <img src={twitter} alt="twitter" />
                     </a>
@@ -182,7 +213,7 @@ const Profile = () => {
             </aside>
           </div>
         </div>
-        <div className="lg:w-1/4">
+        <div className="mt-[21rem] lg:mt-0 lg:w-1/4">
           <div className="flex items-center" id="album">
             <OwlCarousel
               className="owl-theme"

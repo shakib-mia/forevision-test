@@ -463,7 +463,7 @@ const Revenue = () => {
         className="bg-[size:100%] bg-no-repeat lg:!pt-6 xl:p-4 xl:!pt-7 xl:pl-7 mb-6 xl:mb-0"
         style={{ backgroundImage: `url(${background})` }}
       >
-        <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] pt-5 pb-7 rounded-[20px]">
+        <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] pt-7 pb-7 rounded-[20px]">
           <div className="flex flex-col 2xl:flex-row gap-3 items-center 2xl:items-end">
             <div className="w-full 2xl:w-3/4">
               <h4 className="text-heading-4-bold text-grey-dark 2xl:text-white">
@@ -620,7 +620,7 @@ const Revenue = () => {
                   id="revenue-slider"
                 >
                   <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-                    <div className="flex justify-end gap-1">
+                    <div className="flex justify-end flex-col lg:flex-row items-end gap-0 whitespace-nowrap">
                       <Button disabled={!loaded} onClick={getExcel}>
                         DOWNLOAD EXCEL
                         <IoMdDownload className="text-paragraph-1" />
@@ -630,7 +630,7 @@ const Revenue = () => {
                         disabled={!loaded}
                         onClick={createPdf}
                       >
-                        DOWNLOAD PDF{" "}
+                        DOWNLOAD PDF
                         <IoMdDownload className="text-paragraph-1" />
                       </Button>
                     </div>
@@ -838,10 +838,12 @@ const Revenue = () => {
                     )}
                   </div>
 
-                  <Analytics
-                    platformData={platformData}
-                    songData={aggregatedMusicData}
-                  />
+                  {window.innerWidth > 1000 && (
+                    <Analytics
+                      platformData={platformData}
+                      songData={aggregatedMusicData}
+                    />
+                  )}
                 </OwlCarousel>
               </div>
             ) : (

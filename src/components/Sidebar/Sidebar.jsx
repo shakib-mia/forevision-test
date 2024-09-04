@@ -75,9 +75,7 @@ const Sidebar = () => {
 
       <div className="mb-0 border-t-[1px] border-surface-white-line pt-[20px] flex items-center gap-1 text-white">
         <img
-          src={
-            userData?.display_image ? imageDomain + userData?.display_image : ""
-          }
+          src={userData?.display_image ? userData?.display_image : ""}
           className="rounded-full w-[40px] h-[40px]"
           alt="profile"
         />

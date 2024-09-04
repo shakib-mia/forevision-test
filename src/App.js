@@ -88,14 +88,17 @@ function App() {
     };
 
     if (token) {
-      axios.get(backendUrl + `getUserData`, config).then(({ data }) => {
-        if (data?.data !== null) {
-          // console.log(data.data);
-          setUserData(data.data);
-        } else {
-          // navigate("/signup-details");
-        }
-      });
+      axios
+        .get(backendUrl + `profile`, config)
+        .then(({ data }) => {
+          if (data?.data !== null) {
+            // console.log(data.data);
+            setUserData(data.data);
+          } else {
+            // navigate("/signup-details");
+          }
+        })
+        .catch((error) => console.log(error));
     }
   }, [token]);
 
@@ -103,7 +106,8 @@ function App() {
     if (userData.emailId) {
       axios
         .get(backendUrl + "check-requested/" + userData.emailId)
-        .then(({ data }) => setFoundRequested(data));
+        .then(({ data }) => setFoundRequested(data))
+        .catch((error) => console.log(error));
     }
   }, [userData, refetch]);
 
@@ -116,7 +120,7 @@ function App() {
 
   /* Working api calls ends here */
 
-  // console.log(userData);
+  // console.log(store);
 
   return (
     <div className="bg-white w-screen h-screen">
