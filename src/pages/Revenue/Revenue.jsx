@@ -620,7 +620,7 @@ const Revenue = () => {
                   id="revenue-slider"
                 >
                   <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-                    {/* <div className="flex justify-end gap-1">
+                    <div className="hidden lg:flex justify-end gap-1">
                       <Button disabled={!loaded} onClick={getExcel}>
                         DOWNLOAD EXCEL
                         <IoMdDownload className="text-paragraph-1" />
@@ -633,7 +633,7 @@ const Revenue = () => {
                         DOWNLOAD PDF{" "}
                         <IoMdDownload className="text-paragraph-1" />
                       </Button>
-                    </div> */}
+                    </div>
                     <div className="mt-3">
                       <ul className="grid-cols-9 gap-3 sticky top-0 mb-2 hidden xl:grid">
                         {labels.map((item, key) => (
@@ -838,10 +838,12 @@ const Revenue = () => {
                     )}
                   </div>
 
-                  <Analytics
-                    platformData={platformData}
-                    songData={aggregatedMusicData}
-                  />
+                  {window.innerWidth > 768 && (
+                    <Analytics
+                      platformData={platformData}
+                      songData={aggregatedMusicData}
+                    />
+                  )}
                 </OwlCarousel>
               </div>
             ) : (
