@@ -26,7 +26,7 @@ const Analytics = ({ songData, platformData }) => {
   );
 
   return (
-    <div className="mt-3 px-1 2xl:px-6 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto hidden">
+    <div className="mt-3 px-1 2xl:px-6 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto hidden 2xl:block">
       <div className="flex justify-between mt-6 mb-7">
         <div className="w-5/12">
           <PlatformsChart revenueData={revenueArray} label={"Revenue"} />
