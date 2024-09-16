@@ -13,17 +13,18 @@ import axios from "axios";
 import { backendUrl } from "../../constants";
 
 const SongUploadNew = () => {
-  const [screen, setScreen] = useState("albumDetails");
+  const [screen, setScreen] = useState("distribution");
+  // const [screen, setScreen] = useState("albumDetails");
   const location = useLocation();
   const { userData, token } = useContext(ProfileContext);
   const navigate = useNavigate();
-
+  console.log(userData);
   // console.log(token);
 
   useEffect(() => {
     if (location.pathname.split("/")[1] !== "edit-song") {
       if (userData?.user_email) {
-        console.log(userData);
+        // console.log(userData);
         if (userData.yearlyPlanEndDate) {
           if (checkTheDateIsBefore(userData.yearlyPlanEndDate)) {
             // navigate("/song-upload?yearly-plan?0");
@@ -54,7 +55,11 @@ const SongUploadNew = () => {
             });
           }
         } else {
-          navigate("/plans");
+          // navigate("/plans");
+          if (location.search.length === 0) {
+            navigate("/plans");
+          }
+          // if(location.search)
         }
       }
     }
@@ -75,12 +80,14 @@ const SongUploadNew = () => {
 
   return (
     <div className="lg:ml-7 lg:pt-6 pt-2 px-1">
-      <h4 className="text-heading-5-bold lg:text-heading-4-bold text-grey capitalize">
-        Plan :{" "}
-        {location.search.split("?")[1]?.includes("-")
-          ? location.search.split("?")[1]?.split("-")?.join(" ")
-          : location.search.split("?")[1]}
-      </h4>
+      {location.pathname.split("/")[1] !== "edit-song" && (
+        <h4 className="text-heading-5-bold lg:text-heading-4-bold text-grey capitalize">
+          Plan :{" "}
+          {location.search.split("?")[1]?.includes("-")
+            ? location.search.split("?")[1]?.split("-")?.join(" ")
+            : location.search.split("?")[1]}
+        </h4>
+      )}
 
       <SongUploadProgress screen={screen} setScreen={setScreen} />
 

@@ -10,6 +10,7 @@ import axios from "axios";
 import { backendUrl } from "../../constants";
 import { TbCameraUp } from "react-icons/tb";
 import Swal from "sweetalert2";
+import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 
 const EditProfile = ({ handleClose }) => {
   const { userData, token } = useContext(ProfileContext);
@@ -239,12 +240,16 @@ const EditProfile = ({ handleClose }) => {
       handleClose={handleClose}
       whiteContainerClass="h-3/4 overflow-y-auto overflow-x-hidden relative lg:!w-1/2 !mx-auto"
     >
-      <div className="relative">
+      <div className="relative h-[12rem]">
         <img
           src={formData.cover_photo || cover}
-          className="rounded-t-lg w-full h-[12rem] object-cover"
+          className="rounded-t-lg w-full h-full object-cover"
           alt=""
         />
+
+        <p className="text-right mt-1 text-interactive-light-destructive">
+          Image size should be 1788&times;280
+        </p>
 
         <label
           // htmlFor=""
@@ -295,7 +300,52 @@ const EditProfile = ({ handleClose }) => {
             />
           )
         )}
+        <InputField
+          label={<FaFacebook className="text-interactive-light" />}
+          hideRequired={true}
+          placeholder={"Enter Facebook Link Here"}
+          onChange={(e) =>
+            handleFieldChange("facebook_profile_link", e.target.value)
+          }
+          value={formData.facebook_profile_link}
+          labelClassName={"mb-0"}
+          containerClassName={`mt-3 w-1/3 pr-2`}
+        />
+        <InputField
+          label={<FaInstagram className="text-[#FD1D1D]" />}
+          placeholder={"Enter Instagram Link Here"}
+          onChange={(e) =>
+            handleFieldChange("instagram_profile_link", e.target.value)
+          }
+          value={formData.instagram_profile_link}
+          hideRequired={true}
+          labelClassName={"mb-0"}
+          containerClassName={`mt-3 w-1/3 pr-2`}
+        />
+        <InputField
+          label={<FaTwitter className="text-[#1DA1F2]" />}
+          placeholder={"Enter Twitter Link Here"}
+          onChange={(e) =>
+            handleFieldChange("twitter_profile_link", e.target.value)
+          }
+          value={formData.twitter_profile_link}
+          hideRequired={true}
+          labelClassName={"mb-0"}
+          containerClassName={`mt-3 w-1/3`}
+        />
       </div>
+
+      <InputField
+        textarea={true}
+        label={"Your Bio"}
+        placeholder={"Add/Edit your Bio Here"}
+        onChange={(e) => handleFieldChange("bio", e.target.value)}
+        value={formData.bio}
+        hideRequired={true}
+        labelClassName={"mb-0"}
+        containerClassName={`mt-3 w-full`}
+      />
+
       <div className="mt-3 mb-2 text-center">
         <Button
           type="submit"

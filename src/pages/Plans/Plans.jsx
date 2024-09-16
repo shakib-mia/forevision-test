@@ -7,6 +7,8 @@ import Toggle from "../../components/Toggle/Toggle";
 import SongPlans from "../SongPlans/SongPlans";
 import AlbumPlan from "../../components/AlbumPlan/AlbumPlan";
 import FeatureTable from "../../components/FeatureTable/FeatureTable";
+import Faq from "../../components/Faq/Faq";
+import Steps from "../../components/Steps/Steps";
 // import Form from "../../components/Form/Form";
 // import { toast } from "react-toastify";
 // import { ProfileContext } from "../../contexts/ProfileContext";
@@ -292,6 +294,12 @@ const Plans = () => {
           setPlanName={setPlanName}
         />
       )}
+
+      <Steps />
+
+      <div className="w-[94%] lg:w-5/6 mx-auto">
+        <Faq />
+      </div>
     </div>
   );
 };

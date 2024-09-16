@@ -13,6 +13,7 @@ import { PlanContext } from "./contexts/PlanContext";
 import "sweetalert2/src/sweetalert2.scss";
 import Navbar from "./components/Navbar/Navbar";
 import { checkTheDateIsBefore } from "./utils/checkTheDateIsBefore";
+import Footer from "./components/Footer/Footer";
 
 // import Construction from "./pages/Construction/Construction";
 
@@ -146,6 +147,8 @@ function App() {
           <ToastContainer />
         </PlanContext.Provider>
       </ProfileContext.Provider>
+
+      <Footer />
     </div>
   );
 }

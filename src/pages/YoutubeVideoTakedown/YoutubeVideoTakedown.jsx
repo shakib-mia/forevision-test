@@ -151,7 +151,7 @@ const YoutubeVideoTakedown = () => {
         }
       />
 
-      <Form fields={fields} uIdKey={"takedown"} />
+      <Form id="youtube-video-takedown" fields={fields} uIdKey={"takedown"} />
     </div>
   );
 };

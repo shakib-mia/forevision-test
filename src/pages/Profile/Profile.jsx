@@ -64,9 +64,8 @@ const Profile = () => {
   };
 
   const [details, setDetails] = useState(false);
-  const text =
-    "Archaeologists uncover the mythical city of Atlantis, but soon realize they are not alone in their discovery as supernatural forces threaten to destroy them Archaeologists uncover the mythical city of Atlantis, but soon realize they are not alone in their discovery as supernatural forces threaten to destroy them";
-  // console.log(profileData);
+  const text = profileData.bio;
+  console.log(profileData);
 
   return (
     <div
@@ -161,26 +160,20 @@ const Profile = () => {
                       : "grid grid-cols-3 gap-[10px]"
                   }`}
                 >
-                  {profileData.first_name ? (
-                    <a href="https://www.instagram.com/">
+                  {profileData.facebook_profile_link && (
+                    <a href={profileData.facebook_profile_link}>
                       <img src={instagram} alt="insta" />
                     </a>
-                  ) : (
-                    <LoadingPulse className="w-[30px] h-[30px]" />
                   )}
-                  {profileData.first_name ? (
-                    <a href="https://www.facebook.com/">
+                  {profileData.instagram_profile_link && (
+                    <a href={profileData.instagram_profile_link}>
                       <img src={facebook} alt="fb" />
                     </a>
-                  ) : (
-                    <LoadingPulse className="w-[30px] h-[30px]" />
                   )}
-                  {profileData.first_name ? (
-                    <a href="https://www.twitter.com/">
+                  {profileData.twitter_profile_link && (
+                    <a href={profileData.twitter_profile_link}>
                       <img src={twitter} alt="twitter" />
                     </a>
-                  ) : (
-                    <LoadingPulse className="w-[30px] h-[30px]" />
                   )}
                 </div>
               </div>
@@ -191,24 +184,30 @@ const Profile = () => {
               </p> */}
 
               <p className="text-[12px] lg:w-1/2 text-center lg:text-left">
-                {text.slice(0, details ? text.length - 1 : 200)}{" "}
-                {!details && "..."}
+                {text?.slice(0, details ? text.length - 1 : 200)}{" "}
+                {!details && text && "..."}
                 <br />
-                <button
-                  className="items-center gap-[6px] mt-1 justify-center lg:justify-start inline-flex w-full"
-                  onClick={() => setDetails(!details)}
-                >
-                  {details ? (
-                    <>
-                      SHOW LESS{" "}
-                      <img src={downArrowWhite} className="rotate-180" alt="" />
-                    </>
-                  ) : (
-                    <>
-                      SHOW MORE <img src={downArrowWhite} alt="" />
-                    </>
-                  )}
-                </button>
+                {text?.length > 200 && (
+                  <button
+                    className="items-center gap-[6px] mt-1 justify-center lg:justify-start inline-flex w-full"
+                    onClick={() => setDetails(!details)}
+                  >
+                    {details ? (
+                      <>
+                        SHOW LESS{" "}
+                        <img
+                          src={downArrowWhite}
+                          className="rotate-180"
+                          alt=""
+                        />
+                      </>
+                    ) : (
+                      <>
+                        SHOW MORE <img src={downArrowWhite} alt="" />
+                      </>
+                    )}
+                  </button>
+                )}
               </p>
             </aside>
           </div>

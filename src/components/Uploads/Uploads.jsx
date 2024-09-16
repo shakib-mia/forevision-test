@@ -25,7 +25,7 @@ const Uploads = () => {
     };
     if (userData && userData.isrc) {
       axios
-        .get(backendUrl + "songs/" + userData["user-id"])
+        .get(backendUrl + "songs/by-user-id/" + userData["user-id"])
         .then(({ data }) => setSongs(data));
     }
   }, [userData.isrc]);

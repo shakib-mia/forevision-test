@@ -1,14 +1,18 @@
 import React, { useState, useRef, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AlbumPreview from "../AlbumPreview/AlbumPreview";
 import Button from "../Button/Button";
 import { ScreenContext } from "../../contexts/ScreenContext";
+import { backendUrl, config } from "../../constants";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const PreviewDetails = ({ albumData }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const { setScreen } = useContext(ScreenContext);
   const location = useLocation();
   const audioRef = useRef(null);
+  const navigate = useNavigate();
 
   const togglePlay = () => {
     if (isPlaying) {
@@ -17,6 +21,17 @@ const PreviewDetails = ({ albumData }) => {
       audioRef.current.play();
     }
     setIsPlaying(!isPlaying);
+  };
+
+  const handleUpdate = () => {
+    albumData.update = false;
+    axios.post(backendUrl + "edit-song", albumData, config).then(({ data }) => {
+      if (data.insertedId.length > 0) {
+        // setEditId("");
+        toast.success("Update Request Submitted");
+        navigate("/");
+      }
+    });
   };
 
   return location.pathname !== "/album-upload" ? (
@@ -231,9 +246,13 @@ const PreviewDetails = ({ albumData }) => {
       </div>
 
       <div className="flex justify-center mt-5">
-        <Button onClick={() => setScreen("distribution")}>
-          Proceed to Checkout
-        </Button>
+        {location.pathname.includes("/edit-song") ? (
+          <Button onClick={handleUpdate}>Confirm</Button>
+        ) : (
+          <Button onClick={() => setScreen("distribution")}>
+            Proceed to Checkout
+          </Button>
+        )}
       </div>
     </div>
   ) : (

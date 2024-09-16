@@ -1,8 +1,75 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Header from "../../components/Header/Header";
 import Form from "../../components/Form/Form";
+import { backendUrl } from "../../constants";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const PromotionalTool = () => {
+  const { token } = useContext(ProfileContext);
+  const [artwork, setArtwork] = useState("");
+
+  const handleUploadArtwork = (e) => {
+    const file = e.target.files[0];
+    // console.log(e.target);
+
+    if (file) {
+      // console.log("file select", setProfileData);
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const imageUrl = event.target.result;
+
+        // Display the image in SweetAlert
+        Swal.fire({
+          title: "Your selected image",
+          imageUrl: imageUrl,
+          imageAlt: "Selected Image",
+          showCancelButton: true,
+          confirmButtonText: "Confirm",
+          confirmButtonColor: "#22683E",
+          customClass: {
+            popup: "custom-swal-zindex-popup", // Custom class for the modal
+            backdrop: "custom-swal-zindex-backdrop", // Custom class for the dark overlay
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // const config = {
+            //   headers: {
+            //     authorization: token,
+            //   },
+            // };
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            // console.log("before upload", setProfileData);
+            const config = {
+              headers: {
+                token,
+              },
+            };
+            axios
+              .post(backendUrl + "upload-art-work", formData, config)
+              .then(({ data }) => {
+                setArtwork(data.artWorkUrl);
+                // e.target.name
+                // if (setProfileData) {
+                //   setProfileData({ ...profileData, display_image: data.url });
+                // } else {
+                //   console.error("setProfileData is undefined after upload");
+                // }
+              });
+          }
+        });
+      };
+
+      // Read the file as a data URL
+      reader.readAsDataURL(file);
+    }
+  };
+
   const fields = [
     {
       label: "Your Name",
@@ -91,10 +158,12 @@ const PromotionalTool = () => {
 
     {
       label: "Upload Artwork",
-      placeholder: "E.g. https://m.resso.com/Zs8LFaaLa/",
+      placeholder: artwork || "E.g. https://m.resso.com/Zs8LFaaLa/",
       name: "promotional_tool_upload_artwork",
       type: "file",
       required: true,
+      onChange: handleUploadArtwork,
+      // value: artwork,
     },
 
     {
@@ -190,6 +259,7 @@ const PromotionalTool = () => {
       placeholder: "Promotion Type",
       name: "promotional_tool_artist_type",
       type: "multi-select",
+      onChange: (e) => console.log(e.target.value),
       selectItems: [
         {
           text: "Editors Daily",
@@ -265,24 +335,37 @@ const PromotionalTool = () => {
     // },
   ];
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log(document.getElementsByClassName("input-field"));
-  //   // e.target.children.map((i) => console.log(i));
-  // };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    formData.set("promotional_tool_upload_artwork", artwork);
+
+    // Convert FormData to a plain object for easier logging
+    const formDataObject = {};
+    for (let [key, value] of formData.entries()) {
+      formDataObject[key] = value;
+    }
+    formData.promotional_tool_upload_artwork = artwork;
+    // console.log(formDataObject);
+    axios
+      .post("http://localhost:5100/submit-form", formDataObject)
+      .then(({ data }) => console.log(data));
+  };
 
   return (
     <div className="bg-no-repeat form-bg">
       <Header
-        header="ForeVisionPromotions"
+        header="ForeVision Promotions"
         subheader={<>Submit your song for ForeVisionPromotions</>}
       />
 
       <Form
         fields={fields}
         // handleSubmit={handleSubmit}
+        submitFromParent={handleSubmit}
+        id="promotional-tool"
         uIdKey={"promotional_tool_user_id"}
-        backendUrl={"http://adztronaut.com/music/admin/api/addPromotionalToool"}
+        // backendUrl={"http://adztronaut.com/music/admin/api/addPromotionalToool"}
       />
     </div>
   );

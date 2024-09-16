@@ -24,13 +24,13 @@ const Songs = () => {
 
     if (userId) {
       axios
-        .get(backendUrl + "songs/" + userId, config)
+        .get(backendUrl + "songs/by-user-id/" + userId, config)
         .then(({ data }) => setSongs(data));
     } else {
       console.log(userData["user-id"]);
       if (userData["user-id"]) {
         axios
-          .get(backendUrl + "songs/" + userData["user-id"], config)
+          .get(backendUrl + "songs/by-user-id/" + userData["user-id"], config)
           .then(({ data }) => setSongs(data));
       }
     }

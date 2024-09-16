@@ -11,6 +11,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import GSTCalculator from "../GstCalculator/GstCalculator";
 import { PlanContext } from "../../contexts/PlanContext";
+import Agreement from "../Agreement/Agreement";
 
 const Distribution = () => {
   const location = useLocation();
@@ -23,6 +24,7 @@ const Distribution = () => {
   const { formData, setScreen } = useContext(ScreenContext);
   const [orderId, setOrderId] = useState("XXXXX");
   const { planStore } = useContext(PlanContext);
+  const [showAgreement, setShowAgreement] = useState(true);
   // console.log(planStore);
 
   // console.log();
@@ -273,12 +275,13 @@ const Distribution = () => {
                 }}
               />{" "}
               I Accept the{" "}
-              <Link
+              <span
                 className="text-interactive-light font-medium hover:text-interactive-dark-hover active:text-interactive-light-active focus:text-interactive-light-focus"
-                to="/terms-and-conditions"
+                // to="/terms-and-conditions"
+                onClick={() => setShowAgreement(true)}
               >
                 Terms and Conditions
-              </Link>
+              </span>
             </label>
           </div>
 
@@ -315,6 +318,10 @@ const Distribution = () => {
           {/* <Button>Submit</Button> */}
         </div>
       </div>
+
+      {showAgreement && (
+        <Agreement handleClose={() => setShowAgreement(false)} />
+      )}
     </>
   );
 };

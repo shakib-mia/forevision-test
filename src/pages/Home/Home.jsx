@@ -20,8 +20,8 @@ import Uploads from "../../components/Uploads/Uploads";
 import { FaPen } from "react-icons/fa";
 import RecentUploads from "../../components/RecentUploads/RecentUploads";
 import CreateRecordLabel from "../../components/CreateRecordLabel/CreateRecordLabel";
-
-// import bg from "./../../assets/images/dashboard-bg.webp";
+import AccountBalance from "../../components/AccountBalance/AccountBalance";
+import RecordLabels from "../../components/RecordLabels/RecordLabels";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -111,7 +111,7 @@ const Home = () => {
             </p>
           </div>
         </div>
-        <div className="bg-grey-light px-4 rounded-2xl relative overflow-hidden h-[590px]">
+        {/* <div className="bg-grey-light px-4 rounded-2xl relative overflow-hidden h-[590px]">
           <img
             src={accountBg}
             className="absolute top-0 left-0 z-0 w-full"
@@ -125,23 +125,27 @@ const Home = () => {
               </h4>
               <h4 className="text-heading-4-bold ml-5 2xl:ml-4 mt-5 2xl:mt-4 mb-5">
                 {(
-                  userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                  (userData.lifetimeRevenue || 0) -
+                  (userData.lifetimeDisbursed || 0)
                 ).toFixed(2)}
               </h4>
-              {/* <div className="flex justify-center 2xl:justify-start 2xl:ml-4"> */}
               <Button
                 disabled={
                   (
-                    userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                    (userData.lifetimeRevenue || 0) -
+                    (userData.lifetimeDisbursed || 0)
                   ).toFixed(2) < 1000
                 }
                 text="Request Withdraw"
                 containerClassName={"w-fit 2xl:ml-4"}
                 onClick={() => navigate("/revenue-form")}
               ></Button>
-              {/* </div> */}
             </aside>
           </div>
+        </div> */}
+        <div>
+          {" "}
+          <AccountBalance />
         </div>
         <Uploads />
       </div>
@@ -155,6 +159,9 @@ const Home = () => {
         <RecentUploads />
         {/* <aside className="w-full"></aside> */}
         <CreateRecordLabel />
+      </div>
+      <div className="grid grid-cols-1 xl:grid-cols-2">
+        <RecordLabels />
       </div>
     </div>
   );

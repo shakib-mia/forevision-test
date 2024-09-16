@@ -11,7 +11,7 @@ import { MdLogout } from "react-icons/md";
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
   const { setProfileData, userData } = useContext(ProfileContext);
-  // console.log(userData);
+  console.log(userData);
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {
@@ -36,6 +36,9 @@ const Sidebar = () => {
     navigate("/login");
   };
 
+  const logicalNavItems = userData.yearlyPlanEndDate
+    ? navItem.filter(({ text }) => text !== "Plans")
+    : navItem;
   // console.log(userData);
 
   return (
@@ -67,7 +70,7 @@ const Sidebar = () => {
         </div> */}
 
         <div className="mt-6 flex flex-col gap-2 whitespace-nowrap text-white">
-          {navItem.map((props, key) => (
+          {logicalNavItems.map((props, key) => (
             <NavItem {...props} key={key} hovered={hovered} />
           ))}
         </div>

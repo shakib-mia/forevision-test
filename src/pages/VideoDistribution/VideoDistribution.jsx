@@ -91,7 +91,7 @@ const VideoDistribution = () => {
         fields={fields}
         uIdKey="video_user_id"
         id="video-distribution"
-        backendUrl="http://adztronaut.com/music/admin/api/addVideoDistribution"
+        // backendUrl="http://localhost:5100/submit-form"
       />
     </div>
   );
