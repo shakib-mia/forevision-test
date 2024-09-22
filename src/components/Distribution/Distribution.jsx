@@ -24,7 +24,7 @@ const Distribution = () => {
   const { formData, setScreen } = useContext(ScreenContext);
   const [orderId, setOrderId] = useState("XXXXX");
   const { planStore } = useContext(PlanContext);
-  const [showAgreement, setShowAgreement] = useState(true);
+  const [showAgreement, setShowAgreement] = useState(false);
   // console.log(planStore);
 
   // console.log();
@@ -320,7 +320,10 @@ const Distribution = () => {
       </div>
 
       {showAgreement && (
-        <Agreement handleClose={() => setShowAgreement(false)} />
+        <Agreement
+          formData={formData}
+          handleClose={() => setShowAgreement(false)}
+        />
       )}
     </>
   );

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaCheckCircle, FaMusic } from "react-icons/fa";
-import { CiStreamOn } from "react-icons/ci";
+import { CiStreamOff, CiStreamOn } from "react-icons/ci";
 import Button from "../Button/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PlanContext } from "../../contexts/PlanContext";
@@ -12,6 +12,8 @@ import { BsSendArrowUp } from "react-icons/bs";
 import { TbCopyrightOff, TbMusicOff } from "react-icons/tb";
 import EditSong from "../EditSong/EditSong";
 import { RiEditBoxLine } from "react-icons/ri";
+import { Tooltip } from "react-tooltip";
+import Takedown from "../Takedown/Takedown";
 
 const RecentUploadsItem = (props) => {
   //   console.log(props);
@@ -27,11 +29,14 @@ const RecentUploadsItem = (props) => {
     setUpdate,
     update,
     status,
+    songData,
   } = props;
   // console.log(props);
   const { token } = useContext(ProfileContext);
   const [reason, setReason] = useState("");
   const [editId, setEditId] = useState("");
+  const [takedownId, setTakedownId] = useState("");
+  // console.log(orderId);
 
   const handleRefundRequest = () => {
     const updated = { ...props };
@@ -92,6 +97,9 @@ const RecentUploadsItem = (props) => {
 
   return (
     <div className="grid grid-cols-2 items-center text-center">
+      {takedownId.length > 0 && (
+        <Takedown setEditId={setTakedownId} songData={songData} />
+      )}
       {/* {editId.length > 0 && <EditSong setEditId={setEditId} songData={props} />} */}
       <div className="flex gap-1 items-center">
         <FaMusic />
@@ -133,7 +141,17 @@ const RecentUploadsItem = (props) => {
             ) : status === "Sent to Stores" ? (
               <BsSendArrowUp className="text-interactive-light-confirmation" />
             ) : status === "streaming" ? (
-              <CiStreamOn className="text-interactive-light w-3 h-3" />
+              <div className="flex gap-2">
+                <CiStreamOn className="text-interactive-light w-3 h-3" />
+                <CiStreamOff
+                  className="text-heading-6 cursor-pointer"
+                  data-tooltip-id={"takedown" + _id}
+                  data-tooltip-content={`Takedown`}
+                  data-tooltip-place="top"
+                  onClick={() => setTakedownId(_id)}
+                />
+                <Tooltip id={"takedown" + _id} />
+              </div>
             ) : status === "copyright-infringed" ? (
               <TbCopyrightOff className="text-interactive-light-destructive w-3 h-3" />
             ) : status === "taken-down" ? (
@@ -148,7 +166,7 @@ const RecentUploadsItem = (props) => {
             small={true}
             disabled={price === "0"}
             onClick={() => {
-              price > 0 && navigate(`/payment?price=${price}?id=${_id}`);
+              price > 0 && navigate(`/payment?price=${price}?id=${orderId}`);
               // setPlanStore({ planName, price });
             }}
           >

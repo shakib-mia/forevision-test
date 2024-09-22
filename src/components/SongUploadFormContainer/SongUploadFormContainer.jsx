@@ -43,7 +43,7 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
 
   // let [logicalData, setLogicalData] = useState({});
 
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(intiFormData);
 
   useEffect(() => {
     if (location.pathname.includes("edit-song")) {

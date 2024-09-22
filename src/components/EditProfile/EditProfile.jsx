@@ -11,6 +11,7 @@ import { backendUrl } from "../../constants";
 import { TbCameraUp } from "react-icons/tb";
 import Swal from "sweetalert2";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const EditProfile = ({ handleClose }) => {
   const { userData, token } = useContext(ProfileContext);
@@ -323,7 +324,7 @@ const EditProfile = ({ handleClose }) => {
           containerClassName={`mt-3 w-1/3 pr-2`}
         />
         <InputField
-          label={<FaTwitter className="text-[#1DA1F2]" />}
+          label={<FaXTwitter className="text-black" />}
           placeholder={"Enter Twitter Link Here"}
           onChange={(e) =>
             handleFieldChange("twitter_profile_link", e.target.value)
@@ -344,6 +345,7 @@ const EditProfile = ({ handleClose }) => {
         hideRequired={true}
         labelClassName={"mb-0"}
         containerClassName={`mt-3 w-full`}
+        maxLength={500}
       />
 
       <div className="mt-3 mb-2 text-center">

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AuthBody from "../AuthBody/AuthBody";
 import SelectOptions from "../SelectOptions/SelectOptions";
 import Button from "../Button/Button";
@@ -10,6 +10,8 @@ import InputField from "../InputField/InputField";
 const Takedown = ({ setEditId, songData }) => {
   const [reason, setReason] = useState("");
   const { userData } = useContext(ProfileContext);
+  // console.log(songData);
+  const [platformsToDelete, setPlatformsToDelete] = useState("");
 
   const handleTakedown = (e) => {
     e.preventDefault();
@@ -19,12 +21,15 @@ const Takedown = ({ setEditId, songData }) => {
     formData.isrc = songData.ISRC;
     formData.reason = reason;
     formData.emailId = userData.emailId;
+    formData.platformsToDelete = platformsToDelete;
 
-    // console.log(formData);
+    console.log(formData);
     axios
       .post(backendUrl + "takedown-requests", formData, config)
-      .then(({ data }) => console.log(data));
+      .then(({ data }) => data.acknowledged && setEditId(""));
   };
+
+  // useEffect(() => {} , [])
 
   return (
     <AuthBody
@@ -33,7 +38,6 @@ const Takedown = ({ setEditId, songData }) => {
       // altText="Log in"
       // altLink="/login"
       // onSubmit={edit}
-
       className="backdrop-blur fixed top-0 left-0 z-[9999]"
       id="edit-song"
       closeIcon={true}
@@ -57,8 +61,29 @@ const Takedown = ({ setEditId, songData }) => {
         placeholder={"Enter a Reason for Taking Down your song"}
       />
 
+      <InputField
+        onChange={(e) => setPlatformsToDelete(e.target.value)}
+        textarea={true}
+        label={"Platforms"}
+        placeholder={"Enter Platforms to Takedown"}
+        note={"Use comma (,) to separate the platforms"}
+        containerClassName={"mt-2"}
+        required={true}
+        hideRequired={true}
+        id={"platformsToDelete"}
+      />
+
       <div className="flex justify-center mt-4">
-        <Button type={"submit"}>Submit</Button>
+        <Button
+          containerClassName={"border-interactive-light-destructive"}
+          className={
+            "bg-interactive-light-destructive hover:bg-interactive-light-destructive-hover active:bg-interactive-light-destructive-active focus:bg-interactive-light-destructive-focus"
+          }
+          type={"submit"}
+          // onClick={() => console.log(platformsToDelete)}
+        >
+          Submit
+        </Button>
       </div>
     </AuthBody>
   );

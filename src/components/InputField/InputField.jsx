@@ -40,6 +40,7 @@ const InputField = ({
   hideRequired,
   dangerNote,
   successNote,
+  maxLength,
 }) => {
   const [checked, setChecked] = useState(false);
   const location = useLocation();
@@ -93,15 +94,23 @@ const InputField = ({
           )}
           {type !== "file" || type !== "checkbox" ? (
             textarea ? (
-              <textarea
-                required={required}
-                name={name}
-                onChange={onChange}
-                className={`border-[1px] border-surface-white-line text-[12px] resize-none bg-surface-white-surface-1 focus:bg-surface-white w-full px-[16px] py-[12px] focus:outline-interactive-light-focus rounded-[4px] placeholder:text-black-secondary text-paragraph-2 input-field ${fieldClassName}`}
-                id={id}
-                rows={6}
-                placeholder={placeholder}
-              ></textarea>
+              <>
+                <textarea
+                  required={required}
+                  name={name}
+                  onChange={onChange}
+                  className={`border-[1px] border-surface-white-line text-[12px] resize-none bg-surface-white-surface-1 focus:bg-surface-white w-full px-[16px] py-[12px] focus:outline-interactive-light-focus rounded-[4px] placeholder:text-black-secondary text-paragraph-2 input-field ${fieldClassName}`}
+                  id={id}
+                  rows={6}
+                  placeholder={placeholder}
+                  maxLength={maxLength}
+                ></textarea>
+                {maxLength && (
+                  <div className="text-right text-subtitle-1 text-grey">
+                    {value.length}/{maxLength}
+                  </div>
+                )}
+              </>
             ) : (
               // file type
               <div
@@ -322,10 +331,10 @@ const InputField = ({
       )}
 
       <p
-        className={`text-subtitle-2 ${
-          dangerNote ? "text-interactive-light-destructive" : "text-grey-dark "
-        } ${
-          successNote
+        className={`text-subtitle-2 text-right ${
+          dangerNote
+            ? "text-interactive-light-destructive"
+            : successNote
             ? "text-interactive-light-confirmation"
             : "text-grey-dark "
         }`}

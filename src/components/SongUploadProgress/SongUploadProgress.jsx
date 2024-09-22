@@ -27,9 +27,9 @@ const SongUploadProgress = ({ setScreen, screen }) => {
   const handleStepClick = (stepId) => {
     const clickedStepIndex = steps.findIndex((step) => step.id === stepId);
     // If in edit mode, allow jumping to any step, otherwise restrict to passed steps
-    if (isEditMode || clickedStepIndex <= maxReachedStepIndex.current) {
-      setScreen(stepId);
-    }
+    // if (isEditMode || clickedStepIndex <= maxReachedStepIndex.current) {
+    setScreen(stepId);
+    // }
   };
 
   return (

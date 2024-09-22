@@ -24,6 +24,15 @@ import ProfilePicture from "../../components/ProfilePicture/ProfilePicture";
 import Songs from "../../components/Songs/Songs";
 import axios from "axios";
 import { backendUrl } from "../../constants";
+import {
+  FaSquareFacebook,
+  FaSquareInstagram,
+  FaSquareXTwitter,
+} from "react-icons/fa6";
+import { IoMdShareAlt } from "react-icons/io";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { FaLink } from "react-icons/fa";
+import { Tooltip } from "react-tooltip";
 
 const Profile = () => {
   const { userData } = useContext(ProfileContext);
@@ -31,8 +40,14 @@ const Profile = () => {
   const [profileData, setProfileData] = useState(
     location.pathname === "/profile" ? userData : {}
   );
-
+  const [copied, setCopied] = useState(false);
   // clg;
+
+  useEffect(() => {
+    if (copied) {
+      setTimeout(() => setCopied(false), 5000);
+    }
+  }, [copied]);
 
   useEffect(() => {
     // Extract the userId from the URL
@@ -135,19 +150,51 @@ const Profile = () => {
 
                   {route[route.length - 1] === "profile" &&
                   profileData.first_name ? (
-                    <img
-                      src={profileEdit}
-                      onClick={() => setEdit(true)}
-                      className="w-3 h-3 cursor-pointer"
-                      alt="follow"
-                    />
+                    <div className="flex items-center space-x-2">
+                      <img
+                        src={profileEdit}
+                        onClick={() => setEdit(true)}
+                        className="w-3 h-3 cursor-pointer"
+                        alt="edit"
+                      />
+                      <CopyToClipboard
+                        text={
+                          window.location.href + "/" + profileData["user-id"]
+                        }
+                        data-tooltip-id={"copy"}
+                        onCopy={() => setCopied(true)}
+                        data-tooltip-content={
+                          copied ? "Copied" : "Copy Link To Clipboard"
+                        }
+                        className="cursor-pointer text-heading-6 focus:outline-none"
+                      >
+                        <FaLink />
+                      </CopyToClipboard>
+                      <Tooltip id={"copy"} />
+                    </div>
                   ) : profileData.first_name ? (
-                    <img
-                      src={userplus}
-                      onClick={handleFollow}
-                      className="w-3 h-3 cursor-pointer"
-                      alt="follow"
-                    />
+                    <div className="flex items-center space-x-2">
+                      <img
+                        src={userplus}
+                        onClick={handleFollow}
+                        className="w-3 h-3 cursor-pointer"
+                        alt="follow"
+                      />
+                      <CopyToClipboard
+                        text={
+                          window.location.href + "/" + profileData["user-id"]
+                        }
+                        data-tooltip-id={"copy"}
+                        onCopy={() => setCopied(true)}
+                        data-tooltip-content={
+                          copied ? "Copied" : "Copy Link To Clipboard"
+                        }
+                        className="cursor-pointer text-heading-6 focus:outline-none"
+                      >
+                        <FaLink />
+                      </CopyToClipboard>
+                      <Tooltip id={"copy"} />
+                    </div>
                   ) : (
                     <LoadingPulse width={"30px"} height={"30px"} />
                   )}
@@ -161,18 +208,27 @@ const Profile = () => {
                   }`}
                 >
                   {profileData.facebook_profile_link && (
-                    <a href={profileData.facebook_profile_link}>
-                      <img src={instagram} alt="insta" />
+                    <a
+                      href={profileData.facebook_profile_link}
+                      className="text-heading-6"
+                    >
+                      <FaSquareFacebook />
                     </a>
                   )}
                   {profileData.instagram_profile_link && (
-                    <a href={profileData.instagram_profile_link}>
-                      <img src={facebook} alt="fb" />
+                    <a
+                      href={profileData.instagram_profile_link}
+                      className="text-heading-6"
+                    >
+                      <FaSquareInstagram />
                     </a>
                   )}
                   {profileData.twitter_profile_link && (
-                    <a href={profileData.twitter_profile_link}>
-                      <img src={twitter} alt="twitter" />
+                    <a
+                      href={profileData.twitter_profile_link}
+                      className="text-heading-6"
+                    >
+                      <FaSquareXTwitter />
                     </a>
                   )}
                 </div>

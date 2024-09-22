@@ -13,8 +13,8 @@ import axios from "axios";
 import { backendUrl } from "../../constants";
 
 const SongUploadNew = () => {
-  const [screen, setScreen] = useState("distribution");
-  // const [screen, setScreen] = useState("albumDetails");
+  // const [screen, setScreen] = useState("distribution");
+  const [screen, setScreen] = useState("albumDetails");
   const location = useLocation();
   const { userData, token } = useContext(ProfileContext);
   const navigate = useNavigate();

@@ -42,6 +42,7 @@ const RecentUploads = () => {
       <div className="flex flex-col gap-2 h-fit overflow-y-auto mt-4">
         {songs.map((song, key) => (
           <RecentUploadsItem
+            songData={song}
             {...song}
             key={key}
             setUpdate={setUpdate}

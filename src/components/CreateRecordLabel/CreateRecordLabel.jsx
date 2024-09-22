@@ -66,18 +66,20 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       const formData = new FormData();
       formData.append("file", pdfBlob, fileName);
 
-      await axios.post(backendUrl + "upload-letterhead", formData, {
+      const res = await axios.post(backendUrl + "upload-letterhead", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           token,
         },
       });
 
+      // console.log(res);
+
       // Submit record label data
       const config = { headers: { token } };
       const response = await axios.post(
         backendUrl + "record-labels",
-        data,
+        { ...data, pdf: res.data.url },
         config
       );
 
