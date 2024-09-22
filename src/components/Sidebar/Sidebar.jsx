@@ -95,8 +95,7 @@ const Sidebar = () => {
             </Link> */}
             <div className="overflow-hidden whitespace-nowrap">
               <h1 className="text-subtitle-1-bold">
-                {userData?.partner_name ||
-                  userData?.first_name + " " + userData?.last_name}
+                {userData?.first_name + " " + userData?.last_name}
               </h1>
               <p className="text-button">
                 {userData?.user_email || userData?.emailId}
