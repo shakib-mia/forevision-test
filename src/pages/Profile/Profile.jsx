@@ -92,12 +92,12 @@ const Profile = () => {
           <div className="bg-gradient-to-bl from-black-secondary to-20% to-transparent absolute top-0 left-0 w-full h-full">
             <div className="absolute top-2 right-2">
               <div className="flex gap-2 items-center p-1">
-                <img
+                {/* <img
                   className="cursor-pointer"
                   src={notification}
                   title="Notifications"
                   alt=""
-                />
+                /> */}
                 <Link to={"/settings"}>
                   <img
                     className="cursor-pointer"
