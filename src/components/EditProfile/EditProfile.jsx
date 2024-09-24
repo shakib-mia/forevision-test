@@ -159,9 +159,7 @@ const EditProfile = ({ handleClose }) => {
   const edit = (e) => {
     e.preventDefault();
     if (isChanged) {
-      console.log(formData);
       // Perform the save operation as form data has changed
-      // console.log("Form data has changed, submitting the form...");
       axios
         .put(backendUrl + "profile/" + formData.user_email, formData)
         .then(({ data }) => {
@@ -335,6 +333,14 @@ const EditProfile = ({ handleClose }) => {
           containerClassName={`mt-3 w-1/3`}
         />
       </div>
+
+      <InputField
+        label={"Short Bio"}
+        id={"short-bio"}
+        placeholder={"Add/Edit your Short Bio Here"}
+        onChange={(e) => handleFieldChange("short-bio", e.target.value)}
+        containerClassName={"mt-3"}
+      />
 
       <InputField
         textarea={true}

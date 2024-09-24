@@ -102,12 +102,10 @@ const Home = () => {
             </div>
             <p className=" my-1 text-center 2xl:text-left">99 Followers</p>
             <p className="text-button  uppercase mb-1 text-center 2xl:text-left">
-              Rock is my way of exploring music{" "}
+              {userData["short-bio"]}
             </p>
             <p className=" text-subtitle-2 text-center 2xl:text-left">
-              Archaeologists uncover the mythical city of Atlantis, but soon
-              realize they are not alone in their discovery as supernatural
-              forces threaten to destroy them ......
+              {userData.bio}
             </p>
           </div>
         </div>

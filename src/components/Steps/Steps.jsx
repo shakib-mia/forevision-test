@@ -40,6 +40,7 @@ const Steps = () => {
       details:
         "Once all the above steps are completed, proceed to checkout. Click on 'Proceed to Checkout' to finalize your order and make the payment for the selected plan.",
     },
+    {},
     {
       step: "Preview and Submit",
       details:
@@ -49,10 +50,10 @@ const Steps = () => {
 
   return (
     <div className="w-5/6 mx-auto">
-      <h4 className="text-heading-5-bold lg:text-heading-4-bold text-interactive-light mt-6 mb-4">
+      <h4 className="text-heading-5-bold lg:text-heading-4-bold text-interactive-light mt-6 mb-1 text-center">
         How to Upload Your Content
       </h4>
-      <p>
+      <p className="text-center">
         Please{" "}
         <Link
           to={"/signup"}

@@ -41,7 +41,7 @@ const Profile = () => {
     location.pathname === "/profile" ? userData : {}
   );
   const [copied, setCopied] = useState(false);
-  // clg;
+  // console.log(profileData);
 
   useEffect(() => {
     if (copied) {
@@ -234,10 +234,10 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* <p className="text-[12px] mt-[6px]">99 Followers</p>
-              <p className="text-[12px] mt-[6px] mb-2 font-bold tracking-[1.25px] uppercase">
-                Rock is my way of exploring music
-              </p> */}
+              {/* <p className="text-[12px] mt-[6px]">99 Followers</p> */}
+              <p className="text-[12px] mt-1 mb-0 font-bold tracking-[1.25px] uppercase">
+                {profileData["short-bio"]}
+              </p>
 
               <p className="text-[12px] lg:w-1/2 text-center lg:text-left">
                 {text?.slice(0, details ? text.length - 1 : 200)}{" "}
