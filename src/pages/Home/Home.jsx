@@ -100,8 +100,8 @@ const Home = () => {
                 </a>
               </div> */}
             </div>
-            <p className=" my-1 text-center 2xl:text-left">99 Followers</p>
-            <p className="text-button  uppercase mb-1 text-center 2xl:text-left">
+            {/* <p className=" my-1 text-center 2xl:text-left">99 Followers</p> */}
+            <p className="text-button  uppercase mt-2 mb-1 text-center 2xl:text-left">
               {userData["short-bio"]}
             </p>
             <p className=" text-subtitle-2 text-center 2xl:text-left">

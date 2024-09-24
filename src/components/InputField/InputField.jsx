@@ -9,45 +9,46 @@ import CountryCodeItem from "../CountryCodeItem/CountryCodeItem";
 import downArrow from "../../assets/icons/down-arrow.webp";
 import countryCodes from "country-codes-list";
 
-const InputField = ({
-  id,
-  label,
-  placeholder,
-  type,
-  containerClassName,
-  onChange,
-  required,
-  name,
-  textarea,
-  pattern,
-  fieldClassName,
-  accept,
-  containerId,
-  selectItems,
-  value,
-  disabled,
-  icon,
-  badge,
-  setBadge,
-  selectedCode,
-  note,
-  setSelectedCode,
-  max,
-  min,
-  labelClassName,
-  itemChecked,
-  fileName,
-  hideRequired,
-  dangerNote,
-  successNote,
-  maxLength,
-}) => {
+const InputField = (props) => {
   const [checked, setChecked] = useState(false);
   const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
   // console.log(fileName);
-
+  const {
+    id,
+    label,
+    placeholder,
+    type,
+    containerClassName,
+    onChange,
+    required,
+    name,
+    textarea,
+    pattern,
+    fieldClassName,
+    accept,
+    containerId,
+    selectItems,
+    value,
+    disabled,
+    icon,
+    badge,
+    setBadge,
+    selectedCode,
+    note,
+    setSelectedCode,
+    max,
+    min,
+    labelClassName,
+    itemChecked,
+    fileName,
+    hideRequired,
+    dangerNote,
+    successNote,
+    maxLength,
+  } = props;
+  console.log(value);
   useEffect(() => {
     if (type === "number") {
       const input = document.getElementById(id);
@@ -104,6 +105,7 @@ const InputField = ({
                   rows={6}
                   placeholder={placeholder}
                   maxLength={maxLength}
+                  {...props}
                 ></textarea>
                 {maxLength && (
                   <div className="text-right text-subtitle-1 text-grey">
@@ -233,7 +235,7 @@ const InputField = ({
                       }
                       required={required}
                       name={name}
-                      value={value}
+                      // value={value}
                       disabled={disabled}
                       pattern={pattern}
                       className={`placeholder:text-black-secondary disabled:bg-interactive-light-disabled disabled:border-interactive-light-disabled disabled:cursor-not-allowed focus:outline-none rounded-[4px] text-paragraph-2 bg-transparent file:cursor-pointer file:bg-primary file:border-[1px] border-[1px] border-surface-white-line focus:border-interactive-light-focus file:border-primary file:hover:bg-transparent file:hover:text-primary file:text-white file:px-[44px] file:py-[12px] file:transition file:duration-[0.2s] input-field focus:bg-surface-white ${
@@ -243,6 +245,7 @@ const InputField = ({
                       placeholder={placeholder}
                       max={max}
                       min={min}
+                      {...props}
                     />
                     {type === "password" && (
                       <label className="absolute right-2 top-0 bottom-0 my-auto flex items-center cursor-pointer">

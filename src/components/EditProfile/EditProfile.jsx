@@ -229,6 +229,8 @@ const EditProfile = ({ handleClose }) => {
     }
   };
 
+  console.log(formData["short-bio"]);
+
   return (
     <AuthBody
       heading="Edit Profile"
@@ -340,6 +342,9 @@ const EditProfile = ({ handleClose }) => {
         placeholder={"Add/Edit your Short Bio Here"}
         onChange={(e) => handleFieldChange("short-bio", e.target.value)}
         containerClassName={"mt-3"}
+        maxLength={180}
+        value={formData["short-bio"]}
+        note={`${formData["short-bio"].length}/160`}
       />
 
       <InputField
