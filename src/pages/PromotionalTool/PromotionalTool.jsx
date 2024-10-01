@@ -348,7 +348,7 @@ const PromotionalTool = () => {
     formData.promotional_tool_upload_artwork = artwork;
     // console.log(formDataObject);
     axios
-      .post("http://localhost:5100/submit-form", formDataObject)
+      .post(backendUrl + "submit-form", formDataObject)
       .then(({ data }) => console.log(data));
   };
 
