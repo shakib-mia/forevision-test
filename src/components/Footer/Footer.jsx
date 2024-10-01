@@ -12,8 +12,8 @@ const Footer = () => {
   const year = new Date().getFullYear();
   return (
     <div className="bg-[#000]">
-      <footer className="text-center py-2 flex flex-col md:flex-row md:justify-between items-center text-grey w-11/12 mx-auto pb-[70px] lg:pb-2">
-        <ul className="flex flex-wrap gap-x-2 gap-y-1 justify-center md:gap-4 mb-2 md:mb-0 text-sm">
+      <footer className="text-center py-2 flex flex-col md:flex-row md:justify-between items-center text-grey w-10/12 mx-auto pb-[70px] lg:pb-2">
+        <ul className="flex flex-wrap gap-x-2 gap-y-1 justify-center md:gap-2 mb-2 md:mb-0 text-sm">
           <li className="w-fit">
             <a
               href="https://forevisiondigital.com/digital-distribution-agreement/"

@@ -272,16 +272,18 @@ const Distribution = () => {
                 onChange={(e) => {
                   setAccepted(e.target.checked);
                   formData.accepted = e.target.checked;
+                  setShowAgreement(true);
                 }}
               />{" "}
               I Accept the{" "}
-              <span
+              <Link
                 className="text-interactive-light font-medium hover:text-interactive-dark-hover active:text-interactive-light-active focus:text-interactive-light-focus"
-                // to="/terms-and-conditions"
-                onClick={() => setShowAgreement(true)}
+                to="/terms-and-conditions"
+                target="_blank"
+                onClick={(e) => e.stopPropagation()}
               >
                 Terms and Conditions
-              </span>
+              </Link>
             </label>
           </div>
 

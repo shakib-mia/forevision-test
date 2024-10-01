@@ -43,9 +43,10 @@ import { IoMdAnalytics, IoMdHome } from "react-icons/io";
 import Analytics from "./components/Analytics/Analytics";
 import BulkUpload from "./pages/BulkUpload/BulkUpload";
 import SocialLinks from "./pages/SocialLinks/SocialLinks";
+import { FaCrown } from "react-icons/fa6";
 
-// export const backendUrl = "http://localhost:5100/";
-export const backendUrl = "https://api.forevisiondigital.in/";
+export const backendUrl = "http://localhost:5100/";
+// export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   {
@@ -139,8 +140,16 @@ export const navItem = [
 
   {
     icon: <LiaItunesNote className="text-heading-6 text-center" />,
-    text: "All Songs",
+    text: "My Releases",
     path: "/all-songs",
+  },
+
+  {
+    icon: (
+      <FaCrown className="text-heading-6 text-yellow-300 group-hover:text-black" />
+    ),
+    text: "Yearly Plan Request",
+    path: "/yearly-plan",
   },
 
   {

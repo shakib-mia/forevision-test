@@ -47,14 +47,14 @@ function App() {
         .then(({ data }) => setTokenDetails(data))
         .catch((err) => {
           console.log(err.response.data.name);
-          if (err.response.data.name === "TokenExpiredError") {
-            setToken("");
-            sessionStorage.removeItem("token");
-            toast.error("Token has expired", {
-              position: "bottom-center",
-            });
-            navigate("/login");
-          }
+          // if (err.response.data.name === "TokenExpiredError") {
+          setToken("");
+          sessionStorage.removeItem("token");
+          toast.error("Token has expired", {
+            position: "bottom-center",
+          });
+          navigate("/login");
+          // }
         });
       axios
         .get(backendUrl + "record-labels", config)
@@ -111,6 +111,12 @@ function App() {
         .catch((error) => console.log(error));
     }
   }, [userData, refetch]);
+
+  // useEffect(() => {
+  //   if (!userData.first_name) {
+  //     navigate("/signup-details");
+  //   }
+  // }, [userData.first_name]);
 
   // console.log(location.search.split("?"));
 

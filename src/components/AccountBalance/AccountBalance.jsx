@@ -10,13 +10,18 @@ const AccountBalance = () => {
   const location = useLocation();
   return (
     <div
-      className={`w-full ml-0 2xl:w-full h-full 2xl:h-full flex flex-col justify-between ${
+      className={`w-full ml-0 2xl:w-full h-full lg:h-[1000px] 2xl:h-full flex flex-col justify-between ${
         location.pathname === "/"
           ? "bg-grey-light"
           : "bg-grey-light lg:bg-white"
-      } rounded-[32px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px] bg-[size:105%_34%] bg-[0_-24px] lg:bg-top bg-no-repeat`}
-      style={{ backgroundImage: `url(${balanceBG})` }}
+      } rounded-[32px] relative py-5 px-5 2xl:px-[38px] 2xl:py-[50px] bg-[size:110%_34%] bg-[-36px_-26px] bg-no-repeat`}
+      // style={{ backgroundImage: `url(${balanceBG})` }}
     >
+      <img
+        src={balanceBG}
+        className="z-0 absolute top-0 left-0 w-full h-fit"
+        alt=""
+      />
       <aside>
         {/* <img
             src={balanceBG}

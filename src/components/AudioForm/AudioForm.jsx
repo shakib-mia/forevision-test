@@ -180,10 +180,12 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
     const audioLength = await getAudioDuration(file);
     // console.log(`Audio length: ${audioLength} seconds`);
 
+    // Check if the file length is greater than 60 seconds
     if (audioLength > 60) {
       const toastId = toast.loading("Uploading audio...", {
         position: "bottom-center",
       });
+
       if (file && file.type.startsWith("audio/")) {
         const SongFile = new FormData();
         SongFile.append("file", file);
@@ -195,8 +197,20 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
             SongFile,
             config
           );
-          formData.songUrl = response.data.songUrl;
-          setSongUrl(response.data.songUrl);
+
+          // Check if it's an album or a single song
+          if (location.pathname === "/album-upload") {
+            // Album upload logic
+            formData.songs = formData.songs || [];
+            formData.songs[_id] = {
+              ...formData.songs[_id],
+              songUrl: response.data.songUrl,
+            };
+          } else {
+            // Single song upload logic
+            formData.songUrl = response.data.songUrl;
+            setSongUrl(response.data.songUrl);
+          }
 
           // Update toast to successful
           toast.update(toastId, {
@@ -224,7 +238,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
       });
     }
 
-    //   // Create a new Audio object to get the duration
+    // Create a new Audio object to get the duration
     const audio = new Audio(songUrl);
 
     // Wait for the audio metadata to load
@@ -235,11 +249,10 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
       // Revoke the object URL to avoid memory leaks
       URL.revokeObjectURL(songUrl);
 
-      // Append the file to FormData
+      // Append the file to FormData (if needed for further processing)
       const fileData = new FormData();
       fileData.append("file", file);
     };
-    // }
   };
 
   const handleSubmit = (e) => {
@@ -982,12 +995,22 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                   ? formatDate(formData.releaseDate)
                   : ""
               }
-              onChange={(e) =>
-                location.pathname === "/album-upload" ||
-                location.search.split("?")[1] === "yearly-plan"
-                  ? (formData.songs[id].releaseDate = e.target.value)
-                  : setFormData({ ...formData, releaseDate: e.target.value })
-              }
+              onChange={(e) => {
+                const newDate = e.target.value;
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan"
+                ) {
+                  // Update the releaseDate in songs array immutably
+                  const updatedSongs = formData.songs.map((song, index) =>
+                    index === id ? { ...song, releaseDate: newDate } : song
+                  );
+                  setFormData({ ...formData, songs: updatedSongs });
+                } else {
+                  // Update the releaseDate at the form level
+                  setFormData({ ...formData, releaseDate: newDate });
+                }
+              }}
               note="Date of Music Release"
             />
           </div>
@@ -1006,15 +1029,26 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                   ? formatDate(formData.liveDate)
                   : ""
               }
-              onChange={(e) =>
-                location.pathname === "/album-upload" ||
-                location.search.split("?")[1] === "yearly-plan"
-                  ? formData.songs &&
-                    (formData.songs[id].liveDate = e.target.value)
-                  : setFormData({ ...formData, liveDate: e.target.value })
-              }
+              onChange={(e) => {
+                const newLiveDate = e.target.value;
+
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan"
+                ) {
+                  // Update the liveDate in the songs array immutably
+                  const updatedSongs = formData.songs.map((song, index) =>
+                    index === id ? { ...song, liveDate: newLiveDate } : song
+                  );
+                  setFormData({ ...formData, songs: updatedSongs });
+                } else {
+                  // Update the liveDate at the form level
+                  setFormData({ ...formData, liveDate: newLiveDate });
+                }
+              }}
               note="Go Live Date"
             />
+
             {/* <InputField
               type={"date"}
               required={true}
@@ -1056,12 +1090,23 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 ? (formData.songs && formData.songs[id].time) || ""
                 : formData.time || ""
             }
-            onChange={(e) =>
-              location.pathname === "/album-upload" ||
-              location.search.split("?")[1] === "yearly-plan"
-                ? formData.songs && (formData.songs[id].time = e.target.value)
-                : setFormData({ ...formData, time: e.target.value })
-            }
+            onChange={(e) => {
+              const newTime = e.target.value;
+
+              if (
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan"
+              ) {
+                // Update the time in the songs array immutably
+                const updatedSongs = formData.songs.map((song, index) =>
+                  index === id ? { ...song, time: newTime } : song
+                );
+                setFormData({ ...formData, songs: updatedSongs });
+              } else {
+                // Update the time in formData
+                setFormData({ ...formData, time: newTime });
+              }
+            }}
             note="Go live time"
           />
         </aside>

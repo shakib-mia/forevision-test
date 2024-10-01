@@ -9,12 +9,13 @@ const AlbumPreview = ({ albumData }) => {
   const audioRef = useRef(null);
 
   const togglePlay = (song) => {
+    console.log(song);
     if (currentSong === song && isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
       setCurrentSong(song);
-      audioRef.current.src = song.file.name; // In a real scenario, use the actual file URL
+      audioRef.current.src = song.songUrl; // In a real scenario, use the actual file URL
       audioRef.current.play();
       setIsPlaying(true);
     }
@@ -190,12 +191,12 @@ const AlbumPreview = ({ albumData }) => {
                 >
                   {currentSong === song && isPlaying ? "Pause" : "Play"}
                 </button>
-                <span className="ml-3 text-subtitle-2 text-black-secondary">
+                {/* <span className="ml-3 text-subtitle-2 text-black-secondary">
                   Start Time: {song.startMinutes}:
                   {song.startSeconds.toString().padStart(2, "0")} -
                   {song.startMinutes2}:
                   {song.startSeconds2.toString().padStart(2, "0")}
-                </span>
+                </span> */}
               </div>
             </div>
           ))}

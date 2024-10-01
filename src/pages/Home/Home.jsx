@@ -22,11 +22,12 @@ import RecentUploads from "../../components/RecentUploads/RecentUploads";
 import CreateRecordLabel from "../../components/CreateRecordLabel/CreateRecordLabel";
 import AccountBalance from "../../components/AccountBalance/AccountBalance";
 import RecordLabels from "../../components/RecordLabels/RecordLabels";
+import UploadRecordLabel from "../../components/UploadRecordLabel/UploadRecordLabel";
 
 const Home = () => {
   const navigate = useNavigate();
   const { userData, token } = useContext(ProfileContext);
-  console.log(userData);
+  // console.log(userData);
   // console.log(
   //   (userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)).toFixed(2)
   // );
@@ -158,8 +159,9 @@ const Home = () => {
         {/* <aside className="w-full"></aside> */}
         <CreateRecordLabel />
       </div>
-      <div className="grid grid-cols-1 xl:grid-cols-2">
+      <div className="grid grid-cols-1 mt-2 gap-2 xl:grid-cols-2">
         <RecordLabels />
+        <UploadRecordLabel />
       </div>
     </div>
   );

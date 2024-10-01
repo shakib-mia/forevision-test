@@ -49,7 +49,10 @@ const SongUploadProgress = ({ setScreen, screen }) => {
                 ? "text-grey-dark cursor-pointer" // Allow jumping to any step in edit mode
                 : "text-grey cursor-not-allowed" // Disallow clicking on future steps if not passed yet
             }`}
-            onClick={() => handleStepClick(step.id)}
+            onClick={() => {
+              // isEditMode || (isPassedStep && handleStepClick(step.id))
+              handleStepClick(step.id);
+            }}
           >
             <aside
               className={

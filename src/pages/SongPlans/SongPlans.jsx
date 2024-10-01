@@ -183,10 +183,10 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
                 setPlanName("forevision-social");
                 setPlanStore((prev) => ({
                   ...prev,
-                  planName: "forevision-social",
+                  planName: "ForeVision-social",
                   price: 0,
                 }));
-                navigate("/song-upload?forevision-social+?0");
+                navigate("/song-upload?foreVision-social?0");
               }}
             ></Button>
           </div>

@@ -23,120 +23,6 @@ module.exports = {
       7: "128px",
     },
 
-    colors: {
-      transparent: "#00FFFF00",
-      primary: {
-        DEFAULT: "#064088",
-        light: "#58A3FF",
-        dark: "#002859",
-      },
-      secondary: {
-        DEFAULT: "#0000FF",
-        light: "#A7CAFF",
-        dark: "#0000A6",
-      },
-      grey: {
-        DEFAULT: "#9CA3AF",
-        light: "#E5E7EB",
-        dark: "#4B5563",
-      },
-      black: {
-        DEFAULT: "#202020",
-        primary: "#202020",
-        secondary: "#202020CC",
-        tertiary: "#202020B2",
-        deactivated: "#20202080",
-      },
-      white: {
-        DEFAULT: "#ffffff",
-        primary: "#ffffff",
-        secondary: "#FFFFFFD9",
-        tertiary: "#FFFFFFB2",
-        deactivated: "#FFFFFF80",
-      },
-      interactive: {
-        light: {
-          DEFAULT: "#2B52DD",
-          hover: "#1C3DB2",
-          active: "#18328E",
-          focus: "#18328E",
-          disabled: "#D1D8E2",
-        },
-
-        "light-confirmation": {
-          DEFAULT: "#22683E",
-          hover: "#194E31",
-          active: "#0E3522",
-          focus: "#2E844A",
-          disabled: "#CED4D0",
-        },
-
-        "light-destructive": {
-          DEFAULT: "#BA0517",
-          hover: "#8E030F",
-          active: "#640103",
-          focus: "#EA001E",
-          disabled: "#DBCECD",
-        },
-
-        dark: {
-          DEFAULT: "#78B0FD",
-          hover: "#57A3FD",
-          active: "#1B96FF",
-          focus: "#AACBFF",
-          disabled: "#354F72",
-        },
-
-        "dark-confirmation": {
-          DEFAULT: "#45C65A",
-          hover: "#41B658",
-          active: "#3BA755",
-          focus: "#91DB8B",
-          disabled: "#2D5C35",
-        },
-
-        "dark-destructive": {
-          DEFAULT: "#FE8F7D",
-          hover: "#FE7765",
-          active: "#FE5C4C",
-          focus: "#FEB8AB",
-          disabled: "#623833",
-        },
-      },
-
-      surface: {
-        white: {
-          DEFAULT: "#FFFFFF",
-          line: "#E1E6EF",
-          "surface-1": "#F8F9FC",
-          "surface-2": "#F1F3F9",
-        },
-        black: {
-          DEFAULT: "#202020",
-          line: "#3F444D",
-          "surface-1": "#2B2D30",
-          "surface-2": "#3C3C42",
-        },
-      },
-
-      success: {
-        DEFAULT: "#22C55E",
-        light: "#86EFAC",
-      },
-      warning: {
-        DEFAULT: "#EAC608",
-        light: "#FFED8E",
-      },
-      info: {
-        light: "#BFDBFE",
-        DEFAULT: "#60A5FA",
-      },
-      error: {
-        DEFAULT: "#F87171",
-        light: "#FECACA",
-      },
-    },
-
     fontSize: {
       "heading-1": [
         "89.8px",
@@ -309,6 +195,119 @@ module.exports = {
     },
 
     extend: {
+      colors: {
+        transparent: "#00FFFF00",
+        primary: {
+          DEFAULT: "#064088",
+          light: "#58A3FF",
+          dark: "#002859",
+        },
+        secondary: {
+          DEFAULT: "#0000FF",
+          light: "#A7CAFF",
+          dark: "#0000A6",
+        },
+        grey: {
+          DEFAULT: "#9CA3AF",
+          light: "#E5E7EB",
+          dark: "#4B5563",
+        },
+        black: {
+          DEFAULT: "#202020",
+          primary: "#202020",
+          secondary: "#202020CC",
+          tertiary: "#202020B2",
+          deactivated: "#20202080",
+        },
+        white: {
+          DEFAULT: "#ffffff",
+          primary: "#ffffff",
+          secondary: "#FFFFFFD9",
+          tertiary: "#FFFFFFB2",
+          deactivated: "#FFFFFF80",
+        },
+        interactive: {
+          light: {
+            DEFAULT: "#2B52DD",
+            hover: "#1C3DB2",
+            active: "#18328E",
+            focus: "#18328E",
+            disabled: "#D1D8E2",
+          },
+
+          "light-confirmation": {
+            DEFAULT: "#22683E",
+            hover: "#194E31",
+            active: "#0E3522",
+            focus: "#2E844A",
+            disabled: "#CED4D0",
+          },
+
+          "light-destructive": {
+            DEFAULT: "#BA0517",
+            hover: "#8E030F",
+            active: "#640103",
+            focus: "#EA001E",
+            disabled: "#DBCECD",
+          },
+
+          dark: {
+            DEFAULT: "#78B0FD",
+            hover: "#57A3FD",
+            active: "#1B96FF",
+            focus: "#AACBFF",
+            disabled: "#354F72",
+          },
+
+          "dark-confirmation": {
+            DEFAULT: "#45C65A",
+            hover: "#41B658",
+            active: "#3BA755",
+            focus: "#91DB8B",
+            disabled: "#2D5C35",
+          },
+
+          "dark-destructive": {
+            DEFAULT: "#FE8F7D",
+            hover: "#FE7765",
+            active: "#FE5C4C",
+            focus: "#FEB8AB",
+            disabled: "#623833",
+          },
+        },
+
+        surface: {
+          white: {
+            DEFAULT: "#FFFFFF",
+            line: "#E1E6EF",
+            "surface-1": "#F8F9FC",
+            "surface-2": "#F1F3F9",
+          },
+          black: {
+            DEFAULT: "#202020",
+            line: "#3F444D",
+            "surface-1": "#2B2D30",
+            "surface-2": "#3C3C42",
+          },
+        },
+
+        success: {
+          DEFAULT: "#22C55E",
+          light: "#86EFAC",
+        },
+        warning: {
+          DEFAULT: "#EAC608",
+          light: "#FFED8E",
+        },
+        info: {
+          light: "#BFDBFE",
+          DEFAULT: "#60A5FA",
+        },
+        error: {
+          DEFAULT: "#F87171",
+          light: "#FECACA",
+        },
+      },
       boxShadow: {
         base: "0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06)",
         md: "0px 4px 6px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.06)",

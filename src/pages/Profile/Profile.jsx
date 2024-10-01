@@ -84,7 +84,7 @@ const Profile = () => {
 
   return (
     <div
-      className="w-[95%] m-2 mx-auto lg:m-5 lg:my-2 lg:w-[90%] lg:ml-auto rounded-[20px] overflow-y-auto bg-grey-dark h-[98vh]"
+      className="w-[95%] m-2 mx-auto lg:m-5 lg:my-7 lg:w-[90%] lg:ml-auto rounded-[20px] overflow-y-auto bg-grey-dark h-[98vh]"
       id="profile-container"
     >
       <div className="relative">
@@ -270,25 +270,16 @@ const Profile = () => {
         </div>
         <div className="mt-[21rem] lg:mt-0 lg:w-1/4">
           <div className="flex items-center" id="album">
-            <OwlCarousel
+            {/* <OwlCarousel
               className="owl-theme"
               loop={true}
               autoplay
               autoplayTimeout={3000}
               items={1}
               margin={10}
-              // nav={true}
               dots={false}
             >
               <div className="item">
-                {/* <div> */}
-                <img src={amogh} alt="amogh" />
-                <div className="text-button text-white text-center mt-[4px]">
-                  Dummy Album
-                </div>
-                {/* </div> */}
-              </div>
-              <div className="item">
                 <img src={amogh} alt="amogh" />
                 <div className="text-button text-white text-center mt-[4px]">
                   Dummy Album
@@ -330,7 +321,13 @@ const Profile = () => {
                   Dummy Album
                 </div>
               </div>
-            </OwlCarousel>
+              <div className="item">
+                <img src={amogh} alt="amogh" />
+                <div className="text-button text-white text-center mt-[4px]">
+                  Dummy Album
+                </div>
+              </div>
+            </OwlCarousel> */}
           </div>
 
           <div id="suggestion">

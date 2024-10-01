@@ -7,10 +7,17 @@ import { getAudioDuration } from "../../utils/getAudioDuration";
 import { formatTime } from "../../utils/formatTime";
 import Button from "../Button/Button";
 import generatePDF from "react-to-pdf";
+import signature from "../../assets/images/signature.webp";
+import axios from "axios";
+import { backendUrl } from "../../constants";
+import jsPDF from "jspdf";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import html2canvas from "html2canvas";
 
 const Agreement = ({ handleClose, formData }) => {
   const date = new Date();
-  const { userData } = useContext(ProfileContext);
+  const { userData, token } = useContext(ProfileContext);
   // console.log(userData);
   const location = useLocation();
   const [audioDuration, setAudioDuration] = useState(0);
@@ -25,34 +32,211 @@ const Agreement = ({ handleClose, formData }) => {
       });
   }, []);
 
-  const createPdf = async () => {
-    // headerElement.style.display = "none";
+  // const createPdf = async () => {
+  //   // headerElement.style.display = "none";
 
-    const pdf = await generatePDF(agreementRef, {
-      filename: `Revenue_Details_of_.pdf`,
-      page: {
-        // default is 'A4'
-        format: "A4",
-        // scale: 2,
-        // format: "letter",
-        // default is 'portrait'
-        orientation: "portrait",
-      },
+  //   const pdf = await generatePDF(agreementRef, {
+  //     filename: `Revenue_Details_of_.pdf`,
+  //     page: {
+  //       // default is 'A4'
+  //       format: "A4",
+  //       // scale: 2,
+  //       // format: "letter",
+  //       // default is 'portrait'
+  //       orientation: "portrait",
+  //     },
+  //   });
+  //   // handleClose();
+  //   // axios.post
+
+  //   try {
+  //     const pdfBlob = await generatePDF();
+  //     const fileName = `Agreement of ${userData.first_name}.pdf`;
+
+  //     // Offer download to user
+  //     const link = document.createElement("a");
+  //     link.href = URL.createObjectURL(pdfBlob);
+  //     link.download = fileName;
+  //     link.click();
+
+  //     // Upload PDF
+  //     const formData = new FormData();
+  //     formData.append("file", pdfBlob, fileName);
+
+  //     const res = await axios.post(backendUrl + "upload-letterhead", formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //         token: sessionStorage.getItem("token"),
+  //       },
+  //     });
+
+  //     // console.log(res);
+
+  //     // Submit record label data
+  //     // const config = { headers: { token } };
+  //     // const response = await axios.post(
+  //     //   backendUrl + "record-labels",
+  //     //   { ...data, pdf: res.data.url },
+  //     //   config
+  //     // );
+
+  //     // if (response.data.acknowledged) {
+  //     //   e.target.reset();
+  //     //   setSubmitted(false);
+
+  //     //   Swal.fire({
+  //     //     title: "Record Label Submitted Successfully",
+  //     //     text: "The PDF has been downloaded and uploaded to the server.",
+  //     //     icon: "success",
+  //     //     customClass: {
+  //     //       confirmButton: "custom-class-settings",
+  //     //     },
+  //     //   });
+  //     // }
+  //   } catch (error) {
+  //     // toast.error(
+  //     //   error.response?.data || "An error occurred. Please try again.",
+  //     //   {
+  //     //     position: "bottom-center",
+  //     //   }
+  //     // );
+  //   } finally {
+  //     // setSubmitted(false);
+  //   }
+
+  //   // showPreview(false);
+  //   // setDetails("");
+
+  //   // console.log(pdf);
+  // };
+
+  const createPdf = async () => {
+    const element = agreementRef.current;
+
+    // Capture the entire HTML element as a canvas
+    const canvas = await html2canvas(element, {
+      scale: 2, // Increase scale for better quality
+      useCORS: true,
     });
 
-    // showPreview(false);
-    // setDetails("");
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: "a4",
+    });
 
-    // console.log(pdf);
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+
+    // Calculate how many pages are required
+    let imgHeight = (canvasHeight * pageWidth) / canvasWidth;
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    // Add the first page
+    pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight);
+
+    // Loop through and add new pages if necessary
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, pageWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    // Download the PDF
+    const fileName = `Agreement_of_${userData.first_name}.pdf`;
+    pdf.save(fileName);
+
+    // Upload the PDF Blob
+    const pdfBlob = pdf.output("blob");
+    const formData = new FormData();
+    formData.append("file", pdfBlob, fileName);
+
+    try {
+      const res = await axios.post(backendUrl + "upload-agreements", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          token: sessionStorage.getItem("token"),
+        },
+      });
+
+      const data = {
+        agreementUrl: res.data.agreementUrl,
+        emailId: userData.emailId,
+      };
+
+      const insertResponse = await axios.post(
+        backendUrl + "upload-agreements/add-to-db",
+        data
+      );
+      // .then(({ data }) => console.log(data));
+
+      // console.log(insertResponse);
+      if (insertResponse.data.acknowledged) {
+        Swal.fire({
+          title: "PDF Generated & Uploaded Successfully",
+          text: "The PDF has been downloaded and uploaded to the server.",
+          icon: "success",
+        });
+        handleClose();
+      }
+    } catch (error) {
+      console.error("Error uploading PDF:", error);
+    }
   };
+
+  const [platforms, setPlatforms] = useState([]);
+  useEffect(() => {
+    // console.log(config);
+    const config = {
+      headers: { token: sessionStorage.getItem("token") || token },
+    };
+    axios
+      .get("https://api.forevisiondigital.in/platforms", config)
+      .then(({ data }) => {
+        setPlatforms(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  // Function to categorize the selected platforms
+  const categorizePlatforms = (selectedPlatforms) => {
+    const categorized = {};
+
+    platforms.forEach((category) => {
+      const platforms = category.platforms.map((platform) => platform.cat_name);
+      const matchedPlatforms = platforms.filter((platform) =>
+        selectedPlatforms.includes(platform)
+      );
+
+      if (matchedPlatforms.length > 0) {
+        categorized[category.platformType] = matchedPlatforms;
+      }
+    });
+
+    return categorized;
+  };
+
+  // Usage
+  const categorizedSelectedPlatforms = categorizePlatforms(
+    formData.selectedPlatforms
+  );
+  console.log(categorizedSelectedPlatforms);
 
   return (
     <>
       <Modal
         className={"!items-start !block !overflow-y-auto py-7"}
-        handleClose={handleClose}
+        // handleClose={handleClose}
       >
-        <div className="p-5 bg-white" ref={agreementRef}>
+        <div className="p-[96px] bg-yellow-300 border-2" ref={agreementRef}>
           <h1 className="text-heading-2-bold text-center text-grey-dark mb-4">
             Agreement
           </h1>
@@ -686,12 +870,12 @@ const Agreement = ({ handleClose, formData }) => {
             </li>
           </ol>
 
-          <h5 className="text-heading-5-bold mt-3 text-center">
+          <h5 className="text-heading-5-bold mt-3 text-center mb-2">
             SECOND PART’S DETAILS:
           </h5>
 
-          <div className="border divide-y">
-            <div className="flex divide-x">
+          <div className="border divide-y border-black">
+            <div className="flex divide-x divide-black">
               <p className="w-1/2 p-1">
                 Individual/Company /Proprietorship/HUF/Partner/LLP ‘s Name:
               </p>
@@ -700,33 +884,138 @@ const Agreement = ({ handleClose, formData }) => {
               </p>
             </div>
 
-            <div className="flex divide-x">
+            <div className="flex divide-x border-black divide-black">
               <p className="w-1/2 p-1">Address/Office Address:</p>
               <p className="w-1/2 p-1">
                 {userData.billing_address}, {userData.billing_city},{" "}
                 {userData.billing_country}
               </p>
             </div>
-            <div className="flex divide-x">
+            <div className="flex divide-x border-black divide-black">
               <p className="w-1/2 p-1">Duration of Recording:</p>
               <p className="w-1/2 p-1">{formatTime(audioDuration || 0)}</p>
             </div>
-            <div className="flex divide-x">
+            <div className="flex divide-x border-black divide-black">
               <p className="w-1/2 p-1">Label Name (if any):</p>
               <p className="w-1/2 p-1">{formData.recordLabel}</p>
             </div>
-            <div className="flex divide-x">
+            <div className="flex divide-x border-black divide-black">
               <p className="w-1/2 p-1">Contribute as fee to First Part:</p>
               <p className="w-1/2 p-1">
                 {(parseFloat(location.search.split("?")[2]) / 100).toFixed(2)}
               </p>
             </div>
-            <div className="flex divide-x">
+            <div className="flex divide-x border-black divide-black">
               <p className="w-1/2 p-1">
                 Proposed Platforms for Distribution (as per Schedule) :
               </p>
               <p className="w-1/2 p-1">
                 {formData.selectedPlatforms.join(", ")}
+              </p>
+            </div>
+          </div>
+
+          <h5 className="text-heading-5-bold mt-3 mb-2 text-center">
+            DESCRIPTION OF TRACKS / RECORDING / MUSIC /CONTENT
+          </h5>
+
+          <div className="border border-black text-center divide-y divide-black">
+            <div className="grid grid-cols-6  divide-x divide-black">
+              <p className="py-1">Song Name </p>
+              <p className="py-1">Album Name</p>
+              <p className="py-1">Singer </p>
+              <p className="py-1">Lyricist</p>
+              <p className="py-1">Language</p>
+              <p className="py-1">Composer</p>
+            </div>
+
+            {formData.albumType === "Album" ? (
+              formData.songs.map((song) => (
+                <div className="grid grid-cols-6  divide-x divide-black">
+                  <p className="py-1">{song.songName} </p>
+                  <p className="py-1">{formData.albumTitle}</p>
+                  <p className="py-1">
+                    {
+                      song.artists.find(
+                        ({ role }) => role === "Singer/Primary Artist"
+                      ).name
+                    }{" "}
+                  </p>
+                  <p className="py-1">
+                    {song.artists.find(({ role }) => role === "Lyricist").name}
+                  </p>
+                  <p className="py-1">{song.language || "-"}</p>
+                  <p className="py-1">
+                    {song.artists.find(({ role }) => role === "Composer").name}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <div className="grid grid-cols-6  divide-x divide-black">
+                <p className="py-1">{formData.songName} </p>
+                <p className="py-1">{formData.albumTitle}</p>
+                <p className="py-1">
+                  {
+                    formData.artists.find(
+                      ({ role }) => role === "Singer/Primary Artist"
+                    ).name
+                  }{" "}
+                </p>
+                <p className="py-1">
+                  {
+                    formData.artists.find(({ role }) => role === "Lyricist")
+                      .name
+                  }
+                </p>
+                <p className="py-1">{formData.language || "-"}</p>
+                <p className="py-1">
+                  {
+                    formData.artists.find(({ role }) => role === "Composer")
+                      .name
+                  }
+                </p>
+              </div>
+            )}
+          </div>
+
+          <h5 className="text-heading-5-bold mt-3 text-center mb-2">
+            SCHEDULE
+          </h5>
+
+          <div className="border border-black text-center divide-y divide-black">
+            <>
+              {Object.keys(categorizedSelectedPlatforms).map((item) => (
+                <div className="flex divide-x divide-black">
+                  <aside className="w-5/12 p-1">{item}</aside>
+                  <aside className="w-7/12 p-1">
+                    {categorizedSelectedPlatforms[item].join(", ")}
+                  </aside>
+                </div>
+              ))}
+            </>
+          </div>
+
+          <p className="mt-1">
+            <b>THE PARTIES AGREE</b> to the terms and obligations and so execute
+            on the day and date first above mentioned, signed this contract with
+            will and consent.
+          </p>
+
+          <div className="flex mt-6 justify-around items-end">
+            <div className="flex flex-col w-fit">
+              <div className="signature text-center mb-1 w-1/2">
+                <img src={signature} alt="" />
+              </div>
+              <p className="border-t border-black pt-1">
+                First Part's Signature
+              </p>
+            </div>
+            <div className="flex  flex-col">
+              <div className="signature text-heading-4 text-center mb-1">
+                {formData.signature}
+              </div>
+              <p className="border-t border-black pt-1">
+                Second Part's Signature
               </p>
             </div>
           </div>

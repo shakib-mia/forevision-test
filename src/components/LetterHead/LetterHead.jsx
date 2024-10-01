@@ -4,11 +4,11 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 
 const Letterhead = forwardRef(({ formData }, ref) => {
   const { userData } = useContext(ProfileContext);
-
+  console.log(formData);
   return (
-    <div className="bg-white py-2 rounded text-heading-4" ref={ref}>
+    <div className="bg-white py-2 rounded text-paragraph-1" ref={ref}>
       <div className="p-6">
-        {userData.first_name} {userData.last_name}
+        {formData["Sub-Label Name"]}
         <br />
         {userData.emailId} <br />
         {userData.phone_no} <br />
@@ -60,8 +60,7 @@ const Letterhead = forwardRef(({ formData }, ref) => {
               : "undefined"}
           </b>
         </p>
-        <br />
-        <br />
+        <p className="text-heading-6 signature">{formData.signatoryName}</p>
         <p>(stamp and sign)</p>
       </div>
     </div>

@@ -108,6 +108,8 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
     }
   };
 
+  console.log(recordLabelData);
+
   return (
     <form
       className={`${
@@ -140,7 +142,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       <InputField
         type={"text"}
         placeholder={"Record Label Name"}
-        label={"Name"}
+        label={"Record Label Name"}
         name={"recordLabelName"}
         id={"record-label-name"}
         required={true}
