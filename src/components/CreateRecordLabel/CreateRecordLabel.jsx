@@ -131,7 +131,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       <h5
         className={
           location.pathname === "/home" || location.pathname === "/"
-            ? "text-heading-4-bold text-grey-dark mb-2"
+            ? "text-heading-5-bold 2xl:text-heading-4-bold text-grey-dark mb-2"
             : "text-heading-5-bold text-center mt-4"
         }
       >

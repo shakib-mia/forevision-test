@@ -84,7 +84,7 @@ const Profile = () => {
 
   return (
     <div
-      className="w-[95%] m-2 mx-auto lg:m-5 lg:my-7 lg:w-[90%] lg:ml-auto rounded-[20px] overflow-y-auto bg-grey-dark h-[98vh]"
+      className="w-[95%] m-2 mt-[96px] mx-auto lg:m-5 lg:my-7 lg:w-[90%] lg:ml-auto rounded-[20px] overflow-y-auto bg-grey-dark h-[95vh]"
       id="profile-container"
     >
       <div className="relative">
@@ -127,8 +127,8 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row lg:gap-[60px] px-2 lg:p-[60px] pb-0 relative">
-        <div className="w-full lg:w-9/12 absolute lg:relative -top-7 lg:top-[-144px]">
+      <div className="flex flex-col lg:flex-row lg:gap-[60px] px-2 lg:p-[60px] !pb-0 relative">
+        <div className="w-full left-0 px-4 lg:px-0 lg:w-9/12 relative -top-7 lg:top-[-144px]">
           <div className="flex flex-col lg:flex-row gap-[11px]">
             <div className="pt-4">
               <ProfilePicture
@@ -154,7 +154,7 @@ const Profile = () => {
                       <img
                         src={profileEdit}
                         onClick={() => setEdit(true)}
-                        className="w-3 h-3 cursor-pointer"
+                        className="w-[21px] h-[21px] cursor-pointer"
                         alt="edit"
                       />
                       <CopyToClipboard
@@ -235,12 +235,12 @@ const Profile = () => {
               </div>
 
               {/* <p className="text-[12px] mt-[6px]">99 Followers</p> */}
-              <p className="text-[12px] mt-1 mb-0 font-bold tracking-[1.25px] uppercase">
+              <p className="text-[12px] mt-1 mb-0 font-bold text-center 2xl:text-left tracking-[1.25px] uppercase">
                 {profileData["short-bio"]}
               </p>
 
-              <p className="text-[12px] lg:w-1/2 text-center lg:text-left">
-                {text?.slice(0, details ? text.length - 1 : 200)}{" "}
+              <p className="text-[12px] w-full lg:w-1/2 text-center lg:text-left">
+                {text?.slice(0, details ? text.length - 1 : 200)}
                 {!details && text && "..."}
                 <br />
                 {text?.length > 200 && (
@@ -268,7 +268,7 @@ const Profile = () => {
             </aside>
           </div>
         </div>
-        <div className="mt-[21rem] lg:mt-0 lg:w-1/4">
+        <div className="lg:w-1/4">
           <div className="flex items-center" id="album">
             {/* <OwlCarousel
               className="owl-theme"
@@ -385,7 +385,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="mt-2 mb-6 lg:my-2 px-2 lg:px-[60px] mx-auto">
+      <div className="-mt-5 mb-6 lg:mb-2 px-2 lg:px-[60px] mx-auto">
         <Songs />
       </div>
 

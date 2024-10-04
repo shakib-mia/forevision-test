@@ -14,7 +14,7 @@ const InputField = (props) => {
   const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
-  // console.log(fileName);
+  console.log(passwordVisible);
   const {
     id,
     label,
@@ -48,7 +48,10 @@ const InputField = (props) => {
     successNote,
     maxLength,
   } = props;
-  console.log(value);
+
+  const inputType =
+    type === "password" ? (passwordVisible ? "text" : "password") : type;
+
   useEffect(() => {
     if (type === "number") {
       const input = document.getElementById(id);
@@ -225,17 +228,11 @@ const InputField = (props) => {
                 ) : (
                   <div className="relative">
                     <input
+                      {...props} // need to destructure first to keep password visibility functionality right
                       onChange={onChange}
-                      type={
-                        type === "password"
-                          ? passwordVisible
-                            ? "text"
-                            : "password"
-                          : type
-                      }
+                      type={inputType}
                       required={required}
                       name={name}
-                      // value={value}
                       disabled={disabled}
                       pattern={pattern}
                       className={`placeholder:text-black-secondary disabled:bg-interactive-light-disabled disabled:border-interactive-light-disabled disabled:cursor-not-allowed focus:outline-none rounded-[4px] text-paragraph-2 bg-transparent file:cursor-pointer file:bg-primary file:border-[1px] border-[1px] border-surface-white-line focus:border-interactive-light-focus file:border-primary file:hover:bg-transparent file:hover:text-primary file:text-white file:px-[44px] file:py-[12px] file:transition file:duration-[0.2s] input-field focus:bg-surface-white ${
@@ -245,22 +242,18 @@ const InputField = (props) => {
                       placeholder={placeholder}
                       max={max}
                       min={min}
-                      {...props}
                     />
                     {type === "password" && (
-                      <label className="absolute right-2 top-0 bottom-0 my-auto flex items-center cursor-pointer">
+                      <div
+                        className="absolute right-2 top-0 bottom-0 my-auto flex items-center cursor-pointer"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                      >
                         <img
                           src={!passwordVisible ? eyeSlash : eye}
                           alt="password-visibility-handle"
                           className="w-2 h-2"
                         />
-
-                        <input
-                          type="checkbox"
-                          className="hidden"
-                          onChange={(e) => setPasswordVisible(e.target.checked)}
-                        />
-                      </label>
+                      </div>
                     )}
                   </div>
                 )}
