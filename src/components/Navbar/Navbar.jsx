@@ -28,12 +28,12 @@ const Navbar = () => {
           <img src={notification} alt="" />
           Notifications
         </li> */}
-        <li className="text-paragraph-1">
+        {/* <li className="text-paragraph-1">
           <Link to="/profile">
-            {/* <img src={profile} alt="profile" /> */}
+         
             <CgProfile className="text-heading-6" />
           </Link>
-        </li>
+        </li> */}
       </ul>
 
       {/* <Button text={text} onClick={handleLogout} /> */}
