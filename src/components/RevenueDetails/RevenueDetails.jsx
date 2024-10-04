@@ -175,7 +175,7 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
           {/* List */}
           <RevenueDetailsItem result={result} details={details} songs={songs} />
         </div>
-        {/* <div className="hidden lg:flex justify-center mt-2 gap-3">
+        <div className="hidden lg:flex justify-center mt-2 gap-3">
           <Button
             containerClassName={"flex items-center"}
             // disabled={!loaded}
@@ -191,7 +191,7 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
           >
             DOWNLOAD EXCEL <IoMdDownload className="text-paragraph-1" />
           </Button>
-        </div> */}
+        </div>
       </div>
       {preview && (
         <SongDetailsPdfPreview

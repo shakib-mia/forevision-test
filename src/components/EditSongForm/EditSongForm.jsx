@@ -4,6 +4,7 @@ import Button from "../Button/Button";
 import SelectOptions from "../SelectOptions/SelectOptions";
 import axios from "axios";
 import { backendUrl, config } from "../../constants";
+import { camelCaseToNormalText } from "../../utils/camelCaseToNormalText";
 
 const EditSongForm = ({ updatedData, setUpdatedData }) => {
   const [recordLabels, setRecordLabels] = useState([]);
@@ -63,7 +64,7 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
         if (label === "Language") {
           return (
             <div className="grid grid-cols-2 mb-2 items-center" key={key}>
-              <label>{label}</label>
+              <label>{camelCaseToNormalText(label)}</label>
               <SelectOptions
                 value={value}
                 options={languagesInIndia}
@@ -87,7 +88,7 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
         } else if (label === "Sub Label") {
           return (
             <div className="grid grid-cols-2 mb-2 items-center" key={key}>
-              <label>{label}</label>
+              <label>{camelCaseToNormalText(label)}</label>
               <SelectOptions
                 value={updatedData["Sub Label"]}
                 options={recordLabels}
@@ -113,7 +114,7 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
             label === "_id" ||
             label === "S.no" || (
               <div className="grid grid-cols-2 mb-2 items-center" key={key}>
-                <label>{label}</label>
+                <label>{camelCaseToNormalText(label)}</label>
                 <InputField
                   disabled={
                     label === "UPC" || label === "ISRC" || label === "Label"

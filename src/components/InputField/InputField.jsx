@@ -9,41 +9,48 @@ import CountryCodeItem from "../CountryCodeItem/CountryCodeItem";
 import downArrow from "../../assets/icons/down-arrow.webp";
 import countryCodes from "country-codes-list";
 
-const InputField = ({
-  id,
-  label,
-  placeholder,
-  type,
-  containerClassName,
-  onChange,
-  required,
-  name,
-  textarea,
-  pattern,
-  fieldClassName,
-  accept,
-  containerId,
-  selectItems,
-  value,
-  disabled,
-  icon,
-  badge,
-  setBadge,
-  selectedCode,
-  note,
-  setSelectedCode,
-  max,
-  min,
-  labelClassName,
-  itemChecked,
-  fileName,
-  hideRequired,
-}) => {
+const InputField = (props) => {
   const [checked, setChecked] = useState(false);
   const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
-  // console.log(fileName);
+  console.log(passwordVisible);
+  const {
+    id,
+    label,
+    placeholder,
+    type,
+    containerClassName,
+    onChange,
+    required,
+    name,
+    textarea,
+    pattern,
+    fieldClassName,
+    accept,
+    containerId,
+    selectItems,
+    value,
+    disabled,
+    icon,
+    badge,
+    setBadge,
+    selectedCode,
+    note,
+    setSelectedCode,
+    max,
+    min,
+    labelClassName,
+    itemChecked,
+    fileName,
+    hideRequired,
+    dangerNote,
+    successNote,
+    maxLength,
+  } = props;
+
+  const inputType =
+    type === "password" ? (passwordVisible ? "text" : "password") : type;
 
   useEffect(() => {
     if (type === "number") {
@@ -91,15 +98,24 @@ const InputField = ({
           )}
           {type !== "file" || type !== "checkbox" ? (
             textarea ? (
-              <textarea
-                required={required}
-                name={name}
-                onChange={onChange}
-                className={`border-[1px] border-surface-white-line text-[12px] resize-none bg-surface-white-surface-1 focus:bg-surface-white w-full px-[16px] py-[12px] focus:outline-interactive-light-focus rounded-[4px] placeholder:text-black-secondary text-paragraph-2 input-field ${fieldClassName}`}
-                id={id}
-                rows={6}
-                placeholder={placeholder}
-              ></textarea>
+              <>
+                <textarea
+                  required={required}
+                  name={name}
+                  onChange={onChange}
+                  className={`border-[1px] border-surface-white-line text-[12px] resize-none bg-surface-white-surface-1 focus:bg-surface-white w-full px-[16px] py-[12px] focus:outline-interactive-light-focus rounded-[4px] placeholder:text-black-secondary text-paragraph-2 input-field ${fieldClassName}`}
+                  id={id}
+                  rows={6}
+                  placeholder={placeholder}
+                  maxLength={maxLength}
+                  {...props}
+                ></textarea>
+                {maxLength && (
+                  <div className="text-right text-subtitle-1 text-grey">
+                    {value.length}/{maxLength}
+                  </div>
+                )}
+              </>
             ) : (
               // file type
               <div
@@ -212,17 +228,11 @@ const InputField = ({
                 ) : (
                   <div className="relative">
                     <input
+                      {...props} // need to destructure first to keep password visibility functionality right
                       onChange={onChange}
-                      type={
-                        type === "password"
-                          ? passwordVisible
-                            ? "text"
-                            : "password"
-                          : type
-                      }
+                      type={inputType}
                       required={required}
                       name={name}
-                      value={value}
                       disabled={disabled}
                       pattern={pattern}
                       className={`placeholder:text-black-secondary disabled:bg-interactive-light-disabled disabled:border-interactive-light-disabled disabled:cursor-not-allowed focus:outline-none rounded-[4px] text-paragraph-2 bg-transparent file:cursor-pointer file:bg-primary file:border-[1px] border-[1px] border-surface-white-line focus:border-interactive-light-focus file:border-primary file:hover:bg-transparent file:hover:text-primary file:text-white file:px-[44px] file:py-[12px] file:transition file:duration-[0.2s] input-field focus:bg-surface-white ${
@@ -234,19 +244,16 @@ const InputField = ({
                       min={min}
                     />
                     {type === "password" && (
-                      <label className="absolute right-2 top-0 bottom-0 my-auto flex items-center cursor-pointer">
+                      <div
+                        className="absolute right-2 top-0 bottom-0 my-auto flex items-center cursor-pointer"
+                        onClick={() => setPasswordVisible(!passwordVisible)}
+                      >
                         <img
                           src={!passwordVisible ? eyeSlash : eye}
                           alt="password-visibility-handle"
                           className="w-2 h-2"
                         />
-
-                        <input
-                          type="checkbox"
-                          className="hidden"
-                          onChange={(e) => setPasswordVisible(e.target.checked)}
-                        />
-                      </label>
+                      </div>
                     )}
                   </div>
                 )}
@@ -319,7 +326,17 @@ const InputField = ({
         />
       )}
 
-      <p className="text-subtitle-2 text-grey-dark">{note}</p>
+      <p
+        className={`text-subtitle-2 text-right ${
+          dangerNote
+            ? "text-interactive-light-destructive"
+            : successNote
+            ? "text-interactive-light-confirmation"
+            : "text-grey-dark "
+        }`}
+      >
+        {note}
+      </p>
     </div>
   );
 };

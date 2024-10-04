@@ -39,24 +39,25 @@ import { GoTag } from "react-icons/go";
 import { LuHome, LuUserCheck2 } from "react-icons/lu";
 import { FaUserCheck } from "react-icons/fa";
 import KYC from "./pages/KYC/KYC";
-import { IoMdAnalytics } from "react-icons/io";
+import { IoMdAnalytics, IoMdHome } from "react-icons/io";
 import Analytics from "./components/Analytics/Analytics";
 import BulkUpload from "./pages/BulkUpload/BulkUpload";
 import SocialLinks from "./pages/SocialLinks/SocialLinks";
+import { FaCrown } from "react-icons/fa6";
 
-// export const backendUrl = "http://localhost:5000/";
+// export const backendUrl = "http://localhost:5100/";
 export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
-  // {
-  //   icon: <LuHome className="text-[24px]" />,
-  //   text: "Home",
-  //   path: "/",
-  // },
+  {
+    icon: <IoMdHome className="text-[24px]" />,
+    text: "Home",
+    path: "/",
+  },
   {
     icon: <BsGraphUpArrow className="text-[24px]" />,
     text: "Revenue",
-    path: "/",
+    path: "/revenue",
   },
   // {
   //   icon: <IoMdAnalytics className="text-[24px]" />,
@@ -83,11 +84,11 @@ export const navItem = [
   //   text: "Dashboard",
   //   path: "/dashboard",
   // },
-  // {
-  //   icon: <BsUpload className="text-heading-6" />,
-  //   text: "Song Upload",
-  //   path: "/song-upload",
-  // },
+  {
+    icon: <BsUpload className="text-heading-6" />,
+    text: "Song Upload",
+    path: "/song-upload",
+  },
   // {
   //   icon: (
   //     // <svg
@@ -109,45 +110,53 @@ export const navItem = [
   //   text: "Upload",
   //   path: "/song-upload",
   // },
-  // {
-  //   icon: <GoTag className="text-[24px]" />,
-  //   text: "Plans",
-  //   path: "/plans",
-  //   // dropdownItem: [
-  //   //   {
-  //   //     text: "item 1",
-  //   //     dropdownPath: "/plans/1",
-  //   //   },
-  //   //   {
-  //   //     text: "item 1",
-  //   //     dropdownPath: "/plans/2",
-  //   //   },
-  //   //   {
-  //   //     text: "item 1",
-  //   //     dropdownPath: "/plans/3",
-  //   //   },
-  //   //   {
-  //   //     text: "item 1",
-  //   //     dropdownPath: "/plans/4",
-  //   //   },
-  //   //   {
-  //   //     text: "item 1",
-  //   //     dropdownPath: "/plans/5",
-  //   //   },
-  //   // ],
-  // },
+  {
+    icon: <GoTag className="text-[24px]" />,
+    text: "Plans",
+    path: "/plans",
+    // dropdownItem: [
+    //   {
+    //     text: "item 1",
+    //     dropdownPath: "/plans/1",
+    //   },
+    //   {
+    //     text: "item 1",
+    //     dropdownPath: "/plans/2",
+    //   },
+    //   {
+    //     text: "item 1",
+    //     dropdownPath: "/plans/3",
+    //   },
+    //   {
+    //     text: "item 1",
+    //     dropdownPath: "/plans/4",
+    //   },
+    //   {
+    //     text: "item 1",
+    //     dropdownPath: "/plans/5",
+    //   },
+    // ],
+  },
 
-  // {
-  //   icon: <LiaItunesNote className="text-heading-6 text-center" />,
-  //   text: "All Songs",
-  //   path: "/all-songs",
-  // },
+  {
+    icon: <LiaItunesNote className="text-heading-6 text-center" />,
+    text: "My Releases",
+    path: "/all-songs",
+  },
 
-  // {
-  //   icon: <LuUserCheck2 className="text-heading-6 text-center" />,
-  //   text: "KYC",
-  //   path: "/kyc",
-  // },
+  {
+    icon: (
+      <FaCrown className="text-heading-6 text-yellow-300 group-hover:text-black" />
+    ),
+    text: "Yearly Plan Request",
+    path: "/yearly-plan",
+  },
+
+  {
+    icon: <LuUserCheck2 className="text-heading-6 text-center" />,
+    text: "KYC",
+    path: "/kyc",
+  },
 ];
 
 export const navPhone = [
@@ -265,7 +274,7 @@ export const user = JSON.parse(sessionStorage.getItem("user"));
 
 export const routes = [
   {
-    path: "/home",
+    path: "/",
     page: (
       <RequireAuth>
         <Home /> {/* will be replaced by <Home /> */}
@@ -407,6 +416,15 @@ export const routes = [
   },
 
   {
+    path: "/edit-song/:_id",
+    page: (
+      <RequireAuth>
+        <SongUploadNew />
+      </RequireAuth>
+    ),
+  },
+
+  {
     path: "/projects/ongoing",
     page: (
       <RequireAuth>
@@ -435,13 +453,13 @@ export const routes = [
   {
     path: "/profile/:id",
     page: (
-      <RequireAuth>
+      <>
         <Profile />
-      </RequireAuth>
+      </>
     ),
   },
   {
-    path: "/",
+    path: "/revenue",
     page: (
       // <Construction />
       <RequireAuth>

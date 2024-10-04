@@ -22,6 +22,7 @@ import Modal from "../../components/Modal/Modal";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { PlanContext } from "../../contexts/PlanContext";
+import FeatureTable from "../../components/FeatureTable/FeatureTable";
 
 const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
   const navigate = useNavigate();
@@ -79,8 +80,6 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
         autoplayHoverPause
         navigation="true"
         nav
-        autoplay
-        autoplayTimeout={1500}
         responsive={{
           0: {
             items: 1,
@@ -184,10 +183,10 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
                 setPlanName("forevision-social");
                 setPlanStore((prev) => ({
                   ...prev,
-                  planName: "forevision-social",
+                  planName: "ForeVision-social",
                   price: 0,
                 }));
-                navigate("/song-upload?forevision-social+?0");
+                navigate("/song-upload?foreVision-social?0");
               }}
             ></Button>
           </div>
@@ -588,6 +587,8 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
           </div>
         </Modal>
       )}
+
+      <FeatureTable />
     </div>
   );
 };

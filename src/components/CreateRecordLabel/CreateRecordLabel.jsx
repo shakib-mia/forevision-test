@@ -66,18 +66,20 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       const formData = new FormData();
       formData.append("file", pdfBlob, fileName);
 
-      await axios.post(backendUrl + "upload-letterhead", formData, {
+      const res = await axios.post(backendUrl + "upload-letterhead", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           token,
         },
       });
 
+      // console.log(res);
+
       // Submit record label data
       const config = { headers: { token } };
       const response = await axios.post(
         backendUrl + "record-labels",
-        data,
+        { ...data, pdf: res.data.url },
         config
       );
 
@@ -106,6 +108,8 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
     }
   };
 
+  console.log(recordLabelData);
+
   return (
     <form
       className={`${
@@ -127,7 +131,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       <h5
         className={
           location.pathname === "/home" || location.pathname === "/"
-            ? "text-heading-4-bold text-grey-dark mb-2"
+            ? "text-heading-5-bold 2xl:text-heading-4-bold text-grey-dark mb-2"
             : "text-heading-5-bold text-center mt-4"
         }
       >
@@ -138,7 +142,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       <InputField
         type={"text"}
         placeholder={"Record Label Name"}
-        label={"Name"}
+        label={"Record Label Name"}
         name={"recordLabelName"}
         id={"record-label-name"}
         required={true}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AlbumDetails from "../../components/AlbumDetails/AlbumDetails";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import AudioUI from "../../components/Audio/Audio";
@@ -10,6 +10,8 @@ import AlbumAudio from "../../components/AlbumAudio/AlbumAudio";
 import Button from "../../components/Button/Button";
 import Modal from "../../components/Modal/Modal";
 import Preview from "../../components/Preview/Preview";
+import { PlanContext } from "../../contexts/PlanContext";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const AlbumUpload = () => {
   const [intiFormData, setInitFormData] = useState([
@@ -55,9 +57,11 @@ const AlbumUpload = () => {
   const [artistCount, setArtistCount] = useState(0);
   const location = useLocation();
   const [modal, showModal] = useState(false);
+  const { userData } = useContext(ProfileContext);
+  // console.log(userData);
 
   return (
-    <div className="lg:w-11/12 ml-auto">
+    <div className="lg:w-11/12 ml-auto pt-5">
       <SongUploadProgress screen={screen} setScreen={setScreen} />
       <div className={`mt-5 px-5 py-6 shadow`}>
         <h4 className="text-heading-4-bold text-grey capitalize mb-4">
@@ -65,6 +69,7 @@ const AlbumUpload = () => {
           {location.search.split("?")[1]?.includes("-")
             ? location.search.split("?")[1]?.split("-")?.join(" ")
             : location.search.split("?")[1]}
+          {userData.yearlyPlanEndDate && "Yearly Plan"}
         </h4>
 
         {modal && (

@@ -55,6 +55,8 @@ const ForgetPassword = () => {
         placeholder="Enter your existing Email Address"
         containerClassName="mt-3"
         name="forgot-email"
+        required={true}
+        hideRequired={true}
         onChange={(e) => setEmail(e.target.value)}
       />
 

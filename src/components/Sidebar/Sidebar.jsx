@@ -1,17 +1,17 @@
 import React, { useContext, useState } from "react";
-import logo from "./../../assets/images/logo2.webp";
+// import logo from "./../../assets/images/logo2.webp";
 // import search from "./../../assets/icons/navbar/search.webp";
 import logout from "./../../assets/icons/navbar/logout.webp";
 import NavItem from "../NavItem/NavItem";
 import { imageDomain, navItem } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
   const { setProfileData, userData } = useContext(ProfileContext);
-  // console.log(userData);
+  console.log(userData);
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {
@@ -36,6 +36,11 @@ const Sidebar = () => {
     navigate("/login");
   };
 
+  const logicalNavItems = userData.yearlyPlanEndDate
+    ? navItem.filter(
+        ({ text }) => text !== "Plans" || text !== "Yearly Plan Request"
+      )
+    : navItem.filter(({ text }) => text !== "Song Upload");
   // console.log(userData);
 
   return (
@@ -45,9 +50,9 @@ const Sidebar = () => {
       onMouseLeave={handleMouseLeave}
     >
       <section>
-        <Link to={"/"}>
+        {/* <Link to={"/"}>
           <img src={logo} alt="logo" id="navbarLogo" className="w-fit h-fit" />
-        </Link>
+        </Link> */}
 
         {/* <div className="mt-4 flex items-center justify-center flex-col">
           <div className="relative w-full">
@@ -66,8 +71,8 @@ const Sidebar = () => {
           </div>
         </div> */}
 
-        <div className="mt-[48px] flex flex-col gap-2 whitespace-nowrap text-white">
-          {navItem.map((props, key) => (
+        <div className="mt-6 flex flex-col gap-2 whitespace-nowrap text-white">
+          {logicalNavItems.map((props, key) => (
             <NavItem {...props} key={key} hovered={hovered} />
           ))}
         </div>
@@ -75,9 +80,7 @@ const Sidebar = () => {
 
       <div className="mb-0 border-t-[1px] border-surface-white-line pt-[20px] flex items-center gap-1 text-white">
         <img
-          src={
-            userData?.display_image ? imageDomain + userData?.display_image : ""
-          }
+          src={userData?.display_image ? userData?.display_image : ""}
           className="rounded-full w-[40px] h-[40px]"
           alt="profile"
         />
@@ -94,8 +97,7 @@ const Sidebar = () => {
             </Link> */}
             <div className="overflow-hidden whitespace-nowrap">
               <h1 className="text-subtitle-1-bold">
-                {userData?.partner_name ||
-                  userData?.first_name + " " + userData?.last_name}
+                {userData?.first_name + " " + userData?.last_name}
               </h1>
               <p className="text-button">
                 {userData?.user_email || userData?.emailId}

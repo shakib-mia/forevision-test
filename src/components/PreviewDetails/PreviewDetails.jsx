@@ -1,14 +1,19 @@
 import React, { useState, useRef, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AlbumPreview from "../AlbumPreview/AlbumPreview";
 import Button from "../Button/Button";
 import { ScreenContext } from "../../contexts/ScreenContext";
+import { backendUrl, config } from "../../constants";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const PreviewDetails = ({ albumData }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const { setScreen } = useContext(ScreenContext);
   const location = useLocation();
   const audioRef = useRef(null);
+  const navigate = useNavigate();
+  console.log(albumData);
 
   const togglePlay = () => {
     if (isPlaying) {
@@ -19,7 +24,18 @@ const PreviewDetails = ({ albumData }) => {
     setIsPlaying(!isPlaying);
   };
 
-  return location.pathname === "/song-upload" ? (
+  const handleUpdate = () => {
+    albumData.update = false;
+    axios.post(backendUrl + "edit-song", albumData, config).then(({ data }) => {
+      if (data.insertedId.length > 0) {
+        // setEditId("");
+        toast.success("Update Request Submitted");
+        navigate("/");
+      }
+    });
+  };
+
+  return location.pathname !== "/album-upload" ? (
     <div className="bg-surface-white-surface-1 min-h-screen p-4 mx-auto w-full">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="flex flex-col lg:flex-row">
@@ -118,8 +134,125 @@ const PreviewDetails = ({ albumData }) => {
           </aside>
         </div>
 
-        {albumData?.songs?.map((item) => (
-          <>
+        {location.pathname === "/album-upload" ? (
+          // Album Logic: Loop through multiple songs in the album
+          albumData?.songs?.map((item, index) => (
+            <div key={index}>
+              {/* Audio Player Section */}
+              <div className="px-4 py-3">
+                <h2 className="text-heading-6-bold text-black">Audio Player</h2>
+                <div className="mt-3 flex items-center">
+                  <button
+                    onClick={togglePlay}
+                    className="bg-interactive-light text-white px-3 py-2 rounded-md hover:bg-interactive-light-hover focus:outline-none focus:ring-2 focus:ring-interactive-light-focus focus:ring-opacity-50"
+                  >
+                    {isPlaying ? "Pause" : "Play"}
+                  </button>
+                  <audio ref={audioRef} src={item.songUrl} className="ml-3" />
+                  <span className="ml-3 text-subtitle-2 text-black-secondary">
+                    Start Time: {item.startMinutes}:
+                    {item.startSeconds.toString().padStart(2, "0")} -{" "}
+                    {item.startMinutes2}:
+                    {item.startSeconds2.toString().padStart(2, "0")}
+                  </span>
+                </div>
+              </div>
+
+              {/* Additional Information Section */}
+              <div className="px-4 py-3 bg-surface-white-surface-2">
+                <h2 className="text-heading-6-bold text-black">
+                  Additional Information
+                </h2>
+                <div className="mt-2 grid grid-cols-2 gap-3">
+                  <div>
+                    <span className="text-subtitle-2 text-black-secondary">
+                      ISRC:
+                    </span>{" "}
+                    <span className="text-subtitle-2-bold text-primary">
+                      {item.isrc}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-subtitle-2 text-black-secondary">
+                      UPC:
+                    </span>{" "}
+                    <span className="text-subtitle-2-bold text-primary">
+                      {item.UPC}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-subtitle-2 text-black-secondary">
+                      Publisher:
+                    </span>{" "}
+                    <span className="text-subtitle-2-bold text-primary">
+                      {item.publisher}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-subtitle-2 text-black-secondary">
+                      Record Label:
+                    </span>{" "}
+                    <span className="text-subtitle-2-bold text-primary">
+                      {item.recordLabel}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-subtitle-2 text-black-secondary">
+                      Content Type:
+                    </span>{" "}
+                    <span className="text-subtitle-2-bold text-primary">
+                      {item.contentType}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-subtitle-2 text-black-secondary">
+                      Payment Status:
+                    </span>{" "}
+                    <span className="text-subtitle-2-bold text-primary">
+                      {item.status}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-subtitle-2 text-black-secondary">
+                      Upload Time:
+                    </span>{" "}
+                    <span className="text-subtitle-2-bold text-primary">
+                      {item.time}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-subtitle-2 text-black-secondary">
+                      User Email:
+                    </span>{" "}
+                    <span className="text-subtitle-2-bold text-primary">
+                      {item.userEmail}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Selected Platforms Section */}
+              <div className="px-4 py-3">
+                <h2 className="text-heading-6-bold text-black">
+                  Selected Platforms
+                </h2>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {item.selectedPlatforms.map((platform, idx) => (
+                    <span
+                      key={idx}
+                      className="inline-block bg-interactive-light transition hover:bg-interactive-light-hover text-white text-subtitle-2 px-2 py-1 rounded-full"
+                    >
+                      {platform}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          // Single Song Logic: Handle single song data
+          <div>
+            {/* Audio Player Section */}
             <div className="px-4 py-3">
               <h2 className="text-heading-6-bold text-black">Audio Player</h2>
               <div className="mt-3 flex items-center">
@@ -129,16 +262,21 @@ const PreviewDetails = ({ albumData }) => {
                 >
                   {isPlaying ? "Pause" : "Play"}
                 </button>
-                <audio ref={audioRef} src={item.songUrl} className="ml-3" />
+                <audio
+                  ref={audioRef}
+                  src={albumData.songUrl}
+                  className="ml-3"
+                />
                 <span className="ml-3 text-subtitle-2 text-black-secondary">
-                  Start Time: {item.startMinutes}:
-                  {item.startSeconds.toString().padStart(2, "0")} -{" "}
-                  {item.startMinutes2}:
-                  {item.startSeconds2.toString().padStart(2, "0")}
+                  Start Time: {albumData.startMinutes}:
+                  {albumData.startSeconds.toString().padStart(2, "0")} -{" "}
+                  {albumData.startMinutes2}:
+                  {albumData.startSeconds2.toString().padStart(2, "0")}
                 </span>
               </div>
             </div>
 
+            {/* Additional Information Section */}
             <div className="px-4 py-3 bg-surface-white-surface-2">
               <h2 className="text-heading-6-bold text-black">
                 Additional Information
@@ -149,7 +287,7 @@ const PreviewDetails = ({ albumData }) => {
                     ISRC:
                   </span>{" "}
                   <span className="text-subtitle-2-bold text-primary">
-                    {item.isrc}
+                    {albumData.isrc}
                   </span>
                 </div>
                 <div>
@@ -157,7 +295,7 @@ const PreviewDetails = ({ albumData }) => {
                     UPC:
                   </span>{" "}
                   <span className="text-subtitle-2-bold text-primary">
-                    {item.UPC}
+                    {albumData.UPC}
                   </span>
                 </div>
                 <div>
@@ -165,7 +303,7 @@ const PreviewDetails = ({ albumData }) => {
                     Publisher:
                   </span>{" "}
                   <span className="text-subtitle-2-bold text-primary">
-                    {item.publisher}
+                    {albumData.publisher}
                   </span>
                 </div>
                 <div>
@@ -173,7 +311,7 @@ const PreviewDetails = ({ albumData }) => {
                     Record Label:
                   </span>{" "}
                   <span className="text-subtitle-2-bold text-primary">
-                    {item.recordLabel}
+                    {albumData.recordLabel}
                   </span>
                 </div>
                 <div>
@@ -181,7 +319,7 @@ const PreviewDetails = ({ albumData }) => {
                     Content Type:
                   </span>{" "}
                   <span className="text-subtitle-2-bold text-primary">
-                    {item.contentType}
+                    {albumData.contentType}
                   </span>
                 </div>
                 <div>
@@ -189,7 +327,7 @@ const PreviewDetails = ({ albumData }) => {
                     Payment Status:
                   </span>{" "}
                   <span className="text-subtitle-2-bold text-primary">
-                    {item.status}
+                    {albumData.status}
                   </span>
                 </div>
                 <div>
@@ -197,7 +335,7 @@ const PreviewDetails = ({ albumData }) => {
                     Upload Time:
                   </span>{" "}
                   <span className="text-subtitle-2-bold text-primary">
-                    {item.time}
+                    {albumData.time}
                   </span>
                 </div>
                 <div>
@@ -205,20 +343,21 @@ const PreviewDetails = ({ albumData }) => {
                     User Email:
                   </span>{" "}
                   <span className="text-subtitle-2-bold text-primary">
-                    {item.userEmail}
+                    {albumData.userEmail}
                   </span>
                 </div>
               </div>
             </div>
 
+            {/* Selected Platforms Section */}
             <div className="px-4 py-3">
               <h2 className="text-heading-6-bold text-black">
                 Selected Platforms
               </h2>
               <div className="mt-2 flex flex-wrap gap-2">
-                {item.selectedPlatforms.map((platform, index) => (
+                {albumData.selectedPlatforms?.map((platform, idx) => (
                   <span
-                    key={index}
+                    key={idx}
                     className="inline-block bg-interactive-light transition hover:bg-interactive-light-hover text-white text-subtitle-2 px-2 py-1 rounded-full"
                   >
                     {platform}
@@ -226,14 +365,18 @@ const PreviewDetails = ({ albumData }) => {
                 ))}
               </div>
             </div>
-          </>
-        ))}
+          </div>
+        )}
       </div>
 
       <div className="flex justify-center mt-5">
-        <Button onClick={() => setScreen("distribution")}>
-          Proceed to Checkout
-        </Button>
+        {location.pathname.includes("/edit-song") ? (
+          <Button onClick={handleUpdate}>Confirm</Button>
+        ) : (
+          <Button onClick={() => setScreen("distribution")}>
+            Proceed to Checkout
+          </Button>
+        )}
       </div>
     </div>
   ) : (

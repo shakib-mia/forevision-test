@@ -12,7 +12,7 @@ function AudioPlayer({ src }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(40);
-  console.log(src.length);
+  console.log(formData);
 
   const audioRef = useRef(null);
   const progressRef = useRef(null);

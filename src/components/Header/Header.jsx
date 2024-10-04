@@ -8,13 +8,13 @@ const Header = ({ header, subheader }) => {
         {header === "Resso Profile Verification" && (
           <img className="w-5 h-5" src={resso} alt="" />
         )}
-        <h1 className="text-center text-primary text-heading-3">{header}</h1>
+        <h1 className="text-center text-grey-dark text-heading-3-bold">
+          {header}
+        </h1>
       </div>
       {/* <hr className="mx-[333px] border-secondary-light border-[1px]" /> */}
 
-      <h5 className="text-primary-light text-center text-paragraph-1">
-        {subheader}
-      </h5>
+      <h5 className="text-grey text-center text-paragraph-1">{subheader}</h5>
 
       {/* <hr className="mx-[459px] border-secondary-light border-[1px]" /> */}
     </header>

@@ -126,7 +126,11 @@ const YearlyPlanForm = () => {
     // console.log(planData);
     axios
       .post(backendUrl + "yearly-plans", planData, config)
-      .then(({ data }) => console.log(data));
+      .then(({ data }) => {
+        if (data.acknowledged) {
+          e.target.reset();
+        }
+      });
   };
 
   return (

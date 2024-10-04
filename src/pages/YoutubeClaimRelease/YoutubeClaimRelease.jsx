@@ -51,7 +51,11 @@ const YoutubeClaimRelease = () => {
         }
       />
 
-      <Form fields={fields} handleSubmit={handleSubmit} />
+      <Form
+        id="youtube-claim-release"
+        fields={fields}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 };

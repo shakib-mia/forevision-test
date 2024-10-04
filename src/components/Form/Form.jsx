@@ -22,6 +22,7 @@ const Form = forwardRef(
       instruction,
       backendUrl,
       uIdKey,
+      submitFromParent,
       id,
       containerClassName,
       headingSize,
@@ -53,20 +54,20 @@ const Form = forwardRef(
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const formData = new FormData();
-      formData.append(uIdKey, user.ID);
+      const formData = {};
 
       for (const field of fields) {
-        /*****============ working codes =============*******/
         if (Object.keys(field).includes("selectItems")) {
-          const selected = field.selectItems.map((item) =>
-            item.selected ? item.text : ""
-          );
-          formData.append(field.name, selected.join(", "));
+          const selected = field.selectItems
+            .filter((item) => item.selected)
+            .map((item) => item.text);
+          formData[field.name] = selected.join(", ");
         } else if (e.target[field.name]?.type !== "file") {
-          formData.append(field.name, e.target[field.name]?.value);
+          formData[field.name] = e.target[field.name]?.value;
         } else {
-          formData.append(field.name, e.target[field.name].files[0]);
+          // For file inputs, we can't send the file directly in JSON
+          // You might need to handle file uploads separately
+          formData[field.name] = e.target[field.name].files[0]?.name || "";
         }
       }
 
@@ -74,38 +75,49 @@ const Form = forwardRef(
         const selectItems = fields[5].selectItems.filter(
           (item) => item.selected === true
         );
-        const selectedItems = [];
-        selectItems.map((item) => selectedItems.push(item.text));
-
-        formData.append(
-          "video_distribution_content_type",
-          selectedItems.join(", ")
-        );
+        const selectedItems = selectItems.map((item) => item.text);
+        formData["video_distribution_content_type"] = selectedItems.join(", ");
       }
+
+      formData.id = id; // Include the form id
 
       toastId.current = toast("Loading...", {
         autoClose: false,
         position: "bottom-right",
       });
 
-      if (Object.entries(formData)) {
-        axios
-          .post(backendUrl, formData, {
+      console.log("Sending data:", formData);
+
+      try {
+        const response = await axios.post(
+          backendUrl + "submit-form",
+          formData,
+          {
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${profileData.user_token}`,
             },
-          })
-          .then(({ data }) => {
-            if (data.success) {
-              // console.log(data);
-              toast.update(toastId.current, {
-                type: toast.TYPE.SUCCESS,
-                render: "Success",
-                position: "bottom-right",
-                autoClose: 5000,
-              });
-            }
+          }
+        );
+
+        if (response.data.insertedId.length) {
+          toast.update(toastId.current, {
+            type: toast.TYPE.SUCCESS,
+            render: "Success",
+            position: "bottom-right",
+            autoClose: 5000,
           });
+        } else {
+          throw new Error(response.data.message || "Submission failed");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        toast.update(toastId.current, {
+          type: toast.TYPE.ERROR,
+          render: `Error: ${error.message || "An unexpected error occurred"}`,
+          position: "bottom-right",
+          autoClose: 5000,
+        });
       }
     };
 
@@ -149,7 +161,7 @@ const Form = forwardRef(
     return (
       <>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={submitFromParent || handleSubmit}
           onChange={handleChange}
           id={id || "myForm"}
           ref={ref || formRef}

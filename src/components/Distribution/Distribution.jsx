@@ -11,6 +11,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import GSTCalculator from "../GstCalculator/GstCalculator";
 import { PlanContext } from "../../contexts/PlanContext";
+import Agreement from "../Agreement/Agreement";
 
 const Distribution = () => {
   const location = useLocation();
@@ -23,6 +24,7 @@ const Distribution = () => {
   const { formData, setScreen } = useContext(ScreenContext);
   const [orderId, setOrderId] = useState("XXXXX");
   const { planStore } = useContext(PlanContext);
+  const [showAgreement, setShowAgreement] = useState(false);
   // console.log(planStore);
 
   // console.log();
@@ -270,12 +272,15 @@ const Distribution = () => {
                 onChange={(e) => {
                   setAccepted(e.target.checked);
                   formData.accepted = e.target.checked;
+                  setShowAgreement(true);
                 }}
               />{" "}
               I Accept the{" "}
               <Link
                 className="text-interactive-light font-medium hover:text-interactive-dark-hover active:text-interactive-light-active focus:text-interactive-light-focus"
                 to="/terms-and-conditions"
+                target="_blank"
+                onClick={(e) => e.stopPropagation()}
               >
                 Terms and Conditions
               </Link>
@@ -315,6 +320,13 @@ const Distribution = () => {
           {/* <Button>Submit</Button> */}
         </div>
       </div>
+
+      {showAgreement && (
+        <Agreement
+          formData={formData}
+          handleClose={() => setShowAgreement(false)}
+        />
+      )}
     </>
   );
 };

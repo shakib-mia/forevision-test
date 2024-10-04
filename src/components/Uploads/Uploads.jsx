@@ -25,7 +25,7 @@ const Uploads = () => {
     };
     if (userData && userData.isrc) {
       axios
-        .get(backendUrl + "songs", config)
+        .get(backendUrl + "songs/by-user-id/" + userData["user-id"])
         .then(({ data }) => setSongs(data));
     }
   }, [userData.isrc]);
@@ -77,7 +77,9 @@ const Uploads = () => {
 
       {location.pathname === "/" && (
         <div className="flex items-center justify-between">
-          <h5 className="text-heading-4-bold text-grey-dark">Your Uploads</h5>
+          <h5 className="text-heading-6-bold lg:text-heading-4-bold text-grey-dark">
+            Your Uploads
+          </h5>
 
           <Button
             onClick={() => navigate("/revenue")}

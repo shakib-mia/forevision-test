@@ -7,7 +7,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Fasthand&display=swap");
 
 body {
-  @apply h-screen overflow-y-auto;
+  @apply h-screen overflow-y-auto pb-6;
   font-family: "Roboto", sans-serif;
 }
 
@@ -228,4 +228,9 @@ input[type="range"]:focus {
 
 #upload-progress::-webkit-scrollbar {
   @apply w-0 h-0;
+}
+
+.swal2-container {
+  /* z-index: 1050;  Set the desired z-index for the modal */
+  @apply !z-[9999];
 }

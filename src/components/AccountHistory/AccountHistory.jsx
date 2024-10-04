@@ -1,18 +1,54 @@
-import React from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const AccountHistory = () => {
+  const [history, setHistory] = useState([]);
+  const { token } = useContext(ProfileContext);
+
+  useEffect(() => {
+    axios
+      .get("http://192.168.0.105:5100/account-history", {
+        headers: { token },
+      })
+      .then(({ data }) => {
+        console.clear();
+        setHistory(data);
+      });
+  }, []);
+
   return (
     <div className="w-full 2xl:w-1/2 bg-grey-light rounded-2xl p-4 h-[392px]">
-      <h4 className="text-heading-4-bold">Account History</h4>
+      <h4 className="text-heading-6-bold 2xl:text-heading-4-bold mb-3">
+        Account History
+      </h4>
 
-      <h3 className="text-heading-3-bold italic text-grey">Coming Soon...</h3>
-      {/* <div className="flex">
-        <div className="w-3/4">
-          You have requested for withdrawal of INR XXXXXXX .It will take 5-7
-          Business days to process.
-        </div>
-        <div className="w-1/4">Lorem, ipsum.</div>
-      </div> */}
+      <div className="grid grid-cols-3 text-center py-2">
+        <p>Date</p>
+        <p>Amount</p>
+        <p>Status</p>
+        {/* <p></p> */}
+      </div>
+
+      {history.map(
+        ({ paymentDate, totalAmount, status, declined, disbursed, _id }) => (
+          <div className="grid grid-cols-3 text-center py-1" key={_id}>
+            <p>{paymentDate}</p>
+            <p>{totalAmount}</p>
+            <p
+              className={
+                declined
+                  ? "text-interactive-light-destructive-focus"
+                  : disbursed
+                  ? "text-interactive-light-confirmation-focus"
+                  : "text-interactive-light"
+              }
+            >
+              {declined ? "Declined" : disbursed ? "Disbursed" : "Pending"}
+            </p>
+          </div>
+        )
+      )}
     </div>
   );
 };

@@ -59,7 +59,8 @@ const LinkFacebookAndInstagramProfile = () => {
       <Form
         fields={fields}
         uIdKey="link_user_id"
-        backendUrl="http://adztronaut.com/music/admin/api/addFacebookInstaSong"
+        id="fb-insta-profile"
+        // backendUrl="http://adztronaut.com/music/admin/api/addFacebookInstaSong"
       />
     </div>
   );

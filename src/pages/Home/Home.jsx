@@ -20,24 +20,29 @@ import Uploads from "../../components/Uploads/Uploads";
 import { FaPen } from "react-icons/fa";
 import RecentUploads from "../../components/RecentUploads/RecentUploads";
 import CreateRecordLabel from "../../components/CreateRecordLabel/CreateRecordLabel";
-
-// import bg from "./../../assets/images/dashboard-bg.webp";
+import AccountBalance from "../../components/AccountBalance/AccountBalance";
+import RecordLabels from "../../components/RecordLabels/RecordLabels";
+import UploadRecordLabel from "../../components/UploadRecordLabel/UploadRecordLabel";
 
 const Home = () => {
   const navigate = useNavigate();
   const { userData, token } = useContext(ProfileContext);
-
+  // console.log(userData);
   // console.log(
   //   (userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)).toFixed(2)
   // );
 
   return (
-    <div className="2xl:bg-grey-dark p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7 2xl:mt-6">
+    <div className="2xl:bg-grey-darks 2xl:pt-0 pt-7 p-2 2xl:p-5 2xl:rounded-[20px] 2xl:m-4 2xl:ml-7 2xl:mt-7">
       <div className="grid grid-cols-1 2xl:grid-cols-3 justify-between space-y-4 2xl:space-y-0 2xl:space-x-2 text-grey-dark">
-        <div className="bg-grey-light p-0 2xl:p-4 rounded-2xl">
+        <div className="bg-grey-light p-2 2xl:p-4 rounded-2xl">
           <div className="flex flex-col 2xl:flex-row items-center 2xl:items-end justify-center 2xl:justify-between">
-            <img src={profile} className="rounded-full w-5/12 mb-0" alt="" />
-            <div className="hidden 2xl:block text-center 2xl:text-left">
+            <img
+              src={userData.display_image || profile}
+              className="rounded-full w-5/12 mb-0"
+              alt=""
+            />
+            <div className="text-center 2xl:text-left">
               <Button
                 text="Visit Profile"
                 onClick={() => navigate("/profile")}
@@ -96,18 +101,16 @@ const Home = () => {
                 </a>
               </div> */}
             </div>
-            <p className=" my-1 text-center 2xl:text-left">99 Followers</p>
-            <p className="text-button  uppercase mb-1 text-center 2xl:text-left">
-              Rock is my way of exploring music{" "}
+            {/* <p className=" my-1 text-center 2xl:text-left">99 Followers</p> */}
+            <p className="text-button  uppercase mt-2 mb-1 text-center 2xl:text-left">
+              {userData["short-bio"]}
             </p>
             <p className=" text-subtitle-2 text-center 2xl:text-left">
-              Archaeologists uncover the mythical city of Atlantis, but soon
-              realize they are not alone in their discovery as supernatural
-              forces threaten to destroy them ......
+              {userData.bio}
             </p>
           </div>
         </div>
-        <div className="bg-grey-light px-4 rounded-2xl relative overflow-hidden h-[590px]">
+        {/* <div className="bg-grey-light px-4 rounded-2xl relative overflow-hidden h-[590px]">
           <img
             src={accountBg}
             className="absolute top-0 left-0 z-0 w-full"
@@ -121,23 +124,27 @@ const Home = () => {
               </h4>
               <h4 className="text-heading-4-bold ml-5 2xl:ml-4 mt-5 2xl:mt-4 mb-5">
                 {(
-                  userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                  (userData.lifetimeRevenue || 0) -
+                  (userData.lifetimeDisbursed || 0)
                 ).toFixed(2)}
               </h4>
-              {/* <div className="flex justify-center 2xl:justify-start 2xl:ml-4"> */}
               <Button
                 disabled={
                   (
-                    userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                    (userData.lifetimeRevenue || 0) -
+                    (userData.lifetimeDisbursed || 0)
                   ).toFixed(2) < 1000
                 }
                 text="Request Withdraw"
                 containerClassName={"w-fit 2xl:ml-4"}
                 onClick={() => navigate("/revenue-form")}
               ></Button>
-              {/* </div> */}
             </aside>
           </div>
+        </div> */}
+        <div>
+          {" "}
+          <AccountBalance />
         </div>
         <Uploads />
       </div>
@@ -151,6 +158,10 @@ const Home = () => {
         <RecentUploads />
         {/* <aside className="w-full"></aside> */}
         <CreateRecordLabel />
+      </div>
+      <div className="grid grid-cols-1 mt-2 gap-2 xl:grid-cols-2">
+        <RecordLabels />
+        <UploadRecordLabel />
       </div>
     </div>
   );

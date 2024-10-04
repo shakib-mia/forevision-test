@@ -40,7 +40,10 @@ const Payment = () => {
           "songs/by-order-id/" +
           location.search.split("?")[2].split("=")[1]
       )
-      .then(({ data }) => setSongData(data));
+      .then(({ data }) => {
+        console.log(data);
+        setSongData(data);
+      });
   }, []);
 
   // console.log(location.search.split("=")[1]);
@@ -118,12 +121,13 @@ const Payment = () => {
           };
           // console.log(config);
           const res = await axios.post(verifyUrl, response, config);
-          // console.log(res);
+          console.log(res);
 
           if (res.data.insertCursor.acknowledged) {
             setPlanStore((prev) => ({ ...prev, ...res.data }));
             // navigate("/payment-success");
             // clg;
+            console.log(songData, razorpay_order_id);
             songData.order_id = razorpay_order_id;
             songData.payment_id = razorpay_payment_id;
             songData.status = "paid";

@@ -50,7 +50,7 @@ const SongItem = ({ song }) => {
   //   }
   // }, [showDetails]);
 
-  console.log(song);
+  // console.log(song);
 
   return (
     <div

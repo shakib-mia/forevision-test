@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import background from "../../assets/images/background.png";
 import Button from "../../components/Button/Button";
 import RevenueAnalytics from "../../components/RevenueAnalytics/RevenueAnalytics";
-import balanceBG from "../../assets/images/balance-bg.svg";
 import axios from "axios";
 import { SongsContext } from "./../../contexts/SongsContext";
 import { ProfileContext } from "../../contexts/ProfileContext";
@@ -22,6 +21,7 @@ import { jsonToCsv } from "../../utils/jsonToCsv";
 import * as XLSX from "xlsx";
 import { IoMdDownload } from "react-icons/io";
 import generatePDF, { usePDF } from "react-to-pdf";
+import AccountBalance from "../../components/AccountBalance/AccountBalance";
 
 const Revenue = () => {
   const [songs, setSongs] = useState([]);
@@ -154,7 +154,7 @@ const Revenue = () => {
       for (const [isrcIndex, item] of isrcs.entries()) {
         // Create a promise for each axios.get call
         const promise = axios
-          .get(`${backendUrl}user-revenue/${item}`)
+          .get(`https://api.forevisiondigital.in/user-revenue/${item}`)
           .then(({ data }) => {
             if (data) {
               data.revenues.forEach((song, index) => {
@@ -460,10 +460,10 @@ const Revenue = () => {
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
-        className="bg-[size:100%] bg-no-repeat lg:!pt-6 xl:p-4 xl:pl-7 mb-6 xl:mb-0"
+        className="bg-[size:100%] bg-no-repeat lg:!pt-6 xl:p-4 xl:!pt-7 xl:pl-7 mb-6 xl:mb-0"
         style={{ backgroundImage: `url(${background})` }}
       >
-        <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] pt-5 pb-7 rounded-[20px]">
+        <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] pt-7 pb-7 rounded-[20px]">
           <div className="flex flex-col 2xl:flex-row gap-3 items-center 2xl:items-end">
             <div className="w-full 2xl:w-3/4">
               <h4 className="text-heading-4-bold text-grey-dark 2xl:text-white">
@@ -553,41 +553,8 @@ const Revenue = () => {
               {/* </>} */}
             </div>
             {filtered.length > 0 && (
-              <div
-                className="w-full max-w-[21rem] 2xl:max-w-[24rem] ml-0 2xl:w-1/4 h-full 2xl:h-[380px] flex flex-col justify-between bg-grey-light 2xl:bg-white rounded-[24px] py-5 px-5 2xl:px-[38px] 2xl:py-[50px] bg-top bg-no-repeat 2xl:bg-contain"
-                style={{ backgroundImage: `url(${balanceBG})` }}
-              >
-                <aside>
-                  {/* <img
-                    src={balanceBG}
-                    className="absolute w-full h-auto left-0 top-0 z-0"
-                    alt=""
-                  /> */}
-                  <h4 className="text-heading-4-bold text-white 2xl:text-grey relative">
-                    Account <br className="2xl:hidden" /> Balance
-                  </h4>
-                  <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2 relative">
-                    &#8377;{" "}
-                    {Math.abs(
-                      userData.lifetimeRevenue -
-                        (userData.lifetimeDisbursed || 0)
-                    ).toFixed(2)}
-                  </h4>
-                </aside>
-
-                <div className="flex justify-center">
-                  <Button
-                    onClick={() => navigate("/revenue-form")}
-                    disabled={
-                      (
-                        userData.lifetimeRevenue -
-                        (userData.lifetimeDisbursed || 0)
-                      ).toFixed(2) < 1000 ||
-                      (foundRequested !== null && foundRequested._id)
-                    }
-                    text={"Request Withdraw"}
-                  ></Button>
-                </div>
+              <div className="xl:w-1/4 h-[29rem]">
+                <AccountBalance />
               </div>
             )}
           </div>
@@ -620,7 +587,7 @@ const Revenue = () => {
                   id="revenue-slider"
                 >
                   <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-                    <div className="hidden lg:flex justify-end gap-1">
+                    <div className="flex justify-end flex-col lg:flex-row items-end gap-0 whitespace-nowrap">
                       <Button disabled={!loaded} onClick={getExcel}>
                         DOWNLOAD EXCEL
                         <IoMdDownload className="text-paragraph-1" />
@@ -630,7 +597,7 @@ const Revenue = () => {
                         disabled={!loaded}
                         onClick={createPdf}
                       >
-                        DOWNLOAD PDF{" "}
+                        DOWNLOAD PDF
                         <IoMdDownload className="text-paragraph-1" />
                       </Button>
                     </div>
@@ -838,7 +805,7 @@ const Revenue = () => {
                     )}
                   </div>
 
-                  {window.innerWidth > 768 && (
+                  {window.innerWidth > 1000 && (
                     <Analytics
                       platformData={platformData}
                       songData={aggregatedMusicData}
