@@ -7,11 +7,18 @@ import {
   FaYoutubeSquare,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { useLocation } from "react-router-dom";
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const location = useLocation();
+  // console.log();
   return (
-    <div className="bg-[#000]">
+    <div
+      className={`hidden lg:block ${
+        location.pathname.includes("share") ? "fixed left-0 bottom-0" : "static"
+      } bg-[#000] left-0 w-full`}
+    >
       <footer className="text-center py-2 flex flex-col md:flex-row md:justify-between items-center text-grey w-10/12 mx-auto pb-[70px] lg:pb-2">
         <ul className="flex flex-wrap gap-x-2 gap-y-1 justify-center md:gap-2 mb-2 md:mb-0 text-sm">
           <li className="w-fit">

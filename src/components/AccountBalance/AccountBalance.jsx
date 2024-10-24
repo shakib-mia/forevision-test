@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 
 const AccountBalance = () => {
-  const { userData, foundRequested } = useContext(ProfileContext);
+  const { userData, foundRequested, dollarRate } = useContext(ProfileContext);
   const navigate = useNavigate();
   const location = useLocation();
   return (
@@ -34,11 +34,23 @@ const AccountBalance = () => {
         <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2 relative">
           {isNaN(
             userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
-          ) || <>&#8377;</>}{" "}
+          ) || userData.billing_country === "India" ? (
+            <>&#8377;</>
+          ) : (
+            "$"
+          )}{" "}
           {isNaN(userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0))
             ? "Loading..."
-            : (
+            : userData.billing_country === "India"
+            ? (
                 userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+              ).toFixed(2)
+            : (
+                (userData.lifetimeRevenue.toFixed(2) -
+                  (userData.lifetimeDisbursed
+                    ? userData.lifetimeDisbursed.toFixed()
+                    : 0)) *
+                dollarRate
               ).toFixed(2)}
         </h4>
       </aside>

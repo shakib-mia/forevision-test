@@ -10,15 +10,17 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { PlanContext } from "../../contexts/PlanContext";
 import { ScreenContext } from "../../contexts/ScreenContext";
+import { formatDate } from "../../utils/formatDate";
 
 const Payment = () => {
   const [Razorpay] = useRazorpay();
   const location = useLocation();
-  const { token } = useContext(ProfileContext);
+  const { token, userData } = useContext(ProfileContext);
   const navigate = useNavigate();
   const [songData, setSongData] = useState({});
   const { formData } = useContext(ScreenContext);
   const { setPlanStore, planStore } = useContext(PlanContext);
+
   // console.log();
   // console.log(planStore);
   // console.log(data);
@@ -93,7 +95,8 @@ const Payment = () => {
 
     axios
       .post(backendUrl + "razorpay", {
-        amount: parseInt(location.search.split("?")[1].split("=")[1]),
+        amount: parseFloat(location.search.split("?")[1].split("=")[1]),
+        currency: userData.billing_country === "Indian" ? "INR" : "USD",
       }) // ============  *** Need to set amount dynamically here ***  ================
       .then(({ data }) => initPayment(data))
       .catch((error) => console.log(error));
@@ -103,8 +106,9 @@ const Payment = () => {
     const options = {
       key: "rzp_test_3Tvb4i0zxX8t5m",
       amount: data.amount,
-      currency: data.currency,
+      // currency: data.currency,
       name: data.name,
+      currency: userData.billing_country === "Indian" ? "INR" : "USD",
       description: "Test",
       image: logo,
       order_id: data.id,
@@ -131,6 +135,7 @@ const Payment = () => {
             songData.order_id = razorpay_order_id;
             songData.payment_id = razorpay_payment_id;
             songData.status = "paid";
+            songData.paymentDate = formatDate(new Date());
             axios
               .put(
                 backendUrl +
@@ -140,7 +145,18 @@ const Payment = () => {
               )
               .then(({ data }) => {
                 if (data.acknowledged) {
-                  console.log("navigating....");
+                  axios
+                    .get(
+                      `${backendUrl}plans/monthly-sales/${
+                        location.search.split("?")[1].split("=")[1]
+                      }`,
+                      {
+                        headers: {
+                          token,
+                        },
+                      }
+                    )
+                    .then(({ data }) => console.log(data));
                   navigate("/payment-success");
                 }
               });

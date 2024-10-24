@@ -344,7 +344,7 @@ const EditProfile = ({ handleClose }) => {
         containerClassName={"mt-3"}
         maxLength={180}
         value={formData["short-bio"]}
-        note={`${formData["short-bio"].length}/160`}
+        note={`${formData["short-bio"]?.length}/160`}
       />
 
       <InputField
@@ -352,7 +352,7 @@ const EditProfile = ({ handleClose }) => {
         label={"Your Bio"}
         placeholder={"Add/Edit your Bio Here"}
         onChange={(e) => handleFieldChange("bio", e.target.value)}
-        value={formData.bio}
+        value={formData?.bio}
         hideRequired={true}
         labelClassName={"mb-0"}
         containerClassName={`mt-3 w-full`}

@@ -1,14 +1,15 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import { backendUrl } from "../../constants";
 
 const AccountHistory = () => {
   const [history, setHistory] = useState([]);
-  const { token } = useContext(ProfileContext);
+  const { token, userData, dollarRate } = useContext(ProfileContext);
 
   useEffect(() => {
     axios
-      .get("http://192.168.0.105:5100/account-history", {
+      .get(backendUrl + "account-history", {
         headers: { token },
       })
       .then(({ data }) => {
@@ -16,6 +17,8 @@ const AccountHistory = () => {
         setHistory(data);
       });
   }, []);
+
+  // console.log(history);
 
   return (
     <div className="w-full 2xl:w-1/2 bg-grey-light rounded-2xl p-4 h-[392px]">
@@ -34,7 +37,12 @@ const AccountHistory = () => {
         ({ paymentDate, totalAmount, status, declined, disbursed, _id }) => (
           <div className="grid grid-cols-3 text-center py-1" key={_id}>
             <p>{paymentDate}</p>
-            <p>{totalAmount}</p>
+            <p>
+              {userData.billing_country === "India" ? <>&#8377; </> : "$ "}
+              {userData.billing_country === "India"
+                ? parseFloat(totalAmount)
+                : (parseFloat(totalAmount) * dollarRate).toFixed(2)}
+            </p>
             <p
               className={
                 declined

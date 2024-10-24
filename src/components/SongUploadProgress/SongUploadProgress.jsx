@@ -50,8 +50,8 @@ const SongUploadProgress = ({ setScreen, screen }) => {
                 : "text-grey cursor-not-allowed" // Disallow clicking on future steps if not passed yet
             }`}
             onClick={() => {
-              (isEditMode || isPassedStep) && handleStepClick(step.id);
-              // handleStepClick(step.id);
+              // (isEditMode || isPassedStep) && handleStepClick(step.id);
+              handleStepClick(step.id);
             }}
           >
             <aside

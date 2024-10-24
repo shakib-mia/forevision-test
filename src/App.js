@@ -32,6 +32,9 @@ function App() {
   const [refetch, setRefetch] = useState(true);
   const [recordLabels, setRecordLabels] = useState([]);
   const navigate = useNavigate();
+  const [country, setCountry] = useState("");
+  const [dollarRate, setDollarRate] = useState(0);
+  // const location = useLocation()
 
   /* Working api calls starts here */
 
@@ -74,6 +77,7 @@ function App() {
     uId,
     setUId,
     tokenDetails,
+    dollarRate,
     foundRequested,
     refetch,
     setRefetch,
@@ -125,37 +129,69 @@ function App() {
     price: location.search?.split("?")[2],
   });
 
-  /* Working api calls ends here */
+  useEffect(() => {
+    axios
+      .get("https://ipinfo.io/103.111.225.127?token=1ea4859427fd67")
+      .then(({ data }) => setCountry(data.country));
+  }, []);
 
-  // console.log(store);
+  // Fetch dollar rate when country changes
+  useEffect(() => {
+    const fetchDollarRate = async () => {
+      try {
+        const response = await fetch(
+          "https://api.exchangerate-api.com/v4/latest/INR"
+        );
+        const data = await response.json();
+        setDollarRate(data.rates.USD);
+      } catch (error) {
+        console.error("Error fetching dollar rate:", error);
+      }
+    };
+
+    if (userData.billing_country !== "India") {
+      fetchDollarRate();
+    }
+  }, [userData.billing_country]);
+
+  /* Working api calls ends here */
 
   return (
     <div className="bg-white w-screen h-screen">
-      {/* <Construction /> */}
-      <ProfileContext.Provider value={store}>
-        <PlanContext.Provider value={{ planStore, setPlanStore }}>
-          {token ? token.length && <BottomBar /> : <></>}
-          {location.pathname !== "/login" &&
-            location.pathname !== "/signup" &&
-            location.pathname !== "/forgot-password" &&
-            location.pathname !== "/signup-details" &&
-            !location.pathname.includes("payment") && (
-              <>
-                {store.token && <Sidebar />}
-                {/* {store.token && location.pathname !== "/profile" && <Navbar />} */}
-                {store.token && <Navbar />}
-              </>
-            )}
-          <Routes>
-            {routes.map(({ page, path }, key) => (
-              <Route key={key} path={path} element={page} />
-            ))}
-          </Routes>
-          <ToastContainer />
-        </PlanContext.Provider>
-      </ProfileContext.Provider>
+      <Construction />
+      {/* {country === "PK" ? (
+        <div className="w-full h-full flex justify-center items-center text-interactive-light-destructive-focus text-heading-5">
+          this service is not available for your region
+        </div>
+      ) : (
+        <>
+          <ProfileContext.Provider value={store}>
+            <PlanContext.Provider value={{ planStore, setPlanStore }}>
+              {token ? token.length && <BottomBar /> : <></>}
+              {location.pathname !== "/login" &&
+                location.pathname !== "/signup" &&
+                location.pathname !== "/forgot-password" &&
+                location.pathname !== "/signup-details" &&
+                !location.pathname.includes("payment") && (
+                  <>
+                    {store.token && <Sidebar />}
+                    {store.token && <Navbar />}
+                  </>
+                )}
+              <Routes>
+                {routes.map(({ page, path }, key) => (
+                  <Route key={key} path={path} element={page} />
+                ))}
+              </Routes>
+              <ToastContainer />
+            </PlanContext.Provider>
+          </ProfileContext.Provider>
 
-      <Footer />
+          {location.pathname === "/login" ||
+            location.pathname === "/signup" ||
+            location.pathname === "/signup-details" || <Footer />}
+        </>
+      )} */}
     </div>
   );
 }

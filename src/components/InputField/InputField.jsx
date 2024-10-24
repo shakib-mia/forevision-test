@@ -14,7 +14,6 @@ const InputField = (props) => {
   const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
-  console.log(passwordVisible);
   const {
     id,
     label,
@@ -49,6 +48,8 @@ const InputField = (props) => {
     maxLength,
   } = props;
 
+  // console.log(label, hideRequired);
+
   const inputType =
     type === "password" ? (passwordVisible ? "text" : "password") : type;
 
@@ -80,8 +81,7 @@ const InputField = (props) => {
               </label>
               {!(
                 location.pathname === "/login" ||
-                location.pathname === "/signup" ||
-                location.pathname === "/signup-details"
+                location.pathname === "/signup"
               ) && (
                 <span className="text-black-secondary">
                   {hideRequired ||
@@ -112,7 +112,7 @@ const InputField = (props) => {
                 ></textarea>
                 {maxLength && (
                   <div className="text-right text-subtitle-1 text-grey">
-                    {value.length}/{maxLength}
+                    {value?.length || 0}/{maxLength}
                   </div>
                 )}
               </>

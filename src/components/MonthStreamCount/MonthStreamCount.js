@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const MonthStreamCount = ({ songs, details, i, open }) => {
   const [platform, setPlatform] = useState(open ? i.platformName : "");
+  const { userData, dollarRate } = useContext(ProfileContext);
 
   let songsByPlatform = [];
   songs.forEach((s) => {
@@ -73,7 +75,12 @@ const MonthStreamCount = ({ songs, details, i, open }) => {
             {i.platformName}
           </td>
           <td className="w-1/3">{i.total}</td>
-          <td className="w-1/3">{i["final revenue"].toFixed(5)}</td>
+          <td className="w-1/3">
+            {(userData.billing_country === "India"
+              ? i["final revenue"]
+              : i["final revenue"] * dollarRate
+            ).toFixed(5)}
+          </td>
         </tr>
       </summary>
       <div className="w-full flex justify-center">
@@ -85,7 +92,11 @@ const MonthStreamCount = ({ songs, details, i, open }) => {
                 {new Date(d.date).getFullYear()}
               </td>
               <td className="w-1/3">{d.count}</td>
-              <td className="w-1/3">{d.revenue.toFixed(4)}</td>
+              <td className="w-1/3">
+                {userData.billing_country === "India"
+                  ? d.revenue.toFixed(4)
+                  : (d.revenue * dollarRate).toFixed(4)}
+              </td>
             </tr>
           ))}
         </table>

@@ -45,8 +45,8 @@ import BulkUpload from "./pages/BulkUpload/BulkUpload";
 import SocialLinks from "./pages/SocialLinks/SocialLinks";
 import { FaCrown } from "react-icons/fa6";
 
-// export const backendUrl = "http://localhost:5100/";
-export const backendUrl = "https://api.forevisiondigital.in/";
+export const backendUrl = "http://localhost:5100/";
+// export const backendUrl = "https://api.forevisiondigital.in/";
 
 export const navItem = [
   {

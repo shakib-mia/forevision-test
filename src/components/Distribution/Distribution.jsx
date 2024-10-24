@@ -321,11 +321,13 @@ const Distribution = () => {
         </div>
       </div>
 
-      {showAgreement && (
+      {showAgreement ? (
         <Agreement
           formData={formData}
           handleClose={() => setShowAgreement(false)}
         />
+      ) : (
+        <></>
       )}
     </>
   );

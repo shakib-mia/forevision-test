@@ -46,7 +46,7 @@ const Revenue = () => {
     }
   }, [currentTime]);
 
-  const { userData, token, setToken, foundRequested } =
+  const { userData, token, setToken, foundRequested, dollarRate } =
     useContext(ProfileContext);
   // console.log(userData);
   useEffect(() => {
@@ -456,7 +456,7 @@ const Revenue = () => {
     console.log(pdf);
   };
   // console.log(aggregatedMusicData);
-  console.log(aggregatedMusicData);
+  console.log(dollarRate);
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
@@ -640,9 +640,18 @@ const Revenue = () => {
                                   song[item].toString().split(".").length >
                                     1 ? (
                                     item === "after tds revenue" ? (
-                                      final_after_tds[song.isrc].toFixed(8)
-                                    ) : (
+                                      userData.billing_country === "India" ? (
+                                        final_after_tds[song.isrc].toFixed(8)
+                                      ) : (
+                                        (
+                                          final_after_tds[song.isrc] *
+                                          dollarRate
+                                        ).toFixed(8)
+                                      )
+                                    ) : userData.billing_country === "India" ? (
                                       song[item].toFixed(8)
+                                    ) : (
+                                      (song[item] * dollarRate).toFixed(8)
                                     )
                                   ) : item === "total" ? (
                                     total_lifetime_views[song.isrc]
@@ -671,7 +680,11 @@ const Revenue = () => {
                                   song[item].toString().split(".").length >
                                     1 ? (
                                     item === "Total Revenue Against ISRC" ? (
-                                      song[item].toFixed(3)
+                                      userData.billing_country === "India" ? (
+                                        song[item].toFixed(3)
+                                      ) : (
+                                        (song[item] * dollarRate).toFixed(3)
+                                      )
                                     ) : (
                                       song[item].toFixed(8)
                                     )

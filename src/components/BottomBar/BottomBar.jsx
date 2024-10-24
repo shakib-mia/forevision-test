@@ -18,7 +18,7 @@ const BottomBar = () => {
 
   return (
     <nav
-      className="fixed bottom-0 z-[99999] px-1 shadow w-screen bg-white flex justify-center xl:hidden"
+      className="fixed bottom-0 z-[99999] px-1 w-screen bg-white flex justify-center xl:hidden shadow-[0_-4px_6px_rgba(0,0,0,0.05)]"
       id="bottomBar"
     >
       {navPhone.slice(0, navPhone.length).map(({ icon, text, path }, key) => (

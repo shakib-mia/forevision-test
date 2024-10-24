@@ -26,14 +26,16 @@ const SocialLinks = () => {
 
   return (
     <div className="py-7 flex justify-center">
-      <div className="shadow-md p-3 text-grey-dark w-1/4">
+      <div className="shadow-md p-3 text-grey-dark w-11/12 lg:w-1/4">
         {/* <img
           src="https://www.designevo.com/res/templates/thumb_small/black-banner-and-vinyl.webp"
           alt="dummy"
           className="mx-auto"
         /> */}
-        <h4 className="text-heading-4-bold text-center">{song.Song}</h4>
-        <h6 className="text-heading-6-bold text-grey mt-1 text-center">
+        <h4 className="text-heading-6-bold lg:text-heading-4-bold text-center">
+          {song.Song}
+        </h4>
+        <h6 className="text-paragraph-1 lg:text-heading-6-bold text-grey mt-1 text-center">
           {song.ArtistName}
         </h6>
 
@@ -43,12 +45,12 @@ const SocialLinks = () => {
               href={song[item]}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 my-2 shadow-lg p-2 rounded hover:shadow transition"
+              className="flex items-center gap-2 my-2 shadow-md lg:shadow-lg p-2 rounded hover:shadow transition"
             >
               <img
                 src={`https://api.forevisiondigital.in/uploads/platforms/${item}.png`}
                 alt={item}
-                className="w-5 h-5 object-contain items-center"
+                className="w-4 lg:w-5 aspect-square object-contain items-center"
                 key={key}
               />
 

@@ -115,7 +115,7 @@ const Agreement = ({ handleClose, formData }) => {
 
     // Capture the entire HTML element as a canvas
     const canvas = await html2canvas(element, {
-      scale: 2, // Increase scale for better quality
+      scale: 1, // Increase scale for better quality
       useCORS: true,
     });
 
@@ -176,6 +176,8 @@ const Agreement = ({ handleClose, formData }) => {
         backendUrl + "upload-agreements/add-to-db",
         data
       );
+
+      console.log(insertResponse);
       // .then(({ data }) => console.log(data));
 
       // console.log(insertResponse);
@@ -236,8 +238,8 @@ const Agreement = ({ handleClose, formData }) => {
         className={"!items-start !block !overflow-y-auto py-7"}
         // handleClose={handleClose}
       >
-        <div className="p-[96px] bg-yellow-300 border-2" ref={agreementRef}>
-          <h1 className="text-heading-2-bold text-center text-grey-dark mb-4">
+        <div className="p-[96px] border-2" ref={agreementRef}>
+          <h1 className="text-heading-2-bold text-center text-black mb-4">
             Agreement
           </h1>
 
@@ -247,7 +249,7 @@ const Agreement = ({ handleClose, formData }) => {
             {date.getFullYear()} at Cooch Behar.
           </p>
 
-          <h5 className="text-heading-5-bold text-center text-grey-dark mb-2 mt-4">
+          <h5 className="text-heading-5-bold text-center text-black mb-2 mt-4">
             Between
           </h5>
           <p>
@@ -257,7 +259,7 @@ const Agreement = ({ handleClose, formData }) => {
             <b>First Part</b>.
           </p>
 
-          <h6 className="text-heading-6-bold text-center text-grey-dark mb-2 mt-4">
+          <h6 className="text-heading-6-bold text-center text-black mb-2 mt-4">
             AND
           </h6>
 

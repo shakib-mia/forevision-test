@@ -8,7 +8,7 @@ import Button from "../../components/Button/Button";
 const PaymentSuccess = () => {
   const { planStore } = useContext(PlanContext);
   const navigate = useNavigate();
-  // console.log(planStore);
+  console.log(planStore);
   return (
     <div
       className="h-screen w-screen flex justify-center items-center bg-cover bg-no-repeat"

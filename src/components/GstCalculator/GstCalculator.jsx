@@ -1,14 +1,24 @@
 import React, { useContext } from "react";
 import { FaRupeeSign } from "react-icons/fa";
 import { PlanContext } from "../../contexts/PlanContext";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const GSTCalculator = ({ location }) => {
   // Extract the total price in paise from the URL
   const { planStore } = useContext(PlanContext);
-  const totalPriceInPaise = parseInt(planStore.price, 10);
-
+  const { userData } = useContext(ProfileContext);
+  const totalPriceInPaisa = parseInt(
+    userData.billing_country === "India"
+      ? planStore.price
+      : parseFloat(location.search.split("?")[2]),
+    10
+  );
+  // console.log(location.search.split("?")[1]);
   // Convert the total price from paise to rupees
-  const totalPrice = totalPriceInPaise / 100;
+  const totalPrice =
+    userData.billing_country === "India"
+      ? totalPriceInPaisa / 100
+      : totalPriceInPaisa;
 
   // Define the GST rate
   const gstRate = 18;
@@ -20,8 +30,10 @@ const GSTCalculator = ({ location }) => {
   return (
     <aside className="w-1/2 p-2 flex items-center">
       <span className="font-bold">
-        &#8377; {totalPrice.toFixed(2)} (Includes &#8377; {gstAmount.toFixed(2)}{" "}
-        18% GST)
+        {userData.billing_country !== "India" ? "$" : <>&#8377;</>}
+        {totalPrice.toFixed(2)} (Includes{" "}
+        {userData.billing_country !== "India" ? "$" : <>&#8377;</>}
+        {gstAmount.toFixed(2)} 18% GST)
       </span>
     </aside>
   );

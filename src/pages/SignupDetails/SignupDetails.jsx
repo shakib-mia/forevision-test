@@ -24,6 +24,7 @@ const SignupDetails = () => {
   const fields = [
     {
       id: "firstName",
+      hideRequired: true,
       name: "first_name",
       label: "First Name",
       type: "text",
@@ -34,6 +35,7 @@ const SignupDetails = () => {
     },
     {
       id: "lastName",
+      hideRequired: true,
       name: "last_name",
       label: "Last Name",
       type: "text",
@@ -44,6 +46,7 @@ const SignupDetails = () => {
     },
     {
       id: "recordLabel",
+      hideRequired: true,
       name: "company_label",
       label: "Company/Record label",
       type: "text",
@@ -52,6 +55,7 @@ const SignupDetails = () => {
     },
     {
       id: "address",
+      hideRequired: true,
       name: "billing_address",
       label: "Address",
       type: "text",
@@ -60,6 +64,7 @@ const SignupDetails = () => {
     },
     {
       id: "email",
+      hideRequired: true,
       name: "email",
       label: "Email",
       type: "email",
@@ -70,6 +75,7 @@ const SignupDetails = () => {
     },
     {
       id: "city",
+      hideRequired: true,
       name: "billing_city",
       label: "City",
       type: "text",
@@ -78,6 +84,7 @@ const SignupDetails = () => {
     },
     {
       id: "country",
+      hideRequired: true,
       name: "billing_country",
       label: "Country",
       type: "text",
@@ -86,6 +93,7 @@ const SignupDetails = () => {
     },
     {
       id: "postalCode",
+      hideRequired: true,
       name: "postal_code",
       label: "Postal Code",
       type: "number",
@@ -99,11 +107,23 @@ const SignupDetails = () => {
     // },
     {
       id: "phone",
+      hideRequired: true,
       name: "phone_no",
       label: "Phone",
       type: "tel",
       placeholder: "+91",
       required: true,
+      // pattern: /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g,
+    },
+    {
+      id: "gst",
+      name: "gst_no",
+      label: "Gst",
+      type: "text",
+      // placeholder: "+91",
+      // required: false,
+      hideRequired: false,
+
       // pattern: /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g,
     },
   ];

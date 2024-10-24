@@ -1,161 +1,212 @@
-import React, { useState } from "react";
-// import useRazorpay from "react-razorpay";
-// import axios from "axios";
-// import { backendUrl, config } from "../../constants";
-// import logo from "../../assets/icons/logo.PNG";
+import React, { useContext, useEffect, useState, useMemo } from "react";
+import {
+  FaArrowLeft,
+  FaArrowRight,
+  FaCheck,
+  FaChevronLeft,
+  FaChevronRight,
+  FaFacebookF,
+  FaInstagram,
+  FaYoutube,
+} from "react-icons/fa";
+import { SiAirtel } from "react-icons/si";
+import ReactOwlCarousel from "react-owl-carousel";
+import { useNavigate } from "react-router-dom";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { PlanContext } from "../../contexts/PlanContext";
+import Button from "../../components/Button/Button";
 import Toggle from "../../components/Toggle/Toggle";
-import SongPlans from "../SongPlans/SongPlans";
 import AlbumPlan from "../../components/AlbumPlan/AlbumPlan";
 import FeatureTable from "../../components/FeatureTable/FeatureTable";
-import Faq from "../../components/Faq/Faq";
-import Steps from "../../components/Steps/Steps";
-// import Form from "../../components/Form/Form";
-// import { toast } from "react-toastify";
-// import { ProfileContext } from "../../contexts/ProfileContext";
+import { backendUrl } from "./../../constants";
 
-const Plans = () => {
+// Import your assets
+import bsnl from "../../assets/icons/bsnl.webp";
+import idea from "../../assets/icons/idea.webp";
+import jio from "../../assets/icons/jio.webp";
+import razorpay from "../../assets/icons/razorpay.png";
+import LoadingPulse from "../../components/LoadingPulse/LoadingPulse";
+
+const DynamicSongPlans = () => {
+  const navigate = useNavigate();
+  const { setPlanStore } = useContext(PlanContext);
+  const { token, userData, dollarRate } = useContext(ProfileContext);
+
   const [checked, setChecked] = useState(false);
-  // const [Razorpay] = useRazorpay();
-  // const { token } = useContext(ProfileContext);
-  const [planName, setPlanName] = useState("");
-  // console.log(planName);
+  const [plans, setPlans] = useState([]);
+  // const [dollarRate * 1.5, setDollarRate] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // const handleRazorpayPayment = async (amount) => {
-  //   // const order = await createOrder(params); //  Create order on your backend
+  // Fetch plans data
+  useEffect(() => {
+    const fetchPlans = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${backendUrl}plans`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setPlans(data);
+      } catch (error) {
+        console.error("Error fetching plans:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  //   // const options = {
-  //   //   key: "rzp_test_kOukh9hO3yXkNx", // Enter the Key ID generated from the Dashboard
-  //   //   amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-  //   //   currency: "INR",
-  //   //   name: "Acme Corp",
-  //   //   description: "Test Transaction",
-  //   //   image: "https://example.com/your_logo",
-  //   //   order_id: "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of createOrder().
-  //   //   handler: function (response) {
-  //   //     alert(response.razorpay_payment_id);
-  //   //     alert(response.razorpay_order_id);
-  //   //     alert(response.razorpay_signature);
-  //   //   },
-  //   //   prefill: {
-  //   //     name: "Piyush Garg",
-  //   //     email: "youremail@example.com",
-  //   //     contact: "9999999999",
-  //   //   },
-  //   //   notes: {
-  //   //     address: "Razorpay Corporate Office",
-  //   //   },
-  //   //   theme: {
-  //   //     color: "#3399cc",
-  //   //   },
-  //   // };
+    fetchPlans();
+  }, [token]);
 
-  //   // const rzp1 = new Razorpay(options);
+  // Memoized price calculation
+  const calculatePrice = useMemo(
+    () => (price) => {
+      if (!price) return "Free";
 
-  //   // rzp1.on("payment.failed", function (response) {
-  //   //   alert(response.error.code);
-  //   //   alert(response.error.description);
-  //   //   alert(response.error.source);
-  //   //   alert(response.error.step);
-  //   //   alert(response.error.reason);
-  //   //   alert(response.error.metadata.order_id);
-  //   //   alert(response.error.metadata.payment_id);
-  //   // });
+      const isIndian = userData.billing_country === "India";
+      const currency = isIndian ? "₹" : "$";
+      const amount = isIndian
+        ? price / 100
+        : ((price * dollarRate * 1.5) / 100).toFixed(2);
 
-  //   // rzp1.open();
+      return `${currency}${amount}`;
+    },
+    [userData.billing_country, dollarRate]
+  );
 
-  //   axios
-  //     .post(backendUrl + "razorpay", { amount }) // ============  *** Need to set amount dynamically here ***  ================
-  //     .then(({ data }) => {
-  //       initPayment(data);
-  //       console.log(data);
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
+  const handlePrevClick = () => {
+    document.querySelector(".song-plans .owl-prev")?.click();
+  };
 
-  // const handlePhonePePayment = (amount) => {
-  //   // console.log(amount);
-  //   // const options = {
-  //   //   method: "post",
-  //   //   url: "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
-  //   //   headers: {
-  //   //     accept: "text/plain",
-  //   //     "Content-Type": "application/json",
-  //   //   },
-  //   // data: {
-  //   //   merchantId: "PGTESTPAYUAT",
-  //   //   merchantTransactionId: "MT7850590068188104",
-  //   //   merchantUserId: "MUID123",
-  //   //   amount: 10000,
-  //   //   redirectUrl: "https://webhook.site/redirect-url",
-  //   //   redirectMode: "REDIRECT",
-  //   //   callbackUrl: "https://webhook.site/callback-url",
-  //   //   mobileNumber: "9999999999",
-  //   //   paymentInstrument: {
-  //   //     type: "PAY_PAGE",
-  //   //   },
-  //   // },
-  //   // };
+  const handleNextClick = () => {
+    document.querySelector(".song-plans .owl-next")?.click();
+  };
 
-  //   const data = {
-  //     name: "shakib",
-  //     amount: 1,
-  //     number: 91812345679,
-  //     MID: "MID" + Date.now(),
-  //     merchantTransactionId: "T" + Date.now(),
-  //   };
+  const renderSpecialTag = (tag) => {
+    switch (tag) {
+      case "Facebook, YouTube, Instagram":
+        return (
+          <div
+            className="py-1 px-2 absolute rounded-full flex gap-1 text-paragraph-1"
+            style={{ top: -11, right: 16 }}
+          >
+            <div className="w-4 text-paragraph-1 flex justify-center items-center bg-interactive-light aspect-square text-white rounded">
+              <FaFacebookF />
+            </div>
+            <div className="w-4 text-paragraph-1 flex justify-center items-center bg-interactive-light aspect-square text-white rounded">
+              <FaYoutube />
+            </div>
+            <div className="w-4 text-paragraph-1 flex justify-center items-center bg-interactive-light aspect-square text-white rounded">
+              <FaInstagram />
+            </div>
+          </div>
+        );
+      case "Best Rated":
+        return (
+          <div
+            className="bg-interactive-light-destructive-focus text-white py-1 px-2 inline-block absolute rounded-full"
+            style={{ top: -20, right: 16 }}
+          >
+            ⭐⭐ Best Rated ⭐⭐
+          </div>
+        );
+      case "Pro":
+        return (
+          <div
+            className="bg-interactive-light text-white py-1 px-2 inline-block absolute rounded-full"
+            style={{ top: -11, right: 16 }}
+          >
+            Pro
+          </div>
+        );
+      case "Airtel, BSNL, Vi, Jio":
+        return (
+          <div
+            className="border border-interactive-light-destructive-focus bg-white py-1 px-2 absolute rounded-full flex gap-1"
+            style={{ top: -15, right: 16 }}
+          >
+            <SiAirtel className="text-interactive-light-destructive-focus" />
+            <img className="!w-3 !h-3" src={bsnl} alt="bsnl" />
+            <img className="!w-3 !h-3" src={idea} alt="idea" />
+            <img className="!w-3 !h-3" src={jio} alt="jio" />
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
-  //   // console.log(data);
+  const handlePlanSelection = (plan) => {
+    const price =
+      userData.billing_country === "India"
+        ? plan.price / 100
+        : ((plan.price * dollarRate * 1.5) / 100).toFixed(2);
 
-  //   axios
-  //     .post("http://localhost:5100/phonepe-payment/pay", data)
-  //     .then(({ data }) => {
-  //       console.log(data);
-  //       // window.open(data.data.instrumentResponse.redirectInfo.url);
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
+    setPlanStore((prev) => ({
+      ...prev,
+      planName: plan.planName,
+      price: plan.price || 0,
+    }));
 
-  // const initPayment = (data) => {
-  //   const config = {
-  //     headers: {
-  //       token: sessionStorage.getItem("token") || token,
-  //     },
-  //   };
-  //   const options = {
-  //     key: "rzp_test_ltnS4Oawf8bRte",
-  //     amount: data.amount,
-  //     currency: data.currency,
-  //     name: data.name,
-  //     description: "Test",
-  //     image: logo,
-  //     order_id: data.id,
-  //     handler: async (response) => {
-  //       try {
-  //         const verifyUrl = backendUrl + "razorpay/verify";
-  //         const res = await axios.post(
-  //           verifyUrl,
-  //           { ...response, paidAmount: data.amount, planName },
-  //           config
-  //         );
+    navigate(
+      `/song-upload?${plan.planName.toLowerCase().replace(" ", "-")}?${
+        price || 0
+      }`
+    );
+  };
 
-  //         toast.success(res.data, {
-  //           position: "bottom-center",
-  //         });
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     },
-  //     theme: {
-  //       color: "#064088",
-  //     },
-  //   };
+  const renderPlan = (plan, index) => {
+    const isHighlighted = plan.name === "Forevision CRBT+";
+    const containerClass = isHighlighted
+      ? "!h-full p-4 rounded-lg mx-2 bg-gradient-to-br from-secondary to-interactive-light-focus text-white shadow-[0_13px_20px_#aaa] relative -top-3"
+      : "!h-full p-4 shadow-lg mx-2 relative";
+    const buttonClass = isHighlighted
+      ? "w-full justify-center bg-white !text-interactive-light hover:bg-white-secondary focus:!bg-white-tertiary"
+      : "w-full justify-center";
 
-  //   const rzp1 = new Razorpay(options);
-  //   rzp1.open();
-  // };
+    const displayPrice = calculatePrice(plan.price);
+
+    return (
+      <div key={index} className={containerClass}>
+        {renderSpecialTag(plan.specialTag)}
+        <div className="h-full flex flex-col justify-between">
+          <aside>
+            <h4 className="text-heading-4 font-bold">{plan.name}</h4>
+            <h5
+              className={`text-heading-5-bold ${
+                isHighlighted ? "text-grey-light" : "text-grey"
+              } mt-2`}
+            >
+              {displayPrice}
+            </h5>
+            <ul className="flex flex-col gap-1 mt-4">
+              {plan.features.map((feature, idx) => (
+                <li
+                  key={idx}
+                  className="flex gap-2 items-center text-paragraph-1"
+                >
+                  <FaCheck className="w-1/12" />
+                  <aside className="w-11/12">{feature}</aside>
+                </li>
+              ))}
+            </ul>
+          </aside>
+          <Button
+            text="Get Started"
+            className={buttonClass}
+            onClick={() => handlePlanSelection(plan)}
+          />
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="lg:ml-6 lg:pt-4" id="plans-page">
+    <div
+      className="overflow-hidden py-7 px-[10px] relative song-plans"
+      id="plans-page"
+    >
       <h3 className="text-heading-3-bold text-center mt-6 text-grey-dark">
         Plans We Offer
       </h3>
@@ -164,11 +215,34 @@ const Plans = () => {
         To Upload a Song, Please Choose a Plan Below
       </h6>
 
-      <div className="flex justify-center items-center gap-1">
-        <p>Song</p>
-        <Toggle checked={checked} setChecked={setChecked} />
-        <p>Album</p>
-      </div>
+      {isLoading || (
+        <div className="flex justify-center items-center gap-1">
+          <p>Song</p>
+          <Toggle checked={checked} setChecked={setChecked} />
+          <p>Album</p>
+        </div>
+      )}
+      {isLoading || (
+        <div className="flex gap-3 justify-center items-center w-fit mx-auto">
+          <Button
+            containerClassName="!h-fit !w-fit flex items-center z-10"
+            className="text-white w-4 h-4 lg:w-6 lg:!h-6 !px-0 !py-0 flex items-center justify-center"
+            onClick={handlePrevClick}
+            id="plans-prev"
+          >
+            <FaChevronLeft className="text-heading-6" />
+          </Button>
+          <p>Swipe For More</p>
+          <Button
+            containerClassName="!h-fit !w-fit flex items-center z-10"
+            className="text-white w-4 h-4 lg:w-6 lg:!h-6 !px-0 !py-0 flex items-center justify-center"
+            onClick={handleNextClick}
+            id="plans-next"
+          >
+            <FaChevronRight className="text-heading-6" />
+          </Button>
+        </div>
+      )}
 
       {checked ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 lg:mt-5">
@@ -177,7 +251,7 @@ const Plans = () => {
               Album for Everyone
             </h2>
             <p className="mt-2 lg:mt-5">
-              Get Your Music to the World for Just ₹999! What’s Included in the
+              Get Your Music to the World for Just ₹999! What's Included in the
               ₹999 Album Package? Distribute your album to all major music
               platforms including Spotify, Apple Music, Amazon Music, and more.
             </p>
@@ -187,121 +261,59 @@ const Plans = () => {
                 <b>Unlimited Releases:</b> Release as many tracks as you want
                 under this album package.
               </li>
-
               <li>
                 <b>Comprehensive Analytics:</b> Access detailed reports on your
-                music’s performance, including plays, downloads, and earnings.
+                music's performance, including plays, downloads, and earnings.
               </li>
-
               <li>
                 <b>More Royalties:</b> Keep 90% of the revenue from all
                 platforms and 85% from YouTube platforms on your music earnings.
               </li>
-
               <li>
                 <b>Artist Support:</b> Get dedicated support from our team to
                 help you navigate the music distribution process.
               </li>
-
               <li>
                 <b>Marketing Tools:</b> Utilize our marketing resources to
-                promote your album, including social media templates and
-                promotional advice.
+                promote your album.
               </li>
-
               <li>
-                <b>Metadata Management:</b> We take care of all the necessary
-                metadata to ensure your tracks are correctly listed and
-                searchable on all platforms.
+                <b>Metadata Management:</b> We handle all necessary metadata.
               </li>
-
               <li>
-                <b>Playlist Pitching:</b> Submit your songs for consideration to
-                popular playlists to increase your exposure.
+                <b>Playlist Pitching:</b> Submit your songs for playlist
+                consideration.
               </li>
             </ul>
-
-            {/* <h5 className="text-heading-5-bold mt-4 mb-2">
-              Why Choose ForeVision Digital
-            </h5>
-
-            <ul className="flex flex-col gap-1">
-              <li>
-                <b>Marketing Tools:</b> Utilize our marketing resources to
-                promote your album, including social media templates and
-                promotional advice.
-              </li>
-
-              <li>
-                <b>Marketing Tools:</b> Utilize our marketing resources to
-                promote your album, including social media templates and
-                promotional advice.
-              </li>
-
-              <li>
-                <b>Marketing Tools:</b> Utilize our marketing resources to
-                promote your album, including social media templates and
-                promotional advice.
-              </li>
-
-              <li>
-                <b>Marketing Tools:</b> Utilize our marketing resources to
-                promote your album, including social media templates and
-                promotional advice.
-              </li>
-
-              <li>
-                <b>Marketing Tools:</b> Utilize our marketing resources to
-                promote your album, including social media templates and
-                promotional advice.
-              </li>
-
-              <li>
-                <b>Marketing Tools:</b> Utilize our marketing resources to
-                promote your album, including social media templates and
-                promotional advice.
-              </li>
-
-              <li>
-                <b>Marketing Tools:</b> Utilize our marketing resources to
-                promote your album, including social media templates and
-                promotional advice.
-              </li>
-
-              <li>
-                <b>Marketing Tools:</b> Utilize our marketing resources to
-                promote your album, including social media templates and
-                promotional advice.
-              </li>
-            </ul> */}
-            {/* <img
-              src={
-                "https://betterstudio.com/wp-content/uploads/2019/05/1-1-instagram-1024x1024.jpg"
-              }
-              className="mt-4"
-              alt="" 
-            />*/}
           </aside>
-          <AlbumPlan
-          // handleRazorpayPayment={handleRazorpayPayment}
-          // handlePhonePePayment={handlePhonePePayment}
-          />
+          <AlbumPlan />
         </div>
       ) : (
-        <SongPlans
-          // handleRazorpayPayment={handleRazorpayPayment}
-          // handlePhonePePayment={handlePhonePePayment}
-          setPlanName={setPlanName}
-        />
+        <>
+          {isLoading ? (
+            <div className="flex justify-center h-[50vh] items-center">
+              <div className="loader"></div>
+            </div>
+          ) : (
+            <ReactOwlCarousel
+              loop={true}
+              autoplayHoverPause
+              navigation="true"
+              nav
+              responsive={{
+                0: { items: 1, startPosition: 1 },
+                768: { items: 2 },
+                1280: { items: 3 },
+              }}
+              className="py-6 !overflow-hidden text-grey-dark xl:!w-5/6 mx-auto"
+            >
+              {plans.map(renderPlan)}
+            </ReactOwlCarousel>
+          )}
+        </>
       )}
-
-      <Steps />
-
-      <div className="w-[94%] lg:w-5/6 mx-auto">
-        <Faq />
-      </div>
     </div>
   );
 };
 
-export default Plans;
+export default DynamicSongPlans;
