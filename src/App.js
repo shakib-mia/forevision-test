@@ -158,8 +158,8 @@ function App() {
 
   return (
     <div className="bg-white w-screen h-screen">
-      <Construction />
-      {/* {country === "PK" ? (
+      {/* <Construction /> */}
+      {country === "PK" ? (
         <div className="w-full h-full flex justify-center items-center text-interactive-light-destructive-focus text-heading-5">
           this service is not available for your region
         </div>
@@ -191,7 +191,7 @@ function App() {
             location.pathname === "/signup" ||
             location.pathname === "/signup-details" || <Footer />}
         </>
-      )} */}
+      )}
     </div>
   );
 }
