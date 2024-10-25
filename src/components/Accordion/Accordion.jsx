@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
-const AccordionItem = ({ title, content, isOpen, toggleAccordion }) => {
+const AccordionItem = ({
+  title,
+  content,
+  isOpen,
+  toggleAccordion,
+  listItems,
+}) => {
+  // listItems ? console.log(listItems) : console.log("object");
   return (
     <>
       <div className="accordion-item">
@@ -22,7 +29,20 @@ const AccordionItem = ({ title, content, isOpen, toggleAccordion }) => {
             isOpen ? "max-h-[500px] py-2" : "max-h-0 py-0"
           }`}
         >
-          <div className="lg:px-4 text-grey">{content}</div>
+          <div className="lg:px-4 text-grey">
+            {listItems ? (
+              <>
+                {content} <br />
+                <ul className="mt-1">
+                  {listItems.map((item, key) => (
+                    <li key={key}>{item}</li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              content
+            )}
+          </div>
         </div>
       </div>
       <div className="w-full h-[1px] bg-gradient-to-r from-interactive-light to-white"></div>
@@ -46,6 +66,7 @@ const Accordion = ({ data }) => {
           content={item.content}
           isOpen={openIndex === index}
           toggleAccordion={() => toggleAccordion(index)}
+          listItems={item.listItems}
         />
       ))}
     </div>
