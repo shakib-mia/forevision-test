@@ -594,8 +594,8 @@ const Revenue = () => {
                   id="revenue-slider"
                 >
                   <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-                    <div className="flex justify-between items-center">
-                      <div className="hidden xl:block w-1/2">
+                    <div className="flex justify-end items-center">
+                      {/* <div className="hidden xl:block w-1/2">
                         <div className="flex gap-2 w-full">
                           <div className="flex gap-1 items-center w-full">
                             <p>Sort By:</p>
@@ -607,16 +607,13 @@ const Revenue = () => {
                                 <option value={"song_name"} selected>
                                   Song Name
                                 </option>
-                                {/* <option value={"Total Revenue Against ISRC"}>
-                                  Total Revenue Against ISRC
-                                </option> */}
                                 <option value={"label"}>Label</option>
                               </select>
                               <FaChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="flex flex-col lg:flex-row items-end gap-0 whitespace-nowrap">
                         <Button disabled={!loaded} onClick={getExcel}>
                           DOWNLOAD EXCEL
