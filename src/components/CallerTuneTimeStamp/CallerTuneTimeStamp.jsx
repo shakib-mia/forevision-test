@@ -8,26 +8,26 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
   const { formData, setFormData } = useContext(ScreenContext);
   const [startMinutes, setStartMinutes] = useState(
     location.pathname === "/album-upload"
-      ? formData.songs[id].startMinutes
+      ? formData.songs[id]?.startMinutes
       : formData.startMinutes
   );
   const [startSeconds, setStartSeconds] = useState(
     location.pathname === "/album-upload"
-      ? formData.songs[id].startSeconds
+      ? formData.songs[id]?.startSeconds
       : formData.startSeconds
   );
   const [startMinutes2, setStartMinutes2] = useState(
     location.pathname === "/album-upload"
-      ? formData.songs[id].startMinutes2
+      ? formData.songs[id]?.startMinutes2
       : formData.startMinutes2
   );
   const [startSeconds2, setStartSeconds2] = useState(
     location.pathname === "/album-upload"
-      ? formData.songs[id].startSeconds2
+      ? formData.songs[id]?.startSeconds2
       : formData.startSeconds2
   );
 
-  // console.log(formData.songs[id]);
+  // console.log(formData.songs[id]?);
 
   return (
     <div className="w-full mt-4">
@@ -102,7 +102,7 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
             <InputField
               type="number"
               label={"Start Time (Minute)"}
-              required
+              required={false}
               value={startMinutes2}
               id={"start-minutes2"}
               note={"For BSNL, VI & Airtel"}
@@ -131,6 +131,7 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
             <InputField
               value={startSeconds2}
               type="number"
+              required={false}
               id={"start-seconds2"}
               containerClassName={"w-full"}
               placeholder={"Enter Caller Tune Time"}
@@ -153,7 +154,7 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
                     : 0;
                 }
               }}
-              required
+
               // max={audioDuration - 45}
             />
           </div>

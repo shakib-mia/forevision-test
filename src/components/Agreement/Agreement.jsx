@@ -115,7 +115,7 @@ const Agreement = ({ handleClose, formData }) => {
 
     // Capture the entire HTML element as a canvas
     const canvas = await html2canvas(element, {
-      scale: 2, // Increase scale for better quality
+      scale: 0.75, // Increase scale for better quality
       useCORS: true,
     });
 
@@ -181,8 +181,8 @@ const Agreement = ({ handleClose, formData }) => {
       // console.log(insertResponse);
       if (insertResponse.data.acknowledged) {
         Swal.fire({
-          title: "PDF Generated & Uploaded Successfully",
-          text: "The PDF has been downloaded and uploaded to the server.",
+          title: "PDF Generated & Downloaded Successfully",
+          text: "Please Proceed to Checkout",
           icon: "success",
         });
         handleClose();
@@ -236,7 +236,7 @@ const Agreement = ({ handleClose, formData }) => {
         className={"!items-start !block !overflow-y-auto py-7"}
         // handleClose={handleClose}
       >
-        <div className="p-[96px] bg-yellow-300 border-2" ref={agreementRef}>
+        <div className="p-[96px] bg-white border-2" ref={agreementRef}>
           <h1 className="text-heading-2-bold text-center text-grey-dark mb-4">
             Agreement
           </h1>
@@ -930,7 +930,7 @@ const Agreement = ({ handleClose, formData }) => {
             </div>
 
             {formData.albumType === "Album" ? (
-              formData.songs.map((song) => (
+              formData?.songs?.map((song) => (
                 <div className="grid grid-cols-6  divide-x divide-black">
                   <p className="py-1">{song.songName} </p>
                   <p className="py-1">{formData.albumTitle}</p>

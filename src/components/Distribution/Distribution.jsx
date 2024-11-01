@@ -269,6 +269,7 @@ const Distribution = () => {
             <label className="cursor-pointer">
               <input
                 type="checkbox"
+                disabled={signature.length === 0}
                 onChange={(e) => {
                   setAccepted(e.target.checked);
                   formData.accepted = e.target.checked;

@@ -283,8 +283,9 @@ const Plans = () => {
             />*/}
           </aside>
           <AlbumPlan
-          // handleRazorpayPayment={handleRazorpayPayment}
-          // handlePhonePePayment={handlePhonePePayment}
+            setPlanName={setPlanName}
+            // handleRazorpayPayment={handleRazorpayPayment}
+            // handlePhonePePayment={handlePhonePePayment}
           />
         </div>
       ) : (

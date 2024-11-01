@@ -7,14 +7,19 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="flex pl-2 px-1 py-2 lg:pr-[60px] lg:py-[12px] items-center justify-between fixed top-0 w-full bg-[#000] z-[9999] shadow-lg">
+    <nav className="flex pl-2 px-1 py-1 lg:pr-[60px] lg:py-[12px] items-center justify-between fixed top-0 w-full bg-[#000] z-[9999] shadow-lg">
       <a
         className="inline-block w-7 lg:w-2/12"
         href={"https://forevisiondigital.com/"}
         target="_blank"
         rel="noreferrer"
       >
-        <img src={logo} alt="logo" id="navbarLogo" className="lg:w-1/2 h-fit" />
+        <img
+          src={logo}
+          alt="logo"
+          id="navbarLogo"
+          className="lg:w-1/2 w-[75%] h-fit"
+        />
       </a>
       <ul className="flex gap-[58px] text-white items-center">
         {/* <Link

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import downArrow from "./../../assets/icons/down-arrow.webp";
 import { Link, NavLink } from "react-router-dom";
+import { FaChevronDown } from "react-icons/fa";
 
 const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
   const [itemHovered, setHovered] = useState(false);
@@ -24,13 +25,14 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
             </div>
 
             {dropdownItem && hovered ? (
-              <img
-                src={downArrow}
-                alt="downarrow"
-                className={`w-[9px] h-[5px] ${
-                  itemHovered && "rotate-180"
-                } transition`}
-              />
+              // <img
+              //   src={downArrow}
+              //   alt="downarrow"
+              //   className={`w-[9px] h-[5px] ${
+              //     itemHovered && "rotate-180"
+              //   } transition`}
+              // />
+              <FaChevronDown className="text-white" />
             ) : (
               <></>
             )}
@@ -44,7 +46,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
                 <Link
                   to={dropdownPath}
                   key={key}
-                  className="py-2 hover:bg-grey-light pl-5 pr-2 rounded-md cursor-pointer block"
+                  className="py-2 hover:bg-grey-light pl-5 pr-2 rounded-md cursor-pointer block transition hover:text-black"
                 >
                   {text}
                 </Link>
@@ -62,7 +64,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
         >
           <div
             className={`flex justify-between items-center ${
-              text && "hover:bg-grey-light cursor-pointer"
+              text && "hover:bg-grey-light hover:text-black cursor-pointer"
             } py-2 px-[10px] rounded-md`}
           >
             <div className="flex gap-[10px] items-center">
@@ -71,12 +73,15 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
             </div>
 
             {dropdownItem && hovered ? (
-              <img
-                src={downArrow}
-                alt="downarrow"
-                className={`w-[9px] h-[5px] ${
-                  itemHovered && "rotate-180"
-                } transition`}
+              // <img
+              //   src={downArrow}
+              //   alt="downarrow"
+              //   className={`w-[9px] h-[5px] ${
+              //     itemHovered && "rotate-180"
+              //   } transition`}
+              // />
+              <FaChevronDown
+                className={`${itemHovered && "rotate-180"} transition`}
               />
             ) : (
               <></>
@@ -91,7 +96,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
                 <Link
                   to={dropdownPath}
                   key={key}
-                  className="py-2 hover:bg-grey-light pl-5 pr-2 rounded-md cursor-pointer block"
+                  className="py-2 hover:bg-grey-light pl-5 pr-2 rounded-md cursor-pointer block hover:text-black transition"
                 >
                   {text}
                 </Link>

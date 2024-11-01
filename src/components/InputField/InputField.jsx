@@ -14,7 +14,7 @@ const InputField = (props) => {
   const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
-  console.log(passwordVisible);
+  // console.log(passwordVisible);
   const {
     id,
     label,

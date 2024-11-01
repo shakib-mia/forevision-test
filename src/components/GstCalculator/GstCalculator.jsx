@@ -17,6 +17,8 @@ const GSTCalculator = ({ location }) => {
   const originalPrice = totalPrice / (1 + gstRate / 100);
   const gstAmount = totalPrice - originalPrice;
 
+  console.log(totalPrice);
+
   return (
     <aside className="w-1/2 p-2 flex items-center">
       <span className="font-bold">

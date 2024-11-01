@@ -34,7 +34,7 @@ function App() {
   /* Working api calls starts here */
 
   useEffect(() => {
-    if (token) {
+    if (token && location.pathname !== "/login") {
       const config = {
         headers: {
           token,
@@ -44,8 +44,8 @@ function App() {
         .get(backendUrl + "token-time", config)
         .then(({ data }) => setTokenDetails(data))
         .catch((err) => {
-          console.log(err.response.data.name);
-          if (err.response.data.name === "TokenExpiredError") {
+          // console.log(err.response);
+          if (err.response.status === 401) {
             setToken("");
             sessionStorage.removeItem("token");
             toast.error("Token has expired", {
@@ -128,7 +128,7 @@ function App() {
             !location.pathname.includes("payment") && (
               <>
                 {store.token && <Sidebar />}
-                {store.token && location.pathname !== "/profile" && <Navbar />}
+                {<Navbar />}
               </>
             )}
           <Routes>

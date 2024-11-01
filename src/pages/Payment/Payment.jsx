@@ -101,7 +101,7 @@ const Payment = () => {
   // console.log(location);
   const initPayment = (data) => {
     const options = {
-      key: "rzp_test_3Tvb4i0zxX8t5m",
+      key: "rzp_live_hbtXvHKqIxw2XQ",
       amount: data.amount,
       currency: data.currency,
       name: data.name,

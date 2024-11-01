@@ -28,8 +28,11 @@ const RecordLabels = () => {
       <h4 className="text-heading-4-bold">Record Labels</h4>
       <ul className="flex flex-col gap-1 mt-2">
         {labels.map((item, key) => (
-          <li key={item}>
-            {key + 1}. {item}
+          <li
+            key={item}
+            className={item.status === "Active" ? "opacity-100" : "opacity-50"}
+          >
+            {key + 1}. {item.name}
           </li>
         ))}
       </ul>

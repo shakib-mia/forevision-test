@@ -240,8 +240,8 @@ const Profile = () => {
               </p>
 
               <p className="text-[12px] w-full lg:w-1/2 text-center lg:text-left">
-                {text?.slice(0, details ? text.length - 1 : 200)}
-                {!details && text && "..."}
+                {text?.slice(0, details ? text?.length - 1 : 200)}
+                {!details && text?.length > 200 && "..."}
                 <br />
                 {text?.length > 200 && (
                   <button

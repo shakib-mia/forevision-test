@@ -122,14 +122,16 @@ const AlbumDetails = () => {
       {formData.contentType === "Film" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-4 mt-2">
           <InputField
-            type={"file"}
+            type={"text"}
             id={"filmBanner"}
             required
-            name={"filmBanner"}
-            accept={"image/*"}
+            // name={"filmBanner"}
+            // accept={"image/*"}
             placeholder={filmBanner?.name || "Film Banner"}
-            // value={filmBanner.name}
-            onChange={handleBannerFileChange}
+            value={formData.filmBanner}
+            onChange={(e) =>
+              setFormData({ ...formData, filmBanner: e.target.value })
+            }
           />
           <InputField
             required
@@ -151,6 +153,7 @@ const AlbumDetails = () => {
           />
           <InputField
             required
+            label={" "}
             name={"director"}
             type={"text"}
             placeholder={"Director"}

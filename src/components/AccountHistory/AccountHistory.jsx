@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import { backendUrl } from "../../constants";
 
 const AccountHistory = () => {
   const [history, setHistory] = useState([]);
@@ -8,17 +9,17 @@ const AccountHistory = () => {
 
   useEffect(() => {
     axios
-      .get("http://192.168.0.105:5100/account-history", {
+      .get(backendUrl + "account-history", {
         headers: { token },
       })
       .then(({ data }) => {
-        console.clear();
+        // console.clear();
         setHistory(data);
       });
   }, []);
 
   return (
-    <div className="w-full 2xl:w-1/2 bg-grey-light rounded-2xl p-4 h-[392px]">
+    <div className="w-full 2xl:w-1/2 bg-grey-light rounded-2xl p-4 h-[392px] overflow-y-auto">
       <h4 className="text-heading-6-bold 2xl:text-heading-4-bold mb-3">
         Account History
       </h4>

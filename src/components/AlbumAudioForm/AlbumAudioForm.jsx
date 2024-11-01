@@ -6,6 +6,7 @@ const AlbumAudioForm = (props) => {
   const [collapsed, setCollapsed] = useState(false);
   // const { id } = props;
   // console.log({ ...props });
+  // console.log(props);
   return (
     <>
       <div

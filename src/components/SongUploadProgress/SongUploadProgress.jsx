@@ -51,7 +51,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
             }`}
             onClick={() => {
               (isEditMode || isPassedStep) && handleStepClick(step.id);
-              // handleStepClick(step.id);
+              handleStepClick(step.id);
             }}
           >
             <aside

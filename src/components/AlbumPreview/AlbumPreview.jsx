@@ -206,7 +206,7 @@ const AlbumPreview = ({ albumData }) => {
         <div className="px-4 py-3">
           <h2 className="text-heading-6-bold text-black">Selected Platforms</h2>
           <div className="mt-2 flex flex-wrap gap-2">
-            {albumData.selectedPlatforms.map((platform, index) => (
+            {albumData?.selectedPlatforms?.map((platform, index) => (
               <Button key={index}>{platform}</Button>
             ))}
           </div>

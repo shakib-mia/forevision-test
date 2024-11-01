@@ -20,7 +20,7 @@ const Form = forwardRef(
     {
       fields,
       instruction,
-      backendUrl,
+      // backendUrl,
       uIdKey,
       submitFromParent,
       id,
@@ -90,7 +90,7 @@ const Form = forwardRef(
 
       try {
         const response = await axios.post(
-          backendUrl + "submit-form",
+          "https://api.forevisiondigital.in/submit-form",
           formData,
           {
             headers: {

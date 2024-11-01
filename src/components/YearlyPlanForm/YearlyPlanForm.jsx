@@ -6,7 +6,7 @@ import { backendUrl, config } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const YearlyPlanForm = () => {
-  const { userData } = useContext(ProfileContext);
+  const { userData, token } = useContext(ProfileContext);
   //   console.log(userData);
   const fields = [
     {
@@ -78,7 +78,7 @@ const YearlyPlanForm = () => {
       label: "Instagram account link",
       name: "instagramAccountLink",
       id: "instagramAccountLink",
-      type: "number",
+      type: "text",
     },
     {
       placeholder: "Facebook account link",
@@ -87,7 +87,7 @@ const YearlyPlanForm = () => {
       label: "Facebook account link",
       name: "facebookAccountLink",
       id: "facebookAccountLink",
-      type: "number",
+      type: "text",
     },
     {
       placeholder: "Monthly Content",
@@ -125,7 +125,9 @@ const YearlyPlanForm = () => {
 
     // console.log(planData);
     axios
-      .post(backendUrl + "yearly-plans", planData, config)
+      .post(backendUrl + "yearly-plans", planData, {
+        headers: { token },
+      })
       .then(({ data }) => {
         if (data.acknowledged) {
           e.target.reset();
