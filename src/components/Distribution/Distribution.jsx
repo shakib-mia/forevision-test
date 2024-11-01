@@ -25,7 +25,6 @@ const Distribution = () => {
   const [orderId, setOrderId] = useState("XXXXX");
   const { planStore } = useContext(PlanContext);
   const [showAgreement, setShowAgreement] = useState(false);
-  // console.log(planStore);
 
   // console.log();
 
@@ -139,7 +138,9 @@ const Distribution = () => {
             <div className="flex divide-x divide-[#ddd] bg-grey-light">
               <aside className="w-1/2 p-2">Plan Name</aside>
               <aside className="w-1/2 p-2 capitalize">
-                {planStore.planName}
+                {userData.yearlyPlanStartDate
+                  ? "Yearly Plan"
+                  : planStore.planName}
               </aside>
             </div>
 

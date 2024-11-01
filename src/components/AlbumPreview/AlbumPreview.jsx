@@ -7,7 +7,7 @@ const AlbumPreview = ({ albumData }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const { setScreen } = useContext(ScreenContext);
   const audioRef = useRef(null);
-
+  console.log(albumData);
   const togglePlay = (song) => {
     console.log(song);
     if (currentSong === song && isPlaying) {

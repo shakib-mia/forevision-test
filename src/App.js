@@ -31,6 +31,8 @@ function App() {
   const [recordLabels, setRecordLabels] = useState([]);
   const navigate = useNavigate();
 
+  // console.log(userData);
+
   /* Working api calls starts here */
 
   useEffect(() => {
@@ -106,12 +108,31 @@ function App() {
     }
   }, [userData, refetch]);
 
-  // console.log(location.search.split("?"));
+  console.log(
+    userData.yearlyPlanStartDate
+      ? "Yearly Plan"
+      : location.search?.split("?")[1]
+  );
 
   const [planStore, setPlanStore] = useState({
-    planName: location.search?.split("?")[1],
-    price: location.search?.split("?")[2],
+    planName: userData.yearlyPlanStartDate?.length
+      ? "Yearly Plan"
+      : location.search?.split("?")[1],
+    price: userData.yearlyPlanStartDate
+      ? 99900
+      : location.search?.split("?")[2],
   });
+
+  useEffect(() => {
+    setPlanStore({
+      planName: userData.yearlyPlanStartDate?.length
+        ? "Yearly Plan"
+        : location.search?.split("?")[1],
+      price: userData.yearlyPlanStartDate
+        ? 99900
+        : location.search?.split("?")[2],
+    });
+  }, [userData]);
 
   /* Working api calls ends here */
 

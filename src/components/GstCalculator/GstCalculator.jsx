@@ -5,6 +5,8 @@ import { PlanContext } from "../../contexts/PlanContext";
 const GSTCalculator = ({ location }) => {
   // Extract the total price in paise from the URL
   const { planStore } = useContext(PlanContext);
+  // const { userData } = useContext(ProfileContext);
+
   const totalPriceInPaise = parseInt(planStore.price, 10);
 
   // Convert the total price from paise to rupees
