@@ -101,13 +101,13 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
       newItems.push(item);
     }
 
-    console.log(newItems);
+    // newItems;
     jsonToExcel(newItems, `Revenue_Details_of_${result[0].song_name}.xlsx`);
   };
 
   useEffect(() => {
     axios
-      .get(backendUrl + `/crbt-codes/${result[0].isrc}`)
+      .get(backendUrl + `crbt-codes/${result[0].isrc}`)
       .then(({ data }) => setCrbtCodes(data));
   }, [result[0], result[0].isrc]);
 

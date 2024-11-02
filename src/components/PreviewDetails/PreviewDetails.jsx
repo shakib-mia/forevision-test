@@ -13,7 +13,7 @@ const PreviewDetails = ({ albumData }) => {
   const location = useLocation();
   const audioRef = useRef(null);
   const navigate = useNavigate();
-  console.log(albumData);
+  // console.log(albumData);
 
   const togglePlay = () => {
     if (isPlaying) {
@@ -269,9 +269,9 @@ const PreviewDetails = ({ albumData }) => {
                 />
                 <span className="ml-3 text-subtitle-2 text-black-secondary">
                   Start Time: {albumData.startMinutes}:
-                  {albumData.startSeconds.toString().padStart(2, "0")} -{" "}
+                  {albumData.startSeconds?.toString()?.padStart(2, "0")} -{" "}
                   {albumData.startMinutes2}:
-                  {albumData.startSeconds2.toString().padStart(2, "0")}
+                  {albumData.startSeconds2?.toString()?.padStart(2, "0")}
                 </span>
               </div>
             </div>

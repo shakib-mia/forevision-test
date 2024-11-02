@@ -18,7 +18,7 @@ const SongUploadNew = () => {
   const location = useLocation();
   const { userData, token } = useContext(ProfileContext);
   const navigate = useNavigate();
-  console.log(userData);
+  // console.log(userData);
   // console.log(token);
 
   useEffect(() => {

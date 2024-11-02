@@ -168,7 +168,7 @@ const EditProfile = ({ handleClose }) => {
           }
         });
     } else {
-      console.log("No changes detected, not submitting.");
+      Swal.fire("No changes detected, not submitting.");
     }
   };
 
@@ -218,7 +218,7 @@ const EditProfile = ({ handleClose }) => {
 
                 // formData.cover_photo = data.url;
                 setFormData({ ...formData, cover_photo: data.url });
-                console.log(formData);
+                // formData;
               });
           }
         });
@@ -229,7 +229,7 @@ const EditProfile = ({ handleClose }) => {
     }
   };
 
-  console.log(formData["short-bio"]);
+  // console.log(formData["short-bio"]);
 
   return (
     <AuthBody
@@ -311,6 +311,8 @@ const EditProfile = ({ handleClose }) => {
           value={formData.facebook_profile_link}
           labelClassName={"mb-0"}
           containerClassName={`mt-3 w-1/3 pr-2`}
+          note="Don't forget to enter your link with https://"
+          noteLeftAligned
         />
         <InputField
           label={<FaInstagram className="text-[#FD1D1D]" />}
@@ -322,6 +324,8 @@ const EditProfile = ({ handleClose }) => {
           hideRequired={true}
           labelClassName={"mb-0"}
           containerClassName={`mt-3 w-1/3 pr-2`}
+          note="Don't forget to enter your link with https://"
+          noteLeftAligned
         />
         <InputField
           label={<FaXTwitter className="text-black" />}
@@ -333,6 +337,8 @@ const EditProfile = ({ handleClose }) => {
           hideRequired={true}
           labelClassName={"mb-0"}
           containerClassName={`mt-3 w-1/3`}
+          note="Don't forget to enter your link with https://"
+          noteLeftAligned
         />
       </div>
 

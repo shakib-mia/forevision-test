@@ -593,10 +593,10 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
           const audio = new Audio(audioUrl);
 
           audio.onloadedmetadata = () => {
-            console.log(audio);
+            // audio;
             // Access audio duration here
             setAudioDuration(audio.duration);
-            console.log(`Audio Duration: ${audio.duration} seconds`);
+            // `Audio Duration: ${audio.duration} seconds`;
             // Perform any action with the duration here
 
             // Remember to revoke the created URL to avoid memory leaks
@@ -623,7 +623,7 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
           img.src = e.target.result;
           img.onload = () => {
             // Set image dimensions
-            console.log({ width: img.width, height: img.height });
+            // ({ width: img.width, height: img.height });
             if (img.width >= 3000 && img.width === img.height) {
               //   alert("perfect");
             } else {
@@ -681,7 +681,7 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
       //   console.log(updatedIsrc);
       axios.get(backendUrl + "check-isrc/" + updatedIsrc).then(({ data }) => {
         if (data.length > 0) {
-          console.log(data);
+          // data;
           const newUpdate = incrementIsrc(data[data.length - 1].isrc, index);
           setUpdatedIsrc(newUpdate);
         } else {
@@ -746,7 +746,7 @@ const SongUploadForm = ({ index, setSubmitted, uploadType }) => {
 
     setSubmitted(true);
 
-    console.log(songData);
+    // songData;
   };
 
   return (

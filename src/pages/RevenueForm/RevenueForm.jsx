@@ -99,7 +99,7 @@ function RevenueForm() {
         return data.url; // This value is now being returned by the promise that `imageUploading` returns
       }
     } catch (err) {
-      console.log(err.message);
+      // err.message;
       return null; // In case of error, return null or handle it as per your error handling logic
     }
   };
@@ -215,7 +215,7 @@ function RevenueForm() {
       },
     };
 
-    console.log(body);
+    // body;
     setConfirmed(true);
   };
 

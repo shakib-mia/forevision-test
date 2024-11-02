@@ -23,7 +23,7 @@ const AlbumDetails = () => {
   const location = useLocation();
 
   const handleDetailSubmit = () => {
-    console.log(formData);
+    // formData;
     if (file.name) {
       setScreen("platform");
       // setFileError(false)
@@ -110,7 +110,7 @@ const AlbumDetails = () => {
             label={" "}
             onChange={(e) => {
               setFormData({ ...formData, UPC: e.target.value });
-              console.log(formData);
+              // formData;
             }}
             note={
               "If you have one put it here, if you don't one will be provided"

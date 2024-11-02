@@ -96,6 +96,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
             confirmButton: "custom-class-settings",
           },
         });
+        window.location.reload();
       }
     } catch (error) {
       toast.error(
@@ -182,14 +183,14 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         label={"Address"}
         name={"address"}
         containerClassName={"mt-3"}
-        hideRequired={true}
+        required={true}
       />
 
       <div className="flex flex-col xl:flex-row gap-3 mt-3">
         <InputField
           type={"date"}
           containerClassName={"xl:w-1/2"}
-          hideRequired={true}
+          required={true}
           name={"startDate"}
           label={"Start Date"}
         />
@@ -201,7 +202,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           name={"signatoryName"}
           id={"signature"}
           containerClassName={"xl:w-1/2"}
-          hideRequired={true}
+          required={true}
         />
       </div>
 

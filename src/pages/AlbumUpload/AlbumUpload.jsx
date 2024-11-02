@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AlbumDetails from "../../components/AlbumDetails/AlbumDetails";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import AudioUI from "../../components/Audio/Audio";
@@ -14,169 +14,7 @@ import { PlanContext } from "../../contexts/PlanContext";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const AlbumUpload = () => {
-  const [intiFormData, setInitFormData] = useState([
-    {
-      songName: "",
-      isrc: "",
-      artists: [
-        { name: "", role: "Singer/Primary Artist" },
-        { name: "", role: "Lyricist" },
-        { name: "", role: "Composer" },
-      ],
-      selectedPlatforms: [],
-      file: {},
-      startMinutes: 0,
-      startMinutes2: 0,
-      startSeconds: 0,
-      startSeconds2: 0,
-      parentalAdvisory: false,
-      instrumental: false,
-      language: "",
-    },
-    {
-      songName: "",
-      isrc: "",
-      artists: [
-        { name: "", role: "Singer/Primary Artist" },
-        { name: "", role: "Lyricist" },
-        { name: "", role: "Composer" },
-      ],
-      selectedPlatforms: [],
-      file: {},
-      startMinutes: 0,
-      startMinutes2: 0,
-      startSeconds: 0,
-      startSeconds2: 0,
-      parentalAdvisory: false,
-      instrumental: false,
-      language: "",
-    },
-    {
-      songName: "",
-      isrc: "",
-      artists: [
-        { name: "", role: "Singer/Primary Artist" },
-        { name: "", role: "Lyricist" },
-        { name: "", role: "Composer" },
-      ],
-      selectedPlatforms: [],
-      file: {},
-      startMinutes: 0,
-      startMinutes2: 0,
-      startSeconds: 0,
-      startSeconds2: 0,
-      parentalAdvisory: false,
-      instrumental: false,
-      language: "",
-    },
-    {
-      songName: "",
-      isrc: "",
-      artists: [
-        { name: "", role: "Singer/Primary Artist" },
-        { name: "", role: "Lyricist" },
-        { name: "", role: "Composer" },
-      ],
-      selectedPlatforms: [],
-      file: {},
-      startMinutes: 0,
-      startMinutes2: 0,
-      startSeconds: 0,
-      startSeconds2: 0,
-      parentalAdvisory: false,
-      instrumental: false,
-      language: "",
-    },
-    {
-      songName: "",
-      isrc: "",
-      artists: [
-        { name: "", role: "Singer/Primary Artist" },
-        { name: "", role: "Lyricist" },
-        { name: "", role: "Composer" },
-      ],
-      selectedPlatforms: [],
-      file: {},
-      startMinutes: 0,
-      startMinutes2: 0,
-      startSeconds: 0,
-      startSeconds2: 0,
-      parentalAdvisory: false,
-      instrumental: false,
-      language: "",
-    },
-    {
-      songName: "",
-      isrc: "",
-      artists: [
-        { name: "", role: "Singer/Primary Artist" },
-        { name: "", role: "Lyricist" },
-        { name: "", role: "Composer" },
-      ],
-      selectedPlatforms: [],
-      file: {},
-      startMinutes: 0,
-      startMinutes2: 0,
-      startSeconds: 0,
-      startSeconds2: 0,
-      parentalAdvisory: false,
-      instrumental: false,
-      language: "",
-    },
-    {
-      songName: "",
-      isrc: "",
-      artists: [
-        { name: "", role: "Singer/Primary Artist" },
-        { name: "", role: "Lyricist" },
-        { name: "", role: "Composer" },
-      ],
-      selectedPlatforms: [],
-      file: {},
-      startMinutes: 0,
-      startMinutes2: 0,
-      startSeconds: 0,
-      startSeconds2: 0,
-      parentalAdvisory: false,
-      instrumental: false,
-      language: "",
-    },
-    {
-      songName: "",
-      isrc: "",
-      artists: [
-        { name: "", role: "Singer/Primary Artist" },
-        { name: "", role: "Lyricist" },
-        { name: "", role: "Composer" },
-      ],
-      selectedPlatforms: [],
-      file: {},
-      startMinutes: 0,
-      startMinutes2: 0,
-      startSeconds: 0,
-      startSeconds2: 0,
-      parentalAdvisory: false,
-      instrumental: false,
-      language: "",
-    },
-    {
-      songName: "",
-      isrc: "",
-      artists: [
-        { name: "", role: "Singer/Primary Artist" },
-        { name: "", role: "Lyricist" },
-        { name: "", role: "Composer" },
-      ],
-      selectedPlatforms: [],
-      file: {},
-      startMinutes: 0,
-      startMinutes2: 0,
-      startSeconds: 0,
-      startSeconds2: 0,
-      parentalAdvisory: false,
-      instrumental: false,
-      language: "",
-    },
+  const [initFormData, setInitFormData] = useState([
     {
       songName: "",
       isrc: "",
@@ -196,13 +34,18 @@ const AlbumUpload = () => {
       language: "",
     },
   ]);
-  const [formData, setFormData] = useState({ songs: intiFormData });
+  const [formData, setFormData] = useState({ songs: initFormData });
   const [screen, setScreen] = useState("albumDetails");
   const [artistCount, setArtistCount] = useState(0);
   const location = useLocation();
   const [modal, showModal] = useState(false);
   const { userData } = useContext(ProfileContext);
   // console.log(userData);
+  useEffect(() => {
+    setFormData({ songs: initFormData });
+  }, [initFormData]);
+
+  // console.log(formData);
 
   return (
     <div className="lg:w-11/12 ml-auto pt-5">
@@ -233,6 +76,8 @@ const AlbumUpload = () => {
               artistCount={artistCount}
               setArtistCount={setArtistCount}
               setScreen={setScreen}
+              setInitFormData={setInitFormData}
+              initFormData={initFormData}
             />
           ) : (
             <></>

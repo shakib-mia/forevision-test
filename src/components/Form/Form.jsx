@@ -86,7 +86,7 @@ const Form = forwardRef(
         position: "bottom-right",
       });
 
-      console.log("Sending data:", formData);
+      // "Sending data:", formData;
 
       try {
         const response = await axios.post(
@@ -127,7 +127,7 @@ const Form = forwardRef(
 
       // console.log(name);
       //  if (e.target.checked) {
-      //    console.log(e.target.name);
+      //(e.target.name);
       //  }
 
       for (const field of fields) {

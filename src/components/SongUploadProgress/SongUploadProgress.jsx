@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 const SongUploadProgress = ({ setScreen, screen }) => {
   const location = useLocation();
   const isEditMode = location.pathname.startsWith("/edit-song"); // Check if the path starts with /edit-song
-  console.log(isEditMode);
+  // console.log(isEditMode);
   const steps = [
     { id: "albumDetails", label: "ALBUM DETAILS" },
     { id: "platform", label: "PLATFORM" },

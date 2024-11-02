@@ -33,7 +33,7 @@ const getAudioDuration = (file) => {
 
 const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
   const { setScreen, setFormData, formData } = useContext(ScreenContext);
-  console.log(formData);
+  // console.log(formData);
   const { planStore, setPlanStore } = useContext(PlanContext);
   const { userData, token } = useContext(ProfileContext);
   // const [done, setDone] = useState(false);
@@ -320,7 +320,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
         formData.status = "pending";
         formData.userEmail = userData.user_email;
 
-        console.log(formData);
+        // formData;
 
         const SongFile = new FormData();
 
@@ -622,7 +622,6 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 ) {
                   formData.songs[id].songName = e.target.value;
                   setFormData({ ...formData });
-                  console.log(formData.songs[id].songName.length);
                 } else {
                   setFormData({ ...formData, songName: e.target.value });
                 }
@@ -1129,10 +1128,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
         <Button
           type={"submit"}
           // containerClassName={"mx-auto"}
-          onClick={() => {
-            console.log(formData);
-            // setScreen("platform");
-          }}
+
           // disabled={done}
           text={"Save"}
         />

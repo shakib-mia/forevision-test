@@ -23,7 +23,7 @@ const SignUp = () => {
   // console.log(location.pathname);
   useEffect(() => {
     if (user) {
-      console.log(user);
+      // user;
       setUserData({
         ...userData,
         user_email: user.user.email,
@@ -126,7 +126,7 @@ const SignUp = () => {
 
     // axios.post("https://beta.forevisiondigital.com/admin/api/userRegistration", formData).then(res => {
     //   if (res.data.success) {
-    //     console.log(res.data);
+    // (res.data);
     //     setUserData({ ...userData, email: e.target.user_email.value, userId: res.data.data })
     //     navigate("/login");
     //     setPrevRoute(location.pathname)

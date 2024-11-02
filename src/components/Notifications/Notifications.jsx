@@ -25,7 +25,7 @@ const Notifications = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // err;
         setError("Failed to fetch notifications.");
         setLoading(false);
       });
@@ -37,13 +37,17 @@ const Notifications = () => {
   }, [token, modifiedCount]); // Dependency array to prevent infinite loops
 
   const markAsRead = (_id, notification) => {
-    delete notification._id;
-    notification.read = true;
-    // console.log(_id, notification);
+    if (!notification.read) {
+      delete notification._id;
+      notification.read = true;
+      // console.log(_id, notification);
 
-    axios
-      .put(backendUrl + "notifications/" + _id, notification)
-      .then(({ data }) => setModifiedCount(modifiedCount + data.modifiedCount));
+      axios
+        .put(backendUrl + "notifications/" + _id, notification)
+        .then(({ data }) =>
+          setModifiedCount(modifiedCount + data.modifiedCount)
+        );
+    }
   };
 
   // console.log(notifications.reverse());

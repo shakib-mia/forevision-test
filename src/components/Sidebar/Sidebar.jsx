@@ -11,7 +11,7 @@ import { MdLogout } from "react-icons/md";
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
   const { setProfileData, userData } = useContext(ProfileContext);
-  console.log(userData);
+  // console.log(userData);
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {

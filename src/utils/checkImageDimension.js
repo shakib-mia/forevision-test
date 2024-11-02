@@ -4,7 +4,7 @@ export const checkImageDimensions = (file, requiredWidth, requiredHeight) => {
     reader.onload = (e) => {
       const img = new Image();
       img.onload = () => {
-        console.log(img.width, img.height);
+        // img.width, img.height;
         if (img.width === requiredWidth && img.height === requiredHeight) {
           resolve(true);
         } else {

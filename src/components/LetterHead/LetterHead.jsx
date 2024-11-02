@@ -4,7 +4,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 
 const Letterhead = forwardRef(({ formData }, ref) => {
   const { userData } = useContext(ProfileContext);
-  console.log(formData);
+  // console.log(formData);
   return (
     <div className="bg-white py-2 rounded text-paragraph-1" ref={ref}>
       <div className="p-6">

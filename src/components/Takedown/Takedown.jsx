@@ -23,7 +23,7 @@ const Takedown = ({ setEditId, songData }) => {
     formData.emailId = userData.emailId;
     formData.platformsToDelete = platformsToDelete;
 
-    console.log(formData);
+    // formData;
     axios
       .post(backendUrl + "takedown-requests", formData, config)
       .then(({ data }) => data.acknowledged && setEditId(""));

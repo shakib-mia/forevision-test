@@ -67,7 +67,7 @@ const Plans = () => {
   //     .post(backendUrl + "razorpay", { amount }) // ============  *** Need to set amount dynamically here ***  ================
   //     .then(({ data }) => {
   //       initPayment(data);
-  //       console.log(data);
+  //   (data);
   //     })
   //     .catch((error) => console.log(error));
   // };
@@ -109,7 +109,7 @@ const Plans = () => {
   //   axios
   //     .post("http://localhost:5100/phonepe-payment/pay", data)
   //     .then(({ data }) => {
-  //       console.log(data);
+  //   (data);
   //       // window.open(data.data.instrumentResponse.redirectInfo.url);
   //     })
   //     .catch((error) => console.log(error));
@@ -142,7 +142,7 @@ const Plans = () => {
   //           position: "bottom-center",
   //         });
   //       } catch (error) {
-  //         console.log(error);
+  //     (error);
   //       }
   //     },
   //     theme: {

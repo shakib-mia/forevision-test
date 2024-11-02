@@ -41,7 +41,7 @@ const Payment = () => {
           location.search.split("?")[2].split("=")[1]
       )
       .then(({ data }) => {
-        console.log(data);
+        // data;
         setSongData(data);
       });
   }, []);
@@ -121,13 +121,13 @@ const Payment = () => {
           };
           // console.log(config);
           const res = await axios.post(verifyUrl, response, config);
-          console.log(res);
+          // res;
 
           if (res.data.insertCursor.acknowledged) {
             setPlanStore((prev) => ({ ...prev, ...res.data }));
             // navigate("/payment-success");
             // clg;
-            console.log(songData, razorpay_order_id);
+            // songData, razorpay_order_id;
             songData.order_id = razorpay_order_id;
             songData.payment_id = razorpay_payment_id;
             songData.status = "paid";
@@ -140,7 +140,7 @@ const Payment = () => {
               )
               .then(({ data }) => {
                 if (data.acknowledged) {
-                  console.log("navigating....");
+                  // ("navigating....");
                   navigate("/payment-success");
                 }
               });
@@ -194,7 +194,7 @@ const Payment = () => {
   //   axios
   //     .post(backendUrl + "phonepe-payment/pay", data)
   //     .then(({ data }) => {
-  //       console.log(data);
+  //   (data);
   //     })
   //     .catch((error) => console.log(error));
   // };

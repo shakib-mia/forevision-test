@@ -108,12 +108,6 @@ function App() {
     }
   }, [userData, refetch]);
 
-  console.log(
-    userData.yearlyPlanStartDate
-      ? "Yearly Plan"
-      : location.search?.split("?")[1]
-  );
-
   const [planStore, setPlanStore] = useState({
     planName: userData.yearlyPlanStartDate?.length
       ? "Yearly Plan"

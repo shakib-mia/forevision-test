@@ -22,9 +22,10 @@ const Agreement = ({ handleClose, formData }) => {
   const location = useLocation();
   const [audioDuration, setAudioDuration] = useState(0);
   const agreementRef = useRef(null);
-
+  // console.log(location.search.split("?"));
+  const [downloading, setDownloading] = useState(false);
   useEffect(() => {
-    console.log(formData);
+    // formData;
     getAudioDuration(formData.songUrl)
       .then((duration) => setAudioDuration(duration))
       .catch((error) => {
@@ -111,6 +112,7 @@ const Agreement = ({ handleClose, formData }) => {
   // };
 
   const createPdf = async () => {
+    setDownloading(true);
     const element = agreementRef.current;
 
     // Capture the entire HTML element as a canvas
@@ -185,6 +187,7 @@ const Agreement = ({ handleClose, formData }) => {
           text: "Please Proceed to Checkout",
           icon: "success",
         });
+        setDownloading(false);
         handleClose();
       }
     } catch (error) {
@@ -455,17 +458,23 @@ const Agreement = ({ handleClose, formData }) => {
               <br />
               <p>
                 First Part shall pay Second Part of the{" "}
-                {location.search?.split("?")[1]?.includes("forevision-social")
+                {location.search
+                  ?.split("?")[1]
+                  ?.toLowerCase()
+                  ?.includes("forevision-social")
                   ? 80
                   : 90}
                 % (Audio),{" "}
-                {location.search?.split("?")[1]?.includes("forevision-social")
+                {location.search
+                  ?.split("?")[1]
+                  ?.toLowerCase()
+                  ?.includes("forevision-social")
                   ? 80
                   : 85}
                 % (YouTube) of the total revenues that First Part receives from
                 Online Store(s) for the sale/streaming / downloading or other
                 use of Second Part’s Digital Masters. First Part will compute
-                amounts payable to the Second Part in each 6 months during the
+                amounts payable to the Second Part in each 3 months during the
                 Term, and will provide a statement to Second Part in accordance
                 with First Part’s standard business practices. Such payment
                 shall constitute full consideration for all rights granted and
@@ -929,7 +938,7 @@ const Agreement = ({ handleClose, formData }) => {
               <p className="py-1">Composer</p>
             </div>
 
-            {formData.albumType === "Album" ? (
+            {location.pathname === "/album-upload" ? (
               formData?.songs?.map((song) => (
                 <div className="grid grid-cols-6  divide-x divide-black">
                   <p className="py-1">{song.songName} </p>
@@ -1022,7 +1031,9 @@ const Agreement = ({ handleClose, formData }) => {
         </div>
 
         <div className="flex justify-center mt-4">
-          <Button onClick={createPdf}>Download</Button>
+          <Button disabled={downloading} onClick={createPdf}>
+            {downloading ? "Please Wait..." : "Download & Close"}
+          </Button>
         </div>
       </Modal>
     </>

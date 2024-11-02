@@ -62,13 +62,15 @@ const Distribution = () => {
       });
   };
 
+  console.log(location.search);
+
   const handlePayLater = () => {
     // console.log(formData);
     formData.planName = location.search.split("?")[1];
     formData.status = "pending";
     formData.orderId = orderId;
     delete formData.file;
-    console.log(formData);
+    // formData;
     // navigate("/");
     axios
       .post(backendUrl + "upload-song/upload-song-data", formData, config)
@@ -107,13 +109,18 @@ const Distribution = () => {
           // setCount(count + 1);
           // setScreen("preview");
           // : setCollapsed(true);
-          navigate(
-            `/payment?price=${
-              discountData.discountPercentage
-                ? discountPrice
-                : location.search.split("?")[2]
-            }?id=${orderId}`
-          );
+          if (location.search.includes("foreVision-social")) {
+            navigate("/");
+            // alert("/");
+          } else {
+            navigate(
+              `/payment?price=${
+                discountData.discountPercentage
+                  ? discountPrice
+                  : location.search.split("?")[2]
+              }?id=${orderId}`
+            );
+          }
         }
 
         if (location.search.includes("yearly-plan")) {
@@ -289,8 +296,8 @@ const Distribution = () => {
             </label>
           </div>
 
-          <div className="flex gap-2 justify-center">
-            {location.search.includes("yearly-plan") ? (
+          {location.search.includes("foreVision-social") ? (
+            <div className="flex gap-2 justify-center">
               <Button
                 type={"button"}
                 onClick={handleSubmit}
@@ -299,25 +306,47 @@ const Distribution = () => {
               >
                 Submit
               </Button>
-            ) : (
+
               <Button
                 type={"button"}
-                onClick={handleSubmit}
+                onClick={handlePayLater}
                 containerClassName={"mt-4"}
                 disabled={!accepted || !signature.length}
               >
-                Proceed to Checkout
+                Save As Draft
               </Button>
-            )}
-            <Button
-              type={"button"}
-              onClick={handlePayLater}
-              containerClassName={"mt-4"}
-              disabled={!accepted || !signature.length}
-            >
-              Save As Draft
-            </Button>
-          </div>
+            </div>
+          ) : (
+            <div className="flex gap-2 justify-center">
+              {location.search.includes("yearly-plan") ? (
+                <Button
+                  type={"button"}
+                  onClick={handleSubmit}
+                  containerClassName={"mt-4"}
+                  disabled={!accepted || !signature.length}
+                >
+                  Submit
+                </Button>
+              ) : (
+                <Button
+                  type={"button"}
+                  onClick={handleSubmit}
+                  containerClassName={"mt-4"}
+                  disabled={!accepted || !signature.length}
+                >
+                  Proceed to Checkout
+                </Button>
+              )}
+              <Button
+                type={"button"}
+                onClick={handlePayLater}
+                containerClassName={"mt-4"}
+                disabled={!accepted || !signature.length}
+              >
+                Save As Draft
+              </Button>
+            </div>
+          )}
 
           {/* <Button>Submit</Button> */}
         </div>

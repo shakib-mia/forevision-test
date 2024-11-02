@@ -140,11 +140,11 @@ const YearlyPlanForm = () => {
       onSubmit={handleSubmit}
       className="w-full overflow-y-auto bg-white h-full"
     >
-      {fields.map((field) => (
+      {fields.map((field, key) => (
         <InputField
           // labelClassName={"!text-white"}
           containerClassName={"mt-1 lg:mt-4"}
-          key={field.id}
+          key={key}
           // type={"text"}
           // className="text-black"
           {...field}

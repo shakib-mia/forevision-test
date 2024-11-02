@@ -75,7 +75,7 @@ const Profile = () => {
   const [edit, setEdit] = useState(false);
 
   const handleFollow = () => {
-    console.log("follow");
+    ("follow");
   };
 
   const [details, setDetails] = useState(false);

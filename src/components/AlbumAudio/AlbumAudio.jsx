@@ -4,15 +4,42 @@ import Button from "../Button/Button";
 
 const AlbumAudio = (props) => {
   const [forms, setForms] = useState([{ id: 0 }]);
+  const { initFormData, setInitFormData } = props;
+
+  // console.log(initFormData);
 
   const addMoreForm = () => {
+    // Create a new song template
+    const newSong = {
+      songName: "",
+      isrc: "",
+      artists: [
+        { name: "", role: "Singer/Primary Artist" },
+        { name: "", role: "Lyricist" },
+        { name: "", role: "Composer" },
+      ],
+      selectedPlatforms: [],
+      file: {},
+      startMinutes: 0,
+      startMinutes2: 0,
+      startSeconds: 0,
+      startSeconds2: 0,
+      parentalAdvisory: false,
+      instrumental: false,
+      language: "",
+    };
+
+    // Update initFormData by adding a new song object to the 'songs' array
+    setInitFormData([...props.initFormData, newSong]);
+
+    // console.log([...props.initFormData, newSong]);
+
+    // Add a new form with an incremented ID
     setForms((prevForms) => {
-      // Find the maximum current ID and increment
       const maxId =
         prevForms.length > 0
           ? Math.max(...prevForms.map((form) => form.id))
           : -1;
-
       return [...prevForms, { id: maxId + 1 }];
     });
   };

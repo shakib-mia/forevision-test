@@ -415,7 +415,7 @@ const Revenue = () => {
       delete item.track_artist;
     });
 
-    console.log(aggregatedMusicData);
+    // aggregatedMusicData;
     const worksheet = XLSX.utils.json_to_sheet(aggregatedMusicData);
 
     const workbook = XLSX.utils.book_new();
@@ -454,7 +454,7 @@ const Revenue = () => {
       },
     });
 
-    console.log(pdf);
+    // pdf;
   };
   // console.log(aggregatedMusicData);
 
