@@ -236,10 +236,13 @@ const Agreement = ({ handleClose, formData }) => {
   return (
     <>
       <Modal
-        className={"!items-start !block !overflow-y-auto py-7"}
+        className={"!items-start !block !overflow-y-auto py-3 lg:py-7"}
         // handleClose={handleClose}
       >
-        <div className="p-[96px] bg-white border-2" ref={agreementRef}>
+        <div
+          className="p-[96px] bg-white border-2 min-w-[1226px]  max-w-[1226px]"
+          ref={agreementRef}
+        >
           <h1 className="text-heading-2-bold text-center text-grey-dark mb-4">
             Agreement
           </h1>

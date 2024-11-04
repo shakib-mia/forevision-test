@@ -18,7 +18,7 @@ const Navbar = () => {
           src={logo}
           alt="logo"
           id="navbarLogo"
-          className="lg:w-1/2 w-[75%] h-fit"
+          className="w-auto max-w-[75%] lg:max-w-[150px] h-auto"
         />
       </a>
       <ul className="flex gap-[58px] text-white items-center">

@@ -26,7 +26,7 @@ const SocialLinks = () => {
 
   return (
     <div className="py-7 flex justify-center">
-      <div className="shadow-md p-3 text-grey-dark w-1/4">
+      <div className="shadow-md p-3 text-grey-dark w-11/12 lg:w-1/4">
         {/* <img
           src="https://www.designevo.com/res/templates/thumb_small/black-banner-and-vinyl.webp"
           alt="dummy"

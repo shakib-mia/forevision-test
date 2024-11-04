@@ -130,7 +130,7 @@ a.active svg path {
 }
 
 #bottomBar a.active {
-  @apply bg-white text-interactive-light border-t border-interactive-light rounded-none;
+  @apply text-black bg-transparent;
 }
 
 #bottomBar a:not(.active) svg path {

@@ -117,7 +117,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       className={`${
         location.pathname === "/home" || location.pathname === "/"
           ? "bg-grey-light p-4 rounded-2xl"
-          : "bg-white p-4 rounded w-11/12 lg:w-full h-5/6 overflow-auto relative"
+          : "bg-white p-4 rounded lg:w-full h-5/6 overflow-auto relative"
       }`}
       onSubmit={handleRecordLabelSubmit}
     >
@@ -132,8 +132,10 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       )}
       <h5
         className={
-          location.pathname === "/home" || location.pathname === "/"
-            ? "text-heading-5-bold 2xl:text-heading-4-bold text-grey-dark mb-2"
+          location.pathname === "/home" ||
+          location.pathname === "/" ||
+          location.pathname.includes("upload")
+            ? "text-heading-5-bold 2xl:text-heading-4-bold text-grey-dark mb-3"
             : "text-heading-5-bold text-center mt-4"
         }
       >
@@ -210,7 +212,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         <Button
           type={"submit"}
           text={submitted ? "Submitting..." : "Submit"}
-          containerClassName={"mt-6 mx-auto"}
+          containerClassName={"mt-2 lg:mt-6 mx-auto"}
           disabled={submitted}
         />
       </div>

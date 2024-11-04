@@ -36,7 +36,7 @@ const PreviewDetails = ({ albumData }) => {
   };
 
   return location.pathname !== "/album-upload" ? (
-    <div className="bg-surface-white-surface-1 min-h-screen p-4 mx-auto w-full">
+    <div className="bg-surface-white-surface-1 min-h-screen lg:p-4 mx-auto w-full pb-7">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="flex flex-col lg:flex-row">
           <div className="w-1/2 lg:w-1/4 aspect-square">

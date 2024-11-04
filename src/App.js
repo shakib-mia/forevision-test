@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import { ToastContainer, toast } from "react-toastify";
 import Construction from "./pages/Construction/Construction";
 import "react-toastify/dist/ReactToastify.css";
-import { backendUrl, routes } from "./constants";
+import { backendUrl, currencyAPI, routes } from "./constants";
 import BottomBar from "./components/BottomBar/BottomBar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
@@ -29,6 +29,7 @@ function App() {
   const [foundRequested, setFoundRequested] = useState({});
   const [refetch, setRefetch] = useState(true);
   const [recordLabels, setRecordLabels] = useState([]);
+  const [currencies, setCurrencies] = useState(1);
   const navigate = useNavigate();
 
   // console.log(userData);
@@ -78,6 +79,7 @@ function App() {
     refetch,
     setRefetch,
     recordLabels,
+    currencies,
     // timeStamp,
   };
 
@@ -129,6 +131,14 @@ function App() {
   }, [userData]);
 
   /* Working api calls ends here */
+
+  useEffect(() => {
+    axios
+      .get(`${currencyAPI}?base=INR`)
+      .then(({ data }) => setCurrencies(data.rates.USD));
+  }, []);
+
+  // console.log(currencies);
 
   return (
     <div className="bg-white w-screen h-screen">

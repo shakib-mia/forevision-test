@@ -110,11 +110,7 @@ const PlatformSelectionItem = ({
           : ""}
       </h6>
 
-      <ul
-        className={`grid ${
-          item.platformType === "YouTube" ? "grid-cols-1" : "grid-cols-2"
-        } lg:grid-cols-4 gap-2 lg:gap-4`}
-      >
+      <ul className={`grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4`}>
         {item?.platforms?.map((plat) => (
           <li
             className={`flex gap-2 justify-center lg:justify-normal transition items-center rounded-xl cursor-pointer p-2 ${

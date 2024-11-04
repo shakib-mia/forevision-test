@@ -9,7 +9,7 @@ const Platform = () => {
   );
 
   return (
-    <>
+    <div className="pb-6">
       <PlatformSelection
         selectedPlatforms={selectedPlatforms}
         setSelectedPlatforms={setSelectedPlatforms}
@@ -21,7 +21,7 @@ const Platform = () => {
       >
         Save and Next
       </Button>
-    </>
+    </div>
   );
 };
 

@@ -7,7 +7,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 
 const YearlyPlanForm = () => {
   const { userData, token } = useContext(ProfileContext);
-  //   console.log(userData);
+  console.log(userData);
   const fields = [
     {
       placeholder: "Enter Yor Email ID",
@@ -17,7 +17,7 @@ const YearlyPlanForm = () => {
       id: "emailId",
       label: "Email ID",
       containerClassName: "mt-0",
-      value: userData.emailId,
+      value: userData.user_email || userData.emailId,
       disabled: true,
     },
     {

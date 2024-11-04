@@ -19,9 +19,10 @@ const Distribution = () => {
   const [hasCouponCode, setHasCouponCode] = useState(false);
   const [error, setError] = useState(false);
   const [discountData, setDiscountData] = useState({});
-  const { userData } = useContext(ProfileContext);
+  const { userData, token } = useContext(ProfileContext);
   const [signature, setSignature] = useState("");
   const { formData, setScreen } = useContext(ScreenContext);
+
   const [orderId, setOrderId] = useState("XXXXX");
   const { planStore } = useContext(PlanContext);
   const [showAgreement, setShowAgreement] = useState(false);
@@ -103,7 +104,11 @@ const Distribution = () => {
     //   });
 
     axios
-      .post(backendUrl + "recent-uploads", formData, config)
+      .post(backendUrl + "recent-uploads", formData, {
+        headers: {
+          token,
+        },
+      })
       .then(({ data }) => {
         if (data.acknowledged && !location.search.includes("yearly-plan")) {
           // setCount(count + 1);
@@ -131,7 +136,7 @@ const Distribution = () => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row pb-7 lg:pb-0">
         <div className="w-full lg:w-1/2">
           <img src={finishImage} className="mx-auto w-10/12" alt="" />
           <h3 className="text-heading-3 text-interactive-dark-destructive mt-2 text-center">

@@ -68,7 +68,7 @@ const Login = () => {
             }
 
             setToken(data.token);
-            setUserData({ user_email: email });
+            setUserData({ user_email: email, emailId: email });
           }
         })
         .catch((err) => {
