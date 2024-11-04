@@ -26,6 +26,8 @@ import idea from "../../assets/icons/idea.webp";
 import jio from "../../assets/icons/jio.webp";
 import razorpay from "../../assets/icons/razorpay.png";
 import LoadingPulse from "../../components/LoadingPulse/LoadingPulse";
+import Steps from "../../components/Steps/Steps";
+import Faq from "../../components/Faq/Faq";
 
 const DynamicSongPlans = () => {
   const navigate = useNavigate();
@@ -316,6 +318,13 @@ const DynamicSongPlans = () => {
           )}
         </>
       )}
+
+      <Steps />
+
+      <FeatureTable />
+      <div className="w-[94%] lg:w-5/6 mx-auto">
+        <Faq />
+      </div>
     </div>
   );
 };
