@@ -1,10 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import PreviewDetails from "../PreviewDetails/PreviewDetails";
 import { backendUrl } from "../../constants";
+import { useLocation } from "react-router-dom";
 
 const Preview = () => {
-  const { formData } = useContext(ScreenContext);
+  const { formData, setFormData } = useContext(ScreenContext);
+  const location = useLocation();
+  const filteredSongs =
+    location.pathname === "/album-upload" &&
+    formData.songs.filter(
+      (song) => song.songName && song.songName.trim() !== ""
+    );
+
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      songs: filteredSongs,
+    }));
+  }, [filteredSongs.length]);
+
+  // console.log(formData);
 
   // const createAlbumTable = (album) => {
   //   const createRow = (label, value) => (

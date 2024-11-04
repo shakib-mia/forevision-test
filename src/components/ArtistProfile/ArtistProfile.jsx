@@ -45,7 +45,7 @@ const ArtistProfile = ({
   let found;
   // console.log(formData);
   if (formData && location.pathname === "/album-upload") {
-    console.log(formData);
+    // console.log(formData);
     found = formData?.songs?.find((item) =>
       item?.artists?.find((ar) => ar.name === artist.name)
     );

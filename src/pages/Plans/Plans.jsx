@@ -286,7 +286,11 @@ const DynamicSongPlans = () => {
               </li>
             </ul>
           </aside>
-          <AlbumPlan />
+          <AlbumPlan
+          // setPlanName={setPlanName}
+          // handleRazorpayPayment={handleRazorpayPayment}
+          // handlePhonePePayment={handlePhonePePayment}
+          />
         </div>
       ) : (
         <>

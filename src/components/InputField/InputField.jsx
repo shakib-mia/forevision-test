@@ -14,6 +14,7 @@ const InputField = (props) => {
   const location = useLocation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
+  // console.log(passwordVisible);
   const {
     id,
     label,
@@ -29,6 +30,7 @@ const InputField = (props) => {
     accept,
     containerId,
     selectItems,
+    noteLeftAligned,
     value,
     disabled,
     icon,
@@ -327,7 +329,9 @@ const InputField = (props) => {
       )}
 
       <p
-        className={`text-subtitle-2 text-right ${
+        className={`text-subtitle-2 ${
+          noteLeftAligned ? "text-left" : "text-right"
+        } ${
           dangerNote
             ? "text-interactive-light-destructive"
             : successNote

@@ -31,7 +31,7 @@ const RecentUploadsItem = (props) => {
     status,
     songData,
   } = props;
-  // console.log(props);
+  console.log(status);
   const { token } = useContext(ProfileContext);
   const [reason, setReason] = useState("");
   const [editId, setEditId] = useState("");
@@ -42,7 +42,7 @@ const RecentUploadsItem = (props) => {
     const updated = { ...props };
     delete updated.update;
     updated.reason = reason;
-    console.log(updated);
+    // updated;
     // // console.log(updated);
     // axios.post(backendUrl + "refund", updated, config).then(({ data }) => {
     //   // if()
@@ -127,7 +127,7 @@ const RecentUploadsItem = (props) => {
                   ? "text-interactive-light-confirmation-focus"
                   : status === "sent-to-stores"
                   ? "text-interactive-light-confirmation"
-                  : status === "copyright-infringed"
+                  : status === "Copyright infringed"
                   ? "text-interactive-light-destructive"
                   : status === "taken-down"
                   ? "text-interactive-dark-destructive"
@@ -152,7 +152,7 @@ const RecentUploadsItem = (props) => {
                 />
                 <Tooltip id={"takedown" + _id} />
               </div>
-            ) : status === "copyright-infringed" ? (
+            ) : status === "Copyright infringed" ? (
               <TbCopyrightOff className="text-interactive-light-destructive w-3 h-3" />
             ) : status === "taken-down" ? (
               <TbMusicOff className="text-interactive-dark-destructive w-3 h-3" />
@@ -160,13 +160,32 @@ const RecentUploadsItem = (props) => {
               <></>
             )}
           </p>
+        ) : price === "0" && !status ? (
+          <p className="text-center mx-auto text-interactive-light-confirmation">
+            Submitted Successfully
+          </p>
+        ) : status ? (
+          <p
+            className={`text-center capitalize mx-auto ${
+              status === "Copyright infringed"
+                ? "text-interactive-light-destructive"
+                : status === "Sent to Stores"
+                ? "text-interactive-light-confirmation"
+                : status === "streaming"
+                ? "text-interactive-light"
+                : status === "taken-down"
+                ? "text-interactive-dark-destructive"
+                : ""
+            }`}
+          >
+            {status.includes("-") ? status.split("-").join(" ") : status}
+          </p>
         ) : (
           <Button
             containerClassName={"mx-auto"}
             small={true}
-            disabled={price === "0"}
             onClick={() => {
-              price > 0 && navigate(`/payment?price=${price}?id=${orderId}`);
+              navigate(`/payment?price=${price}?id=${orderId}`);
               // setPlanStore({ planName, price });
             }}
           >

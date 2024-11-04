@@ -14,7 +14,7 @@ import RevenueDetails from "../../components/RevenueDetails/RevenueDetails";
 import { useNavigate } from "react-router-dom";
 import OwlCarousel from "react-owl-carousel";
 import Analytics from "../../components/Analytics/Analytics";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronDown, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { VscLoading } from "react-icons/vsc";
 import Navbar from "../../components/Navbar/Navbar";
 import { jsonToCsv } from "../../utils/jsonToCsv";
@@ -35,6 +35,7 @@ const Revenue = () => {
   const [loaded, setLoaded] = useState(false);
   // const pdfBody = useRef(null);
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
+  const [filterValue, setFilterValue] = useState("song_name");
 
   useEffect(() => {
     if (currentTime >= 0 && currentTime < 12) {
@@ -380,7 +381,7 @@ const Revenue = () => {
     return acc;
   }, {});
 
-  console.log(revenueByPlatform);
+  // console.log(revenueByPlatform);
 
   const viewsByPlatform = songs.reduce((acc, song) => {
     if (!acc[song.platformName]) {
@@ -414,7 +415,7 @@ const Revenue = () => {
       delete item.track_artist;
     });
 
-    console.log(aggregatedMusicData);
+    // aggregatedMusicData;
     const worksheet = XLSX.utils.json_to_sheet(aggregatedMusicData);
 
     const workbook = XLSX.utils.book_new();
@@ -453,10 +454,16 @@ const Revenue = () => {
       },
     });
 
-    console.log(pdf);
+    // pdf;
   };
   // console.log(aggregatedMusicData);
-  console.log(dollarRate);
+
+  const handleSortChange = (e) => {
+    setFilterValue(e.target.value);
+  };
+
+  // console.log(agg);
+
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
@@ -519,7 +526,7 @@ const Revenue = () => {
                   />
                 </div>
                 <p className="text-subtitle-1 text-interactive-dark-destructive-active tracking-[0.5px] mt-1 italic">
-                  * Updated Till April, 2024
+                  * Updated Till May 2024
                 </p>
               </div>
 
@@ -587,19 +594,40 @@ const Revenue = () => {
                   id="revenue-slider"
                 >
                   <div className="mt-3 px-1 2xl:px-3 py-1 2xl:py-4 bg-grey-light rounded-[10px] overflow-auto">
-                    <div className="flex justify-end flex-col lg:flex-row items-end gap-0 whitespace-nowrap">
-                      <Button disabled={!loaded} onClick={getExcel}>
-                        DOWNLOAD EXCEL
-                        <IoMdDownload className="text-paragraph-1" />
-                      </Button>
-                      <Button
-                        containerClassName={"flex items-center"}
-                        disabled={!loaded}
-                        onClick={createPdf}
-                      >
-                        DOWNLOAD PDF
-                        <IoMdDownload className="text-paragraph-1" />
-                      </Button>
+                    <div className="flex justify-end items-center">
+                      {/* <div className="hidden xl:block w-1/2">
+                        <div className="flex gap-2 w-full">
+                          <div className="flex gap-1 items-center w-full">
+                            <p>Sort By:</p>
+                            <div className="relative w-1/3 bg-white rounded">
+                              <select
+                                className="bg-white p-2 pr-8 rounded border focus:outline-none appearance-none w-full"
+                                onChange={handleSortChange}
+                              >
+                                <option value={"song_name"} selected>
+                                  Song Name
+                                </option>
+                                <option value={"label"}>Label</option>
+                              </select>
+                              <FaChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" />
+                            </div>
+                          </div>
+                        </div>
+                      </div> */}
+                      <div className="flex flex-col lg:flex-row items-end gap-0 whitespace-nowrap">
+                        <Button disabled={!loaded} onClick={getExcel}>
+                          DOWNLOAD EXCEL
+                          <IoMdDownload className="text-paragraph-1" />
+                        </Button>
+                        <Button
+                          containerClassName={"flex items-center"}
+                          disabled={!loaded}
+                          onClick={createPdf}
+                        >
+                          DOWNLOAD PDF
+                          <IoMdDownload className="text-paragraph-1" />
+                        </Button>
+                      </div>
                     </div>
                     <div className="mt-3">
                       <ul className="grid-cols-9 gap-3 sticky top-0 mb-2 hidden xl:grid">
@@ -628,83 +656,75 @@ const Revenue = () => {
                         ))}
                       </ul>
 
-                      {aggregatedMusicData.map((song) => (
-                        <>
-                          <ul className="hidden xl:grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
-                            {/* list item */}
-                            {options.map((item) => {
-                              return (
-                                <li className="text-center">
-                                  {/* {console.log(song)} */}
-                                  {typeof song[item] === "number" &&
-                                  song[item].toString().split(".").length >
-                                    1 ? (
-                                    item === "after tds revenue" ? (
-                                      userData.billing_country === "India" ? (
+                      {aggregatedMusicData
+                        .sort((a, b) =>
+                          typeof a[filterValue] === "string"
+                            ? a[filterValue].localeCompare(b[filterValue])
+                            : a[filterValue] > b[filterValue]
+                        )
+                        .map((song) => (
+                          <>
+                            <ul className="hidden xl:grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                              {/* list item */}
+                              {options.map((item) => {
+                                return (
+                                  <li className="text-center">
+                                    {typeof song[item] === "number" &&
+                                    song[item].toString().split(".").length >
+                                      1 ? (
+                                      item === "after tds revenue" ? (
                                         final_after_tds[song.isrc].toFixed(8)
                                       ) : (
-                                        (
-                                          final_after_tds[song.isrc] *
-                                          dollarRate
-                                        ).toFixed(8)
+                                        song[item].toFixed(8)
                                       )
-                                    ) : userData.billing_country === "India" ? (
-                                      song[item].toFixed(8)
+                                    ) : item === "total" ? (
+                                      total_lifetime_views[song.isrc]
+                                    ) : item === "platformName" ? (
+                                      <button
+                                        onClick={() => setDetails(song.isrc)}
+                                      >
+                                        See Details
+                                      </button>
                                     ) : (
-                                      (song[item] * dollarRate).toFixed(8)
-                                    )
-                                  ) : item === "total" ? (
-                                    total_lifetime_views[song.isrc]
-                                  ) : item === "platformName" ? (
-                                    <button
-                                      onClick={() => setDetails(song.isrc)}
-                                    >
-                                      See Details
-                                    </button>
-                                  ) : (
-                                    song[item]
-                                  )}
-                                </li>
-                              );
-                            })}
-                          </ul>
+                                      song[item]
+                                    )}
+                                  </li>
+                                );
+                              })}
+                            </ul>
 
-                          <ul className="xl:hidden grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
-                            {phoneOptions.map((item) => {
-                              return (
-                                <li
-                                  className="text-center"
-                                  onClick={() => setDetails(song.isrc)}
-                                >
-                                  {typeof song[item] === "number" &&
-                                  song[item].toString().split(".").length >
-                                    1 ? (
-                                    item === "Total Revenue Against ISRC" ? (
-                                      userData.billing_country === "India" ? (
+                            <ul className="xl:hidden grid grid-cols-3 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                              {phoneOptions.map((item) => {
+                                return (
+                                  <li
+                                    className="text-center"
+                                    onClick={() => setDetails(song.isrc)}
+                                  >
+                                    {typeof song[item] === "number" &&
+                                    song[item].toString().split(".").length >
+                                      1 ? (
+                                      item === "Total Revenue Against ISRC" ? (
                                         song[item].toFixed(3)
                                       ) : (
-                                        (song[item] * dollarRate).toFixed(3)
+                                        song[item].toFixed(8)
                                       )
+                                    ) : item === "total" ? (
+                                      total_lifetime_views[song.isrc]
+                                    ) : item === "platformName" ? (
+                                      <button
+                                        onClick={() => setDetails(song.isrc)}
+                                      >
+                                        See Details
+                                      </button>
                                     ) : (
-                                      song[item].toFixed(8)
-                                    )
-                                  ) : item === "total" ? (
-                                    total_lifetime_views[song.isrc]
-                                  ) : item === "platformName" ? (
-                                    <button
-                                      onClick={() => setDetails(song.isrc)}
-                                    >
-                                      See Details
-                                    </button>
-                                  ) : (
-                                    song[item]
-                                  )}
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </>
-                      ))}
+                                      song[item]
+                                    )}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </>
+                        ))}
                     </div>
 
                     {loaded && (
@@ -756,64 +776,70 @@ const Revenue = () => {
                           ))}
                         </ul>
 
-                        {aggregatedMusicData.map((song) => (
-                          <ul className="grid grid-cols-3 2xl:grid-cols-8 gap-0 text-grey-dark py-1 rounded-md mb-1">
-                            {/* list item */}
-                            {options2.map((item) => {
-                              return (
-                                <li className="text-center hidden 2xl:block">
-                                  {/* {console.log(song)} */}
-                                  {typeof song[item] === "number" &&
-                                  song[item].toString().split(".").length >
-                                    1 ? (
-                                    item === "after tds revenue" ? (
-                                      final_after_tds[song.isrc].toFixed(8)
+                        {aggregatedMusicData
+                          .sort((a, b) =>
+                            typeof a[filterValue] === "string"
+                              ? a[filterValue].localeCompare(b[filterValue])
+                              : a[filterValue] > b[filterValue]
+                          )
+                          .map((song) => (
+                            <ul className="grid grid-cols-3 2xl:grid-cols-8 gap-0 text-grey-dark py-1 rounded-md mb-1">
+                              {/* list item */}
+                              {options2.map((item) => {
+                                return (
+                                  <li className="text-center hidden 2xl:block">
+                                    {/* {console.log(song)} */}
+                                    {typeof song[item] === "number" &&
+                                    song[item].toString().split(".").length >
+                                      1 ? (
+                                      item === "after tds revenue" ? (
+                                        final_after_tds[song.isrc].toFixed(8)
+                                      ) : (
+                                        song[item].toFixed(8)
+                                      )
+                                    ) : item === "total" ? (
+                                      total_lifetime_views[song.isrc]
+                                    ) : item === "platformName" ? (
+                                      <button
+                                        onClick={() => setDetails(song.isrc)}
+                                      >
+                                        See Details
+                                      </button>
                                     ) : (
-                                      song[item].toFixed(8)
-                                    )
-                                  ) : item === "total" ? (
-                                    total_lifetime_views[song.isrc]
-                                  ) : item === "platformName" ? (
-                                    <button
-                                      onClick={() => setDetails(song.isrc)}
-                                    >
-                                      See Details
-                                    </button>
-                                  ) : (
-                                    song[item]
-                                  )}
-                                </li>
-                              );
-                            })}
+                                      song[item]
+                                    )}
+                                  </li>
+                                );
+                              })}
 
-                            {phoneOptions.map((item) => {
-                              return (
-                                <li className="text-center 2xl:hidden">
-                                  {/* {console.log(song)} */}
-                                  {typeof song[item] === "number" &&
-                                  song[item].toString().split(".").length >
-                                    1 ? (
-                                    item === "after tds revenue" ? (
-                                      final_after_tds[song.isrc].toFixed(8)
+                              {phoneOptions.map((item) => {
+                                return (
+                                  <li className="text-center 2xl:hidden">
+                                    {/* {console.log(song)} */}
+                                    {typeof song[item] === "number" &&
+                                    song[item].toString().split(".").length >
+                                      1 ? (
+                                      item === "after tds revenue" ? (
+                                        final_after_tds[song.isrc].toFixed(8)
+                                      ) : (
+                                        song[item].toFixed(8)
+                                      )
+                                    ) : item === "total" ? (
+                                      total_lifetime_views[song.isrc]
+                                    ) : item === "platformName" ? (
+                                      <button
+                                        onClick={() => setDetails(song.isrc)}
+                                      >
+                                        See Details
+                                      </button>
                                     ) : (
-                                      song[item].toFixed(8)
-                                    )
-                                  ) : item === "total" ? (
-                                    total_lifetime_views[song.isrc]
-                                  ) : item === "platformName" ? (
-                                    <button
-                                      onClick={() => setDetails(song.isrc)}
-                                    >
-                                      See Details
-                                    </button>
-                                  ) : (
-                                    song[item]
-                                  )}
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        ))}
+                                      song[item]
+                                    )}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          ))}
                       </div>
                     )}
                   </div>

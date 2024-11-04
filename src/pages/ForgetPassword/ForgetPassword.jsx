@@ -25,7 +25,7 @@ const ForgetPassword = () => {
         user_email: e.target["forgot-email"].value.toLowerCase(),
       })
       .then(({ data }) => {
-        console.log(data);
+        // data;
         if (data.modifiedCount) {
           setSending(false);
           setSent(true);

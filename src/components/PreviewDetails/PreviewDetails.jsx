@@ -13,7 +13,7 @@ const PreviewDetails = ({ albumData }) => {
   const location = useLocation();
   const audioRef = useRef(null);
   const navigate = useNavigate();
-  console.log(albumData);
+  // console.log(albumData);
 
   const togglePlay = () => {
     if (isPlaying) {
@@ -36,7 +36,7 @@ const PreviewDetails = ({ albumData }) => {
   };
 
   return location.pathname !== "/album-upload" ? (
-    <div className="bg-surface-white-surface-1 min-h-screen p-4 mx-auto w-full">
+    <div className="bg-surface-white-surface-1 min-h-screen lg:p-4 mx-auto w-full pb-7">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="flex flex-col lg:flex-row">
           <div className="w-1/2 lg:w-1/4 aspect-square">
@@ -269,9 +269,9 @@ const PreviewDetails = ({ albumData }) => {
                 />
                 <span className="ml-3 text-subtitle-2 text-black-secondary">
                   Start Time: {albumData.startMinutes}:
-                  {albumData.startSeconds.toString().padStart(2, "0")} -{" "}
+                  {albumData.startSeconds?.toString()?.padStart(2, "0")} -{" "}
                   {albumData.startMinutes2}:
-                  {albumData.startSeconds2.toString().padStart(2, "0")}
+                  {albumData.startSeconds2?.toString()?.padStart(2, "0")}
                 </span>
               </div>
             </div>

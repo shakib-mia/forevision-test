@@ -37,7 +37,7 @@ import AllSongs from "./pages/AllSongs/AllSongs";
 import { LiaItunesNote } from "react-icons/lia";
 import { GoTag } from "react-icons/go";
 import { LuHome, LuUserCheck2 } from "react-icons/lu";
-import { FaUserCheck } from "react-icons/fa";
+import { FaUserCheck, FaWpforms } from "react-icons/fa";
 import KYC from "./pages/KYC/KYC";
 import { IoMdAnalytics, IoMdHome } from "react-icons/io";
 import Analytics from "./components/Analytics/Analytics";
@@ -47,6 +47,7 @@ import { FaCrown } from "react-icons/fa6";
 
 // export const backendUrl = "http://localhost:5100/";
 export const backendUrl = "https://api.forevisiondigital.in/";
+export const currencyAPI = "https://api.frankfurter.app/latest";
 
 export const navItem = [
   {
@@ -59,83 +60,37 @@ export const navItem = [
     text: "Revenue",
     path: "/revenue",
   },
-  // {
-  //   icon: <IoMdAnalytics className="text-[24px]" />,
-  //   text: "Analytics",
-  //   path: "/analytics",
-  // },
-  // {
-  //   icon: (
-  //     <svg
-  //       width="24"
-  //       height="24"
-  //       viewBox="0 0 24 24"
-  //       // fill="none"
-  //       xmlns="http://www.w3.org/2000/svg"
-  //     >
-  //       <path
-  //         fillRule="evenodd"
-  //         clipRule="evenodd"
-  //         d="M5 4C4.44772 4 4 4.44772 4 5V8H20V5C20 4.44771 19.5523 4 19 4H5ZM22 5C22 3.34315 20.6569 2 19 2H5C3.34315 2 2 3.34315 2 5V19C2 20.6569 3.34315 22 5 22H19C20.6569 22 22 20.6569 22 19V5ZM20 10H10V20H19C19.5523 20 20 19.5523 20 19V10ZM8 20V10H4V19C4 19.5523 4.44771 20 5 20H8Z"
-  //         // fill="black"
-  //       />
-  //     </svg>
-  //   ),
-  //   text: "Dashboard",
-  //   path: "/dashboard",
-  // },
+  {
+    icon: <FaWpforms className="text-[24px]" />,
+    text: "Forms",
+    dropdownItem: [
+      { dropdownPath: "/promotional-tool", text: "Promotional Tool" },
+      { dropdownPath: "/youtube-oac", text: "YouTube OAC" },
+      { dropdownPath: "/youtube-claim-release", text: "YouTube Claim Release" },
+      // { dropdownPath: "/video-distribution", text: "Video Distribution" },
+      {
+        dropdownPath: "/link-facebook-and-instagram-profile-with-songs",
+        text: "Link Facebook & Instagram Profiles with Songs",
+      },
+      {
+        dropdownPath: "/facebook-insta-whitelisting",
+        text: "Facebook & Instagram Whitelisting",
+      },
+      {
+        dropdownPath: "/youtube-video-takedown",
+        text: "YouTube Video Takedown",
+      },
+    ],
+  },
   {
     icon: <BsUpload className="text-heading-6" />,
     text: "Song Upload",
     path: "/song-upload",
   },
-  // {
-  //   icon: (
-  //     // <svg
-  //     //   width="24"
-  //     //   height="24"
-  //     //   viewBox="0 0 24 24"
-  //     //   fill="none"
-  //     //   xmlns="http://www.w3.org/2000/svg"
-  //     // >
-  //     //   <path
-  //     //     fill-rule="evenodd"
-  //     //     clip-rule="evenodd"
-  //     //     d="M11.553 1.10557C11.8345 0.964809 12.1659 0.964809 12.4474 1.10557L22.4474 6.10557C22.7862 6.27496 23.0002 6.62123 23.0002 7C23.0002 7.37877 22.7862 7.72504 22.4474 7.89443L12.4474 12.8944C12.1659 13.0352 11.8345 13.0352 11.553 12.8944L1.55301 7.89443C1.21422 7.72504 1.00022 7.37877 1.00022 7C1.00022 6.62123 1.21422 6.27496 1.55301 6.10557L11.553 1.10557ZM4.23629 7L12.0002 10.882L19.7642 7L12.0002 3.11803L4.23629 7ZM1.10579 11.5528C1.35278 11.0588 1.95345 10.8586 2.44743 11.1056L12.0002 15.882L21.553 11.1056C22.047 10.8586 22.6477 11.0588 22.8946 11.5528C23.1416 12.0468 22.9414 12.6474 22.4474 12.8944L12.4474 17.8944C12.1659 18.0352 11.8345 18.0352 11.553 17.8944L1.55301 12.8944C1.05903 12.6474 0.858803 12.0468 1.10579 11.5528ZM1.10579 16.5528C1.35278 16.0588 1.95345 15.8586 2.44743 16.1056L12.0002 20.882L21.553 16.1056C22.047 15.8586 22.6477 16.0588 22.8946 16.5528C23.1416 17.0468 22.9414 17.6474 22.4474 17.8944L12.4474 22.8944C12.1659 23.0352 11.8345 23.0352 11.553 22.8944L1.55301 17.8944C1.05903 17.6474 0.858803 17.0468 1.10579 16.5528Z"
-  //     //     fill="black"
-  //     //   />
-  //     // </svg>
-  //     <SlCloudUpload className="text-[24px]" />
-  //   ),
-  //   text: "Upload",
-  //   path: "/song-upload",
-  // },
   {
     icon: <GoTag className="text-[24px]" />,
     text: "Plans",
     path: "/plans",
-    // dropdownItem: [
-    //   {
-    //     text: "item 1",
-    //     dropdownPath: "/plans/1",
-    //   },
-    //   {
-    //     text: "item 1",
-    //     dropdownPath: "/plans/2",
-    //   },
-    //   {
-    //     text: "item 1",
-    //     dropdownPath: "/plans/3",
-    //   },
-    //   {
-    //     text: "item 1",
-    //     dropdownPath: "/plans/4",
-    //   },
-    //   {
-    //     text: "item 1",
-    //     dropdownPath: "/plans/5",
-    //   },
-    // ],
   },
 
   {
@@ -160,26 +115,6 @@ export const navItem = [
 ];
 
 export const navPhone = [
-  // {
-  //   icon: (
-  //     <svg
-  //       version="1.2"
-  //       xmlns="http://www.w3.org/2000/svg"
-  //       viewBox="0 0 25 24"
-  //       width="25"
-  //       height="24"
-  //     >
-  //       <path
-  //         id="Layer"
-  //         fillRule="evenodd"
-  //         className="s0"
-  //         d="m22.5 19c0 1.7-1.3 3-3 3h-14c-1.7 0-3-1.3-3-3v-14c0-1.7 1.3-3 3-3h14c1.7 0 3 1.3 3 3zm-17-15c-0.6 0-1 0.4-1 1v3h16v-3c0-0.6-0.4-1-1-1zm15 6h-10v10h9c0.6 0 1-0.4 1-1zm-12 10v-10h-4v9c0 0.6 0.4 1 1 1z"
-  //       />
-  //     </svg>
-  //   ),
-  //   text: "Dashboard",
-  //   path: "/dashboard",
-  // },
   {
     icon: (
       <svg
@@ -281,14 +216,14 @@ export const routes = [
       </RequireAuth>
     ),
   },
-  // {
-  //   path: "/home",
-  //   page: (
-  //     <RequireAuth>
-  //       <Home />
-  //     </RequireAuth>
-  //   ),
-  // },
+  {
+    path: "/home",
+    page: (
+      <RequireAuth>
+        <Home />
+      </RequireAuth>
+    ),
+  },
 
   {
     path: "/bulk-upload",
@@ -324,14 +259,14 @@ export const routes = [
     path: "/plans",
     page: <Plans />,
   },
-  {
-    path: "/verified-on-resso",
-    page: (
-      <RequireAuth>
-        <ProfileVerification />
-      </RequireAuth>
-    ),
-  },
+  // {
+  //   path: "/verified-on-resso",
+  //   page: (
+  //     <RequireAuth>
+  //       <ProfileVerification />
+  //     </RequireAuth>
+  //   ),
+  // },
 
   {
     path: "/youtube-oac",

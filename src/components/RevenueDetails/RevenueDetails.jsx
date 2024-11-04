@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import RevenueDetailsItem from "../RevenueDetailsItem/RevenueDetailsItem";
 import { IoMdDownload } from "react-icons/io";
 import Button from "../Button/Button";
@@ -8,11 +8,14 @@ import SongDetailsPdfPreview from "../SongDetailsPdfPreview/SongDetailsPdfPrevie
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { utils, write } from "xlsx";
 import { jsonToExcel } from "../../utils/jsonToExcel";
+import axios from "axios";
+import { backendUrl } from "./../../constants";
 
 const RevenueDetails = ({ setDetails, songs, details }) => {
   const detailsRef = useRef(null);
   const [preview, showPreview] = useState(false);
   const { userData } = useContext(ProfileContext);
+  const [crbtCodes, setCrbtCodes] = useState([]);
   // console.log(userData);
   const items = songs
     .filter((song) => song.isrc === details)
@@ -98,9 +101,15 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
       newItems.push(item);
     }
 
-    console.log(newItems);
+    // newItems;
     jsonToExcel(newItems, `Revenue_Details_of_${result[0].song_name}.xlsx`);
   };
+
+  useEffect(() => {
+    axios
+      .get(backendUrl + `crbt-codes/${result[0].isrc}`)
+      .then(({ data }) => setCrbtCodes(data));
+  }, [result[0], result[0].isrc]);
 
   return (
     <>
@@ -142,10 +151,27 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
             </p>
             <p
               // style={{ fontSize: "37.9px", lineheight: "24px" }}
-              className="xl:ml-3 text-heading-6-bold xl:text-heading-4-bold text-grey-dark"
+              className="text-heading-6-bold xl:text-heading-4-bold text-grey-dark xl:ml-3"
             >
               {result[0].isrc}
             </p>
+
+            <ul className="flex flex-col gap-1 pl-3 mt-4 flex-wrap">
+              {crbtCodes.length > 0 ? (
+                crbtCodes.map((item) => (
+                  <li key={item._id}>
+                    <div className="flex gap-2">
+                      <span>Bsnl (E): {item["Bsnl (E)"]}</span>
+                      <span>Bsnl (S): {item["Bsnl (S)"]}</span>
+                      <span>Idea: {item["Idea"]}</span>
+                      <span>Vodafone: {item["Vodafone"]}</span>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <></>
+              )}
+            </ul>
           </div>
           {/* //  list heading  */}
           <ul className="grid grid-cols-3 gap-3 mt-5 mb-2 text-subtitle-1 xl:text-heading-6-bold text-grey-dark items-center">

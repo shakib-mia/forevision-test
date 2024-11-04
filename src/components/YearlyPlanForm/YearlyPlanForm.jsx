@@ -6,8 +6,8 @@ import { backendUrl, config } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const YearlyPlanForm = () => {
-  const { userData } = useContext(ProfileContext);
-  //   console.log(userData);
+  const { userData, token } = useContext(ProfileContext);
+  console.log(userData);
   const fields = [
     {
       placeholder: "Enter Yor Email ID",
@@ -17,7 +17,7 @@ const YearlyPlanForm = () => {
       id: "emailId",
       label: "Email ID",
       containerClassName: "mt-0",
-      value: userData.emailId,
+      value: userData.user_email || userData.emailId,
       disabled: true,
     },
     {
@@ -78,7 +78,7 @@ const YearlyPlanForm = () => {
       label: "Instagram account link",
       name: "instagramAccountLink",
       id: "instagramAccountLink",
-      type: "number",
+      type: "text",
     },
     {
       placeholder: "Facebook account link",
@@ -87,7 +87,7 @@ const YearlyPlanForm = () => {
       label: "Facebook account link",
       name: "facebookAccountLink",
       id: "facebookAccountLink",
-      type: "number",
+      type: "text",
     },
     {
       placeholder: "Monthly Content",
@@ -125,7 +125,9 @@ const YearlyPlanForm = () => {
 
     // console.log(planData);
     axios
-      .post(backendUrl + "yearly-plans", planData, config)
+      .post(backendUrl + "yearly-plans", planData, {
+        headers: { token },
+      })
       .then(({ data }) => {
         if (data.acknowledged) {
           e.target.reset();
@@ -138,11 +140,11 @@ const YearlyPlanForm = () => {
       onSubmit={handleSubmit}
       className="w-full overflow-y-auto bg-white h-full"
     >
-      {fields.map((field) => (
+      {fields.map((field, key) => (
         <InputField
           // labelClassName={"!text-white"}
           containerClassName={"mt-1 lg:mt-4"}
-          key={field.id}
+          key={key}
           // type={"text"}
           // className="text-black"
           {...field}

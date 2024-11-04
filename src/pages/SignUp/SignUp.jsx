@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import AuthBody from "../../components/AuthBody/AuthBody";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { toast } from "react-toastify";
@@ -51,14 +51,13 @@ const SignUp = () => {
         display_image: user.user.photoURL,
       };
 
-      // console.log(signupData);
-
       axios
         .post(backendUrl + "user-signup", signupData)
         .then(({ data }) => {
           if (data.acknowledged) {
             setUId(data.insertedId);
             // console.log(signupData.email);
+            toast.success("Signup Successful. Please Login Now.");
             setUserData({ ...userData, user_email: signupData.email });
             navigate("/signup-details");
           }
@@ -111,7 +110,7 @@ const SignUp = () => {
       .then(({ data }) => {
         if (data.acknowledged) {
           setUId(data.insertedId);
-          // console.log(signupData.email);
+
           setUserData({ ...userData, user_email: signupData.email });
           navigate("/signup-details");
         }
@@ -126,7 +125,7 @@ const SignUp = () => {
 
     // axios.post("https://beta.forevisiondigital.com/admin/api/userRegistration", formData).then(res => {
     //   if (res.data.success) {
-    //     console.log(res.data);
+    // (res.data);
     //     setUserData({ ...userData, email: e.target.user_email.value, userId: res.data.data })
     //     navigate("/login");
     //     setPrevRoute(location.pathname)
@@ -160,7 +159,7 @@ const SignUp = () => {
         />
       </div>
 
-      {/* <div className="my-2 flex items-center gap-3 mx-auto">
+      <div className="my-2 flex items-center gap-3 mx-auto">
         <div className="h-[1px] w-full bg-grey-light"></div>
         <div>OR</div>
         <div className="h-[1px] w-full bg-grey-light"></div>
@@ -173,16 +172,16 @@ const SignUp = () => {
       >
         <FcGoogle />
         <span className="font-sans">Continue with Google</span>
-      </button> */}
+      </button>
 
-      {/* <div className="text-center">
+      <div className="text-center">
         <Link
           to="/login"
           className="text-interactive-light text-button uppercase"
         >
           Already have an account?
         </Link>
-      </div> */}
+      </div>
     </AuthBody>
   );
 };

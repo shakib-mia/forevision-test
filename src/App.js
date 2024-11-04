@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import { ToastContainer, toast } from "react-toastify";
 import Construction from "./pages/Construction/Construction";
 import "react-toastify/dist/ReactToastify.css";
-import { backendUrl, routes } from "./constants";
+import { backendUrl, currencyAPI, routes } from "./constants";
 import BottomBar from "./components/BottomBar/BottomBar";
 import { ProfileContext } from "./contexts/ProfileContext";
 import { useEffect, useState } from "react";
@@ -12,8 +12,6 @@ import axios from "axios";
 import { PlanContext } from "./contexts/PlanContext";
 import "sweetalert2/src/sweetalert2.scss";
 import Navbar from "./components/Navbar/Navbar";
-import { checkTheDateIsBefore } from "./utils/checkTheDateIsBefore";
-import Footer from "./components/Footer/Footer";
 
 // import Construction from "./pages/Construction/Construction";
 
@@ -31,15 +29,18 @@ function App() {
   const [foundRequested, setFoundRequested] = useState({});
   const [refetch, setRefetch] = useState(true);
   const [recordLabels, setRecordLabels] = useState([]);
+  const [currencies, setCurrencies] = useState(1);
   const navigate = useNavigate();
   const [country, setCountry] = useState("");
   const [dollarRate, setDollarRate] = useState(0);
   // const location = useLocation()
 
+  // console.log(userData);
+
   /* Working api calls starts here */
 
   useEffect(() => {
-    if (token) {
+    if (token && location.pathname !== "/login") {
       const config = {
         headers: {
           token,
@@ -49,15 +50,15 @@ function App() {
         .get(backendUrl + "token-time", config)
         .then(({ data }) => setTokenDetails(data))
         .catch((err) => {
-          console.log(err.response.data.name);
-          // if (err.response.data.name === "TokenExpiredError") {
-          setToken("");
-          sessionStorage.removeItem("token");
-          toast.error("Token has expired", {
-            position: "bottom-center",
-          });
-          navigate("/login");
-          // }
+          // console.log(err.response);
+          if (err.response.status === 401) {
+            setToken("");
+            sessionStorage.removeItem("token");
+            toast.error("Token has expired", {
+              position: "bottom-center",
+            });
+            navigate("/login");
+          }
         });
       axios
         .get(backendUrl + "record-labels", config)
@@ -82,6 +83,7 @@ function App() {
     refetch,
     setRefetch,
     recordLabels,
+    currencies,
     // timeStamp,
   };
 
@@ -93,17 +95,14 @@ function App() {
     };
 
     if (token) {
-      axios
-        .get(backendUrl + `profile`, config)
-        .then(({ data }) => {
-          if (data?.data !== null) {
-            // console.log(data.data);
-            setUserData(data.data);
-          } else {
-            // navigate("/signup-details");
-          }
-        })
-        .catch((error) => console.log(error));
+      axios.get(backendUrl + `getUserData`, config).then(({ data }) => {
+        if (data?.data !== null) {
+          // console.log(data.data);
+          setUserData(data.data);
+        } else {
+          // navigate("/signup-details");
+        }
+      });
     }
   }, [token]);
 
@@ -111,22 +110,17 @@ function App() {
     if (userData.emailId) {
       axios
         .get(backendUrl + "check-requested/" + userData.emailId)
-        .then(({ data }) => setFoundRequested(data))
-        .catch((error) => console.log(error));
+        .then(({ data }) => setFoundRequested(data));
     }
   }, [userData, refetch]);
 
-  // useEffect(() => {
-  //   if (!userData.first_name) {
-  //     navigate("/signup-details");
-  //   }
-  // }, [userData.first_name]);
-
-  // console.log(location.search.split("?"));
-
   const [planStore, setPlanStore] = useState({
-    planName: location.search?.split("?")[1],
-    price: location.search?.split("?")[2],
+    planName: userData.yearlyPlanStartDate?.length
+      ? "Yearly Plan"
+      : location.search?.split("?")[1],
+    price: userData.yearlyPlanStartDate
+      ? 99900
+      : location.search?.split("?")[2],
   });
 
   useEffect(() => {
@@ -154,7 +148,27 @@ function App() {
     }
   }, [userData.billing_country]);
 
+  useEffect(() => {
+    /* Working api calls ends here */
+    setPlanStore({
+      planName: userData.yearlyPlanStartDate?.length
+        ? "Yearly Plan"
+        : location.search?.split("?")[1],
+      price: userData.yearlyPlanStartDate
+        ? 99900
+        : location.search?.split("?")[2],
+    });
+  }, [userData]);
+
   /* Working api calls ends here */
+
+  useEffect(() => {
+    axios
+      .get(`${currencyAPI}?base=INR`)
+      .then(({ data }) => setCurrencies(data.rates.USD));
+  }, []);
+
+  // console.log(currencies);
 
   return (
     <div className="bg-white w-screen h-screen">
@@ -186,10 +200,6 @@ function App() {
               <ToastContainer />
             </PlanContext.Provider>
           </ProfileContext.Provider>
-
-          {location.pathname === "/login" ||
-            location.pathname === "/signup" ||
-            location.pathname === "/signup-details" || <Footer />}
         </>
       )}
     </div>

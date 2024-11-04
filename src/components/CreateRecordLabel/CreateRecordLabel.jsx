@@ -53,6 +53,9 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
     setRecordLabelData(data);
 
     try {
+      // Add 1-second delay before generating the PDF
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const pdfBlob = await generatePDF();
       const fileName = `LetterHead of ${data["Sub-Label Name"]}.pdf`;
 
@@ -72,8 +75,6 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           token,
         },
       });
-
-      // console.log(res);
 
       // Submit record label data
       const config = { headers: { token } };
@@ -95,6 +96,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
             confirmButton: "custom-class-settings",
           },
         });
+        window.location.reload();
       }
     } catch (error) {
       toast.error(
@@ -108,14 +110,14 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
     }
   };
 
-  console.log(recordLabelData);
+  // console.log(recordLabelData);
 
   return (
     <form
       className={`${
         location.pathname === "/home" || location.pathname === "/"
           ? "bg-grey-light p-4 rounded-2xl"
-          : "bg-white p-4 rounded w-11/12 lg:w-1/2 h-5/6 overflow-auto relative"
+          : "bg-white p-4 rounded lg:w-full h-5/6 overflow-auto relative"
       }`}
       onSubmit={handleRecordLabelSubmit}
     >
@@ -130,8 +132,10 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
       )}
       <h5
         className={
-          location.pathname === "/home" || location.pathname === "/"
-            ? "text-heading-5-bold 2xl:text-heading-4-bold text-grey-dark mb-2"
+          location.pathname === "/home" ||
+          location.pathname === "/" ||
+          location.pathname.includes("upload")
+            ? "text-heading-5-bold 2xl:text-heading-4-bold text-grey-dark mb-3"
             : "text-heading-5-bold text-center mt-4"
         }
       >
@@ -181,14 +185,14 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         label={"Address"}
         name={"address"}
         containerClassName={"mt-3"}
-        hideRequired={true}
+        required={true}
       />
 
       <div className="flex flex-col xl:flex-row gap-3 mt-3">
         <InputField
           type={"date"}
           containerClassName={"xl:w-1/2"}
-          hideRequired={true}
+          required={true}
           name={"startDate"}
           label={"Start Date"}
         />
@@ -200,7 +204,7 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
           name={"signatoryName"}
           id={"signature"}
           containerClassName={"xl:w-1/2"}
-          hideRequired={true}
+          required={true}
         />
       </div>
 
@@ -208,12 +212,12 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
         <Button
           type={"submit"}
           text={submitted ? "Submitting..." : "Submit"}
-          containerClassName={"mt-6 mx-auto"}
+          containerClassName={"mt-2 lg:mt-6 mx-auto"}
           disabled={submitted}
         />
       </div>
 
-      <div className="opacity-0 relative -z-[9999999999999999]">
+      <div className={`relative -z-[9999999999999999] opacity-0`}>
         <Modal>
           <div ref={letterHeadRef}>
             <Letterhead formData={recordLabelData} />

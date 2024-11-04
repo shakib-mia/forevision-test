@@ -33,7 +33,15 @@ const Faq = () => {
     {
       title: "What are the different plans offered by ForeVision Digital?",
       content:
-        "ForeVision Digital offers several plans tailored to different needs:<br /><br />- ForeVision Pro: Distribution to Indian and international stores. Includes YouTube Music, YouTube Content ID, and lyrics monetization platforms like LyricFind and Musixmatch.<br />- ForeVision CRBT: Distribution to Indian stores and CRBT platforms. Includes YouTube Music, YouTube Content ID, and lyrics monetization platforms.<br />- ForeVision CRBT+: Distribution everywhere (Indian stores, international stores, and CRBT platforms), with higher royalties. Includes YouTube Music, YouTube Content ID, and lyrics monetization platforms.<br />- ForeVision Social: Distribution to social media platforms like Facebook, Instagram, TikTok, and more. Includes YouTube Music, YouTube Content ID, and lyrics monetization platforms.<br />- ForeVision Album: Album distribution plan where artists can upload EPs, LPs, or full albums for distribution across all supported platforms.",
+        "ForeVision Digital offers several plans tailored to different needs:",
+
+      listItems: [
+        "- ForeVision Pro: Distribution to Indian and international stores. Includes YouTube Music, YouTube Content ID, and lyrics monetization platforms like LyricFind and Musixmatch.",
+        "- ForeVision CRBT: Distribution to Indian stores and CRBT platforms. Includes YouTube Music, YouTube Content ID, and lyrics monetization platforms.",
+        "- ForeVision CRBT+: Distribution everywhere (Indian stores, international stores, and CRBT platforms), with higher royalties. Includes YouTube Music, YouTube Content ID, and lyrics monetization platforms.",
+        "- ForeVision Social: Distribution to social media platforms like Facebook, Instagram, TikTok, and more. Includes YouTube Music, YouTube Content ID, and lyrics monetization platforms.",
+        "- ForeVision Album: Album distribution plan where artists can upload EPs, LPs, or full albums for distribution across all supported platforms.",
+      ],
     },
     {
       title: "How much does it cost to use ForeVision Digital?",
@@ -76,16 +84,12 @@ const Faq = () => {
     },
     {
       title: "What are the royalty rates offered by ForeVision Digital?",
-      content: (
-        <>
-          Royalty rates vary depending on the platforms:
-          <br />
-          <br /> - We keep 10% from the royalty for streaming platforms.
-          <br />- We keep 15% from YouTube Content ID and YouTube Music.
-          <br />- For the ForeVision Social free plan, we keep 20% royalties if
-          you choose to purchase that plan.
-        </>
-      ),
+      content: "Royalty rates vary depending on the platforms:",
+      listItems: [
+        "- We keep 10% from the royalty for streaming platforms.",
+        "- We keep 15% from YouTube Content ID and YouTube Music.",
+        "- For the ForeVision Social free plan, we keep 20% royalties if you choose to purchase that plan.",
+      ],
     },
     {
       title: "What is your refund policy?",

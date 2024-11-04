@@ -18,7 +18,7 @@ const ProfilePicture = ({
     const file = e.target.files[0];
 
     if (file) {
-      console.log("file select", setProfileData);
+      // "file select", setProfileData;
       const reader = new FileReader();
 
       reader.onload = (event) => {
@@ -47,11 +47,11 @@ const ProfilePicture = ({
             const formData = new FormData();
             formData.append("file", file);
 
-            console.log("before upload", setProfileData);
+            // "before upload", setProfileData;
             axios
               .post(backendUrl + "upload-profile-picture", formData, config)
               .then(({ data }) => {
-                console.log("After upload:", setProfileData);
+                // "After upload:", setProfileData;
                 if (setProfileData) {
                   setProfileData({ ...profileData, display_image: data.url });
                 } else {

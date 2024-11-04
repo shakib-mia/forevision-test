@@ -180,10 +180,21 @@ const KYC = () => {
             required={true}
           />
         </div>
-        <CountrySelector
-          selectedCountry={selectedCountry}
-          setSelectedCountry={setSelectedCountry}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <InputField
+            id={"gst"}
+            name={"gst"}
+            type={"text"}
+            placeholder={"Enter Your GST Number Here"}
+            label={"GST Number"}
+            hideRequired={true}
+            required={true}
+          />
+          <CountrySelector
+            selectedCountry={selectedCountry}
+            setSelectedCountry={setSelectedCountry}
+          />
+        </div>
 
         {/* <InputField
           id={"phone-no"}

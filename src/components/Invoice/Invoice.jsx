@@ -97,7 +97,7 @@ const Invoice = forwardRef(({ formBody, gst, ruIndian, paypal }, ref) => {
     ];
 
     function convertToWords(n, suffix = "") {
-      console.log(`Converting ${n}`); // Debug output
+      // `Converting ${n}`; // Debug output
       let str = "";
       if (n > 19) {
         str +=

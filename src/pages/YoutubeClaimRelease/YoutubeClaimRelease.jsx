@@ -37,11 +37,6 @@ const YoutubeClaimRelease = () => {
     },
   ];
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(e.target.name.value);
-  };
-
   return (
     <div className="bg-no-repeat form-bg">
       <Header
@@ -51,11 +46,7 @@ const YoutubeClaimRelease = () => {
         }
       />
 
-      <Form
-        id="youtube-claim-release"
-        fields={fields}
-        handleSubmit={handleSubmit}
-      />
+      <Form id="youtube-claim-release" fields={fields} />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../components/Header/Header";
 import Form from "../../components/Form/Form";
 // import formBg from "./../../assets/images/background.webp";
-import Video from "../../components/Video/Video";
+// import Video from "../../components/Video/Video";
 
 const ProfileVerification = () => {
   /******
@@ -173,7 +173,7 @@ const ProfileVerification = () => {
 
         <div className="w-1/2 mx-auto h-[3px] bg-secondary-light mb-2"></div>
 
-        <Video />
+        {/* <Video /> */}
       </div>
     </div>
   );

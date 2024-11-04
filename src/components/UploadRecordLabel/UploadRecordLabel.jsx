@@ -12,7 +12,7 @@ const UploadRecordLabel = () => {
   const { userData } = useContext(ProfileContext);
   const [initiated, setInitiated] = useState(false);
 
-  console.log(userData);
+  // console.log(userData);
 
   const handleRecordLabelUpload = async (e) => {
     e.preventDefault();

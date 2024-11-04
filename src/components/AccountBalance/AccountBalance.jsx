@@ -11,7 +11,7 @@ const AccountBalance = () => {
   return (
     <div
       className={`w-full ml-0 2xl:w-full h-full lg:h-[1000px] 2xl:h-full flex flex-col justify-between ${
-        location.pathname === "/"
+        location.pathname === "/" || location.pathname === "/home"
           ? "bg-grey-light"
           : "bg-grey-light lg:bg-white"
       } rounded-[32px] relative py-5 px-5 2xl:px-[38px] 2xl:py-[50px] bg-[size:110%_34%] bg-[-36px_-26px] bg-no-repeat`}

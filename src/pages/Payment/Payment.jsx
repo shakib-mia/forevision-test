@@ -25,14 +25,8 @@ const Payment = () => {
   // console.log(planStore);
   // console.log(data);
   // console.log();
-  const songId = location.search.split("?")[2].split("=")[1];
+  const order_id = location.search.split("?")[2].split("=")[1];
   // console.log(songId);
-
-  const initialOptions = {
-    clientId: "test",
-    currency: "USD",
-    intent: "capture",
-  };
 
   useEffect(() => {
     // console.log(location.search.split("?")[2].split("=")[1]);
@@ -43,7 +37,7 @@ const Payment = () => {
           location.search.split("?")[2].split("=")[1]
       )
       .then(({ data }) => {
-        console.log(data);
+        // data;
         setSongData(data);
       });
   }, []);
@@ -51,48 +45,6 @@ const Payment = () => {
   // console.log(location.search.split("=")[1]);
 
   const handleRazorpayPayment = async (params) => {
-    // const order = await createOrder(params); //  Create order on your backend
-
-    // const options = {
-    //   key: "rzp_test_kOukh9hO3yXkNx", // Enter the Key ID generated from the Dashboard
-    //   amount: "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    //   currency: "INR",
-    //   name: "Acme Corp",
-    //   description: "Test Transaction",
-    //   image: "https://example.com/your_logo",
-    //   order_id: "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of createOrder().
-    //   handler: function (response) {
-    //     alert(response.razorpay_payment_id);
-    //     alert(response.razorpay_order_id);
-    //     alert(response.razorpay_signature);
-    //   },
-    //   prefill: {
-    //     name: "Piyush Garg",
-    //     email: "youremail@example.com",
-    //     contact: "9999999999",
-    //   },
-    //   notes: {
-    //     address: "Razorpay Corporate Office",
-    //   },
-    //   theme: {
-    //     color: "#3399cc",
-    //   },
-    // };
-
-    // const rzp1 = new Razorpay(options);
-
-    // rzp1.on("payment.failed", function (response) {
-    //   alert(response.error.code);
-    //   alert(response.error.description);
-    //   alert(response.error.source);
-    //   alert(response.error.step);
-    //   alert(response.error.reason);
-    //   alert(response.error.metadata.order_id);
-    //   alert(response.error.metadata.payment_id);
-    // });
-    // console.log();
-    // rzp1.open();
-
     axios
       .post(backendUrl + "razorpay", {
         amount: parseFloat(location.search.split("?")[1].split("=")[1]),
@@ -104,7 +56,7 @@ const Payment = () => {
   // console.log(location);
   const initPayment = (data) => {
     const options = {
-      key: "rzp_test_3Tvb4i0zxX8t5m",
+      key: "rzp_live_hbtXvHKqIxw2XQ",
       amount: data.amount,
       // currency: data.currency,
       name: data.name,
@@ -124,14 +76,22 @@ const Payment = () => {
             },
           };
           // console.log(config);
-          const res = await axios.post(verifyUrl, response, config);
-          console.log(res);
+          const res = await axios.post(
+            verifyUrl,
+            { ...response, price: data.amount },
+            config
+          );
+          // res;
 
           if (res.data.insertCursor.acknowledged) {
-            setPlanStore((prev) => ({ ...prev, ...res.data }));
+            setPlanStore((prev) => ({
+              ...prev,
+              order_id,
+              payment_id: songData.payment_id,
+            }));
             // navigate("/payment-success");
             // clg;
-            console.log(songData, razorpay_order_id);
+            // songData, razorpay_order_id;
             songData.order_id = razorpay_order_id;
             songData.payment_id = razorpay_payment_id;
             songData.status = "paid";
@@ -210,10 +170,43 @@ const Payment = () => {
   //   axios
   //     .post(backendUrl + "phonepe-payment/pay", data)
   //     .then(({ data }) => {
-  //       console.log(data);
+  //   (data);
   //     })
   //     .catch((error) => console.log(error));
   // };
+
+  const initialOptions = {
+    clientId: "test",
+    currency: "USD",
+    intent: "capture",
+  };
+
+  const createOrder = (data, actions) => {
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "USD",
+            value: "0.01",
+          },
+        },
+      ],
+    });
+  };
+
+  const handleApprove = async (data, actions) => {
+    // return actions.order.capture().then((details) => {
+    //   const { payer } = details;
+    //   console.log(details);
+    //   // Handle successful payment here
+    //   // For example, send payment details to your server
+    // });
+
+    const order = await actions.order.capture();
+    console.log({
+      transaction_id: order.purchase_units[0].payments.captures[0].id,
+    });
+  };
 
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-grey-light">
@@ -233,7 +226,10 @@ const Payment = () => {
           </button>
 
           <PayPalScriptProvider options={initialOptions}>
-            <PayPalButtons />
+            <PayPalButtons
+              onApprove={handleApprove}
+              createOrder={createOrder}
+            />
           </PayPalScriptProvider>
         </div>
       </div>

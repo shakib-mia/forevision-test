@@ -39,6 +39,87 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
           selectedPlatforms: [],
           file: {},
         },
+        {
+          artists: [
+            { name: "", role: "Singer/Primary Artist" },
+            { name: "", role: "Lyricist" },
+            { name: "", role: "Composer" },
+          ],
+          selectedPlatforms: [],
+          file: {},
+        },
+        {
+          artists: [
+            { name: "", role: "Singer/Primary Artist" },
+            { name: "", role: "Lyricist" },
+            { name: "", role: "Composer" },
+          ],
+          selectedPlatforms: [],
+          file: {},
+        },
+        {
+          artists: [
+            { name: "", role: "Singer/Primary Artist" },
+            { name: "", role: "Lyricist" },
+            { name: "", role: "Composer" },
+          ],
+          selectedPlatforms: [],
+          file: {},
+        },
+        {
+          artists: [
+            { name: "", role: "Singer/Primary Artist" },
+            { name: "", role: "Lyricist" },
+            { name: "", role: "Composer" },
+          ],
+          selectedPlatforms: [],
+          file: {},
+        },
+        {
+          artists: [
+            { name: "", role: "Singer/Primary Artist" },
+            { name: "", role: "Lyricist" },
+            { name: "", role: "Composer" },
+          ],
+          selectedPlatforms: [],
+          file: {},
+        },
+        {
+          artists: [
+            { name: "", role: "Singer/Primary Artist" },
+            { name: "", role: "Lyricist" },
+            { name: "", role: "Composer" },
+          ],
+          selectedPlatforms: [],
+          file: {},
+        },
+        {
+          artists: [
+            { name: "", role: "Singer/Primary Artist" },
+            { name: "", role: "Lyricist" },
+            { name: "", role: "Composer" },
+          ],
+          selectedPlatforms: [],
+          file: {},
+        },
+        {
+          artists: [
+            { name: "", role: "Singer/Primary Artist" },
+            { name: "", role: "Lyricist" },
+            { name: "", role: "Composer" },
+          ],
+          selectedPlatforms: [],
+          file: {},
+        },
+        {
+          artists: [
+            { name: "", role: "Singer/Primary Artist" },
+            { name: "", role: "Lyricist" },
+            { name: "", role: "Composer" },
+          ],
+          selectedPlatforms: [],
+          file: {},
+        },
       ];
 
   // let [logicalData, setLogicalData] = useState({});

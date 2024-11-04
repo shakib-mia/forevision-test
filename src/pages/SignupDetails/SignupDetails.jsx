@@ -151,7 +151,7 @@ const SignupDetails = () => {
       user_email: userData.user_email,
     };
 
-    console.log(userDetailsData);
+    // userDetailsData;
     // console.log(e.target.email.value);
 
     // const formData = new FormData();
@@ -339,7 +339,7 @@ const SignupDetails = () => {
                 [fields[4].name]: e.target.value,
               });
 
-              console.log(signupDetailsData);
+              // signupDetailsData;
             }}
             containerClassName={`mt-3 w-full`}
             // fieldClassName="mr-2"
@@ -355,7 +355,7 @@ const SignupDetails = () => {
                 [fields[8].name]: e.target.value,
               });
 
-              console.log(signupDetailsData);
+              // signupDetailsData;
             }}
             containerClassName={`mt-3 w-full`}
             selectedCode={selectedCode}
@@ -392,7 +392,7 @@ const SignupDetails = () => {
                 [fields[3].name]: e.target.value,
               });
 
-              console.log(signupDetailsData);
+              // signupDetailsData;
             }}
             containerClassName={`mt-3 w-full`}
           />
@@ -405,7 +405,7 @@ const SignupDetails = () => {
                 ...signupDetailsData,
                 [fields[5].name]: e.target.value,
               });
-              console.log(signupDetailsData);
+              // signupDetailsData;
             }}
             containerClassName={`mt-3 w-full`}
           />
@@ -441,7 +441,7 @@ const SignupDetails = () => {
                 ...signupDetailsData,
                 [fields[6].name]: e.target.value,
               });
-              console.log(signupDetailsData);
+              // signupDetailsData;
             }}
             containerClassName={`mt-3 w-full`}
             // fieldClassName="mr-2"
@@ -455,7 +455,7 @@ const SignupDetails = () => {
                 ...signupDetailsData,
                 [fields[7].name]: e.target.value,
               });
-              console.log(signupDetailsData);
+              // signupDetailsData;
             }}
             containerClassName={`mt-3 w-full`}
             // fieldClassName="mr-2"

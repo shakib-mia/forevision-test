@@ -37,7 +37,6 @@ const Login = () => {
       axios
         .get(`${backendUrl}handle-firebase-login/${email}`)
         .then(({ data }) => {
-          console.log(data);
           if (data?.token?.length > 0) {
             sessionStorage.setItem("token", data.token);
             if (data.details === null) {
@@ -69,7 +68,7 @@ const Login = () => {
             }
 
             setToken(data.token);
-            setUserData({ user_email: email });
+            setUserData({ user_email: email, emailId: email });
           }
         })
         .catch((err) => {

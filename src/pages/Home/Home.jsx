@@ -39,7 +39,7 @@ const Home = () => {
           <div className="flex flex-col 2xl:flex-row items-center 2xl:items-end justify-center 2xl:justify-between">
             <img
               src={userData.display_image || profile}
-              className="rounded-full w-5/12 mb-0"
+              className="rounded-full w-5/12 mb-0 aspect-square object-cover"
               alt=""
             />
             <div className="text-center 2xl:text-left">

@@ -1,5 +1,4 @@
 import React from "react";
-import Form from "../../components/Form/Form";
 import YearlyPlanText from "../../components/YearlyPlanText/YearlyPlanText";
 import YearlyPlanForm from "../../components/YearlyPlanForm/YearlyPlanForm";
 

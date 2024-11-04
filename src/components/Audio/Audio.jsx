@@ -23,7 +23,7 @@ const AudioUI = (props) => {
         containerClassName={"w-fit mx-auto mt-5"}
         onClick={() => {
           setCount(count + 1);
-          console.log(count);
+      (count);
         }}
         text={"Finish"}
       /> */}

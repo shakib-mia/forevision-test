@@ -6,7 +6,7 @@
 export const getAudioDuration = (audioUrl) => {
   return new Promise((resolve, reject) => {
     const audio = new Audio(audioUrl);
-    console.log(audio);
+    // audio;
     // Event listener to capture when metadata is loaded (duration becomes available)
     audio.addEventListener("loadedmetadata", () => {
       if (isNaN(audio.duration)) {
