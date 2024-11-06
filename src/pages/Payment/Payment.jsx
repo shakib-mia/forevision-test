@@ -43,12 +43,13 @@ const Payment = () => {
   }, []);
 
   // console.log(location.search.split("=")[1]);
+  console.log(userData.billing_country);
 
   const handleRazorpayPayment = async (params) => {
     axios
       .post(backendUrl + "razorpay", {
         amount: parseFloat(location.search.split("?")[1].split("=")[1]),
-        currency: userData.billing_country === "Indian" ? "INR" : "USD",
+        currency: userData.billing_country === "India" ? "INR" : "USD",
       }) // ============  *** Need to set amount dynamically here ***  ================
       .then(({ data }) => initPayment(data))
       .catch((error) => console.log(error));
@@ -60,7 +61,7 @@ const Payment = () => {
       amount: data.amount,
       // currency: data.currency,
       name: data.name,
-      currency: userData.billing_country === "Indian" ? "INR" : "USD",
+      currency: userData.billing_country === "India" ? "INR" : "USD",
       description: "Test",
       image: logo,
       order_id: data.id,

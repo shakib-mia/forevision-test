@@ -310,7 +310,7 @@ const EditProfile = ({ handleClose }) => {
           }
           value={formData.facebook_profile_link}
           labelClassName={"mb-0"}
-          containerClassName={`mt-3 w-1/3 pr-2`}
+          containerClassName={`mt-3 lg:w-1/3 lg:pr-2`}
           note="Don't forget to enter your link with https://"
           noteLeftAligned
         />
@@ -323,7 +323,7 @@ const EditProfile = ({ handleClose }) => {
           value={formData.instagram_profile_link}
           hideRequired={true}
           labelClassName={"mb-0"}
-          containerClassName={`mt-3 w-1/3 pr-2`}
+          containerClassName={`mt-3 lg:w-1/3 lg:pr-2`}
           note="Don't forget to enter your link with https://"
           noteLeftAligned
         />
@@ -336,7 +336,7 @@ const EditProfile = ({ handleClose }) => {
           value={formData.twitter_profile_link}
           hideRequired={true}
           labelClassName={"mb-0"}
-          containerClassName={`mt-3 w-1/3`}
+          containerClassName={`mt-3 lg:w-1/3`}
           note="Don't forget to enter your link with https://"
           noteLeftAligned
         />

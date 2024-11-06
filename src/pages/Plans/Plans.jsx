@@ -153,7 +153,7 @@ const DynamicSongPlans = () => {
 
     navigate(
       `/song-upload?${plan.planName.toLowerCase().replace(" ", "-")}?${
-        price || 0
+        price * 100 || 0
       }`
     );
   };

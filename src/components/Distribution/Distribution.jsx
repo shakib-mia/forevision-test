@@ -282,7 +282,7 @@ const Distribution = () => {
             <label className="cursor-pointer">
               <input
                 type="checkbox"
-                disabled={signature.length === 0}
+                disabled={signature.length === 0 || formData.accepted}
                 onChange={(e) => {
                   setAccepted(e.target.checked);
                   formData.accepted = e.target.checked;
@@ -357,14 +357,14 @@ const Distribution = () => {
         </div>
       </div>
 
-      {showAgreement ? (
-        <Agreement
-          formData={formData}
-          handleClose={() => setShowAgreement(false)}
-        />
-      ) : (
+      {/* {showAgreement ? ( */}
+      <Agreement
+        formData={formData}
+        handleClose={() => setShowAgreement(false)}
+      />
+      {/* ) : (
         <></>
-      )}
+      )} */}
     </>
   );
 };
