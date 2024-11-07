@@ -50,15 +50,15 @@ export const backendUrl = "https://api.forevisiondigital.in/";
 export const currencyAPI = "https://api.frankfurter.app/latest";
 
 export const navItem = [
-  {
-    icon: <IoMdHome className="text-[24px]" />,
-    text: "Home",
-    path: "/",
-  },
+  // {
+  //   icon: <IoMdHome className="text-[24px]" />,
+  //   text: "Home",
+  //   path: "/",
+  // },
   {
     icon: <BsGraphUpArrow className="text-[24px]" />,
     text: "Revenue",
-    path: "/revenue",
+    path: "/",
   },
   // {
   //   icon: <FaWpforms className="text-[24px]" />,
@@ -82,36 +82,36 @@ export const navItem = [
   //     },
   //   ],
   // },
-  {
-    icon: <BsUpload className="text-heading-6" />,
-    text: "Song Upload",
-    path: "/song-upload",
-  },
-  {
-    icon: <GoTag className="text-[24px]" />,
-    text: "Plans",
-    path: "/plans",
-  },
+  // {
+  //   icon: <BsUpload className="text-heading-6" />,
+  //   text: "Song Upload",
+  //   path: "/song-upload",
+  // },
+  // {
+  //   icon: <GoTag className="text-[24px]" />,
+  //   text: "Plans",
+  //   path: "/plans",
+  // },
 
-  {
-    icon: <LiaItunesNote className="text-heading-6 text-center" />,
-    text: "My Releases",
-    path: "/all-songs",
-  },
+  // {
+  //   icon: <LiaItunesNote className="text-heading-6 text-center" />,
+  //   text: "My Releases",
+  //   path: "/all-songs",
+  // },
 
-  {
-    icon: (
-      <FaCrown className="text-heading-6 text-yellow-300 group-hover:text-black" />
-    ),
-    text: "Yearly Plan Request",
-    path: "/yearly-plan",
-  },
+  // {
+  //   icon: (
+  //     <FaCrown className="text-heading-6 text-yellow-300 group-hover:text-black" />
+  //   ),
+  //   text: "Yearly Plan Request",
+  //   path: "/yearly-plan",
+  // },
 
-  {
-    icon: <LuUserCheck2 className="text-heading-6 text-center" />,
-    text: "KYC",
-    path: "/kyc",
-  },
+  // {
+  //   icon: <LuUserCheck2 className="text-heading-6 text-center" />,
+  //   text: "KYC",
+  //   path: "/kyc",
+  // },
 ];
 
 export const navPhone = [
@@ -212,7 +212,7 @@ export const routes = [
     path: "/",
     page: (
       <RequireAuth>
-        <Home /> {/* will be replaced by <Home /> */}
+        <Revenue /> {/* will be replaced by <Home /> */}
       </RequireAuth>
     ),
   },
