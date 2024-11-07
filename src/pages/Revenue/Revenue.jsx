@@ -560,7 +560,7 @@ const Revenue = () => {
               {/* </>} */}
             </div>
             {filtered.length > 0 && (
-              <div className="xl:w-1/4 h-[29rem]">
+              <div className="w-full xl:w-1/4 h-[29rem]">
                 <AccountBalance />
               </div>
             )}

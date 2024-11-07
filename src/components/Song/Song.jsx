@@ -1,28 +1,22 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import playCircle from "../../assets/icons/play-circle.webp";
+import { AiFillDislike, AiFillLike } from "react-icons/ai";
+import React, { useContext, useState } from "react";
+import { FaApple, FaChevronDown, FaMusic } from "react-icons/fa";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import { useNavigate } from "react-router-dom";
+import EditSong from "../EditSong/EditSong";
 import like from "../../assets/icons/like.webp";
 import dislike from "../../assets/icons/dislike.webp";
 import edit from "../../assets/icons/edit.webp";
-// import editBlue from "../../assets/icons/edit-blue.webp";
 import share from "../../assets/icons/share-nodes.webp";
-import downArrowWhite from "../../assets/icons/down-arrow-white.webp";
-import { gsap } from "gsap";
-import Comment from "../Comment/Comment";
-import user from "./../../assets/images/user.webp";
-import arrowCircle from "../../assets/icons/arrow-circle.webp";
-import { FaApple, FaMusic } from "react-icons/fa";
-import { ProfileContext } from "../../contexts/ProfileContext";
-import { Link, useNavigate } from "react-router-dom";
-import EditSong from "../EditSong/EditSong";
+import { RiEditBoxFill } from "react-icons/ri";
+import { FaShareNodes, FaSquareShareNodes } from "react-icons/fa6";
 
-const SongItem = ({ song }) => {
-  const [showDetails, setShowDetails] = useState(false);
-  const commentsRef = useRef(null);
-  const navigate = useNavigate();
-  // console.log(_id);
-  const { userData } = useContext(ProfileContext);
-  // console.log(data);
+const SongItem = ({ song, isFirst }) => {
   const [editId, setEditId] = useState("");
+  const [isAccordionOpen, setIsAccordionOpen] = useState(isFirst); // Open by default for the first item
+  const navigate = useNavigate();
+  const { userData } = useContext(ProfileContext);
+
   const {
     Song,
     jiosaavn,
@@ -31,153 +25,222 @@ const SongItem = ({ song }) => {
     spotify,
     "apple-music": apple,
     "amazon-music": amazon,
-    comments,
     _id,
   } = song;
-  // console.log(jiosaavn);
 
-  // useEffect(() => {
-  //   if (showDetails) {
-  //     gsap.to(commentsRef.current, {
-  //       height: "auto",
-  //       duration: 0.5,
-  //     });
-  //   } else {
-  //     gsap.to(commentsRef.current, {
-  //       height: "0",
-  //       duration: 0.5,
-  //     });
-  //   }
-  // }, [showDetails]);
-
-  // console.log(song);
+  // Special styling for first item
+  const firstItemStyles = isFirst
+    ? {
+        zIndex: 10,
+        position: "relative",
+      }
+    : {};
 
   return (
     <div
-      className={`border-b border-white lg:px-2 py-1 ${
-        showDetails ? "pb-2" : ""
-      }`}
+      className="border-b border-white lg:px-2 py-1"
+      onClick={() => setIsAccordionOpen(!isAccordionOpen)}
     >
-      <div className="flex items-center justify-between py-[4px] lg:py-[11px]">
+      <div
+        className="flex items-center justify-between py-[4px] lg:py-[11px]"
+        style={firstItemStyles}
+      >
         <div className="flex items-center gap-[4px] lg:gap-[12px]">
-          {/* <img src={playCircle} alt="" /> */}
           <FaMusic className="text-white" />
           <h6 className="text-white lg:text-heading-6">{Song}</h6>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-2">
+          {/* Platform icons */}
           <div className="flex gap-2 items-center">
             {jiosaavn && (
-              <a href={jiosaavn} target="_blank" rel="noreferrer">
+              <a
+                href={jiosaavn}
+                target="_blank"
+                rel="noreferrer"
+                className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+                style={{ display: "block" }}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <img
                   src="https://api.forevisiondigital.in/uploads/platforms/jiosaavn.png"
-                  alt=""
+                  alt="JioSaavn"
                   className="w-2 lg:w-3"
                 />
               </a>
             )}
 
             {wynk && (
-              <a href={wynk} target="_blank" rel="noreferrer">
+              <a
+                href={wynk}
+                target="_blank"
+                rel="noreferrer"
+                className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+                style={{ display: "block" }}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <img
                   src="https://api.forevisiondigital.in/uploads/platforms/wynk-music.png"
-                  alt=""
+                  alt="Wynk"
                   className="w-2 lg:w-3"
                 />
               </a>
             )}
 
             {gaana && (
-              <a href={gaana} target="_blank" rel="noreferrer">
+              <a
+                href={gaana}
+                target="_blank"
+                rel="noreferrer"
+                className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+                style={{ display: "block" }}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <img
                   src="https://api.forevisiondigital.in/uploads/platforms/gaana.png"
-                  alt=""
+                  alt="Gaana"
                   className="w-2 lg:w-3"
                 />
               </a>
             )}
 
             {spotify && (
-              <a href={spotify} target="_blank" rel="noreferrer">
+              <a
+                href={spotify}
+                target="_blank"
+                rel="noreferrer"
+                className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+                style={{ display: "block" }}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <img
                   src="https://api.forevisiondigital.in/uploads/platforms/spotify.png"
-                  alt=""
+                  alt="Spotify"
                   className="w-2 lg:w-3"
                 />
               </a>
             )}
 
             {apple && (
-              <a href={apple} target="_blank" rel="noreferrer">
-                {/* <img
-                  src="https://api.forevisiondigital.in/uploads/platforms/apple.png"
-                  alt=""
-                  className="w-2 lg:w-3"
-                /> */}
-
+              <a
+                href={apple}
+                target="_blank"
+                rel="noreferrer"
+                className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+                style={{ display: "block" }}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <FaApple className="text-white text-heading-5" />
               </a>
             )}
+
             {amazon && (
-              <a href={amazon} target="_blank" rel="noreferrer">
+              <a
+                href={amazon}
+                target="_blank"
+                rel="noreferrer"
+                className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+                style={{ display: "block" }}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <img
                   src="https://api.forevisiondigital.in/uploads/platforms/amazon-music.png"
-                  alt=""
+                  alt="Amazon Music"
                   className="w-2 lg:w-3"
                 />
               </a>
             )}
           </div>
-          <div className="hidden lg:flex items-center gap-2">
-            <img className="cursor-pointer" src={like} alt="" />
-            <img className="cursor-pointer" src={dislike} alt="" />
-            <img
-              className="cursor-pointer"
-              onClick={() => setEditId(_id)}
-              src={edit}
-              alt=""
+
+          {/* Accordion Toggle Button (visible only on mobile) */}
+          <button className="lg:hidden z-20">
+            {/* {isAccordionOpen ? "Hide Actions" : "Show Actions"} */}
+            <FaChevronDown
+              className={`transition-transform text-white ${
+                isAccordionOpen ? "rotate-180" : "rotate-0"
+              }`}
             />
-            {/* <img className="cursor-pointer" src={editBlue} alt="" /> */}
+          </button>
+
+          {/* Action buttons for larger screens */}
+          <div className="hidden lg:flex items-center gap-2">
+            <button
+              className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <AiFillLike className="text-heading-6 text-white" />
+            </button>
+            <button
+              className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <AiFillDislike className="text-heading-6 text-white" />
+            </button>
+            <button
+              className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+              onClick={(e) => {
+                e.stopPropagation();
+                setEditId(_id);
+              }}
+            >
+              <RiEditBoxFill className="text-heading-6 text-white" />
+            </button>
             <button
               disabled={
                 !(apple || amazon || spotify || gaana || wynk || jiosaavn)
               }
-              className="disabled:opacity-25 disabled:cursor-not-allowed"
-              onClick={() => navigate(`/share/${userData._id}/${_id}`)}
+              className="cursor-pointer hover:opacity-80 transition-opacity z-20 disabled:opacity-25 disabled:cursor-not-allowed"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/share/${userData._id}/${_id}`);
+              }}
             >
-              <img src={share} alt="" />
+              <FaShareNodes className="text-heading-6 text-white" />
             </button>
-            {/* <img
-            className={`cursor-pointer transition ${
-              showDetails && "rotate-180"
-            }`}
-            src={downArrowWhite}
-            alt=""
-            onClick={() => setShowDetails(!showDetails)}
-          /> */}
           </div>
         </div>
       </div>
 
-      {editId.length > 0 && <EditSong setEditId={setEditId} songData={song} />}
+      {/* Accordion for mobile view */}
+      {isAccordionOpen && (
+        <div className="lg:hidden flex gap-2 mt-2">
+          <button
+            className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <AiFillLike className="text-heading-6 text-white" />
+          </button>
+          <button
+            className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <AiFillDislike className="text-heading-6 text-white" />
+          </button>
+          <button
+            className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+            onClick={(e) => {
+              e.stopPropagation();
+              setEditId(_id);
+            }}
+          >
+            <RiEditBoxFill className="text-heading-6 text-white" />
+          </button>
+          <button
+            disabled={
+              !(apple || amazon || spotify || gaana || wynk || jiosaavn)
+            }
+            className="cursor-pointer hover:opacity-80 transition-opacity z-20 disabled:opacity-25 disabled:cursor-not-allowed"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/share/${userData._id}/${_id}`);
+            }}
+          >
+            <FaShareNodes className="text-heading-6 text-white" />
+          </button>
+        </div>
+      )}
 
-      {/* <div
-        className="overflow-hidden flex flex-col gap-2 h-0"
-        ref={commentsRef}
-      >
-        {comments.map((props, key) => (
-          <Comment {...props} key={key} />
-        ))}
-
-        <form className="flex gap-2 w-4/5 ml-auto">
-          <img src={user} alt="" />
-          <input
-            type="text"
-            className="bg-transparent focus:outline-none border-b border-white text-white w-full"
-          />
-          <img src={arrowCircle} alt="" />
-        </form>
-      </div> */}
+      {editId && <EditSong setEditId={setEditId} songData={song} />}
     </div>
   );
 };

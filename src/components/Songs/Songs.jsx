@@ -8,42 +8,72 @@ import { useLocation } from "react-router-dom";
 
 const Songs = () => {
   const [songs, setSongs] = useState([]);
-  // console.log(songs);
+  const [openSongId, setOpenSongId] = useState(null); // To track which accordion is open
   const { userData, token } = useContext(ProfileContext);
   const location = useLocation();
-  console.log(userData);
   const userId = location.pathname.split("/")[2];
-  // console.log();
 
   useEffect(() => {
-    const config = {
-      headers: {
-        token: sessionStorage.getItem("token") || token,
-      },
+    const fetchSongs = async () => {
+      const config = {
+        headers: {
+          token: sessionStorage.getItem("token") || token,
+        },
+      };
+
+      try {
+        let response;
+        if (userId) {
+          response = await axios.get(
+            `${backendUrl}songs/by-user-id/${userId}`,
+            config
+          );
+        } else if (userData["user-id"]) {
+          response = await axios.get(
+            `${backendUrl}songs/by-user-id/${userData["user-id"]}`,
+            config
+          );
+        }
+        if (response?.data) {
+          // Ensure each song has a unique key
+          const processedSongs = response.data.map((song, index) => ({
+            ...song,
+            uniqueKey: song._id || `song-${index}`,
+          }));
+          setSongs(processedSongs);
+        }
+      } catch (error) {
+        console.error("Error fetching songs:", error);
+      }
     };
 
-    if (userId) {
-      axios
-        .get(backendUrl + "songs/by-user-id/" + userId, config)
-        .then(({ data }) => setSongs(data));
-    } else {
-      // userData["user-id"];
-      if (userData["user-id"]) {
-        axios
-          .get(backendUrl + "songs/by-user-id/" + userData["user-id"], config)
-          .then(({ data }) => setSongs(data));
-      }
-    }
-  }, [userData.isrc]);
+    fetchSongs();
+  }, [userId, userData["user-id"], token]);
+
+  if (songs.length === 0) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <VscLoading className="animate-spin text-white text-heading-1" />
+      </div>
+    );
+  }
+
+  const handleAccordionToggle = (songId) => {
+    setOpenSongId(openSongId === songId ? null : songId); // Toggle accordion
+  };
 
   return (
-    <>
-      {songs.length > 0 ? (
-        songs.map((song, key) => <SongItem song={song} key={key} />)
-      ) : (
-        <VscLoading className="animate-spin text-white text-heading-1 mx-auto" />
-      )}
-    </>
+    <div className="songs-list">
+      {songs.map((song, index) => (
+        <SongItem
+          key={song.uniqueKey}
+          song={song}
+          isFirst={index === 0}
+          isAccordionOpen={openSongId === song._id} // Pass the open state
+          onToggleAccordion={() => handleAccordionToggle(song._id)} // Handle toggle
+        />
+      ))}
+    </div>
   );
 };
 

@@ -33,7 +33,7 @@ const EditSong = ({ setEditId, songData }) => {
       // altText="Log in"
       // altLink="/login"
       onSubmit={edit}
-      className="backdrop-blur fixed top-0 left-0 z-[9999]"
+      className="backdrop-blur fixed top-0 left-0 z-[99999999999]"
       id="edit-song"
       closeIcon={true}
       handleClose={() => setEditId("")}

@@ -23,16 +23,18 @@ const RecordLabels = () => {
 
   return (
     <div
-      className={`w-full bg-grey-light rounded-2xl p-4 text-grey-dark relative overflow-y-auto`}
+      className={`w-full bg-grey-light rounded-2xl p-4 pt-0 text-grey-dark relative overflow-y-auto h-[500px]`}
     >
-      <h4 className="text-heading-4-bold">Record Labels</h4>
-      <ul className="flex flex-col gap-1 mt-2">
+      <h4 className="text-heading-4-bold sticky top-0 pt-4 pb-2 left-0 bg-grey-light z-10">
+        Record Labels
+      </h4>
+      <ul className="flex flex-col gap-1">
         {labels.map((item, key) => (
           <li
             key={item}
             className={item.status === "Active" ? "opacity-100" : "opacity-50"}
           >
-            {key + 1}. {item.name}
+            {key + 1}. {item}
           </li>
         ))}
       </ul>
