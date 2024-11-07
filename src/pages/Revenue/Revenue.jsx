@@ -6,7 +6,7 @@ import axios from "axios";
 import { SongsContext } from "./../../contexts/SongsContext";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { toast } from "react-toastify";
-import notFound from "../../assets/images/not-found.svg";
+import notFound from "../../assets/images/not-found.png";
 // import rupee from "../../assets/icons/rupee.svg"
 // import { useNavigate } from 'react-router-dom';
 import { backendUrl } from "../../constants";
