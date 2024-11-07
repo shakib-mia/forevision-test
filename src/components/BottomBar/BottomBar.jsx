@@ -91,29 +91,37 @@ const BottomBar = () => {
       {/* Left side: Home, Plans, and Hamburger */}
       <div className="flex w-2/5 items-center justify-around">
         {/* Hamburger Menu to toggle dropdown */}
-        <div
+        {/* <div
           className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px] cursor-pointer relative"
           onClick={toggleDropdown}
         >
           <IoMenuOutline className="text-2xl text-black" />
           <h2 className="text-paragraph-2">Menu</h2>
-        </div>
+        </div> */}
 
         <NavLink
           to="/"
           className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px]"
         >
-          <FaHome className="text-2xl text-black" />
-          <h2 className="text-paragraph-2">Home</h2>
+          <FaMoneyBillWave className="text-2xl text-black" />
+          <h2 className="text-paragraph-2">Revenue</h2>
         </NavLink>
 
-        <NavLink
+        <div
+          onClick={handleLogout}
+          className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px]"
+        >
+          <MdLogout className="text-2xl text-black" />
+          <h2 className="text-paragraph-2">Logout</h2>
+        </div>
+
+        {/* <NavLink
           to="/plans"
           className="w-1/5 flex justify-center flex-col items-center px-1 gap-[4px]"
         >
           <GoTag className="text-2xl text-black" />
           <h2 className="text-paragraph-2">Plans</h2>
-        </NavLink>
+        </NavLink> */}
       </div>
 
       {/* Dropdown Menu */}
