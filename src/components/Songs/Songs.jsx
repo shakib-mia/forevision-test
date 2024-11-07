@@ -8,10 +8,12 @@ import { useLocation } from "react-router-dom";
 
 const Songs = () => {
   const [songs, setSongs] = useState([]);
-  const [openSongId, setOpenSongId] = useState(null); // To track which accordion is open
+  const [openSongId, setOpenSongId] = useState(songs[0]?._id); // To track which accordion is open
   const { userData, token } = useContext(ProfileContext);
   const location = useLocation();
   const userId = location.pathname.split("/")[2];
+  // const [detailedData, setDetailedData] = useState("")
+  // console.log(openSongId);
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -41,6 +43,7 @@ const Songs = () => {
             uniqueKey: song._id || `song-${index}`,
           }));
           setSongs(processedSongs);
+          setOpenSongId(processedSongs[0]._id);
         }
       } catch (error) {
         console.error("Error fetching songs:", error);
@@ -66,9 +69,11 @@ const Songs = () => {
     <div className="songs-list">
       {songs.map((song, index) => (
         <SongItem
-          key={song.uniqueKey}
+          key={song._id}
           song={song}
           isFirst={index === 0}
+          openSongId={openSongId}
+          setOpenSongId={setOpenSongId}
           isAccordionOpen={openSongId === song._id} // Pass the open state
           onToggleAccordion={() => handleAccordionToggle(song._id)} // Handle toggle
         />

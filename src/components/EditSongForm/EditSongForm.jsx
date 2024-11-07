@@ -58,6 +58,8 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
     "Tulu",
   ];
 
+  console.log(updatedData);
+
   return (
     <>
       {Object.entries(updatedData).map(([label, value], key) => {
@@ -111,7 +113,6 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
           );
         } else {
           return (
-            label === "_id" ||
             label === "S.no" || (
               <div className="grid grid-cols-2 mb-2 items-center" key={key}>
                 <label>{camelCaseToNormalText(label)}</label>

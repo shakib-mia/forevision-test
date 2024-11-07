@@ -9,11 +9,10 @@ import dislike from "../../assets/icons/dislike.webp";
 import edit from "../../assets/icons/edit.webp";
 import share from "../../assets/icons/share-nodes.webp";
 import { RiEditBoxFill } from "react-icons/ri";
-import { FaShareNodes, FaSquareShareNodes } from "react-icons/fa6";
+import { FaShareNodes } from "react-icons/fa6";
 
-const SongItem = ({ song, isFirst }) => {
+const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
   const [editId, setEditId] = useState("");
-  const [isAccordionOpen, setIsAccordionOpen] = useState(isFirst); // Open by default for the first item
   const navigate = useNavigate();
   const { userData } = useContext(ProfileContext);
 
@@ -36,10 +35,16 @@ const SongItem = ({ song, isFirst }) => {
       }
     : {};
 
+  const isAccordionOpen = isFirst
+    ? openSongId === "" || openSongId === _id
+    : openSongId === _id;
+
   return (
     <div
       className="border-b border-white lg:px-2 py-1"
-      onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+      onClick={() => {
+        setOpenSongId(isAccordionOpen ? "" : _id);
+      }}
     >
       <div
         className="flex items-center justify-between py-[4px] lg:py-[11px]"
@@ -154,10 +159,11 @@ const SongItem = ({ song, isFirst }) => {
 
           {/* Accordion Toggle Button (visible only on mobile) */}
           <button className="lg:hidden z-20">
-            {/* {isAccordionOpen ? "Hide Actions" : "Show Actions"} */}
             <FaChevronDown
               className={`transition-transform text-white ${
-                isAccordionOpen ? "rotate-180" : "rotate-0"
+                (isFirst || isAccordionOpen) && openSongId === song._id
+                  ? "rotate-180"
+                  : "rotate-0"
               }`}
             />
           </button>
@@ -202,8 +208,8 @@ const SongItem = ({ song, isFirst }) => {
       </div>
 
       {/* Accordion for mobile view */}
-      {isAccordionOpen && (
-        <div className="lg:hidden flex gap-2 mt-2">
+      {(isFirst || isAccordionOpen) && openSongId === song._id && (
+        <div className="lg:hidden flex justify-end gap-2 my-2">
           <button
             className="cursor-pointer hover:opacity-80 transition-opacity z-20"
             onClick={(e) => e.stopPropagation()}

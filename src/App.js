@@ -12,6 +12,8 @@ import axios from "axios";
 import { PlanContext } from "./contexts/PlanContext";
 import "sweetalert2/src/sweetalert2.scss";
 import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
+import ScrollToTop from "./components/ScrollTop/ScrollTop";
 
 // import Construction from "./pages/Construction/Construction";
 
@@ -172,6 +174,7 @@ function App() {
 
   return (
     <div className="bg-white w-screen h-screen">
+      <ScrollToTop />
       {/* <Construction /> */}
       {country === "PK" ? (
         <div className="w-full h-full flex justify-center items-center text-interactive-light-destructive-focus text-heading-5">
@@ -189,7 +192,7 @@ function App() {
                 !location.pathname.includes("payment") && (
                   <>
                     {store.token && <Sidebar />}
-                    {store.token && <Navbar />}
+                    {<Navbar />}
                   </>
                 )}
               <Routes>
@@ -200,6 +203,7 @@ function App() {
               <ToastContainer />
             </PlanContext.Provider>
           </ProfileContext.Provider>
+          <Footer />
         </>
       )}
     </div>

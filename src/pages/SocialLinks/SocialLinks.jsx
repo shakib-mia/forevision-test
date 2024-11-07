@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { backendUrl } from "../../constants";
+import { FaChevronLeft } from "react-icons/fa";
 
 const SocialLinks = () => {
   const location = useLocation();
@@ -10,6 +11,7 @@ const SocialLinks = () => {
     .slice(2, location.pathname.split("/").length);
   const [isEffectRun, setIsEffectRun] = useState(false);
   const [song, setSong] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isEffectRun) {
@@ -32,6 +34,10 @@ const SocialLinks = () => {
           alt="dummy"
           className="mx-auto"
         /> */}
+        <FaChevronLeft
+          className="cursor-pointer"
+          onClick={() => navigate(-1)}
+        />
         <h4 className="text-heading-6-bold lg:text-heading-4-bold text-center">
           {song.Song}
         </h4>
