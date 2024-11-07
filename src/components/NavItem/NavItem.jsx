@@ -15,7 +15,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
           onMouseLeave={() => setHovered(false)}
         >
           <div
-            className={`flex justify-between group transition items-center ${
+            className={`flex overflow-x-hidden justify-between group transition items-center ${
               text && "hover:bg-grey-light hover:text-black cursor-pointer"
             } p-1 rounded-md`}
           >

@@ -26,7 +26,7 @@ const Sidebar = () => {
     //   .getElementById("search")
     //   .classList.remove("bg-surface-white-surface-1");
 
-    setHovered(false);
+    setTimeout(() => setHovered(false), 500);
   };
 
   const handleLogout = () => {
@@ -81,7 +81,7 @@ const Sidebar = () => {
       <div className="mb-0 border-t-[1px] border-surface-white-line pt-[20px] flex items-center gap-1 text-white">
         <img
           src={userData?.display_image ? userData?.display_image : ""}
-          className="rounded-full w-[40px] h-[40px]"
+          className="rounded-full w-[40px] aspect-square object-cover"
           alt="profile"
         />
         {hovered && (
