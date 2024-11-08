@@ -10,8 +10,19 @@ const SongUploadProgress = ({ setScreen, screen }) => {
     { id: "platform", label: "PLATFORM" },
     { id: "audio", label: "AUDIO" },
     { id: "preview", label: "PREVIEW" },
-    { id: "distribution", label: "DISTRIBUTION" },
+    {
+      id: "distribution",
+      label: "DISTRIBUTION",
+    },
   ];
+
+  const logicalSteps =
+    location.pathname.includes("/song-upload") ||
+    location.pathname.includes("/album-upload")
+      ? steps
+      : steps.slice(0, steps.length - 1);
+
+  console.log(logicalSteps);
 
   const currentStepIndex = steps.findIndex((step) => step.id === screen);
   const maxReachedStepIndex = React.useRef(currentStepIndex);
@@ -37,7 +48,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
       className="w-full overflow-x-auto flex gap-5 mt-5"
       id="upload-progress"
     >
-      {steps.map((step, index) => {
+      {logicalSteps.map((step, index) => {
         const isPassedStep = index <= maxReachedStepIndex.current; // Step is passed or current
         const isActiveStep = screen === step.id; // Step is currently active
 

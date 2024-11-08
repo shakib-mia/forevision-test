@@ -58,7 +58,7 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
     "Tulu",
   ];
 
-  console.log(updatedData);
+  // console.log(updatedData);
 
   return (
     <>
@@ -131,6 +131,27 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
           );
         }
       })}
+      {updatedData.selectedPlatforms
+        ?.filter((item) => item !== "YouTube Content ID")
+        .map((item, key) => (
+          <div className="grid grid-cols-2 mb-2 items-center" key={key}>
+            <label>{item}</label>
+            <InputField
+              // disabled={
+              //   label === "UPC" || label === "ISRC" || label === "Label"
+              // }
+              // value={value}
+              onChange={(e) => {
+                setUpdatedData({
+                  ...updatedData,
+                  [item.includes(" ")
+                    ? item.split(" ").join("-").toLowerCase()
+                    : item.toLowerCase()]: e.target.value,
+                });
+              }}
+            />
+          </div>
+        ))}
 
       <div className="flex justify-center mt-5">
         <Button type={"submit"}>Request Edit</Button>

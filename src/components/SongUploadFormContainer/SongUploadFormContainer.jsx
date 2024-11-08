@@ -160,7 +160,13 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
         )}{" "}
         {screen === "preview" ? <Preview /> : <></>}{" "}
         {screen === "platform" ? <Platform /> : <></>}{" "}
-        {screen === "distribution" ? <Distribution /> : <></>}
+        {(location.pathname.includes("/song-upload") ||
+          location.pathname.includes("/album-upload")) &&
+        screen === "distribution" ? (
+          <Distribution />
+        ) : (
+          <></>
+        )}
       </ScreenContext.Provider>
     </div>
   );

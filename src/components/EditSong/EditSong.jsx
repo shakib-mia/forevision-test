@@ -54,7 +54,7 @@ const EditSong = ({ setEditId, songData }) => {
   delete newFormData.paid;
   delete newFormData.transactionId;
   // delete newFormData.ISRC;
-  delete newFormData.selectedPlatforms;
+  // delete newFormData.selectedPlatforms;
   delete newFormData._id;
   delete newFormData.publisher;
   delete newFormData.recordLabel;

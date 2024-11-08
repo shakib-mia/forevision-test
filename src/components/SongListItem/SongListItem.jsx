@@ -89,9 +89,9 @@ const SongListItem = ({
         </div>
       </div>
 
-      <div className="text-center flex items-center justify-center">
+      {/* <div className="text-center flex items-center justify-center">
         {status}
-      </div>
+      </div> */}
 
       {status === "pending" && (
         <Button

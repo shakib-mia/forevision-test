@@ -18,6 +18,7 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
 
   const {
     Song,
+    songName,
     jiosaavn,
     "wynk-music": wynk,
     gaana,
@@ -38,7 +39,7 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
   const isAccordionOpen = isFirst
     ? openSongId === "" || openSongId === _id
     : openSongId === _id;
-
+  // console.log(song);
   return (
     <div
       className="border-b border-white lg:px-2 py-1"
@@ -52,7 +53,7 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
       >
         <div className="flex items-center gap-[4px] lg:gap-[12px]">
           <FaMusic className="text-white" />
-          <h6 className="text-white lg:text-heading-6">{Song}</h6>
+          <h6 className="text-white lg:text-heading-6">{Song || songName}</h6>
         </div>
 
         <div className="flex gap-2">
