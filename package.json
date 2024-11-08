@@ -49,6 +49,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "preview": "HOST=0.0.0.0 PORT=3000 react-scripts start",
     "deploy": "npm run build && npx netlify deploy --prod --dir build"
   },
   "eslintConfig": {
