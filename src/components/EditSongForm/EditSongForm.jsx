@@ -8,7 +8,7 @@ import { camelCaseToNormalText } from "../../utils/camelCaseToNormalText";
 
 const EditSongForm = ({ updatedData, setUpdatedData }) => {
   const [recordLabels, setRecordLabels] = useState([]);
-  // console.log(updatedData);
+
   useEffect(() => {
     axios
       .get(backendUrl + "record-labels", config)
@@ -58,62 +58,77 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
     "Tulu",
   ];
 
-  // console.log(updatedData);
+  const allowedPlatforms = [
+    "JioSaavn",
+    "Gaana",
+    "Wynk Music",
+    "Spotify",
+    "Apple Music",
+    "YouTube Topic",
+    "YouTube Music",
+    "Meta",
+    "Hungama",
+    "Amazon Music",
+  ];
+
+  const { selectedPlatforms } = updatedData;
+
+  // Convert each platform name to lowercase
+  const updatedSelectedPlatforms = selectedPlatforms.map((platform) =>
+    platform.toLowerCase()
+  );
+
+  // Update the updatedData with the modified selectedPlatforms array
+  useEffect(() => {
+    setUpdatedData({
+      ...updatedData,
+      selectedPlatforms: updatedSelectedPlatforms,
+    });
+  }, [updatedSelectedPlatforms.length]);
 
   return (
     <>
       {Object.entries(updatedData).map(([label, value], key) => {
-        if (label === "Language") {
-          return (
-            <div className="grid grid-cols-2 mb-2 items-center" key={key}>
-              <label>{camelCaseToNormalText(label)}</label>
-              <SelectOptions
-                value={value}
-                options={languagesInIndia}
-                // label={"Language"}
-                hideRequired={true}
-                placeholder={"Select..."}
-                // required={true}
-                onChange={(e) => {
-                  // // setFormData({ ...formData, language: e.target.value });
-                  // if (location.pathname === "/album-upload") {
-                  //   formData.songs[id].language = e.target.value;
-                  //   setFormData({ ...formData });
-                  // } else {
-                  //   setFormData({ ...formData, language: e.target.value });
-                  // }
-                  setUpdatedData({ ...updatedData, [label]: e.target.value });
-                }}
-              />
-            </div>
-          );
-        } else if (label === "Sub Label") {
-          return (
-            <div className="grid grid-cols-2 mb-2 items-center" key={key}>
-              <label>{camelCaseToNormalText(label)}</label>
-              <SelectOptions
-                value={updatedData["Sub Label"]}
-                options={recordLabels}
-                // label={"Language"}
-                hideRequired={true}
-                placeholder={updatedData[label] || "Select..."}
-                // required={true}
-                onChange={(e) => {
-                  // // setFormData({ ...formData, language: e.target.value });
-                  // if (location.pathname === "/album-upload") {
-                  //   formData.songs[id].language = e.target.value;
-                  //   setFormData({ ...formData });
-                  // } else {
-                  //   setFormData({ ...formData, language: e.target.value });
-                  // }
-                  setUpdatedData({ ...updatedData, [label]: e.target.value });
-                }}
-              />
-            </div>
-          );
-        } else {
-          return (
-            label === "S.no" || (
+        if (!allowedPlatforms.includes(label.toLocaleLowerCase())) {
+          // Handle "Language" field
+          if (label === "Language") {
+            return (
+              <div className="grid grid-cols-2 mb-2 items-center" key={key}>
+                <label>{camelCaseToNormalText(label)}</label>
+                <SelectOptions
+                  value={value}
+                  options={languagesInIndia}
+                  hideRequired={true}
+                  placeholder={"Select..."}
+                  onChange={(e) => {
+                    setUpdatedData({ ...updatedData, [label]: e.target.value });
+                  }}
+                />
+              </div>
+            );
+          }
+
+          // Handle "Sub Label" field
+          else if (label === "Sub Label") {
+            return (
+              <div className="grid grid-cols-2 mb-2 items-center" key={key}>
+                <label>{camelCaseToNormalText(label)}</label>
+                <SelectOptions
+                  value={updatedData["Sub Label"]}
+                  options={recordLabels}
+                  hideRequired={true}
+                  placeholder={updatedData[label] || "Select..."}
+                  onChange={(e) => {
+                    setUpdatedData({ ...updatedData, [label]: e.target.value });
+                  }}
+                />
+              </div>
+            );
+          }
+
+          // Handle platform fields (only if they are in allowedPlatforms)
+          else if (allowedPlatforms.includes(label)) {
+            return (
               <div className="grid grid-cols-2 mb-2 items-center" key={key}>
                 <label>{camelCaseToNormalText(label)}</label>
                 <InputField
@@ -123,35 +138,36 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
                   value={value}
                   onChange={(e) => {
                     setUpdatedData({ ...updatedData, [label]: e.target.value });
-                    //   console.log(updatedData);
                   }}
                 />
               </div>
-            )
-          );
+            );
+          }
+
+          // Handle other fields (non-platform fields) like "UPC", "ISRC", etc.
+          else {
+            return (
+              label === "S.no" || (
+                <div className="grid grid-cols-2 mb-2 items-center" key={key}>
+                  <label>{camelCaseToNormalText(label)}</label>
+                  <InputField
+                    disabled={
+                      label === "UPC" || label === "ISRC" || label === "Label"
+                    }
+                    value={value}
+                    onChange={(e) => {
+                      setUpdatedData({
+                        ...updatedData,
+                        [label]: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+              )
+            );
+          }
         }
       })}
-      {updatedData.selectedPlatforms
-        ?.filter((item) => item !== "YouTube Content ID")
-        .map((item, key) => (
-          <div className="grid grid-cols-2 mb-2 items-center" key={key}>
-            <label>{item}</label>
-            <InputField
-              // disabled={
-              //   label === "UPC" || label === "ISRC" || label === "Label"
-              // }
-              // value={value}
-              onChange={(e) => {
-                setUpdatedData({
-                  ...updatedData,
-                  [item.includes(" ")
-                    ? item.split(" ").join("-").toLowerCase()
-                    : item.toLowerCase()]: e.target.value,
-                });
-              }}
-            />
-          </div>
-        ))}
 
       <div className="flex justify-center mt-5">
         <Button type={"submit"}>Request Edit</Button>

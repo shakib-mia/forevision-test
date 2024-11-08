@@ -66,7 +66,7 @@ const Notifications = () => {
         <p>No notifications found.</p>
       ) : (
         <ul className="mt-3 flex flex-col gap-1">
-          {notifications.reverse().map((notification, index) => (
+          {notifications.map((notification, index) => (
             <li
               title="Click to mark as read"
               className={`text-paragraph-1 p-1 rounded cursor-pointer flex gap-1 ${
@@ -91,7 +91,7 @@ const Notifications = () => {
                 <div>
                   {new Date(notification.date * 1000).getDate() > 9 ? "" : 0}
                   {new Date(notification.date * 1000).getDate()}/
-                  {new Date(notification.date * 1000).getMonth() > 9 ? "" : 0}
+                  {new Date(notification.date * 1000).getMonth() > 8 ? "" : 0}
                   {new Date(notification.date * 1000).getMonth() + 1}
                 </div>
               </div>

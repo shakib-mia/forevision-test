@@ -250,7 +250,7 @@ const Agreement = ({ handleClose, formData }) => {
         // handleClose={handleClose}
       > */}
       <div
-        className="p-[96px] bg-white border-2 min-w-[1226px] absolute -left-[100vw] max-w-[1226px]"
+        className="p-[96px] bg-white border-2 min-w-[1226px] absolute -left-[1226px] lg:-left-[100vw] max-w-[1226px]"
         ref={agreementRef}
       >
         <h1 className="text-heading-2-bold text-center text-grey-dark mb-4">

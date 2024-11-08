@@ -34,7 +34,7 @@ const EditSong = ({ setEditId, songData }) => {
   delete newFormData.bsnl;
   delete newFormData.airtel;
   delete newFormData.vi;
-  newFormData["youtube-topic-video"] = newFormData["youtube-content-id"];
+  delete newFormData["youtube-topic-video"];
   delete newFormData["youtube-content-id"];
   delete newFormData.musixmatch;
   // delete newFormData.musixmatch;
@@ -80,6 +80,8 @@ const EditSong = ({ setEditId, songData }) => {
   delete newFormData.planName;
   delete newFormData.signature;
   delete newFormData.accepted;
+  delete newFormData.parentalAdvisory;
+  delete newFormData.songs;
 
   // console.log(updatedData);
 

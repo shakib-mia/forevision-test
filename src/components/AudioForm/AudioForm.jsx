@@ -797,7 +797,10 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 : !formData?.songName?.length
             }
             id={"audioUpload_" + id}
-            note={"Ensure your audio files are in WAV or MP3 formats only."}
+            note={
+              "Ensure your audio files are in WAV or MP3 formats only (Max 50MB). For bigger file mail us directly at content@forevisiondigital.com"
+            }
+            dangerNote
             required={!location.pathname.includes("edit-song")}
             placeholder={fileName || "Select File"}
             containerClassName={"mt-3"}

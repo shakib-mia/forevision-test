@@ -45,7 +45,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
 
   return (
     <div
-      className="w-full overflow-x-auto flex gap-5 mt-5"
+      className="w-full overflow-x-auto flex gap-2 lg:gap-5 mt-5"
       id="upload-progress"
     >
       {logicalSteps.map((step, index) => {
@@ -62,7 +62,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
             }`}
             onClick={() => {
               (isEditMode || isPassedStep) && handleStepClick(step.id);
-              // handleStepClick(step.id);
+              handleStepClick(step.id);
             }}
           >
             <aside
@@ -77,7 +77,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
               {(index + 1).toString().padStart(2, "0")}
             </aside>
             <aside
-              className={`ml-2 ${
+              className={`ml-[4px] lg:ml-2 ${
                 isActiveStep
                   ? "border-b-2 border-interactive-dark-destructive-active" // Border for active step
                   : isEditMode || isPassedStep
