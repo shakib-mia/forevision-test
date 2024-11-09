@@ -1,8 +1,8 @@
 import React from "react";
 
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-ChartJS.register(ArcElement, Tooltip, Legend);
+import { Chart as ChartJS, ArcElement } from "chart.js";
+ChartJS.register(ArcElement);
 
 const PlatformsChart = ({ revenueData, label }) => {
   //   console.log(revenueData);

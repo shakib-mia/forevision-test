@@ -8,7 +8,6 @@ import {
   YAxis,
 } from "recharts";
 import PlatformsChart from "../PlatformsChart/PlatformsChart";
-// import { Chart as ChartJS, ArcElement } from "chart.js";
 
 const Analytics = ({ songData, platformData }) => {
   const { revenueByPlatform, viewsByPlatform } = platformData;
