@@ -21,7 +21,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
           >
             <div className="flex gap-[10px] items-center">
               <span className="fill-white">{icon}</span>
-              {hovered && <h2>{text}</h2>}
+              {<h2>{text}</h2>}
             </div>
 
             {dropdownItem && hovered ? (
@@ -69,7 +69,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
           >
             <div className="flex gap-[10px] items-center">
               {icon}
-              {hovered && <h2>{text}</h2>}
+              {<h2>{text}</h2>}
             </div>
 
             {dropdownItem && hovered ? (

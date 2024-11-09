@@ -138,7 +138,7 @@ const Distribution = () => {
     <>
       <div className="flex flex-col md:flex-row pb-7 lg:pb-0">
         <div className="w-full lg:w-1/2">
-          <img src={finishImage} className="mx-auto w-10/12" alt="" />
+          <img src={finishImage} className="mx-auto w-full lg:w-10/12" alt="" />
           <h3 className="text-heading-3 text-interactive-dark-destructive mt-2 text-center">
             You are almost done!!!
           </h3>

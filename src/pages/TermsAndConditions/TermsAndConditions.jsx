@@ -2,7 +2,7 @@ import React from "react";
 
 const TermsAndConditions = () => {
   return (
-    <div className="flex flex-col gap-2 mt-4 ml-7">
+    <div className="flex flex-col gap-2 mt-7 mx-4 text-justify">
       <p>
         This Distribution Agreement(this “Agreement ”) is a binding legal
         agreement between you(Hereinafter referred as Second Part) and

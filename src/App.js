@@ -14,6 +14,7 @@ import "sweetalert2/src/sweetalert2.scss";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import ScrollToTop from "./components/ScrollTop/ScrollTop";
+import Lenis from "lenis";
 
 // import Construction from "./pages/Construction/Construction";
 
@@ -168,6 +169,20 @@ function App() {
     axios
       .get(`${currencyAPI}?base=INR`)
       .then(({ data }) => setCurrencies(data.rates.USD));
+
+    // const lenis = new Lenis();
+
+    // function raf(time) {
+    //   lenis.raf(time);
+    //   requestAnimationFrame(raf);
+    // }
+
+    // requestAnimationFrame(raf);
+
+    // return () => {
+    //   // Clean up
+    //   lenis.destroy();
+    // };
   }, []);
 
   // console.log(currencies);

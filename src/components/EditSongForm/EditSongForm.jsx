@@ -74,17 +74,19 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
   const { selectedPlatforms } = updatedData;
 
   // Convert each platform name to lowercase
-  const updatedSelectedPlatforms = selectedPlatforms.map((platform) =>
+  const updatedSelectedPlatforms = selectedPlatforms?.map((platform) =>
     platform.toLowerCase()
   );
 
   // Update the updatedData with the modified selectedPlatforms array
   useEffect(() => {
-    setUpdatedData({
-      ...updatedData,
-      selectedPlatforms: updatedSelectedPlatforms,
-    });
-  }, [updatedSelectedPlatforms.length]);
+    if (selectedPlatforms) {
+      setUpdatedData({
+        ...updatedData,
+        selectedPlatforms: updatedSelectedPlatforms,
+      });
+    }
+  }, [updatedSelectedPlatforms, updatedSelectedPlatforms?.length]);
 
   return (
     <>
