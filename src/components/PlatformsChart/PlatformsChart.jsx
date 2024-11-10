@@ -1,11 +1,9 @@
 import React from "react";
-
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement } from "chart.js";
-ChartJS.register(ArcElement);
+import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
+ChartJS.register(ArcElement, Tooltip);
 
 const PlatformsChart = ({ revenueData, label }) => {
-  //   console.log(revenueData);
   const labels = revenueData.map((item) => item.platform);
   const revenues = revenueData.map((item) => item.revenue || item.views);
   const backgroundColor = [
@@ -37,7 +35,22 @@ const PlatformsChart = ({ revenueData, label }) => {
     ],
   };
 
-  return <Pie data={data} />;
+  const options = {
+    plugins: {
+      tooltip: {
+        enabled: true,
+        callbacks: {
+          label: function (tooltipItem) {
+            const revenue = tooltipItem.raw; // Revenue or views value
+            const platform = labels[tooltipItem.dataIndex]; // Platform label
+            return `${platform}: ${revenue}`; // Customize tooltip label format
+          },
+        },
+      },
+    },
+  };
+
+  return <Pie data={data} options={options} />;
 };
 
 export default PlatformsChart;
