@@ -116,6 +116,17 @@ const Agreement = ({ handleClose, formData }) => {
   useEffect(() => {
     const generateAndUploadPdf = async () => {
       if (formData.accepted) {
+        // Show loading Swal
+        Swal.fire({
+          title: "Hold Tight, Almost There!",
+          text: "Wrapping things up now, just a moment!",
+          icon: "info",
+          showConfirmButton: false,
+          willOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         setDownloading(true);
         const element = agreementRef.current;
 
@@ -158,7 +169,7 @@ const Agreement = ({ handleClose, formData }) => {
 
         // Download the PDF
         const fileName = `Agreement_of_${userData.first_name}.pdf`;
-        pdf.save(fileName);
+        // pdf.save(fileName);
 
         // Upload the PDF Blob
         const pdfBlob = pdf.output("blob");
@@ -188,9 +199,10 @@ const Agreement = ({ handleClose, formData }) => {
           );
 
           if (insertResponse.data.acknowledged) {
+            Swal.close();
             Swal.fire({
-              title: "PDF Generated & Downloaded Successfully",
-              text: "Please Proceed to Checkout",
+              title: "You're done",
+              text: "Feel free to continue to checkout or save your work as a draft.",
               icon: "success",
             });
           }

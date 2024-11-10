@@ -7,10 +7,12 @@ import { imageDomain, navItem } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { useNavigate } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
+import ReactGA from "react-ga4";
 
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
-  const { setProfileData, userData } = useContext(ProfileContext);
+  const { setProfileData, userData, logoutTime, loginTime, setLogoutTime } =
+    useContext(ProfileContext);
   // console.log(userData);
   const navigate = useNavigate();
 
@@ -34,6 +36,17 @@ const Sidebar = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
     navigate("/login");
+
+    setLogoutTime(Date.now());
+    sendTimeSpentToAnalytics((Date.now() - loginTime) / 1000);
+  };
+
+  const sendTimeSpentToAnalytics = (duration) => {
+    ReactGA.event({
+      category: "User",
+      action: "Time Spent After Login",
+      value: Math.round(duration), // Duration in seconds
+    });
   };
 
   const logicalNavItems = userData.yearlyPlanEndDate
@@ -84,9 +97,9 @@ const Sidebar = () => {
           className="rounded-full w-[40px] aspect-square object-cover"
           alt="profile"
         />
-        {hovered && (
-          <>
-            {/* <Link to={"/profile"} className="overflow-hidden whitespace-nowrap">
+
+        <>
+          {/* <Link to={"/profile"} className="overflow-hidden whitespace-nowrap">
               <h1 className="text-subtitle-1-bold">
                 {userData?.partner_name ||
                   userData?.first_name + " " + userData?.last_name}
@@ -95,27 +108,23 @@ const Sidebar = () => {
                 {userData?.user_email || userData?.emailId}
               </p>
             </Link> */}
-            <div className="overflow-hidden whitespace-nowrap">
-              <h1 className="text-subtitle-1-bold">
-                {userData?.first_name + " " + userData?.last_name}
-              </h1>
-              <p className="text-button">
-                {userData?.user_email || userData?.emailId}
-              </p>
-            </div>
-            {/* <img
+          <div className="overflow-hidden whitespace-nowrap">
+            <h1 className="text-subtitle-1-bold">
+              {userData?.first_name + " " + userData?.last_name}
+            </h1>
+            <p className="text-button">
+              {userData?.user_email || userData?.emailId}
+            </p>
+          </div>
+          {/* <img
               src={logout}
               alt=""
               className="ml-auto cursor-pointer w-2 h-2"
               onClick={handleLogout}
             /> */}
 
-            <MdLogout
-              className="ml-auto cursor-pointer"
-              onClick={handleLogout}
-            />
-          </>
-        )}
+          <MdLogout className="ml-auto cursor-pointer" onClick={handleLogout} />
+        </>
       </div>
     </aside>
   );

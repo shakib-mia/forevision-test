@@ -16,6 +16,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  const { prevRoute, setToken, setUserData, setLoginTime } =
+    useContext(ProfileContext);
   // if (loading) {
   //   console.log(loading);
   // }
@@ -39,6 +41,7 @@ const Login = () => {
         .then(({ data }) => {
           if (data?.token?.length > 0) {
             sessionStorage.setItem("token", data.token);
+            setLoginTime(Date.now());
             if (data.details === null) {
               navigate("/signup-details");
             } else {
@@ -97,7 +100,6 @@ const Login = () => {
       placeholder: "Enter Password",
     },
   ];
-  const { prevRoute, setToken, setUserData } = useContext(ProfileContext);
 
   const navigate = useNavigate();
 
@@ -121,6 +123,7 @@ const Login = () => {
         // console.log(data?.token?.length);
         if (data?.token?.length > 0) {
           sessionStorage.setItem("token", data.token);
+          setLoginTime(Date.now());
           if (prevRoute === "/signup" || data.details === null) {
             navigate("/signup-details");
           } else {

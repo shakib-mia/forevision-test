@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import ScrollToTop from "./components/ScrollTop/ScrollTop";
 import Lenis from "lenis";
+import initializeGA from "./analytics";
 
 // import Construction from "./pages/Construction/Construction";
 
@@ -36,9 +37,9 @@ function App() {
   const navigate = useNavigate();
   const [country, setCountry] = useState("");
   const [dollarRate, setDollarRate] = useState(0);
-  // const location = useLocation()
-
-  // console.log(userData);
+  const [loginTime, setLoginTime] = useState(null);
+  const [logoutTime, setLogoutTime] = useState(null);
+  const [sessionDuration, setSessionDuration] = useState(0);
 
   /* Working api calls starts here */
 
@@ -88,6 +89,10 @@ function App() {
     recordLabels,
     currencies,
     // timeStamp,
+    loginTime,
+    setLoginTime,
+    logoutTime,
+    setLogoutTime,
   };
 
   useEffect(() => {
@@ -185,7 +190,9 @@ function App() {
     // };
   }, []);
 
-  // console.log(currencies);
+  useEffect(() => {
+    initializeGA();
+  }, []);
 
   return (
     <div className="bg-white w-screen h-screen">
