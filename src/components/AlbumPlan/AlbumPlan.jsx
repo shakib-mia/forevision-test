@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
 import { PlanContext } from "../../contexts/PlanContext";
 
-const AlbumPlan = ({ setPlanName }) => {
+const AlbumPlan = () => {
   const { setPlanStore } = useContext(PlanContext);
   const navigate = useNavigate();
   return (
@@ -152,7 +152,7 @@ const AlbumPlan = ({ setPlanName }) => {
           // onClick={() => navigate(`/album-upload?forevision-album?99900`)}
           onClick={() => {
             // setPrice(0);
-            setPlanName("forevision-album");
+            // setPlanName("forevision-album");
             setPlanStore((prev) => ({
               ...prev,
               planName: "ForeVision-album",
