@@ -12,9 +12,10 @@ import { TbCameraUp } from "react-icons/tb";
 import Swal from "sweetalert2";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 const EditProfile = ({ handleClose }) => {
-  const { userData, token } = useContext(ProfileContext);
+  const { userData, token, setUpdated, updated } = useContext(ProfileContext);
   const [formData, setFormData] = useState(userData);
   const [originalData] = useState(userData); // Store the initial user data for comparison
   const [isChanged, setIsChanged] = useState(false); // Track if form data has changed
@@ -164,7 +165,10 @@ const EditProfile = ({ handleClose }) => {
         .put(backendUrl + "profile/" + formData.user_email, formData)
         .then(({ data }) => {
           if (data.acknowledged) {
-            window.location.reload();
+            // window.location.reload();
+            setUpdated(!updated);
+            handleClose();
+            toast.success("Profile updated", { position: "bottom-center" });
           }
         });
     } else {
@@ -272,7 +276,7 @@ const EditProfile = ({ handleClose }) => {
       </div>
       <div className="absolute top-7 left-5">
         <ProfilePicture
-          imageUrl={userData.display_image || formData.display_image}
+          imageUrl={formData.display_image}
           profileData={formData}
           editable={true}
           setProfileData={setFormData}

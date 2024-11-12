@@ -39,6 +39,7 @@ function App() {
   const [dollarRate, setDollarRate] = useState(0);
   const [loginTime, setLoginTime] = useState(null);
   const [logoutTime, setLogoutTime] = useState(null);
+  const [updated, setUpdated] = useState(false);
   const [sessionDuration, setSessionDuration] = useState(0);
 
   /* Working api calls starts here */
@@ -93,6 +94,8 @@ function App() {
     setLoginTime,
     logoutTime,
     setLogoutTime,
+    updated,
+    setUpdated,
   };
 
   useEffect(() => {
@@ -112,7 +115,7 @@ function App() {
         }
       });
     }
-  }, [token]);
+  }, [token, updated]);
 
   useEffect(() => {
     if (userData.emailId) {
