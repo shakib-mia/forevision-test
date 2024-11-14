@@ -16,7 +16,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-  const { prevRoute, setToken, setUserData, setLoginTime } =
+  const { prevRoute, setToken, setUserData, setLoginTime, userData } =
     useContext(ProfileContext);
   // if (loading) {
   //   console.log(loading);
@@ -125,6 +125,11 @@ const Login = () => {
           sessionStorage.setItem("token", data.token);
           setLoginTime(Date.now());
           if (prevRoute === "/signup" || data.details === null) {
+            console.log(e.target.email.value.toLowerCase());
+            setUserData({
+              ...userData,
+              user_email: e.target.email.value.toLowerCase(),
+            });
             navigate("/signup-details");
           } else {
             // console.log(data);

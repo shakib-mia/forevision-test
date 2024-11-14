@@ -354,7 +354,7 @@ const EditProfile = ({ handleClose }) => {
         containerClassName={"mt-3"}
         maxLength={180}
         value={formData["short-bio"]}
-        note={`${formData["short-bio"]?.length || 0}/160`}
+        note={`${formData["short-bio"]?.length || 0}/180`}
       />
 
       <InputField

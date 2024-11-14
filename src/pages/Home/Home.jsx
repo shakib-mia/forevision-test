@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import profile from "../../assets/images/artist-profile.webp";
+import profile from "../../assets/images/profile.png";
 import Button from "../../components/Button/Button";
 import facebook from "./../../assets/icons/social/fb-black.webp";
 import instagram from "./../../assets/icons/social/insta-black.webp";
@@ -37,11 +37,17 @@ const Home = () => {
       <div className="grid grid-cols-1 2xl:grid-cols-3 justify-between space-y-4 2xl:space-y-0 2xl:space-x-2 text-grey-dark">
         <div className="bg-grey-light p-2 2xl:p-4 rounded-2xl">
           <div className="flex flex-col 2xl:flex-row items-center 2xl:items-end justify-center 2xl:justify-between">
-            <img
-              src={userData.display_image || profile}
-              className="rounded-full w-5/12 mb-0 aspect-square object-cover"
-              alt=""
-            />
+            {userData.display_image ? (
+              <img
+                src={userData.display_image}
+                className="rounded-full w-5/12 mb-0 aspect-square object-cover"
+                alt=""
+              />
+            ) : (
+              <div className="backdrop-blur-2xl aspect-square w-5/12">
+                <img src={profile} className="rounded-full mb-0" alt="" />
+              </div>
+            )}
             <div className="text-center 2xl:text-left">
               <Button
                 text="Visit Profile"

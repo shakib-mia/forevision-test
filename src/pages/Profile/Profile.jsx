@@ -84,7 +84,7 @@ const Profile = () => {
 
   return (
     <div
-      className="w-[95%] m-2 mt-[96px] mx-auto lg:m-5 lg:my-7 lg:w-[90%] lg:ml-auto rounded-[20px] overflow-y-auto bg-grey-dark h-[95vh]"
+      className="w-[95%] m-2 mt-[96px] mx-auto lg:m-5 lg:mt-7 mb-5 lg:w-[90%] lg:ml-auto rounded-[20px] overflow-y-auto bg-grey-dark"
       id="profile-container"
     >
       <div className="relative">
@@ -211,6 +211,8 @@ const Profile = () => {
                     <a
                       href={profileData.facebook_profile_link}
                       className="text-heading-6"
+                      target="_blank"
+                      rel="noreferrer"
                     >
                       <FaSquareFacebook />
                     </a>
@@ -219,6 +221,8 @@ const Profile = () => {
                     <a
                       href={profileData.instagram_profile_link}
                       className="text-heading-6"
+                      target="_blank"
+                      rel="noreferrer"
                     >
                       <FaSquareInstagram />
                     </a>
@@ -227,6 +231,8 @@ const Profile = () => {
                     <a
                       href={profileData.twitter_profile_link}
                       className="text-heading-6"
+                      target="_blank"
+                      rel="noreferrer"
                     >
                       <FaSquareXTwitter />
                     </a>
@@ -235,11 +241,11 @@ const Profile = () => {
               </div>
 
               {/* <p className="text-[12px] mt-[6px]">99 Followers</p> */}
-              <p className="text-[12px] mt-1 mb-0 font-bold text-center 2xl:text-left tracking-[1.25px] uppercase">
+              <p className="text-[12px] w-5/6 mt-2 mb-0 font-bold text-center 2xl:text-left tracking-[1.25px] uppercase">
                 {profileData["short-bio"]}
               </p>
 
-              <p className="text-[12px] w-full lg:w-1/2 text-center lg:text-left">
+              <p className="text-[12px] w-5/6 mt-1 text-center lg:text-left">
                 {text?.slice(0, details ? text?.length - 1 : 200)}
                 {!details && text?.length > 200 && "..."}
                 <br />

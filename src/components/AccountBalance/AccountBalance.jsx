@@ -32,26 +32,35 @@ const AccountBalance = () => {
           Account <br className="2xl:hidden" /> Balance
         </h4>
         <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2 relative">
-          {isNaN(
-            userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
-          ) || userData.billing_country === "India" ? (
-            <>&#8377;</>
+          {!userData.lifetimeRevenue && !userData.lifetimeDisbursed ? (
+            // Fancy "Nothing to show" message when no data is available
+            <span className="text-grey italic">Nothing to show</span>
           ) : (
-            "$"
-          )}{" "}
-          {isNaN(userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0))
-            ? "Loading..."
-            : userData.billing_country === "India"
-            ? (
+            <>
+              {isNaN(
                 userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
-              ).toFixed(2)
-            : (
-                (userData.lifetimeRevenue.toFixed(2) -
-                  (userData.lifetimeDisbursed
-                    ? userData.lifetimeDisbursed.toFixed()
-                    : 0)) *
-                dollarRate
-              ).toFixed(2)}
+              ) || userData.billing_country === "India" ? (
+                <>&#8377;</>
+              ) : (
+                "$"
+              )}{" "}
+              {isNaN(
+                userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+              )
+                ? "Loading..."
+                : userData.billing_country === "India"
+                ? (
+                    userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                  ).toFixed(2)
+                : (
+                    (userData.lifetimeRevenue.toFixed(2) -
+                      (userData.lifetimeDisbursed
+                        ? userData.lifetimeDisbursed.toFixed()
+                        : 0)) *
+                    dollarRate
+                  ).toFixed(2)}
+            </>
+          )}
         </h4>
       </aside>
 

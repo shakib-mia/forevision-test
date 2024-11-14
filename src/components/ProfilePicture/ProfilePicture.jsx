@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { backendUrl, imageDomain } from "../../constants";
-import profile from "./../../assets/images/artist-profile.webp";
+import profile from "./../../assets/images/profile.png";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";

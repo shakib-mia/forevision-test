@@ -42,7 +42,8 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
   // console.log(song);
   return (
     <div
-      className="border-b border-white lg:px-2 py-1"
+      className="lg:px-2 py-1"
+      // className="border-b border-white lg:px-2 py-1"
       onClick={() => {
         setOpenSongId(isAccordionOpen ? "" : _id);
       }}

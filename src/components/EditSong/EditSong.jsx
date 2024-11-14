@@ -50,7 +50,7 @@ const EditSong = ({ setEditId, songData }) => {
   delete newFormData.orderId;
   delete newFormData.order_id;
   delete newFormData.artists;
-  delete newFormData.ISRC;
+  // delete newFormData.ISRC;
   delete newFormData.paid;
   delete newFormData.transactionId;
   // delete newFormData.ISRC;
@@ -82,6 +82,7 @@ const EditSong = ({ setEditId, songData }) => {
   delete newFormData.accepted;
   delete newFormData.parentalAdvisory;
   delete newFormData.songs;
+  delete newFormData.S;
 
   // console.log(updatedData);
 

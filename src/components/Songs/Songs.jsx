@@ -37,13 +37,16 @@ const Songs = () => {
           );
         }
         if (response?.data) {
-          // Ensure each song has a unique key
-          const processedSongs = response.data.map((song, index) => ({
-            ...song,
-            uniqueKey: song._id || `song-${index}`,
-          }));
-          setSongs(processedSongs);
-          setOpenSongId(processedSongs[0]._id);
+          console.log(response?.data);
+          if (typeof response?.data !== "string") {
+            // Ensure each song has a unique key
+            const processedSongs = response.data.map((song, index) => ({
+              ...song,
+              uniqueKey: song._id || `song-${index}`,
+            }));
+            setSongs(processedSongs);
+            setOpenSongId(processedSongs[0]._id);
+          }
         }
       } catch (error) {
         console.error("Error fetching songs:", error);
@@ -66,7 +69,7 @@ const Songs = () => {
   };
 
   return (
-    <div className="songs-list">
+    <div className="songs-list divide-y divide-white">
       {songs.map((song, index) => (
         <SongItem
           key={song._id}

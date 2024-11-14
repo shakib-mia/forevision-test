@@ -7,7 +7,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import axios from "axios";
 // import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { backendUrl } from "../../constants";
+import { backendUrl, user } from "../../constants";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
@@ -16,10 +16,69 @@ const SignupDetails = () => {
   const [selectedCode, setSelectedCode] = useState("91");
   const [screen, setScreen] = useState("name");
   const navigate = useNavigate();
-  const [signupDetailsData, setSignupDetailsData] = useState({
-    user_email: userData.user_email,
-  });
-  // console.log(userData);
+  const [userIds, setUserIds] = useState([]);
+  const [signupDetailsData, setSignupDetailsData] = useState(userData);
+  const [originalData] = useState(userData); // Store the initial user data for comparison
+
+  useEffect(() => {
+    axios
+      .get(backendUrl + "generate-user-id")
+      .then(({ data }) => setUserIds(data));
+  }, []);
+
+  const checkForChanges = (updatedFormData) => {
+    const isDataChanged = Object.keys(updatedFormData).some(
+      (key) => updatedFormData[key] !== originalData[key]
+    );
+    setIsChanged(isDataChanged);
+  };
+
+  useEffect(() => {
+    axios
+      .get(backendUrl + "generate-user-id")
+      .then(({ data }) => setUserIds(data));
+  }, []);
+
+  const [userId, setUserId] = useState("");
+  const [available, setAvailable] = useState(true); // Assuming it's true initially
+  const [hideNote, setHideNote] = useState(false);
+  const [isChanged, setIsChanged] = useState(false); // To track changes in the form
+
+  // Check if all required fields are filled
+  const areFieldsFilled = () => {
+    return (
+      userData.first_name &&
+      userData.last_name &&
+      userData.billing_address &&
+      userData.billing_city &&
+      userData.billing_country &&
+      userData.postal_code &&
+      userData.phone_no &&
+      userId // Assuming user ID is also required
+    );
+  };
+
+  // Update form validity based on required fields and availability
+  useEffect(() => {
+    setIsChanged(areFieldsFilled());
+  }, [userData, userId]);
+
+  const handleUserIdChange = (e) => {
+    const value = e.target.value;
+    setUserId(value);
+    setUserData({ ...userData, "user-id": value });
+
+    // console.log(userIds.includes(value));
+
+    // Check user ID availability
+    if (userIds.includes(value)) {
+      setAvailable(false); // User ID already in use
+      setHideNote(false);
+    } else {
+      setAvailable(true); // User ID is available
+      setHideNote(true);
+    }
+  };
 
   const fields = [
     {
@@ -40,8 +99,8 @@ const SignupDetails = () => {
       label: "Last Name",
       type: "text",
       placeholder: "Last Name",
+      value: userData.last_name,
       onChange: (e) => setUserData({ ...userData, last_name: e.target.value }),
-
       required: true,
     },
     {
@@ -51,6 +110,8 @@ const SignupDetails = () => {
       label: "Company/Record label",
       type: "text",
       placeholder: "Example: ForeVision Digital",
+      onChange: (e) =>
+        setUserData({ ...userData, recordLabel: e.target.value }),
       required: false,
     },
     {
@@ -60,6 +121,9 @@ const SignupDetails = () => {
       label: "Address",
       type: "text",
       placeholder: "Enter Here",
+      value: userData.billing_address,
+      onChange: (e) =>
+        setUserData({ ...userData, billing_address: e.target.value }),
       required: true,
     },
     {
@@ -68,10 +132,13 @@ const SignupDetails = () => {
       name: "email",
       label: "Email",
       type: "email",
-      // placeholder: "abc@example.com",
-      value: userData?.user_email,
+      value: userData.user_email,
+      onChange: (e) => {
+        console.log(e.target.value);
+        setUserData({ ...userData, user_email: e.target.value });
+      },
       disabled: true,
-      required: true,
+      required: false,
     },
     {
       id: "city",
@@ -80,6 +147,9 @@ const SignupDetails = () => {
       label: "City",
       type: "text",
       placeholder: "City Name",
+      value: userData.billing_city,
+      onChange: (e) =>
+        setUserData({ ...userData, billing_city: e.target.value }),
       required: true,
     },
     {
@@ -89,6 +159,9 @@ const SignupDetails = () => {
       label: "Country",
       type: "text",
       placeholder: "India",
+      value: userData.billing_country,
+      onChange: (e) =>
+        setUserData({ ...userData, billing_country: e.target.value }),
       required: true,
     },
     {
@@ -98,13 +171,11 @@ const SignupDetails = () => {
       label: "Postal Code",
       type: "number",
       placeholder: "700001",
+      value: userData.postal_code,
+      onChange: (e) =>
+        setUserData({ ...userData, postal_code: e.target.value }),
       required: true,
     },
-    // {
-    //   id: "save",
-    //   type: "checkbox",
-    //   label: "Save this information for next time",
-    // },
     {
       id: "phone",
       hideRequired: true,
@@ -112,19 +183,31 @@ const SignupDetails = () => {
       label: "Phone",
       type: "tel",
       placeholder: "+91",
+      value: userData.phone_no,
+      onChange: (e) => setUserData({ ...userData, phone_no: e.target.value }),
       required: true,
-      // pattern: /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g,
     },
     {
       id: "gst",
       name: "gst_no",
       label: "Gst",
       type: "text",
-      // placeholder: "+91",
-      // required: false,
+      value: userData.gst_no,
+      onChange: (e) => setUserData({ ...userData, gst_no: e.target.value }),
       hideRequired: false,
-
-      // pattern: /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g,
+    },
+    {
+      id: "userId",
+      name: "user-id",
+      label: "User ID",
+      type: "text",
+      placeholder: "abc123",
+      value: userId,
+      onChange: handleUserIdChange,
+      required: true,
+      note: hideNote || (available ? "Available" : "Already in Use"),
+      dangerNote: !available,
+      successNote: available,
     },
   ];
 
@@ -138,7 +221,7 @@ const SignupDetails = () => {
     // console.log(newArr);
 
     newArr
-      .slice(0, 5)
+      .slice(0, 7)
       .map((i, key) => key % 2 === 0 && i.classList.add("pr-2"));
   }, []);
 
@@ -146,34 +229,10 @@ const SignupDetails = () => {
     e.preventDefault();
     // console.log(userData);
     const userDetailsData = {
-      ...signupDetailsData,
-      phone_no: selectedCode + signupDetailsData.phone_no,
-      user_email: userData.user_email,
+      ...userData,
+      phone_no: selectedCode + userData.phone_no,
+      // user_email: userData.user_email,
     };
-
-    // userDetailsData;
-    // console.log(e.target.email.value);
-
-    // const formData = new FormData();
-    // // console.log(signupDetailsData);
-    // for (const key in signupDetailsData) {
-    //   formData.append(key, signupDetailsData[key])
-    // }
-
-    // // for (const value of formData.values()) {
-    // //   console.log(value);
-    // // }
-    // formData.append("user_id", userData.ID);
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-
-    // }
-
-    // console.log(userDetailsData);
-    // // const phoneValidity = /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g;
-    // userDetailsData.user_email = e.target.email.value;
 
     const config = {
       headers: {
@@ -217,7 +276,16 @@ const SignupDetails = () => {
                       required={true}
                       id={id}
                       className="hidden"
-                      onChange={(e) => setChecked(e.target.checked)}
+                      onChange={(e) => {
+                        if (!props.onChange) {
+                          setUserData({
+                            ...userData,
+                            [props.name]: e.target.value,
+                          });
+                        } else {
+                          props.onChange(e);
+                        }
+                      }}
                     />
 
                     <div
@@ -241,9 +309,17 @@ const SignupDetails = () => {
                   {...fields[id]}
                   selectedCode={selectedCode}
                   setSelectedCode={setSelectedCode}
-                  onChange={(e) =>
-                    (signupDetailsData[props.name] = e.target.value)
-                  }
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    if (!props.onChange) {
+                      setUserData({
+                        ...userData,
+                        [props.name]: e.target.value,
+                      });
+                    } else {
+                      props.onChange(e);
+                    }
+                  }}
                   key={id}
                   containerId={id}
                   containerClassName={`mt-3 w-full`}
@@ -253,9 +329,16 @@ const SignupDetails = () => {
               <InputField
                 {...props}
                 containerId={id}
-                onChange={(e) =>
-                  (signupDetailsData[props.name] = e.target.value)
-                }
+                onChange={(e) => {
+                  if (!props.onChange) {
+                    setUserData({
+                      ...userData,
+                      [props.name]: e.target.value,
+                    });
+                  } else {
+                    props.onChange(e);
+                  }
+                }}
                 key={id}
                 containerClassName={`mt-3 w-1/2`}
                 // fieldClassName="mr-2"
@@ -294,17 +377,20 @@ const SignupDetails = () => {
               containerId={id}
               key={id}
               onChange={(e) => {
-                setSignupDetailsData({
-                  ...signupDetailsData,
-                  [props.name]: e.target.value,
-                });
+                if (!props.onChange) {
+                  setUserData({
+                    ...userData,
+                    [props.name]: e.target.value,
+                  });
+                } else {
+                  props.onChange(e);
+                }
               }}
               containerClassName={`mt-3 w-full`}
-              // fieldClassName="mr-2"
             />
           ))}
-          "
         </div>
+
         {/* <InputField {...fields[2]} containerClassName={`mt-3 w-full`} /> */}
         <div className="mt-3 mb-2 text-center">
           <Button
@@ -334,8 +420,8 @@ const SignupDetails = () => {
             containerId={fields[4].id}
             key={fields[4].id}
             onChange={(e) => {
-              setSignupDetailsData({
-                ...signupDetailsData,
+              setUserData({
+                ...userData,
                 [fields[4].name]: e.target.value,
               });
 
@@ -350,8 +436,8 @@ const SignupDetails = () => {
             containerId={fields[8].id}
             key={fields[8].id}
             onChange={(e) => {
-              setSignupDetailsData({
-                ...signupDetailsData,
+              setUserData({
+                ...userData,
                 [fields[8].name]: e.target.value,
               });
 
@@ -387,8 +473,8 @@ const SignupDetails = () => {
             containerId={fields[3].id}
             key={fields[3].id}
             onChange={(e) => {
-              setSignupDetailsData({
-                ...signupDetailsData,
+              setUserData({
+                ...userData,
                 [fields[3].name]: e.target.value,
               });
 
@@ -401,8 +487,8 @@ const SignupDetails = () => {
             containerId={fields[5].id}
             key={fields[5].id}
             onChange={(e) => {
-              setSignupDetailsData({
-                ...signupDetailsData,
+              setUserData({
+                ...userData,
                 [fields[5].name]: e.target.value,
               });
               // signupDetailsData;
@@ -437,8 +523,8 @@ const SignupDetails = () => {
             containerId={fields[6].id}
             key={fields[6].id}
             onChange={(e) => {
-              setSignupDetailsData({
-                ...signupDetailsData,
+              setUserData({
+                ...userData,
                 [fields[6].name]: e.target.value,
               });
               // signupDetailsData;
@@ -451,8 +537,8 @@ const SignupDetails = () => {
             containerId={fields[7].id}
             key={fields[7].id}
             onChange={(e) => {
-              setSignupDetailsData({
-                ...signupDetailsData,
+              setUserData({
+                ...userData,
                 [fields[7].name]: e.target.value,
               });
               // signupDetailsData;
@@ -463,7 +549,11 @@ const SignupDetails = () => {
         </div>
 
         <div className="mt-3 mb-2 text-center">
-          <Button type="submit" text="Submit" />
+          <Button
+            type="submit"
+            text="Submit"
+            disabled={!available || !isChanged}
+          />
         </div>
       </AuthBody>
       {/* </ReactOwlCarousel> */}

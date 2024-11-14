@@ -3,6 +3,8 @@ import React, { useContext, useState } from "react";
 // import search from "./../../assets/icons/navbar/search.webp";
 import logout from "./../../assets/icons/navbar/logout.webp";
 import NavItem from "../NavItem/NavItem";
+import profile from "./../../assets/images/profile.png";
+
 import { imageDomain, navItem } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { useNavigate } from "react-router-dom";
@@ -62,6 +64,7 @@ const Sidebar = () => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {/* <section></section> */}
       <section>
         {/* <Link to={"/"}>
           <img src={logo} alt="logo" id="navbarLogo" className="w-fit h-fit" />
@@ -92,12 +95,19 @@ const Sidebar = () => {
       </section>
 
       <div className="mb-0 border-t-[1px] border-surface-white-line pt-[20px] flex items-center gap-1 text-white">
-        <img
-          src={userData?.display_image ? userData?.display_image : ""}
-          className="rounded-full w-[40px] aspect-square object-cover"
-          alt="profile"
-        />
-
+        {userData?.display_image ? (
+          <img
+            src={userData?.display_image}
+            className="rounded-full w-[40px] aspect-square object-cover"
+            alt="profile"
+          />
+        ) : (
+          <img
+            className={`w-full aspect-square object-cover`}
+            src={profile}
+            alt="Demo"
+          />
+        )}
         <>
           {/* <Link to={"/profile"} className="overflow-hidden whitespace-nowrap">
               <h1 className="text-subtitle-1-bold">
