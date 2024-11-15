@@ -9,7 +9,6 @@ import Modal from "../Modal/Modal";
 import AuthBody from "../AuthBody/AuthBody";
 import EditSongForm from "../EditSongForm/EditSongForm";
 import axios from "axios";
-import { backendUrl, config } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import EditSong from "../EditSong/EditSong";
 import { MdOutlineMusicOff } from "react-icons/md";

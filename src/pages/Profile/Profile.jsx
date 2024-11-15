@@ -65,6 +65,7 @@ const Profile = () => {
         });
     } else if (location.pathname === "/profile") {
       // If no userId in the URL and pathname is "/profile", use userData
+      console.log(userData);
       setProfileData(userData);
     }
   }, [location.pathname, userData]); // Add dependencies
@@ -84,41 +85,47 @@ const Profile = () => {
 
   return (
     <div
-      className="w-[95%] m-2 mt-[96px] mx-auto lg:m-5 lg:mt-7 mb-5 lg:w-[90%] lg:ml-auto rounded-[20px] overflow-y-auto bg-grey-dark"
+      className={`w-[95%] m-2 mt-[96px] mx-auto lg:m-5 lg:mt-7 mb-5 ${
+        location.pathname === "/profile"
+          ? "lg:w-[90%] lg:ml-auto"
+          : "lg:w-11/12 lg:mx-auto"
+      }  rounded-[20px] overflow-y-auto bg-grey-dark`}
       id="profile-container"
     >
       <div className="relative">
         <div className="w-full h-[12rem] lg:h-full">
-          <div className="bg-gradient-to-bl from-black-secondary to-20% to-transparent absolute top-0 left-0 w-full h-full">
-            <div className="absolute top-2 right-2">
-              <div className="flex gap-2 items-center p-1">
-                {/* <img
+          {location.pathname === "/profile" && (
+            <div className="bg-gradient-to-bl from-black-secondary to-50% to-transparent absolute top-0 left-0 w-full h-full">
+              <div className="absolute top-2 right-2">
+                <div className="flex gap-2 items-center p-1">
+                  {/* <img
                   className="cursor-pointer"
                   src={notification}
                   title="Notifications"
                   alt=""
                 /> */}
-                <Link to={"/settings"}>
-                  <img
-                    className="cursor-pointer"
-                    src={settingsWhite}
-                    title="Settings"
-                    alt=""
-                  />
-                </Link>
+                  <Link to={"/settings"}>
+                    <img
+                      className="cursor-pointer"
+                      src={settingsWhite}
+                      title="Settings"
+                      alt=""
+                    />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="absolute bottom-1 right-1 lg:bottom-2 lg:right-2">
+                <img
+                  src={profileEdit}
+                  className="cursor-pointer"
+                  alt=""
+                  title="Edit your cover photo"
+                  onClick={() => setEdit(true)}
+                />
               </div>
             </div>
-
-            <div className="absolute bottom-1 right-1 lg:bottom-2 lg:right-2">
-              <img
-                src={profileEdit}
-                className="cursor-pointer"
-                alt=""
-                title="Edit your cover photo"
-                onClick={() => setEdit(true)}
-              />
-            </div>
-          </div>
+          )}
           <img
             src={profileData.cover_photo || cover}
             className="object-cover w-full h-[12rem] lg:h-[18rem]"
@@ -174,12 +181,13 @@ const Profile = () => {
                     </div>
                   ) : profileData.first_name ? (
                     <div className="flex items-center space-x-2">
-                      <img
+                      {/* Hidden as it is not functional */}
+                      {/* <img
                         src={userplus}
                         onClick={handleFollow}
                         className="w-3 h-3 cursor-pointer"
                         alt="follow"
-                      />
+                      /> */}
                       <CopyToClipboard
                         text={
                           window.location.href + "/" + profileData["user-id"]

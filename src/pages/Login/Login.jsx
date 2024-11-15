@@ -139,6 +139,7 @@ const Login = () => {
             navigate("/");
             // setTimeout(() => navigate("/"), 10000);
             setUserData(data.details);
+            setShowMessage(true);
 
             // const config = {
             //   headers: {

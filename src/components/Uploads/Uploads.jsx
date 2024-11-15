@@ -5,32 +5,91 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { backendUrl } from "../../constants";
-import { RiEditBoxLine } from "react-icons/ri";
-import { VscLoading } from "react-icons/vsc";
 import { CiStreamOn } from "react-icons/ci";
+import { VscLoading } from "react-icons/vsc";
 
 const Uploads = () => {
   const navigate = useNavigate();
   const [songs, setSongs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
   const { userData, token } = useContext(ProfileContext);
 
   useEffect(() => {
-    // const isrcs = userData?.isrc?.split(",");
-    const config = {
-      headers: {
-        token: sessionStorage.getItem("token") || token,
-      },
-    };
-    if (userData && userData.isrc) {
-      axios
-        .get(backendUrl + "songs/by-user-id/" + userData["user-id"])
-        .then(({ data }) => setSongs(data));
-    }
-  }, [userData.isrc]);
+    const fetchSongs = async () => {
+      console.log(!userData?.isrc);
+      // If there's no ISRC, set loading false and return
+      if (!userData?.isrc) {
+        setIsLoading(false);
+        return;
+      }
 
-  // console.log(songs);
+      try {
+        const config = {
+          headers: {
+            token: sessionStorage.getItem("token") || token,
+          },
+        };
+
+        const response = await axios.get(
+          `${backendUrl}songs/by-user-id/${userData["user-id"]}`,
+          config
+        );
+
+        setSongs(response.data);
+      } catch (error) {
+        console.error("Error fetching songs:", error);
+        setSongs([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSongs();
+  }, [userData?.isrc, userData?.["user-id"], token]);
+
+  const renderContent = () => {
+    // If no ISRC, show "no songs" message
+    // if (!userData?.isrc) {
+    //   return (
+    //     <div className="flex justify-center items-center h-full">
+    //       <VscLoading className="animate-spin text-heading-1 text-interactive-light" />
+    //     </div>
+    //   );
+    // }
+
+    // Show loading only when there's an ISRC and data is being fetched
+    if (!userData.first_name || (userData.isrc && songs.length === 0)) {
+      return (
+        <div className="flex justify-center items-center h-full">
+          <VscLoading className="animate-spin text-heading-1 text-interactive-light" />
+        </div>
+      );
+    }
+
+    // Show songs if they exist
+    if (userData.isrc && songs.length > 0) {
+      return (
+        <div className="flex flex-col gap-2 h-fit overflow-y-auto pb-2">
+          {songs.map((song, key) => (
+            <SongListItem songData={song} key={key} {...song} />
+          ))}
+        </div>
+      );
+    }
+    // if() {
+
+    // }
+    // Fallback if there are no songs but user has ISRC
+    if (userData.first_name && !userData?.isrc?.length) {
+      return (
+        <div className="flex justify-center items-center h-full text-grey-dark text-heading-5">
+          No songs found
+        </div>
+      );
+    }
+  };
 
   return (
     <div
@@ -44,36 +103,8 @@ const Uploads = () => {
           Streaming <CiStreamOn className="w-5 h-5" />
         </h4>
       )}
-      {/* <div className="grid grid-cols-3 text-center">
-        <aside>Song Name</aside>
-        <aside>Status</aside>
-        <aside>Action</aside>
-      </div> */}
-      {songs.length > 0 ? (
-        <div className="flex flex-col gap-2 h-fit overflow-y-auto pb-2">
-          {songs.map((song, key) => (
-            <SongListItem songData={song} key={key} {...song} />
-          ))}
-        </div>
-      ) : (
-        <div className="flex justify-center items-center h-full">
-          <VscLoading className="animate-spin text-heading-1 text-interactive-light" />
-        </div>
-      )}
 
-      {/* <Swiper
-        spaceBetween={50}
-        slidesPerView={1}
-        navigation={true}
-        // onSlideChange={() => console.log("slide change")}
-        // onSwiper={(swiper) => console.log(swiper)}
-        direction="vertical"
-      >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-      </Swiper> */}
+      {renderContent()}
 
       {location.pathname === "/" && (
         <div className="flex items-center justify-between">
@@ -81,10 +112,7 @@ const Uploads = () => {
             Your Uploads
           </h5>
 
-          <Button
-            onClick={() => navigate("/revenue")}
-            text="Visit Dashboard"
-          ></Button>
+          <Button onClick={() => navigate("/revenue")} text="Visit Dashboard" />
         </div>
       )}
     </div>

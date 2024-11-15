@@ -238,7 +238,7 @@ const Agreement = ({ handleClose, formData }) => {
     platforms.forEach((category) => {
       const platforms = category.platforms.map((platform) => platform.cat_name);
       const matchedPlatforms = platforms.filter((platform) =>
-        selectedPlatforms.includes(platform)
+        selectedPlatforms?.includes(platform)
       );
 
       if (matchedPlatforms.length > 0) {
@@ -934,7 +934,9 @@ const Agreement = ({ handleClose, formData }) => {
             <p className="w-1/2 p-1">
               Proposed Platforms for Distribution (as per Schedule) :
             </p>
-            <p className="w-1/2 p-1">{formData.selectedPlatforms.join(", ")}</p>
+            <p className="w-1/2 p-1">
+              {formData.selectedPlatforms?.join(", ")}
+            </p>
           </div>
         </div>
 

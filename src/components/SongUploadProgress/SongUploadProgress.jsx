@@ -22,7 +22,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
       ? steps
       : steps.slice(0, steps.length - 1);
 
-  console.log(logicalSteps);
+  // console.log(logicalSteps);
 
   const currentStepIndex = steps.findIndex((step) => step.id === screen);
   const maxReachedStepIndex = React.useRef(currentStepIndex);
@@ -62,7 +62,7 @@ const SongUploadProgress = ({ setScreen, screen }) => {
             }`}
             onClick={() => {
               (isEditMode || isPassedStep) && handleStepClick(step.id);
-              // handleStepClick(step.id);
+              handleStepClick(step.id);
             }}
           >
             <aside

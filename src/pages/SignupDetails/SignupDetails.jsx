@@ -8,6 +8,7 @@ import axios from "axios";
 // import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { backendUrl, user } from "../../constants";
+import SelectOptions from "../../components/SelectOptions/SelectOptions";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
@@ -19,11 +20,12 @@ const SignupDetails = () => {
   const [userIds, setUserIds] = useState([]);
   const [signupDetailsData, setSignupDetailsData] = useState(userData);
   const [originalData] = useState(userData); // Store the initial user data for comparison
+  const [countries, setCountries] = useState([]);
 
   useEffect(() => {
     axios
-      .get(backendUrl + "generate-user-id")
-      .then(({ data }) => setUserIds(data));
+      .get("https://restcountries.com/v3.1/all")
+      .then(({ data }) => setCountries(data));
   }, []);
 
   const checkForChanges = (updatedFormData) => {
@@ -305,6 +307,7 @@ const SignupDetails = () => {
                     </label>
                   </div>
                 )}
+
                 <InputField
                   {...fields[id]}
                   selectedCode={selectedCode}
@@ -314,7 +317,7 @@ const SignupDetails = () => {
                     if (!props.onChange) {
                       setUserData({
                         ...userData,
-                        [props.name]: e.target.value,
+                        [props.name]: e.target.value.trim(),
                       });
                     } else {
                       props.onChange(e);
@@ -325,6 +328,25 @@ const SignupDetails = () => {
                   containerClassName={`mt-3 w-full`}
                 />
               </>
+            ) : props.name === "billing_country" ? (
+              <SelectOptions
+                containerClassName={`mt-3 w-1/2`}
+                label={"Country"}
+                options={countries.map((item) => item.name?.common)}
+                onChange={(e) => {
+                  setUserData({ ...userData, [props.name]: e.target.value });
+                  const country = countries.find(
+                    (item) => item.name.common === e.target.value
+                  );
+
+                  setSelectedCode(
+                    (country.idd.root + country.idd.suffixes[0]).slice(
+                      1,
+                      (country.idd.root + country.idd.suffixes[0]).length
+                    )
+                  );
+                }}
+              />
             ) : (
               <InputField
                 {...props}

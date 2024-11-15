@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Step from "../Step/Step";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const Steps = () => {
+  const store = useContext(ProfileContext);
   const steps = [
     {
       step: "Select a Plan",
@@ -53,16 +55,18 @@ const Steps = () => {
       <h4 className="text-heading-5-bold lg:text-heading-4-bold text-interactive-light mt-6 mb-1 text-center">
         How to Upload Your Content
       </h4>
-      <p className="text-center">
-        Please{" "}
-        <Link
-          to={"/signup"}
-          className="text-interactive-light hover:text-interactive-light-hover"
-        >
-          create an account
-        </Link>{" "}
-        before processing.
-      </p>
+      {!store.token && (
+        <p className="text-center">
+          Please{" "}
+          <Link
+            to={"/signup"}
+            className="text-interactive-light hover:text-interactive-light-hover"
+          >
+            create an account
+          </Link>{" "}
+          before processing.
+        </p>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
         {steps.map((item) => (

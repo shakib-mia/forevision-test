@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 
 const AlbumAudio = (props) => {
   const [forms, setForms] = useState([{ id: 0 }]);
-  const { initFormData, setInitFormData } = props;
+  const { initFormData, setInitFormData, formData } = props;
 
   // console.log(initFormData);
 
@@ -30,9 +30,8 @@ const AlbumAudio = (props) => {
     };
 
     // Update initFormData by adding a new song object to the 'songs' array
-    setInitFormData([...props.initFormData, newSong]);
-
-    // console.log([...props.initFormData, newSong]);
+    // setInitFormData((prevFormData) => [...prevFormData, newSong]);
+    setInitFormData([...initFormData, newSong]);
 
     // Add a new form with an incremented ID
     setForms((prevForms) => {
@@ -42,6 +41,7 @@ const AlbumAudio = (props) => {
           : -1;
       return [...prevForms, { id: maxId + 1 }];
     });
+    console.log(formData);
   };
 
   return (

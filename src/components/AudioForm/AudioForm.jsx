@@ -620,6 +620,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                   location.pathname === "/album-upload" ||
                   location.search.split("?")[1] === "yearly-plan"
                 ) {
+                  console.log(formData.songs);
                   formData.songs[id].songName = e.target.value;
                   setFormData({ ...formData });
                 } else {

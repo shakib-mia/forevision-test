@@ -42,8 +42,8 @@ const AlbumUpload = () => {
   const { userData } = useContext(ProfileContext);
   // console.log(userData);
   useEffect(() => {
-    setFormData({ songs: initFormData });
-  }, [initFormData]);
+    setFormData({ ...formData, songs: initFormData });
+  }, [initFormData, initFormData.length]);
 
   // console.log(formData);
 

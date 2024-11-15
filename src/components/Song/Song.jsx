@@ -2,7 +2,7 @@ import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import React, { useContext, useState } from "react";
 import { FaApple, FaChevronDown, FaMusic } from "react-icons/fa";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import EditSong from "../EditSong/EditSong";
 import like from "../../assets/icons/like.webp";
 import dislike from "../../assets/icons/dislike.webp";
@@ -15,6 +15,7 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
   const [editId, setEditId] = useState("");
   const navigate = useNavigate();
   const { userData } = useContext(ProfileContext);
+  const location = useLocation();
 
   const {
     Song,
@@ -184,15 +185,17 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
             >
               <AiFillDislike className="text-heading-6 text-white" />
             </button>
-            <button
-              className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-              onClick={(e) => {
-                e.stopPropagation();
-                setEditId(_id);
-              }}
-            >
-              <RiEditBoxFill className="text-heading-6 text-white" />
-            </button>
+            {location.pathname === "/profile" && (
+              <button
+                className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setEditId(_id);
+                }}
+              >
+                <RiEditBoxFill className="text-heading-6 text-white" />
+              </button>
+            )}
             <button
               disabled={
                 !(apple || amazon || spotify || gaana || wynk || jiosaavn)
