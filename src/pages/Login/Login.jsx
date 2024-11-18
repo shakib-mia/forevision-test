@@ -135,11 +135,11 @@ const Login = () => {
             // console.log(data);
             // setShowMessage(true);
 
-            setIsLoading(false);
-            navigate("/");
-            // setTimeout(() => navigate("/"), 10000);
-            setUserData(data.details);
             setShowMessage(true);
+            setIsLoading(false);
+            // navigate("/");
+            setTimeout(() => navigate("/"), 10000);
+            setUserData(data.details);
 
             // const config = {
             //   headers: {
