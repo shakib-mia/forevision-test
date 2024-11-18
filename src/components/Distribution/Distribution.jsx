@@ -28,6 +28,9 @@ const Distribution = () => {
   const [showAgreement, setShowAgreement] = useState(false);
 
   // console.log();
+  const config = {
+    headers: { token },
+  };
 
   useEffect(() => {
     axios
@@ -73,6 +76,7 @@ const Distribution = () => {
     delete formData.file;
     // formData;
     // navigate("/");
+
     axios
       .post(backendUrl + "upload-song/upload-song-data", formData, config)
       .then(({ data }) => {
@@ -103,6 +107,8 @@ const Distribution = () => {
     //     }
     //   });
 
+    // alert(isNaN(price));
+
     axios
       .post(backendUrl + "recent-uploads", formData, {
         headers: {
@@ -114,7 +120,7 @@ const Distribution = () => {
           // setCount(count + 1);
           // setScreen("preview");
           // : setCollapsed(true);
-          if (location.search.includes("foreVision-social")) {
+          if (location.search.includes("foreVision-social") || isNaN(price)) {
             navigate("/");
             // alert("/");
           } else {

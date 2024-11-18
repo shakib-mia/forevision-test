@@ -92,7 +92,7 @@ const UploadRecordLabel = () => {
 
       <div className="text-center">
         <a
-          href="https://api.forevisiondigital.in/uploads/record-labels/LetterHead%20of%20New%20Record%20Label.pdf"
+          href="https://api.forevisiondigital.in/uploads/letterheads/LetterHead%20of%20New%20Record%20Label.pdf"
           download={true}
           target="_blank"
           className="underline text-interactive-light"
