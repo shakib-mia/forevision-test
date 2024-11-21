@@ -45,8 +45,8 @@ import BulkUpload from "./pages/BulkUpload/BulkUpload";
 import SocialLinks from "./pages/SocialLinks/SocialLinks";
 import { FaCrown } from "react-icons/fa6";
 
-// export const backendUrl = "http://localhost:5100/";
-export const backendUrl = "https://api.forevisiondigital.in/";
+export const backendUrl = "http://localhost:5100/";
+// export const backendUrl = "https://api.forevisiondigital.in/";
 export const currencyAPI = "https://api.frankfurter.app/latest";
 
 export const navItem = [
@@ -355,6 +355,15 @@ export const routes = [
     page: (
       <RequireAuth>
         <SongUploadNew />
+      </RequireAuth>
+    ),
+  },
+
+  {
+    path: "/edit-album/:_id",
+    page: (
+      <RequireAuth>
+        <AlbumUpload />
       </RequireAuth>
     ),
   },

@@ -73,6 +73,7 @@ const Distribution = () => {
     formData.planName = location.search.split("?")[1];
     formData.status = "pending";
     formData.orderId = orderId;
+    formData.userEmail = userData.emailId;
     delete formData.file;
     // formData;
     // navigate("/");
@@ -92,6 +93,7 @@ const Distribution = () => {
     const price = parseFloat(location.search.split("?")[2]) / 100;
 
     formData.orderId = orderId;
+    formData.userEmail = userData.emailId;
 
     // axios
     //   .post(backendUrl + "upload-song/upload-song-data", formData, config)
@@ -329,7 +331,7 @@ const Distribution = () => {
             </div>
           ) : (
             <div className="flex gap-2 justify-center">
-              {location.search.includes("yearly-plan") ? (
+              {userData.yearlyPlanEndDate ? (
                 <Button
                   type={"button"}
                   onClick={handleSubmit}

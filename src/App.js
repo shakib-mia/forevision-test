@@ -239,7 +239,8 @@ function App() {
               <ToastContainer />
             </PlanContext.Provider>
           </ProfileContext.Provider>
-          {location.pathname.includes("upload") || <Footer />}
+          {location.pathname.includes("upload") ||
+            location.pathname.includes("edit") || <Footer />}
         </>
       )}
     </div>

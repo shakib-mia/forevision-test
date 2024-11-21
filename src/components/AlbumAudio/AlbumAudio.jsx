@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import AlbumAudioForm from "../AlbumAudioForm/AlbumAudioForm";
 import Button from "../Button/Button";
+import { useLocation } from "react-router-dom";
 
 const AlbumAudio = (props) => {
-  const [forms, setForms] = useState([{ id: 0 }]);
-  const { initFormData, setInitFormData, formData } = props;
+  const location = useLocation();
+  const { initFormData, setInitFormData, formData, setFormData } = props;
+  console.log(formData);
 
-  // console.log(initFormData);
+  // Initialize forms based on mode (edit or create)
+  const [forms, setForms] = useState(() =>
+    location.pathname.includes("edit-album")
+      ? formData.songs.map((song, index) => ({ ...song, id: index }))
+      : [{ id: 0 }]
+  );
 
   const addMoreForm = () => {
     // Create a new song template
@@ -27,26 +34,29 @@ const AlbumAudio = (props) => {
       parentalAdvisory: false,
       instrumental: false,
       language: "",
+      genre: "",
+      subGenre: "",
+      // liveDate: "",
+      // liveTime: "",
+      // releaseDate: "",
     };
 
-    // Update initFormData by adding a new song object to the 'songs' array
-    // setInitFormData((prevFormData) => [...prevFormData, newSong]);
-    setInitFormData([...initFormData, newSong]);
+    // Add the new song to both initFormData and forms
+    const newId =
+      forms.length > 0 ? Math.max(...forms.map((form) => form.id)) + 1 : 0;
 
-    // Add a new form with an incremented ID
-    setForms((prevForms) => {
-      const maxId =
-        prevForms.length > 0
-          ? Math.max(...prevForms.map((form) => form.id))
-          : -1;
-      return [...prevForms, { id: maxId + 1 }];
-    });
-    console.log(formData);
+    const newForm = { ...newSong, id: newId };
+    // console.log(formData);
+    formData.songs.push(newSong);
+
+    // setInitFormData((prevFormData) => [...prevFormData, newForm]);
+    setFormData({ ...formData });
+    setForms((prevForms) => [...prevForms, newForm]);
   };
 
   return (
     <>
-      {forms.map((form) => (
+      {forms.map((form, key) => (
         <AlbumAudioForm
           key={form.id}
           id={form.id}

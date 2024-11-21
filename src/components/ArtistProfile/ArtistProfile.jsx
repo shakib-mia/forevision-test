@@ -22,18 +22,26 @@ const ArtistProfile = ({
 
   // const handlePlatformUrl = (e, profile) => {
   //   console.log(
-  //     location.pathname === "/album-upload"
+  //        location.pathname === "/album-upload" ||
+  // location.search.split("?")[1] === "yearly-plan" ||
+  // location?.pathname.includes("edit-album")
   //       ? formData.songs[formId]
   //       : formData.artists[id]
   //   );
-  //   // console.log(location.pathname === "/album-upload"? formData.songs[formId] : formData.artists[id]);
+  //   // console.log(   location.pathname === "/album-upload" ||
+  // location.search.split("?")[1] === "yearly-plan" ||
+  // location?.pathname.includes("edit-album") ? formData.songs[formId] : formData.artists[id]);
   //   const artistData =
-  //     location.pathname === "/album-upload"
+  //        location.pathname === "/album-upload" ||
+  // location.search.split("?")[1] === "yearly-plan" ||
+  // location?.pathname.includes("edit-album")
   //       ? formData.songs[formId]
   //       : formData.artists[id];
   //   artistData[profile] = e.target.value;
   //   setFormData(formData);
-  //   // console.log(location.pathname === "/album-upload"? formData.songs[formId] : formData.artists);
+  //   // console.log(   location.pathname === "/album-upload" ||
+  // location.search.split("?")[1] === "yearly-plan" ||
+  // location?.pathname.includes("edit-album") ? formData.songs[formId] : formData.artists);
   // };
 
   // console.log(artist);
@@ -44,7 +52,11 @@ const ArtistProfile = ({
   // );
   let found;
   // console.log(formData);
-  if (formData && location.pathname === "/album-upload") {
+  if (
+    (formData && location.pathname === "/album-upload") ||
+    location.search.split("?")[1] === "yearly-plan" ||
+    location?.pathname.includes("edit-album")
+  ) {
     // console.log(formData);
     found = formData?.songs?.find((item) =>
       item?.artists?.find((ar) => ar.name === artist.name)
@@ -54,7 +66,11 @@ const ArtistProfile = ({
   // console.log(formData);
 
   const handleArtistNameChange = (index, value) => {
-    if (location.pathname === "/album-upload") {
+    if (
+      location.pathname === "/album-upload" ||
+      location.search.split("?")[1] === "yearly-plan" ||
+      location?.pathname.includes("edit-album")
+    ) {
       formData.songs[formId].artists[index].name = value;
       setFormData({ ...formData });
     } else {
@@ -63,7 +79,11 @@ const ArtistProfile = ({
     }
   };
   const handleArtistRoleChange = (index, value) => {
-    if (location.pathname === "/album-upload") {
+    if (
+      location.pathname === "/album-upload" ||
+      location.search.split("?")[1] === "yearly-plan" ||
+      location?.pathname.includes("edit-album")
+    ) {
       formData.songs[formId].artists[index].role = value;
       setFormData({ ...formData });
     } else {
@@ -86,7 +106,9 @@ const ArtistProfile = ({
           containerClassName={"w-full"}
           required={true}
           value={
-            location.pathname === "/album-upload"
+            location.pathname === "/album-upload" ||
+            location.search.split("?")[1] === "yearly-plan" ||
+            location?.pathname.includes("edit-album")
               ? formData.songs[formId]?.artists[id]?.name
               : formData.artists[id].name
           }
@@ -106,7 +128,9 @@ const ArtistProfile = ({
             "Star Cast",
           ]}
           value={
-            location.pathname === "/album-upload"
+            location.pathname === "/album-upload" ||
+            location.search.split("?")[1] === "yearly-plan" ||
+            location?.pathname.includes("edit-album")
               ? formData.songs[formId]?.artists[id]?.role
               : formData.artists[id].role
           }
@@ -122,7 +146,26 @@ const ArtistProfile = ({
             }
             // className="absolute bottom-2 -left-2 z-[99999999]"
             type="button"
-            onClick={() => handleRemoveArtist(id)}
+            onClick={() => {
+              if (
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
+              ) {
+                // Update songs immutably
+                const updatedSongs = [...formData.songs];
+                updatedSongs[formId].artists = updatedSongs[
+                  formId
+                ].artists.filter((_, artistIdx) => artistIdx !== id);
+                setFormData({ ...formData, songs: updatedSongs });
+              } else {
+                // Update general artists immutably
+                const updatedArtists = formData.artists.filter(
+                  (_, artistIdx) => artistIdx !== id
+                );
+                setFormData({ ...formData, artists: updatedArtists });
+              }
+            }}
           >
             &times;
           </button>
@@ -162,7 +205,9 @@ const ArtistProfile = ({
                 //   console.log(found);
                 // }
 
-                location.pathname === "/album-upload"
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
                   ? (formData.songs[formId].artists[id].spotifyUrl =
                       e.target.value)
                   : (formData.artists[id].spotifyUrl = e.target.value);
@@ -170,7 +215,9 @@ const ArtistProfile = ({
                 // console.log(formData);
               }}
               value={
-                location.pathname === "/album-upload"
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
                   ? found?.artists[id].spotifyUrl
                   : formData.artists[id].spotifyUrl
               }
@@ -185,7 +232,9 @@ const ArtistProfile = ({
               placeholder={"Apple Artist Profile URL"}
               onChange={(e) => {
                 // const artists = [
-                //   ...(location.pathname === "/album-upload"
+                //   ...(   location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album");
                 //     ? formData.songs[formId]
                 //     : formData.artists),
                 // ];
@@ -194,13 +243,17 @@ const ArtistProfile = ({
                 //   appleArtist: e.target.value,
                 // };
                 // setFormData({ ...formData, artists });
-                location.pathname === "/album-upload"
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
                   ? (formData.songs[formId].artists[id].appleArtist =
                       e.target.value)
                   : (formData.artists[id].appleArtist = e.target.value);
               }}
               value={
-                location.pathname === "/album-upload"
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
                   ? formData.songs[formId]?.artists[id]?.appleArtist
                   : formData.artists[id].appleArtist
               }
@@ -215,7 +268,9 @@ const ArtistProfile = ({
               placeholder={"Facebook Artist Page URL"}
               onChange={(e) => {
                 // const artists = [
-                //   ...(location.pathname === "/album-upload"
+                //   ...(   location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album");
                 //     ? formData.songs[formId].artists
                 //     : formData.artists),
                 // ];
@@ -224,13 +279,17 @@ const ArtistProfile = ({
                 //   facebookUrl: e.target.value,
                 // };
                 // setFormData({ ...formData, artists });
-                location.pathname === "/album-upload"
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
                   ? (formData.songs[formId].artists[id].facebookUrl =
                       e.target.value)
                   : (formData.artists[id].facebookUrl = e.target.value);
               }}
               value={
-                location.pathname === "/album-upload"
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
                   ? formData.songs[formId].artists[id].facebookUrl
                   : formData.artists[id].facebookUrl
               }
@@ -245,7 +304,9 @@ const ArtistProfile = ({
               placeholder={"Instagram Artist Profile URL"}
               onChange={(e) => {
                 // const artists = [
-                //   ...(location.pathname === "/album-upload"
+                //   ...(   location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album");
                 //     ? formData.songs[formId].artists[id].instagramUrl
                 //     : formData.artists[id].instagramUrl),
                 // ];
@@ -253,7 +314,9 @@ const ArtistProfile = ({
                 //   ...artists[id],
                 //   instagramUrl: e.target.value,
                 // };
-                location.pathname === "/album-upload"
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
                   ? (formData.songs[formId].artists[id].instagramUrl =
                       e.target.value)
                   : (formData.artists[id].instagramUrl = e.target.value);
@@ -261,7 +324,9 @@ const ArtistProfile = ({
                 // setFormData({ ...formData, artists });
               }}
               value={
-                location.pathname === "/album-upload"
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
                   ? formData.songs[formId].artists[id].instagramUrl
                   : formData.artists[id].instagramUrl
               }

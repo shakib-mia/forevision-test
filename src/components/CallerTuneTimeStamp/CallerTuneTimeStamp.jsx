@@ -39,7 +39,13 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
               type="number"
               label={"Start Time (Minute)"}
               required
-              value={startMinutes}
+              value={
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location.pathname.includes("edit-album")
+                  ? formData.songs[id]?.startMinutes
+                  : startMinutes
+              }
               id={"start-minutes"}
               note={"For Jio, BSNL, VI & Airtel"}
               containerClassName={"w-full"}
@@ -53,7 +59,11 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
                 //   startMinutes: e.target.value ? parseInt(e.target.value) : 0,
                 // });
 
-                if (location.pathname === "/album-upload") {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location.pathname.includes("edit-album")
+                ) {
                   formData.songs[id].startMinutes = e.target.value
                     ? parseInt(e.target.value)
                     : 0;
@@ -66,7 +76,13 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
               }}
             />
             <InputField
-              value={startSeconds}
+              value={
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location.pathname.includes("edit-album")
+                  ? formData.songs[id]?.startSeconds
+                  : startSeconds
+              }
               type="number"
               id={"start-seconds"}
               containerClassName={"w-full"}
@@ -80,7 +96,11 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
                 //   startSeconds: e.target.value ? parseInt(e.target.value) : 0,
                 // });
 
-                if (location.pathname === "/album-upload") {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location.pathname.includes("edit-album")
+                ) {
                   formData.songs[id].startSeconds = e.target.value
                     ? parseInt(e.target.value)
                     : 0;
@@ -103,7 +123,13 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
               type="number"
               label={"Start Time (Minute)"}
               required={false}
-              value={startMinutes2}
+              value={
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location.pathname.includes("edit-album")
+                  ? formData.songs[id]?.startMinutes2
+                  : startMinutes2
+              }
               id={"start-minutes2"}
               note={"For BSNL, VI & Airtel"}
               containerClassName={"w-full"}
@@ -117,7 +143,11 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
                 //   startMinutes2: e.target.value ? parseInt(e.target.value) : 0,
                 // });
 
-                if (location.pathname === "/album-upload") {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location.pathname.includes("edit-album")
+                ) {
                   formData.songs[id].startMinutes2 = e.target.value
                     ? parseInt(e.target.value)
                     : 0;
@@ -129,7 +159,13 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
               }}
             />
             <InputField
-              value={startSeconds2}
+              value={
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location.pathname.includes("edit-album")
+                  ? formData.songs[id]?.startSeconds2
+                  : startSeconds2
+              }
               type="number"
               required={false}
               id={"start-seconds2"}
@@ -144,7 +180,11 @@ const CallerTuneTimeStamp = ({ audioDuration, id }) => {
                 //   startSeconds2: e.target.value ? parseInt(e.target.value) : 0,
                 // });
 
-                if (location.pathname === "/album-upload") {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location.pathname.includes("edit-album")
+                ) {
                   formData.songs[id].startSeconds2 = e.target.value
                     ? parseInt(e.target.value)
                     : 0;

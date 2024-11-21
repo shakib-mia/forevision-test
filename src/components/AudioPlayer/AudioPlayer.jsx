@@ -6,13 +6,31 @@ import pause from "./../../assets/icons/pause.webp";
 import sound from "./../../assets/icons/sound.webp";
 import mute from "./../../assets/icons/muted.webp";
 import { formatTime } from "../../utils/formatTime";
+import { useLocation } from "react-router-dom";
 
-function AudioPlayer({ src }) {
+function AudioPlayer({ src, id }) {
   const { formData } = useContext(ScreenContext);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(40);
-  // console.log(formData);
+  // console.log( formData.songUrl);
+  const [songUrl, setSongUrl] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (
+      location.pathname === "/album-upload" ||
+      location.search.split("?")[1] === "yearly-plan" ||
+      location?.pathname.includes("edit-album")
+    ) {
+      setSongUrl(formData.songs[id].songUrl);
+      // setSongUrl
+    } else {
+      setSongUrl(formData.songUrl);
+
+      // setFormData({ ...formData, songName: e.target.value });
+    }
+  }, []);
 
   const audioRef = useRef(null);
   const progressRef = useRef(null);
@@ -98,7 +116,7 @@ function AudioPlayer({ src }) {
         <aside className="w-full mx-auto flex flex-col justify-between">
           <audio
             ref={audioRef}
-            src={src.length ? src : formData.songUrl}
+            src={src || songUrl}
             onTimeUpdate={updateProgress}
           ></audio>
           <aside>
@@ -120,7 +138,7 @@ function AudioPlayer({ src }) {
           </aside>
         </aside>
       </div>
-      {src?.length || formData.songUrl?.length ? (
+      {src?.length || songUrl?.length ? (
         <div className="w-full mx-auto flex items-center gap-3 mt-2">
           <span onClick={togglePlayPause} className="cursor-pointer w-1/12">
             {isPlaying && progress !== 100 ? <FaPause /> : <FaPlay />}

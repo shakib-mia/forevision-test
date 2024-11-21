@@ -12,6 +12,8 @@ import Modal from "../../components/Modal/Modal";
 import Preview from "../../components/Preview/Preview";
 import { PlanContext } from "../../contexts/PlanContext";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import axios from "axios";
+import { backendUrl } from "../../constants";
 
 const AlbumUpload = () => {
   const [initFormData, setInitFormData] = useState([
@@ -34,29 +36,59 @@ const AlbumUpload = () => {
       language: "",
     },
   ]);
-  const [formData, setFormData] = useState({ songs: initFormData });
+
+  const location = useLocation();
+  const [previousFormData, setPreviousFormData] = useState({});
+  const [formData, setFormData] = useState(
+    location.pathname.split("/")[1] === "edit-album"
+      ? previousFormData // Placeholder for async update
+      : { songs: initFormData }
+  );
   const [screen, setScreen] = useState("albumDetails");
   const [artistCount, setArtistCount] = useState(0);
-  const location = useLocation();
   const [modal, showModal] = useState(false);
-  const { userData } = useContext(ProfileContext);
-  // console.log(userData);
-  useEffect(() => {
-    setFormData({ ...formData, songs: initFormData });
-  }, [initFormData, initFormData.length]);
+  const { userData, token } = useContext(ProfileContext);
 
-  // console.log(formData);
+  console.log("Form Data:", formData);
+
+  // Fetch previous album data if in edit mode
+  useEffect(() => {
+    if (location.pathname.split("/")[1] === "edit-album") {
+      axios
+        .get(
+          backendUrl +
+            "recent-uploads/album/" +
+            location.pathname.split("/")[2],
+          {
+            headers: { token },
+          }
+        )
+        .then(({ data }) => setPreviousFormData(data))
+        .catch((err) => console.error("Error fetching album data:", err));
+    }
+  }, [location.pathname, token]);
+
+  // Update formData reactively when previousFormData or initFormData changes
+  useEffect(() => {
+    if (location.pathname.split("/")[1] === "edit-album" && previousFormData) {
+      setFormData(previousFormData);
+    } else if (formData === null) {
+      // Only update if formData hasn't been initialized yet
+      setFormData({ songs: initFormData });
+    }
+  }, [previousFormData, initFormData, location.pathname, formData]);
 
   return (
     <div className="lg:w-11/12 ml-auto pt-5 h-full">
       <SongUploadProgress screen={screen} setScreen={setScreen} />
-      <div className={`mt-5 px-5 py-6 shadow`}>
+      <div className={`mt-2 px-2 lg:mt-5 lg:px-5 lg:py-6 shadow`}>
         <h4 className="text-heading-4-bold text-grey capitalize mb-4">
-          Plan :{" "}
-          {location.search.split("?")[1]?.includes("-")
+          Plan : {/* {} */}
+          {userData.yearlyPlanEndDate
+            ? "Yearly Plan"
+            : location.search.split("?")[1]?.includes("-")
             ? location.search.split("?")[1]?.split("-")?.join(" ")
             : location.search.split("?")[1]}
-          {userData.yearlyPlanEndDate && "Yearly Plan"}
         </h4>
 
         {modal && (
@@ -78,6 +110,8 @@ const AlbumUpload = () => {
               setScreen={setScreen}
               setInitFormData={setInitFormData}
               initFormData={initFormData}
+              formData={formData}
+              setFormData={setFormData}
             />
           ) : (
             <></>

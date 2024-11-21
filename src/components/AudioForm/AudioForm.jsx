@@ -46,7 +46,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
   const [fileName, setFileName] = useState("");
   // const [alreadyHaveIsrc, setAlreadyHaveIsrc] = useState(false);
   const [isrc, setIsrc] = useState("");
-  const [audioUrl, setAudioUrl] = useState(formData.songUrl || "");
+  const [audioUrl, setAudioUrl] = useState(formData?.songUrl || "");
   const [file, setFile] = useState({});
   const [audioDuration, setAudioDuration] = useState(0);
   // const [focused, setFocused] = useState(false);
@@ -57,16 +57,32 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
   const [description, setDescription] = useState("");
   const [songUrl, setSongUrl] = useState("");
   const [subGenreOptions, setSubGenreOptions] = useState([]);
-  // console.log();
+  // console.log(formData);
+
+  useEffect(() => {
+    if (
+      location.pathname === "/album-upload" ||
+      location.search.split("?")[1] === "yearly-plan" ||
+      location?.pathname.includes("edit-album")
+    ) {
+      setSongUrl(formData.songs[id].songUrl);
+      // setSongUrl
+    } else {
+      setSongUrl(formData.songUrl);
+
+      // setFormData({ ...formData, songName: e.target.value });
+    }
+  }, [formData.songUrl, formData.songs]);
 
   const handleArtistNameChange = (index, value) => {
     if (
       location.pathname === "/album-upload" ||
-      location.search.split("?")[1] === "yearly-plan"
+      location.search.split("?")[1] === "yearly-plan" ||
+      location?.pathname.includes("edit-album")
     ) {
       // Handle the case where formData is an array of objects
       // console.log(formData.songs[id]);
-      // const updatedFormData = formData.songs[id]?.artists.map((item, idx) => {
+      // const updatedFormData = formData.songs[id].artists.map((item, idx) => {
       //   if (idx === id) {
       //     item.name = value;
       //     const updatedArtists = [{ ...item }];
@@ -82,7 +98,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
       // });
       formData.songs[id].artists[index].name = value;
       setFormData(formData);
-      // console.log(formData.songs[id]?.artists[index]);
+      // console.log(formData.songs[id].artists[index]);
       // setFormData(updatedFormData);
     } else {
       // Handle the case where formData is a single object
@@ -96,7 +112,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
     // console.log(index, value);
     if (
       location.pathname === "/album-upload" ||
-      location.search.split("?")[1] === "yearly-plan"
+      location.search.split("?")[1] === "yearly-plan" ||
+      location?.pathname.includes("edit-album")
     ) {
       // Handle the case where formData is an array of objects
       const updatedFormData = formData.songs.map((item, idx) => {
@@ -206,7 +223,11 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           );
 
           // Check if it's an album or a single song
-          if (location.pathname === "/album-upload") {
+          if (
+            location.pathname === "/album-upload" ||
+            location.search.split("?")[1] === "yearly-plan" ||
+            location?.pathname.includes("edit-album")
+          ) {
             // Album upload logic
             formData.songs = formData.songs || [];
             formData.songs[_id] = {
@@ -265,8 +286,6 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // setScreen("distribution");
-    // localStorage.setItem("song-data", JSON.stringify(formData));
     // console.log(formData);
     if (location.pathname.includes("edit-song")) {
       // console.log(formData);
@@ -280,7 +299,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
     } else {
       if (
         location.pathname === "/album-upload" ||
-        location.search.split("?")[1] === "yearly-plan"
+        location.search.split("?")[1] === "yearly-plan" ||
+        location?.pathname.includes("edit-album")
       ) {
         formData.songs[id].status = "pending";
         formData.songs[id].userEmail = userData.user_email;
@@ -361,29 +381,45 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
   };
 
   const handleRemoveArtist = (index) => {
-    let updatedArtists;
-
-    // Determine the source of artists based on the pathname
+    console.log(index);
     if (
       location.pathname === "/album-upload" ||
-      location.search.split("?")[1] === "yearly-plan"
+      location.search.split("?")[1] === "yearly-plan" ||
+      location?.pathname.includes("edit-album")
     ) {
-      // Handle the case where formData is an array of objects
-      updatedArtists = formData.songs[id]?.artists.filter(
-        (_, i) => i !== index
-      );
-      // Update the specific entry within the formData array
-      const updatedFormData = formData.map((item, idx) =>
-        idx === id ? { ...item, artists: updatedArtists } : item
-      );
-      setFormData(updatedFormData);
-    } else {
-      // Handle the case where formData is a single object
-      updatedArtists = formData.artists.filter((_, i) => i !== index);
-      setFormData({ ...formData, artists: updatedArtists });
-    }
+      // Create updated songs immutably
+      const updatedSongs = formData.songs.map((song, songIdx) => {
+        if (songIdx === id) {
+          return {
+            ...song,
+            artists: song.artists.filter((_, artistIdx) => artistIdx !== index),
+          };
+        }
+        return song;
+      });
 
-    // console.log(formData);
+      // console.log("Updated Songs Before Set:", updatedSongs); // Debugging
+
+      // console.log();
+
+      const newFormData = { ...formData, songs: updatedSongs };
+
+      console.log(newFormData);
+      // Set the updated state
+      setFormData({ ...formData, songs: updatedSongs });
+    } else {
+      // Handle general artists
+      const updatedArtists = formData.artists.filter(
+        (_, artistIdx) => artistIdx !== index
+      );
+
+      console.log("Updated Artists Before Set:", updatedArtists); // Debugging
+
+      setFormData((prev) => {
+        console.log("Previous FormData:", prev); // Debugging
+        return { ...prev, artists: updatedArtists };
+      });
+    }
   };
 
   /**
@@ -393,192 +429,394 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
    *
    * */
 
+  // console.log(id, formData.songs[id]?.artists);
+
   useEffect(() => {
-    const options =
-      genre === "Film" || formData.genre === "Film"
-        ? [
-            "Devotional",
-            "Dialogue",
-            "Ghazal",
-            "Hip-Hop/ Rap",
-            "Instrumental",
-            "Patriotic",
-            "Remix",
-            "Romantic",
-            "Sad",
-            "Unplugged",
-          ]
-        : genre === "Pop" || formData.genre === "Pop"
-        ? [
-            "Acoustic Pop",
-            "Band Songs",
-            "Bedroom Pop",
-            "Chill Pop",
-            "Contemporary Pop",
-            "Country Pop/ Regional Pop",
-            "Dance Pop",
-            "Electro Pop",
-            "Lo-Fi Pop",
-            "Love  Songs",
-            "Pop Rap",
-            "Pop Singer-Songwriter",
-            "Sad Songs",
-            "Soft Pop",
-          ]
-        : genre === "Indie" || formData.genre === "Indie"
-        ? [
-            "Indian Indie",
-            "Indie Dance",
-            "Indie Folk",
-            "Indie Hip-Hop",
-            "Indie Lo-Fi",
-            "Indie Pop",
-            "Indie Rock",
-            "Indie Singer -Songwriter",
-          ]
-        : genre === "Hip-Hop/Rap" || formData.genre === "Hip-Hop/Rap"
-        ? [
-            "Alternative Hip-Hop",
-            "Concious Hip-Hop",
-            "Country Rap",
-            "Emo Rap",
-            "Hip-Hop",
-            "Jazz Rap",
-            "Pop Rap",
-            "Trap",
-            "Trap Beats",
-          ]
-        : genre === "Folk" || formData.genre === "Folk"
-        ? [
-            "Ainchaliyan",
-            "Alha",
-            "Atulprasadi",
-            "Baalgeet/ Children Song",
-            "Banvarh",
-            "Barhamasa",
-            "Basant Geet",
-            "Baul Geet",
-            "Bhadu Gaan",
-            "Bhagawati",
-            "Bhand",
-            "Bhangra",
-            "Bhatiali",
-            "Bhavageete",
-            "Bhawaiya",
-            "Bhuta song",
-            "Bihugeet",
-            "Birha",
-            "Borgeet",
-            "Burrakatha",
-            "Chappeli",
-            "Daff",
-            "Dandiya Raas",
-            "Dasakathia",
-            "Deijendrageeti",
-            "Deknni",
-            "Dhamal",
-            "Gadhwali",
-            "Gagor",
-            "Garba",
-            "Ghasiyari Geet",
-            "Ghoomar",
-            "Gidda",
-            "Gugga",
-            "Hafiz Nagma",
-            "Heliam",
-            "Hereileu",
-            "Hori",
-            "Jaanapada Geethe",
-            "Jaita",
-            "Jhoori",
-            "Jhora",
-            "Jhumur",
-            "Jugni",
-            "Kajari",
-            "Kajari/ Kajari /Kajri",
-            "Karwa Chauth Songs",
-            "Khor",
-            "Koligeet",
-            "Kumayuni",
-            "Kummi Paatu",
-            "Lagna Geet /Marriage Song",
-            "Lalongeeti",
-            "Lavani",
-            "Lokgeet",
-            "Loor",
-            "Maand",
-            "Madiga Dappu",
-            "Mando",
-            "Mapilla",
-            "Naatupura Paadalgal",
-            "Naqual",
-            "Nati",
-            "Nautanki",
-            "Nazrulgeeti",
-            "Neuleu",
-            "Nyioga",
-            "Oggu Katha",
-            "Paani Hari",
-            "Pai Song",
-            "Pandavani",
-            "Pankhida",
-            "Patua Sangeet",
-            "Phag Dance",
-            "Powada",
-            "Qawwali",
-            "Rabindra Sangeet",
-            "Rajanikantageeti",
-            "Ramprasadi",
-            "Rasiya",
-            "Rasiya Geet",
-            "Raslila",
-            "Raut Nacha",
-            "Saikuthi Zai",
-            "Sana Lamok",
-            "Shakunakhar-Mangalgeet",
-            "Shyama Sangeet",
-            "Sohar",
-            "Sumangali",
-            "Surma",
-            "Suvvi paatalu",
-            "Tappa",
-            "Teej songs",
-            "Tusu Gaan",
-            "Villu Pattu",
-          ]
-        : genre === "Devotional" || formData.genre === "Devotional"
-        ? [
-            "Aarti",
-            "Bhajan",
-            "Carol",
-            "Chalisa",
-            "Chant",
-            "Geet",
-            "Gospel",
-            "Gurbani",
-            "Hymn",
-            "Kirtan",
-            "Kirtan",
-            "Mantra",
-            "Mantra",
-            "Paath",
-            "Qawwals",
-            "Shabd",
-          ]
-        : genre === "Hindustani Classical" ||
-          formData.genre === "Hindustani Classical"
-        ? ["Instrumental", "Vocal "]
-        : genre === "Carnatic Classical" ||
-          formData.genre === "Carnatic Classical"
-        ? ["Instrumental", "Vocal"]
-        : genre === "Ambient / Instrumental" ||
-          formData.genre === "Ambient / Instrumental"
-        ? ["Soft", "Easy Listening", "Electronic", "Fusion", "Lounge"]
-        : [];
+    if (
+      location.pathname === "/album-upload" ||
+      location.search.split("?")[1] === "yearly-plan" ||
+      location?.pathname.includes("edit-album")
+    ) {
+      const options =
+        genre === "Film" || formData.songs[id].genre === "Film"
+          ? [
+              "Devotional",
+              "Dialogue",
+              "Ghazal",
+              "Hip-Hop/ Rap",
+              "Instrumental",
+              "Patriotic",
+              "Remix",
+              "Romantic",
+              "Sad",
+              "Unplugged",
+            ]
+          : genre === "Pop" || formData.songs[id].genre === "Pop"
+          ? [
+              "Acoustic Pop",
+              "Band Songs",
+              "Bedroom Pop",
+              "Chill Pop",
+              "Contemporary Pop",
+              "Country Pop/ Regional Pop",
+              "Dance Pop",
+              "Electro Pop",
+              "Lo-Fi Pop",
+              "Love  Songs",
+              "Pop Rap",
+              "Pop Singer-Songwriter",
+              "Sad Songs",
+              "Soft Pop",
+            ]
+          : genre === "Indie" || formData.songs[id].genre === "Indie"
+          ? [
+              "Indian Indie",
+              "Indie Dance",
+              "Indie Folk",
+              "Indie Hip-Hop",
+              "Indie Lo-Fi",
+              "Indie Pop",
+              "Indie Rock",
+              "Indie Singer -Songwriter",
+            ]
+          : genre === "Hip-Hop/Rap" ||
+            formData.songs[id].genre === "Hip-Hop/Rap"
+          ? [
+              "Alternative Hip-Hop",
+              "Concious Hip-Hop",
+              "Country Rap",
+              "Emo Rap",
+              "Hip-Hop",
+              "Jazz Rap",
+              "Pop Rap",
+              "Trap",
+              "Trap Beats",
+            ]
+          : genre === "Folk" || formData.songs[id].genre === "Folk"
+          ? [
+              "Ainchaliyan",
+              "Alha",
+              "Atulprasadi",
+              "Baalgeet/ Children Song",
+              "Banvarh",
+              "Barhamasa",
+              "Basant Geet",
+              "Baul Geet",
+              "Bhadu Gaan",
+              "Bhagawati",
+              "Bhand",
+              "Bhangra",
+              "Bhatiali",
+              "Bhavageete",
+              "Bhawaiya",
+              "Bhuta song",
+              "Bihugeet",
+              "Birha",
+              "Borgeet",
+              "Burrakatha",
+              "Chappeli",
+              "Daff",
+              "Dandiya Raas",
+              "Dasakathia",
+              "Deijendrageeti",
+              "Deknni",
+              "Dhamal",
+              "Gadhwali",
+              "Gagor",
+              "Garba",
+              "Ghasiyari Geet",
+              "Ghoomar",
+              "Gidda",
+              "Gugga",
+              "Hafiz Nagma",
+              "Heliam",
+              "Hereileu",
+              "Hori",
+              "Jaanapada Geethe",
+              "Jaita",
+              "Jhoori",
+              "Jhora",
+              "Jhumur",
+              "Jugni",
+              "Kajari",
+              "Kajari/ Kajari /Kajri",
+              "Karwa Chauth Songs",
+              "Khor",
+              "Koligeet",
+              "Kumayuni",
+              "Kummi Paatu",
+              "Lagna Geet /Marriage Song",
+              "Lalongeeti",
+              "Lavani",
+              "Lokgeet",
+              "Loor",
+              "Maand",
+              "Madiga Dappu",
+              "Mando",
+              "Mapilla",
+              "Naatupura Paadalgal",
+              "Naqual",
+              "Nati",
+              "Nautanki",
+              "Nazrulgeeti",
+              "Neuleu",
+              "Nyioga",
+              "Oggu Katha",
+              "Paani Hari",
+              "Pai Song",
+              "Pandavani",
+              "Pankhida",
+              "Patua Sangeet",
+              "Phag Dance",
+              "Powada",
+              "Qawwali",
+              "Rabindra Sangeet",
+              "Rajanikantageeti",
+              "Ramprasadi",
+              "Rasiya",
+              "Rasiya Geet",
+              "Raslila",
+              "Raut Nacha",
+              "Saikuthi Zai",
+              "Sana Lamok",
+              "Shakunakhar-Mangalgeet",
+              "Shyama Sangeet",
+              "Sohar",
+              "Sumangali",
+              "Surma",
+              "Suvvi paatalu",
+              "Tappa",
+              "Teej songs",
+              "Tusu Gaan",
+              "Villu Pattu",
+            ]
+          : genre === "Devotional" || formData.songs[id].genre === "Devotional"
+          ? [
+              "Aarti",
+              "Bhajan",
+              "Carol",
+              "Chalisa",
+              "Chant",
+              "Geet",
+              "Gospel",
+              "Gurbani",
+              "Hymn",
+              "Kirtan",
+              "Kirtan",
+              "Mantra",
+              "Mantra",
+              "Paath",
+              "Qawwals",
+              "Shabd",
+            ]
+          : genre === "Hindustani Classical" ||
+            formData.songs[id].genre === "Hindustani Classical"
+          ? ["Instrumental", "Vocal "]
+          : genre === "Carnatic Classical" ||
+            formData.songs[id].genre === "Carnatic Classical"
+          ? ["Instrumental", "Vocal"]
+          : genre === "Ambient / Instrumental" ||
+            formData.songs[id].genre === "Ambient / Instrumental"
+          ? ["Soft", "Easy Listening", "Electronic", "Fusion", "Lounge"]
+          : [];
 
-    setSubGenreOptions(options);
-  }, [genre, formData.genre]);
+      setSubGenreOptions(options);
+    } else {
+      const options =
+        genre === "Film" || formData.genre === "Film"
+          ? [
+              "Devotional",
+              "Dialogue",
+              "Ghazal",
+              "Hip-Hop/ Rap",
+              "Instrumental",
+              "Patriotic",
+              "Remix",
+              "Romantic",
+              "Sad",
+              "Unplugged",
+            ]
+          : genre === "Pop" || formData.genre === "Pop"
+          ? [
+              "Acoustic Pop",
+              "Band Songs",
+              "Bedroom Pop",
+              "Chill Pop",
+              "Contemporary Pop",
+              "Country Pop/ Regional Pop",
+              "Dance Pop",
+              "Electro Pop",
+              "Lo-Fi Pop",
+              "Love  Songs",
+              "Pop Rap",
+              "Pop Singer-Songwriter",
+              "Sad Songs",
+              "Soft Pop",
+            ]
+          : genre === "Indie" || formData.genre === "Indie"
+          ? [
+              "Indian Indie",
+              "Indie Dance",
+              "Indie Folk",
+              "Indie Hip-Hop",
+              "Indie Lo-Fi",
+              "Indie Pop",
+              "Indie Rock",
+              "Indie Singer -Songwriter",
+            ]
+          : genre === "Hip-Hop/Rap" || formData.genre === "Hip-Hop/Rap"
+          ? [
+              "Alternative Hip-Hop",
+              "Concious Hip-Hop",
+              "Country Rap",
+              "Emo Rap",
+              "Hip-Hop",
+              "Jazz Rap",
+              "Pop Rap",
+              "Trap",
+              "Trap Beats",
+            ]
+          : genre === "Folk" || formData.genre === "Folk"
+          ? [
+              "Ainchaliyan",
+              "Alha",
+              "Atulprasadi",
+              "Baalgeet/ Children Song",
+              "Banvarh",
+              "Barhamasa",
+              "Basant Geet",
+              "Baul Geet",
+              "Bhadu Gaan",
+              "Bhagawati",
+              "Bhand",
+              "Bhangra",
+              "Bhatiali",
+              "Bhavageete",
+              "Bhawaiya",
+              "Bhuta song",
+              "Bihugeet",
+              "Birha",
+              "Borgeet",
+              "Burrakatha",
+              "Chappeli",
+              "Daff",
+              "Dandiya Raas",
+              "Dasakathia",
+              "Deijendrageeti",
+              "Deknni",
+              "Dhamal",
+              "Gadhwali",
+              "Gagor",
+              "Garba",
+              "Ghasiyari Geet",
+              "Ghoomar",
+              "Gidda",
+              "Gugga",
+              "Hafiz Nagma",
+              "Heliam",
+              "Hereileu",
+              "Hori",
+              "Jaanapada Geethe",
+              "Jaita",
+              "Jhoori",
+              "Jhora",
+              "Jhumur",
+              "Jugni",
+              "Kajari",
+              "Kajari/ Kajari /Kajri",
+              "Karwa Chauth Songs",
+              "Khor",
+              "Koligeet",
+              "Kumayuni",
+              "Kummi Paatu",
+              "Lagna Geet /Marriage Song",
+              "Lalongeeti",
+              "Lavani",
+              "Lokgeet",
+              "Loor",
+              "Maand",
+              "Madiga Dappu",
+              "Mando",
+              "Mapilla",
+              "Naatupura Paadalgal",
+              "Naqual",
+              "Nati",
+              "Nautanki",
+              "Nazrulgeeti",
+              "Neuleu",
+              "Nyioga",
+              "Oggu Katha",
+              "Paani Hari",
+              "Pai Song",
+              "Pandavani",
+              "Pankhida",
+              "Patua Sangeet",
+              "Phag Dance",
+              "Powada",
+              "Qawwali",
+              "Rabindra Sangeet",
+              "Rajanikantageeti",
+              "Ramprasadi",
+              "Rasiya",
+              "Rasiya Geet",
+              "Raslila",
+              "Raut Nacha",
+              "Saikuthi Zai",
+              "Sana Lamok",
+              "Shakunakhar-Mangalgeet",
+              "Shyama Sangeet",
+              "Sohar",
+              "Sumangali",
+              "Surma",
+              "Suvvi paatalu",
+              "Tappa",
+              "Teej songs",
+              "Tusu Gaan",
+              "Villu Pattu",
+            ]
+          : genre === "Devotional" || formData.genre === "Devotional"
+          ? [
+              "Aarti",
+              "Bhajan",
+              "Carol",
+              "Chalisa",
+              "Chant",
+              "Geet",
+              "Gospel",
+              "Gurbani",
+              "Hymn",
+              "Kirtan",
+              "Kirtan",
+              "Mantra",
+              "Mantra",
+              "Paath",
+              "Qawwals",
+              "Shabd",
+            ]
+          : genre === "Hindustani Classical" ||
+            formData.genre === "Hindustani Classical"
+          ? ["Instrumental", "Vocal "]
+          : genre === "Carnatic Classical" ||
+            formData.genre === "Carnatic Classical"
+          ? ["Instrumental", "Vocal"]
+          : genre === "Ambient / Instrumental" ||
+            formData.genre === "Ambient / Instrumental"
+          ? ["Soft", "Easy Listening", "Electronic", "Fusion", "Lounge"]
+          : [];
 
+      setSubGenreOptions(options);
+    }
+  }, [genre, formData?.genre]);
+
+  // console.log(
+  //   songUrl
+  //     .substring(songUrl.lastIndexOf("/") + 1)
+  //     .split("-")
+  //     .slice(
+  //       3,
+  //       songUrl.substring(songUrl.lastIndexOf("/") + 1).split("-").length - 1
+  //     ).join("-")
+  // );
   // console.log(formData.songs[id]?.file);
   // const filename =
   //   location.pathname === "/album-upload" ||
@@ -602,6 +840,21 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
     return date.toISOString().split("T")[0];
   };
 
+  const handleAddArtist = () => {
+    if (
+      location.pathname === "/album-upload" ||
+      location.search.split("?")[1] === "yearly-plan" ||
+      location.pathname.includes("edit-album")
+    ) {
+      formData.songs && formData.songs[id].artists.push({ name: "", role: "" });
+      setFormData(formData);
+
+      console.log(formData.songs[id].artists);
+    } else {
+      formData.artists.push({ name: "", role: "" });
+    }
+  };
+
   // console.log(formData);
 
   return (
@@ -618,7 +871,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 // location.pathname === "/album-upload" || location.search.split("?")[1] === "yearly-plan" || setFormData()
                 if (
                   location.pathname === "/album-upload" ||
-                  location.search.split("?")[1] === "yearly-plan"
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
                 ) {
                   console.log(formData.songs);
                   formData.songs[id].songName = e.target.value;
@@ -630,8 +884,9 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
               required
               value={
                 location?.pathname === "/album-upload" ||
-                location?.search?.split("?")[1] === "yearly-plan"
-                  ? formData.songs && formData.songs[id]?.songName
+                location?.search?.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
+                  ? formData?.songs && formData.songs[id]?.songName
                   : formData?.songName
               }
               placeholder={"Name"}
@@ -643,7 +898,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 // setFormData({ ...formData, isrc: e.target.value });
                 if (
                   location.pathname === "/album-upload" ||
-                  location.search.split("?")[1] === "yearly-plan"
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location.pathname.includes("edit-album")
                 ) {
                   formData.songs[id].isrc = e.target.value;
                   setFormData({ ...formData });
@@ -653,7 +909,13 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
               }}
               placeholder={"ISRC"}
               // required={alreadyHaveIsrc}
-              value={formData.isrc}
+              value={
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location.pathname.includes("edit-album")
+                  ? formData?.songs[id]?.isrc
+                  : formData.isrc
+              }
               // disabled={!alreadyHaveIsrc}
             />
             {/* <div className="flex"></div> */}
@@ -676,7 +938,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 // });
                 if (
                   location.pathname === "/album-upload" ||
-                  location.search.split("?")[1] === "yearly-plan"
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
                 ) {
                   formData.songs[id].parentalAdvisory = e.target.value;
                   setFormData({ ...formData });
@@ -706,7 +969,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 // });
                 if (
                   location.pathname === "/album-upload" ||
-                  location.search.split("?")[1] === "yearly-plan"
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
                 ) {
                   formData.songs[id].instrumental = e.target.value;
                   setFormData({ ...formData });
@@ -725,7 +989,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 // setFormData({ ...formData, language: e.target.value });
                 if (
                   location.pathname === "/album-upload" ||
-                  location.search.split("?")[1] === "yearly-plan"
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location.pathname.includes("edit-album")
                 ) {
                   formData.songs[id].language = e.target.value;
                   setFormData({ ...formData });
@@ -740,7 +1005,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           <div className="mt-4 flex items-end gap-2">
             <aside className="w-full">
               {location.pathname === "/album-upload" ||
-              location.search.split("?")[1] === "yearly-plan"
+              location.search.split("?")[1] === "yearly-plan" ||
+              location?.pathname.includes("edit-album")
                 ? formData.songs &&
                   formData.songs[id]?.artists?.map((artist, key) => (
                     <ArtistProfile
@@ -776,12 +1042,37 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
             text={"+ Add Artist"}
             type={"button"}
             onClick={() => {
-              setArtistCount((c) => c + 1);
-              location.pathname === "/album-upload" ||
-              location.search.split("?")[1] === "yearly-plan"
-                ? formData.songs &&
-                  formData.songs[id]?.artists.push({ name: "", role: "" })
-                : formData.artists.push({ name: "", role: "" });
+              if (
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location.pathname.includes("edit-album")
+              ) {
+                const updatedFormData = {
+                  ...formData,
+                };
+
+                updatedFormData.songs[id].artists.push({ name: "", role: "" });
+
+                // const updatedFormData = {
+                //   ...formData,
+                //   songs: formData.songs.map((song, idx) =>
+                //     idx === id
+                //       ? {
+                //           ...song,
+                //           artists: [...song.artists, { name: "", role: "" }],
+                //         }
+                //       : song
+                //   ),
+                // };
+
+                setFormData(updatedFormData);
+              } else {
+                const updatedArtists = [
+                  ...formData.artists,
+                  { name: "", role: "" },
+                ];
+                setFormData({ ...formData, artists: updatedArtists });
+              }
             }}
           />
 
@@ -793,7 +1084,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
             onChange={(e) => handleAudioChange(e, id)}
             disabled={
               location.pathname === "/album-upload" ||
-              location.search.split("?")[1] === "yearly-plan"
+              location.search.split("?")[1] === "yearly-plan" ||
+              location.pathname.includes("edit-album")
                 ? formData.songs && !formData.songs[id]?.songName?.length
                 : !formData?.songName?.length
             }
@@ -803,7 +1095,11 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
             }
             dangerNote
             required={!location.pathname.includes("edit-song")}
-            placeholder={fileName || "Select File"}
+            placeholder={
+              fileName ||
+              songUrl?.substring(songUrl.indexOf("asif-")) ||
+              "Select File"
+            }
             containerClassName={"mt-3"}
           />
 
@@ -820,7 +1116,9 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           {/* <Video /> */}
           {/* </div> */}
         </div>
-        <div className="w-full lg:w-1/3">{<AudioPlayer src={audioUrl} />}</div>
+        <div className="w-full lg:w-1/3">
+          {<AudioPlayer id={id} src={audioUrl} />}
+        </div>
       </div>
       {/* {formData.songName?.length && ( */}
 
@@ -843,12 +1141,17 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           onChange={(e) => {
             setGenre(e.target.value);
             // setFormData({ ...formData, subGenre: e.target.value })
+
             if (
               location.pathname === "/album-upload" ||
-              location.search.split("?")[1] === "yearly-plan"
+              location.search.split("?")[1] === "yearly-plan" ||
+              location.pathname.includes("edit-album")
             ) {
               if (formData.songs) {
-                formData.songs[id].genre = e.target.value;
+                const newFormData = { ...formData };
+                newFormData.songs[id].genre = e.target.value;
+                // console.log(formData.songs[id]);
+                setFormData(newFormData);
               }
             } else {
               formData.genre = e.target.value;
@@ -857,7 +1160,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           value={
             genre ||
             (location.pathname === "/album-upload" ||
-            location.search.split("?")[1] === "yearly-plan"
+            location.search.split("?")[1] === "yearly-plan" ||
+            location.pathname.includes("edit-album")
               ? formData.songs && formData.songs[id]?.genre
               : formData?.genre)
           }
@@ -885,11 +1189,13 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
             // setFormData({ ...formData, subGenre: e.target.value })
             if (
               location.pathname === "/album-upload" ||
-              location.search.split("?")[1] === "yearly-plan"
+              location.search.split("?")[1] === "yearly-plan" ||
+              location.pathname.includes("edit-album")
             ) {
-              if (formatDate.songs) {
-                formData.songs[id].subGenre = e.target.value;
-              }
+              const newFormData = { ...formData };
+              newFormData.songs[id].subGenre = e.target.value;
+              // console.log(formData.songs[id]);
+              setFormData(newFormData);
             } else {
               formData.subGenre = e.target.value;
             }
@@ -897,9 +1203,10 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           value={
             subGenre ||
             (location.pathname === "/album-upload" ||
-            location.search.split("?")[1] === "yearly-plan"
+            location.search.split("?")[1] === "yearly-plan" ||
+            location.pathname.includes("edit-album")
               ? formData.songs && formData.songs[id]?.subGenre
-              : formData.subGenre)
+              : formData?.subGenre)
           }
           options={subGenreOptions}
         />
@@ -913,11 +1220,13 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
             // setFormData({ ...formData, subGenre: e.target.value })
             if (
               location.pathname === "/album-upload" ||
-              location.search.split("?")[1] === "yearly-plan"
+              location.search.split("?")[1] === "yearly-plan" ||
+              location.pathname.includes("edit-album")
             ) {
-              if (formData.songs) {
-                formData.songs[id].mood = e.target.value;
-              }
+              const newFormData = { ...formData };
+              newFormData.songs[id].mood = e.target.value;
+              // console.log(formData.songs[id]);
+              setFormData(newFormData);
             } else {
               formData.mood = e.target.value;
             }
@@ -925,7 +1234,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           value={
             mood ||
             (location.pathname === "/album-upload" ||
-            location.search.split("?")[1] === "yearly-plan"
+            location.search.split("?")[1] === "yearly-plan" ||
+            location.pathname.includes("edit-album")
               ? formData.songs && formData.songs[id]?.mood
               : formData.mood)
           }
@@ -955,13 +1265,20 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           label={"Description"}
           placeholder={"Description"}
           required={false}
-          // value={formData.description}
+          value={
+            location.pathname === "/album-upload" ||
+            location.search.split("?")[1] === "yearly-plan" ||
+            location.pathname.includes("edit-album")
+              ? formData.songs[id]?.description
+              : formData.description
+          }
           onChange={(e) => {
             setDescription(e.target.value);
             // setFormData({ ...formData, subGenre: e.target.value })
             if (
               location.pathname === "/album-upload" ||
-              location.search.split("?")[1] === "yearly-plan"
+              location.search.split("?")[1] === "yearly-plan" ||
+              location.pathname.includes("edit-album")
             ) {
               if (formData.songs) {
                 formData.songs[id].description = e.target.value;
@@ -972,7 +1289,6 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
               setFormData({ ...formData });
             }
           }}
-          value={description || formData.description}
 
           // labelClassName={"opacity-0"}
         />
@@ -999,7 +1315,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
               label=" "
               value={
                 location.pathname === "/album-upload" ||
-                location.search.split("?")[1] === "yearly-plan"
+                location.search.split("?")[1] === "yearly-plan" ||
+                location.pathname.includes("edit-album")
                   ? formData.songs && formData.songs[id]?.releaseDate
                     ? formatDate(formData.songs[id]?.releaseDate)
                     : ""
@@ -1011,13 +1328,13 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 const newDate = e.target.value;
                 if (
                   location.pathname === "/album-upload" ||
-                  location.search.split("?")[1] === "yearly-plan"
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
                 ) {
-                  // Update the releaseDate in songs array immutably
-                  const updatedSongs = formData.songs.map((song, index) =>
-                    index === id ? { ...song, releaseDate: newDate } : song
-                  );
-                  setFormData({ ...formData, songs: updatedSongs });
+                  formData.songs[id].releaseDate = newDate;
+                  const newFormData = { ...formData };
+
+                  setFormData(newFormData);
                 } else {
                   // Update the releaseDate at the form level
                   setFormData({ ...formData, releaseDate: newDate });
@@ -1033,29 +1350,29 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
               label=" "
               value={
                 location.pathname === "/album-upload" ||
-                location.search.split("?")[1] === "yearly-plan"
+                location.search.split("?")[1] === "yearly-plan" ||
+                location.pathname.includes("edit-album")
                   ? formData.songs && formData.songs[id]?.liveDate
-                    ? formatDate(formData.songs[id]?.liveDate)
+                    ? formData.songs[id]?.liveDate
                     : ""
                   : formData.liveDate
-                  ? formatDate(formData.liveDate)
+                  ? formData.liveDate
                   : ""
               }
               onChange={(e) => {
-                const newLiveDate = e.target.value;
-
+                const newDate = e.target.value;
                 if (
                   location.pathname === "/album-upload" ||
-                  location.search.split("?")[1] === "yearly-plan"
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
                 ) {
-                  // Update the liveDate in the songs array immutably
-                  const updatedSongs = formData.songs.map((song, index) =>
-                    index === id ? { ...song, liveDate: newLiveDate } : song
-                  );
-                  setFormData({ ...formData, songs: updatedSongs });
+                  formData.songs[id].liveDate = newDate;
+                  const newFormData = { ...formData };
+                  console.log(formData);
+                  setFormData(newFormData);
                 } else {
-                  // Update the liveDate at the form level
-                  setFormData({ ...formData, liveDate: newLiveDate });
+                  // Update the releaseDate at the form level
+                  setFormData({ ...formData, releaseDate: newDate });
                 }
               }}
               note="Go Live Date"
@@ -1098,25 +1415,25 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
             label=" "
             value={
               location.pathname === "/album-upload" ||
-              location.search.split("?")[1] === "yearly-plan"
+              location.search.split("?")[1] === "yearly-plan" ||
+              location.pathname.includes("edit-album")
                 ? (formData.songs && formData.songs[id]?.time) || ""
                 : formData.time || ""
             }
             onChange={(e) => {
-              const newTime = e.target.value;
-
+              const newDate = e.target.value;
               if (
                 location.pathname === "/album-upload" ||
-                location.search.split("?")[1] === "yearly-plan"
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
               ) {
-                // Update the time in the songs array immutably
-                const updatedSongs = formData.songs.map((song, index) =>
-                  index === id ? { ...song, time: newTime } : song
-                );
-                setFormData({ ...formData, songs: updatedSongs });
+                formData.songs[id].time = newDate;
+                const newFormData = { ...formData };
+
+                setFormData(newFormData);
               } else {
-                // Update the time in formData
-                setFormData({ ...formData, time: newTime });
+                // Update the time at the form level
+                setFormData({ ...formData, time: newDate });
               }
             }}
             note="Go live time"

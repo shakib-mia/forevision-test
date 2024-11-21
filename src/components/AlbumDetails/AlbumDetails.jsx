@@ -21,6 +21,7 @@ const AlbumDetails = () => {
   const [filmBanner, setFilmBanner] = useState({});
   const [showRecordLabelForm, setShowRecordLabelForm] = useState(false);
   const location = useLocation();
+  console.log({ recordLabels });
 
   const handleDetailSubmit = () => {
     // formData;
@@ -221,7 +222,13 @@ const AlbumDetails = () => {
             value={formData.albumArt}
             onChange={handleArtFileChange}
             required={true}
-            placeholder={file?.name || "Album Art"}
+            placeholder={
+              file?.name ||
+              formData.artWork?.split("-")[
+                formData.artWork?.split("-").length - 1
+              ] ||
+              "Album Art"
+            }
             accept={".jpg"}
             label={" "}
             note={

@@ -53,10 +53,10 @@ const Sidebar = () => {
 
   const logicalNavItems = userData.yearlyPlanEndDate
     ? navItem.filter(
-        ({ text }) => text !== "Plans" || text !== "Yearly Plan Request"
+        ({ text }) => text !== "Plans" && text !== "Yearly Plan Request"
       )
     : navItem.filter(({ text }) => text !== "Song Upload");
-  // console.log(userData);
+  // console.log(logicalNavItems);
 
   return (
     <aside

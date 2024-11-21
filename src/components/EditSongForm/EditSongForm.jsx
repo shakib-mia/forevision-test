@@ -135,7 +135,10 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
                 <label>{camelCaseToNormalText(label)}</label>
                 <InputField
                   disabled={
-                    label === "UPC" || label === "ISRC" || label === "Label"
+                    label === "UPC" ||
+                    label === "ISRC" ||
+                    label === "isrc" ||
+                    label === "Label"
                   }
                   value={value}
                   onChange={(e) => {
