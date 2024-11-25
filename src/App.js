@@ -209,7 +209,7 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-white w-screen h-screen">
+    <>
       <ScrollToTop />
       {/* <Construction /> */}
       {country === "PK" ? (
@@ -243,7 +243,7 @@ function App() {
             location.pathname.includes("edit") || <Footer />}
         </>
       )}
-    </div>
+    </>
   );
 }
 

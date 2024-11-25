@@ -93,7 +93,7 @@ const Uploads = () => {
 
   return (
     <div
-      className={`bg-grey-light p-4 rounded-2xl flex flex-col justify-between !h-[590px] text-grey-dark ${
+      className={`bg-grey-light p-4 rounded-2xl flex flex-col justify-between !h-[688px] text-grey-dark ${
         location.pathname === "/all-songs" && "pb-0"
       }`}
       id="song-list"

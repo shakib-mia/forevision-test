@@ -482,14 +482,16 @@ const Agreement = ({ handleClose, formData }) => {
               {location.search
                 ?.split("?")[1]
                 ?.toLowerCase()
-                ?.includes("forevision-social")
+                ?.includes("forevision-social") ||
+              location.pathname?.includes("album-upload")
                 ? 80
                 : 90}
               % (Audio),{" "}
               {location.search
                 ?.split("?")[1]
                 ?.toLowerCase()
-                ?.includes("forevision-social")
+                ?.includes("forevision-social") ||
+              location.pathname?.includes("album-upload")
                 ? 80
                 : 85}
               % (YouTube) of the total revenues that First Part receives from

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="flex pl-2 px-1 py-1 lg:pr-[60px] lg:py-[12px] items-center justify-between fixed top-0 w-full bg-[#000] z-[9999] shadow-lg">
+    <nav className="flex pl-2 px-1 py-1 lg:pr-[60px] lg:py-[12px] items-center justify-between fixed top-0 w-full bg-[#000] z-[99999] shadow-lg">
       <a
         className="inline-block w-7 lg:w-2/12"
         href={"https://forevisiondigital.com/"}

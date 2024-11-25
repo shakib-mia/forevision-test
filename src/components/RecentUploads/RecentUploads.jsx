@@ -35,7 +35,7 @@ const RecentUploads = () => {
   // console.log(songs);
 
   return (
-    <div className="w-full bg-grey-light rounded-2xl p-4 pb-0 text-grey-dark relative h-[688px] overflow-auto">
+    <div className="w-full bg-grey-light rounded-2xl p-2 lg:p-4 pb-0 text-grey-dark relative h-[688px] overflow-auto">
       <div className="sticky top-0 left-0 bg-grey-light">
         <h5 className="text-heading-5-bold 2xl:text-heading-4-bold text-grey-dark mb-3">
           Recent Uploads

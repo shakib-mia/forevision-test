@@ -29,7 +29,7 @@ import SongUploadForm from "./components/SongUploadForm/SongUploadForm";
 import { GoGraph } from "react-icons/go";
 import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 import PaymentSuccess from "./pages/PaymentSuccess/PaymentSuccess";
-import { BsGraphUpArrow, BsUpload } from "react-icons/bs";
+import { BsFileMusicFill, BsGraphUpArrow, BsUpload } from "react-icons/bs";
 import AlbumUpload from "./pages/AlbumUpload/AlbumUpload";
 import Settings from "./pages/Settings/Settings";
 import { SlCloudUpload } from "react-icons/sl";
@@ -44,6 +44,8 @@ import Analytics from "./components/Analytics/Analytics";
 import BulkUpload from "./pages/BulkUpload/BulkUpload";
 import SocialLinks from "./pages/SocialLinks/SocialLinks";
 import { FaCrown } from "react-icons/fa6";
+import { TbDeviceMobileHeart } from "react-icons/tb";
+import CrbtCodes from "./pages/CrbtCodes/CrbtCodes";
 
 // export const backendUrl = "http://localhost:5100/";
 export const backendUrl = "https://server.forevisiondigital.in/";
@@ -111,6 +113,12 @@ export const navItem = [
     icon: <LuUserCheck2 className="text-heading-6 text-center" />,
     text: "KYC",
     path: "/kyc",
+  },
+
+  {
+    icon: <BsFileMusicFill className="text-heading-6 text-center" />,
+    text: "CRBT Codes",
+    path: "/crbt-codes",
   },
 ];
 
@@ -456,5 +464,9 @@ export const routes = [
   {
     path: "/kyc",
     page: <KYC />,
+  },
+  {
+    path: "/crbt-codes",
+    page: <CrbtCodes />,
   },
 ];

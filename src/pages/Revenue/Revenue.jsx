@@ -467,10 +467,10 @@ const Revenue = () => {
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
-        className="bg-[size:100%] bg-no-repeat lg:!pt-6 xl:p-4 xl:!pt-7 xl:pl-7 mb-6 xl:mb-0"
+        className="bg-[size:100%] bg-no-repeat lg:!pt-6 xl:p-4 xl:!pt-7 xl:pl-7 mb-6 xl:mb-4"
         style={{ backgroundImage: `url(${background})` }}
       >
-        <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] pt-7 pb-7 rounded-[20px]">
+        <div className="h-full w-full bg-white 2xl:bg-grey-dark px-2 2xl:px-[60px] pt-7 pb-5 rounded-[20px]">
           <div className="flex flex-col 2xl:flex-row gap-3 items-center 2xl:items-end">
             <div className="w-full 2xl:w-3/4">
               <h4 className="text-heading-4-bold text-grey-dark 2xl:text-white">
@@ -578,13 +578,13 @@ const Revenue = () => {
             (filtered.length ? (
               <div className="relative">
                 <FaChevronLeft
-                  className="bg-transparent stroke-transparent text-heading-4 fixed left-[143px] top-[75vh] cursor-pointer bottom-0 z-[99] text-white hidden xl:block"
+                  className="bg-transparent stroke-transparent text-heading-4 absolute -left-[50px] top-[75vh] cursor-pointer bottom-0 z-[99] text-white hidden xl:block"
                   onClick={() =>
                     document.getElementsByClassName("owl-prev")[0].click()
                   }
                 />
                 <FaChevronRight
-                  className="bg-transparent stroke-transparent text-heading-4 fixed right-5 top-[75vh] cursor-pointer bottom-0 z-[99] text-white hidden xl:block"
+                  className="bg-transparent stroke-transparent text-heading-4 absolute -right-5 top-[75vh] cursor-pointer bottom-0 z-[99] text-white hidden xl:block"
                   onClick={() =>
                     document.getElementsByClassName("owl-next")[0].click()
                   }
