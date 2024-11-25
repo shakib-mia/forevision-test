@@ -9,7 +9,13 @@ const CrbtList = () => {
   const [openAccordion, setOpenAccordion] = useState(null);
 
   const toggleAccordion = (id) => {
-    setOpenAccordion(openAccordion === id ? null : id);
+    if (openAccordion === id) {
+      // Prevent all items from closing, keep the first one open
+      const firstId = crbts[0]?._id;
+      setOpenAccordion(firstId);
+    } else {
+      setOpenAccordion(id);
+    }
   };
 
   useEffect(() => {
@@ -19,8 +25,14 @@ const CrbtList = () => {
           token,
         },
       })
-      .then(({ data }) => setCrbts(data));
-  }, []);
+      .then(({ data }) => {
+        setCrbts(data);
+        // Open the first item by default
+        if (data.length > 0) {
+          setOpenAccordion(data[0]._id);
+        }
+      });
+  }, [token]);
 
   return (
     <div className="container mx-auto p-4">
@@ -31,34 +43,24 @@ const CrbtList = () => {
             <th className="border border-gray-300 px-4 py-2 text-left">ISRC</th>
           </tr>
         </thead>
-        <tbody className="divide-y">
-          {crbts.map((song, index) => (
-            <React.Fragment key={song._id}>
-              {/* Table Row */}
-              <tr
-                className="hover:bg-gray-50 cursor-pointer"
-                onClick={() => toggleAccordion(song._id)}
-              >
-                <td className="px-4 py-2">{song.Song}</td>
-                <td className="px-4 py-2">{song.ISRC}</td>
-                {/* <td className="px-4 py-2">
-                  <button
-                    onClick={() => toggleAccordion(song._id)}
-                    className="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded text-sm"
-                  >
-                    {openAccordion === song._id
-                      ? "Hide Details"
-                      : "Show Details"}
-                  </button>
-                </td> */}
-              </tr>
+        {crbts.length > 0 ? (
+          <tbody className="divide-y">
+            {crbts.map((song) => (
+              <React.Fragment key={song._id}>
+                {/* Table Row */}
+                <tr
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={() => toggleAccordion(song._id)}
+                >
+                  <td className="px-4 py-2">{song.Song}</td>
+                  <td className="px-4 py-2">{song.ISRC}</td>
+                </tr>
 
-              {/* Accordion Row */}
-              {
+                {/* Accordion Row */}
                 <tr>
                   <td colSpan="5" className="px-4 bg-gray-50">
                     <div
-                      className={`transition-all duration-700 overflow-hidden ${
+                      className={`transition-all ease-in-out duration-700 overflow-hidden ${
                         openAccordion === song._id ? "h-[250px] py-4" : "h-0"
                       }`}
                     >
@@ -81,10 +83,12 @@ const CrbtList = () => {
                     </div>
                   </td>
                 </tr>
-              }
-            </React.Fragment>
-          ))}
-        </tbody>
+              </React.Fragment>
+            ))}
+          </tbody>
+        ) : (
+          <p className="py-2 text-center w-[200%]">Loading...</p>
+        )}
       </table>
     </div>
   );
