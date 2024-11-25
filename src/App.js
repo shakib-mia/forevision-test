@@ -240,7 +240,8 @@ function App() {
             </PlanContext.Provider>
           </ProfileContext.Provider>
           {location.pathname.includes("upload") ||
-            location.pathname.includes("edit") || <Footer />}
+            location.pathname.includes("edit") ||
+            location.pathname.includes("login") || <Footer />}
         </>
       )}
     </>
