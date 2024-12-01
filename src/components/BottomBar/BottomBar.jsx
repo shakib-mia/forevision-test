@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaWpforms, FaCrown, FaHome, FaMoneyBillWave } from "react-icons/fa"; // Icon for "Revenue"
-import { BsUpload } from "react-icons/bs";
+import { BsFileMusicFill, BsUpload } from "react-icons/bs";
 import { GoTag } from "react-icons/go"; // Icon for "Plans"
 import { LiaItunesNote } from "react-icons/lia";
 import { LuUserCheck2 } from "react-icons/lu";
@@ -75,6 +75,13 @@ const BottomBar = () => {
       icon: <LuUserCheck2 className="text-heading-6 text-center" />,
       text: "KYC",
       path: "/kyc",
+    },
+    {
+      icon: (
+        <BsFileMusicFill className="text-heading-6 !text-black text-center" />
+      ),
+      text: "CRBT Codes",
+      path: "/crbt-codes",
     },
     {
       icon: <MdLogout className="text-2xl text-black" />,

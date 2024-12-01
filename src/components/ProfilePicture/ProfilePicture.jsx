@@ -68,7 +68,7 @@ const ProfilePicture = ({
   };
 
   return (
-    <div className="relative w-[231px] aspect-square mx-auto">
+    <div className="relative w-7 lg:w-[231px] aspect-square mx-auto">
       <div className="border-4 lg:border-[10px] border-white rounded-full aspect-square overflow-hidden flex items-center justify-center">
         {imageUrl ? (
           <img

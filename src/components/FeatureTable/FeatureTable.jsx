@@ -128,7 +128,7 @@ const plans = [
 const FeatureTable = () => {
   return (
     <>
-      <h2 className="text-heading-2-bold text-center text-grey-dark mt-3 mb-4">
+      <h2 className="text-heading-4-bold lg:text-heading-2-bold text-center text-grey-dark mt-3 mb-4">
         Compare Plans
       </h2>
       <div className="w-[94%] lg:w-5/6 mx-auto shadow-xl">

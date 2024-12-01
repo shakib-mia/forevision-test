@@ -65,20 +65,30 @@ function App() {
             navigate("/login");
           }
         });
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token && location.pathname !== "/login") {
+      const config = {
+        headers: {
+          token,
+        },
+      };
       axios
         .get(backendUrl + "record-labels", config)
-        .then(({ data }) => setRecordLabels(data))
-        .catch((err) => {
-          // console.log(err.response);
-          if (err.response.status === 401) {
-            setToken("");
-            sessionStorage.removeItem("token");
-            toast.error("Token has expired", {
-              position: "bottom-center",
-            });
-            navigate("/login");
-          }
-        });
+        .then(({ data }) => setRecordLabels(data));
+      // .catch((err) => {
+      //   // console.log(err.response);
+      //   if (err.response.status === 401) {
+      //     setToken("");
+      //     sessionStorage.removeItem("token");
+      //     // toast.error("Token has expired", {
+      //     //   position: "bottom-center",
+      //     // });
+      //     navigate("/login");
+      //   }
+      // });
     }
   }, [token]);
 

@@ -62,10 +62,10 @@ const InputField = (props) => {
         event.preventDefault();
       };
       // Add non-passive event listener to the native input element
-      input.addEventListener("wheel", preventScrollChange, { passive: false });
+      input?.addEventListener("wheel", preventScrollChange, { passive: false });
       // Clean up: Remove event listener when component unmounts or changes
       return () => {
-        input.removeEventListener("wheel", preventScrollChange, {
+        input?.removeEventListener("wheel", preventScrollChange, {
           passive: false,
         });
       };
@@ -105,7 +105,9 @@ const InputField = (props) => {
                   required={required}
                   name={name}
                   onChange={onChange}
-                  className={`border-[1px] border-surface-white-line text-[12px] resize-none bg-surface-white-surface-1 focus:bg-surface-white w-full px-[16px] py-[12px] focus:outline-interactive-light-focus rounded-[4px] placeholder:text-black-secondary text-paragraph-2 input-field ${fieldClassName}`}
+                  className={`border-[1px] border-surface-white-line text-[12px] resize-none bg-surface-white-surface-1 focus:bg-surface-white w-full px-[16px] py-[12px] focus:outline-interactive-light-focus rounded-[4px] placeholder:text-black-secondary text-paragraph-2 input-field ${fieldClassName} ${
+                    dangerNote && "border border-interactive-light-destructive"
+                  }`}
                   id={id}
                   rows={6}
                   placeholder={placeholder}
@@ -237,8 +239,12 @@ const InputField = (props) => {
                       name={name}
                       disabled={disabled}
                       pattern={pattern}
-                      className={`placeholder:text-black-secondary disabled:bg-interactive-light-disabled disabled:border-interactive-light-disabled disabled:cursor-not-allowed focus:outline-none rounded-[4px] text-paragraph-2 bg-transparent file:cursor-pointer file:bg-primary file:border-[1px] border-[1px] border-surface-white-line focus:border-interactive-light-focus file:border-primary file:hover:bg-transparent file:hover:text-primary file:text-white file:px-[44px] file:py-[12px] file:transition file:duration-[0.2s] input-field focus:bg-surface-white ${
+                      className={`placeholder:text-black-secondary disabled:bg-interactive-light-disabled disabled:border-interactive-light-disabled disabled:cursor-not-allowed focus:outline-none rounded-[4px] text-paragraph-2 bg-transparent file:cursor-pointer file:bg-primary file:border-[1px] border-[1px] file:border-primary file:hover:bg-transparent file:hover:text-primary file:text-white file:px-[44px] file:py-[12px] file:transition file:duration-[0.2s] input-field focus:bg-surface-white ${
                         type !== "file" ? "px-2 py-[12px]" : "mx-2 my-[23px]"
+                      } ${
+                        dangerNote
+                          ? "border border-interactive-light-destructive"
+                          : "border-surface-white-line focus:border-interactive-light-focus"
                       } file:rounded-[3px] file:mr-3 w-full`}
                       id={id}
                       placeholder={placeholder}
@@ -293,7 +299,7 @@ const InputField = (props) => {
             className={`${
               (!checked || !itemChecked) &&
               "border-[1px]  border-surface-white-line text-[12px]"
-            } rounded-[4px] w-[16px] h-[16px]`}
+            } rounded-[4px] w-[24px] lg:w-[16px] aspect-square`}
           >
             {!(checked || itemChecked) || <img src={check} alt="checkbox" />}
           </div>

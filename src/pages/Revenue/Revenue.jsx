@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import notFound from "../../assets/images/not-found.png";
 // import rupee from "../../assets/icons/rupee.svg"
 // import { useNavigate } from 'react-router-dom';
-import { backendUrl } from "../../constants";
+import { backendUrl, config } from "../../constants";
 import RevenueDetails from "../../components/RevenueDetails/RevenueDetails";
 import { useNavigate } from "react-router-dom";
 import OwlCarousel from "react-owl-carousel";
@@ -79,33 +79,39 @@ const Revenue = () => {
     const final_revenue = {};
     const final_after_tds = {};
     const total_lifetime_views = {};
+    const revenue_after_split = {}; // New field to track revenue after split
 
     songs?.forEach((music) => {
-      const { isrc } = music;
+      const { isrc, splitPercentage = 100 } = music; // Assuming `splitPercentage` is provided in `music`
+
+      // Calculate grand total
       if (grand_total.hasOwnProperty(isrc)) {
-        // console.log(music);
         grand_total[isrc] += parseFloat(music["final revenue"]);
       } else {
         grand_total[isrc] = parseFloat(music["final revenue"]);
       }
 
-      // Calculate music_after_tds_revenue total
-      if (final_revenue.hasOwnProperty(isrc)) {
-        final_after_tds[isrc] = parseFloat(final_after_tds[isrc])
-          ? parseFloat(final_after_tds[isrc]) +
-            parseFloat(music["after tds revenue"])
-          : 0 + parseFloat(music["after tds revenue"]);
-        total_lifetime_views[isrc] = parseFloat(total_lifetime_views[isrc])
-          ? parseFloat(total_lifetime_views[isrc]) + parseFloat(music["total"])
-          : 0 + parseFloat(music["total"]);
+      // Calculate after TDS revenue total
+      if (final_after_tds.hasOwnProperty(isrc)) {
+        final_after_tds[isrc] += parseFloat(music["after tds revenue"]);
       } else {
-        final_after_tds[isrc] = parseFloat(final_after_tds[isrc])
-          ? parseFloat(final_after_tds[isrc]) +
-            parseFloat(music["after tds revenue"])
-          : 0 + parseFloat(music["after tds revenue"]);
-        total_lifetime_views[isrc] = parseFloat(total_lifetime_views[isrc])
-          ? parseFloat(total_lifetime_views[isrc]) + parseFloat(music["total"])
-          : 0 + parseFloat(music["total"]);
+        final_after_tds[isrc] = parseFloat(music["after tds revenue"]);
+      }
+
+      // Calculate total lifetime views
+      if (total_lifetime_views.hasOwnProperty(isrc)) {
+        total_lifetime_views[isrc] += parseFloat(music["total"]);
+      } else {
+        total_lifetime_views[isrc] = parseFloat(music["total"]);
+      }
+
+      // Calculate revenue after split
+      const revenueSplit =
+        (parseFloat(music["final revenue"]) * splitPercentage) / 100;
+      if (revenue_after_split.hasOwnProperty(isrc)) {
+        revenue_after_split[isrc] += revenueSplit;
+      } else {
+        revenue_after_split[isrc] = revenueSplit;
       }
     });
 
@@ -114,14 +120,14 @@ const Revenue = () => {
       ...songs.find((item) => item.isrc === isrc),
       "Total Revenue Against ISRC": grand_total[isrc],
       "Total Views Against ISRC": total_lifetime_views[isrc],
+      "Revenue After Split": revenue_after_split[isrc], // Include in aggregated data
     }));
-
-    // console.log(grand_total);
 
     const aggregatedRevenueTotal = Object.keys(final_revenue).map((isrc) => ({
       isrc,
       ...songs.find((item) => item.isrc === isrc),
       "after tds revenue": final_revenue[isrc],
+      "Revenue After Split": revenue_after_split[isrc], // Optionally include here
     }));
 
     return {
@@ -129,8 +135,10 @@ const Revenue = () => {
       aggregatedRevenueTotal,
       final_after_tds,
       total_lifetime_views,
+      revenue_after_split, // Add this to the returned data
     };
   };
+
   // Example usage
   const {
     aggregatedMusicData,
@@ -153,9 +161,12 @@ const Revenue = () => {
       const promises = [];
 
       for (const [isrcIndex, item] of isrcs.entries()) {
+        const config = {
+          headers: { token },
+        };
         // Create a promise for each axios.get call
         const promise = axios
-          .get(`https://api.forevisiondigital.in/user-revenue/${item}`)
+          .get(backendUrl + `user-revenue/${item}`, config)
           .then(({ data }) => {
             if (data) {
               data.revenues.forEach((song, index) => {
@@ -312,6 +323,7 @@ const Revenue = () => {
     "total",
     "after tds revenue",
     "Total Revenue Against ISRC",
+    "Revenue After Split",
   ];
 
   const options2 = [
@@ -324,6 +336,7 @@ const Revenue = () => {
     "total",
     "after tds revenue",
     "Total Revenue Against ISRC",
+    "Revenue After Split",
   ];
 
   const labels = [
@@ -336,6 +349,7 @@ const Revenue = () => {
     "View",
     "Revenue",
     "Revenue After ForeVision Deduction",
+    "Revenue After Split",
   ];
 
   const labels2 = [
@@ -632,7 +646,7 @@ const Revenue = () => {
                       </div>
                     </div>
                     <div className="mt-3">
-                      <ul className="grid-cols-9 gap-3 sticky top-0 mb-2 hidden xl:grid">
+                      <ul className="grid-cols-10 gap-3 sticky top-0 mb-2 hidden xl:grid">
                         {labels.map((item, key) => (
                           <li
                             key={"label-" + key}
@@ -666,7 +680,7 @@ const Revenue = () => {
                         )
                         .map((song, key) => (
                           <div key={key}>
-                            <ul className="hidden xl:grid grid-cols-9 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
+                            <ul className="hidden xl:grid grid-cols-10 gap-3 text-grey-dark py-1 hover:bg-white hover:shadow-md rounded-md mb-1">
                               {/* list item */}
                               {options.map((item, key) => {
                                 return (

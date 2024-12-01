@@ -247,7 +247,7 @@ const DynamicSongPlans = () => {
       )}
 
       {checked ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 lg:mt-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 lg:mt-5 gap-4">
           <aside className="px-2 lg:pl-7 text-grey-dark">
             <h2 className="text-heading-5-bold lg:text-heading-2-bold">
               Album for Everyone

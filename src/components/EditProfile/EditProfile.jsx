@@ -246,44 +246,51 @@ const EditProfile = ({ handleClose }) => {
       handleClose={handleClose}
       whiteContainerClass="h-3/4 overflow-y-auto overflow-x-hidden relative lg:!w-1/2 !mx-auto"
     >
-      <div className="relative h-[12rem]">
-        <img
-          src={formData.cover_photo || cover}
-          className="rounded-t-lg w-full h-full object-cover"
-          alt=""
-        />
-
-        <p className="text-right mt-1 text-interactive-light-destructive">
-          Image size should be 1788&times;280
-        </p>
-
-        <label
-          // htmlFor=""
-          className="absolute bottom-1 right-1 cursor-pointer bg-white p-1 rounded-md group overflow-hidden transition"
-        >
-          <div className="relative flex items-center gap-1">
-            <TbCameraUp className="text-heading-6" />
-            <span className="absolute group-hover:static whitespace-nowrap left-4 transition">
-              Upload Cover Photo
-            </span>
-          </div>
-
-          <input
-            type="file"
-            onChange={handleCoverPhotoUpload}
-            className="hidden"
+      <div className="relative">
+        {/* Cover Photo */}
+        <div className="relative h-7 lg:h-[12rem]">
+          <img
+            src={formData.cover_photo || cover}
+            className="rounded-t-lg w-full h-full object-cover"
+            alt=""
           />
-        </label>
+
+          <p className="w-7/12 ml-auto lg:w-full text-right mt-1 text-interactive-light-destructive">
+            Image size should be 1788&times;280
+          </p>
+
+          <label
+            // htmlFor=""
+            className="absolute bottom-1 right-1 cursor-pointer bg-white p-1 rounded-md group overflow-hidden transition"
+          >
+            <div className="relative flex items-center gap-1">
+              <TbCameraUp className="text-heading-6" />
+              <span className="absolute group-hover:static whitespace-nowrap left-4 transition">
+                Upload Cover Photo
+              </span>
+            </div>
+
+            <input
+              type="file"
+              onChange={handleCoverPhotoUpload}
+              className="hidden"
+            />
+          </label>
+        </div>
+        {/* Profile Picture */}
+        <div className="absolute -bottom-4 left-2 lg:bottom-0 lg:top-5 lg:left-2">
+          <ProfilePicture
+            imageUrl={formData.display_image}
+            profileData={formData}
+            editable={true}
+            setProfileData={setFormData}
+          />
+        </div>
       </div>
-      <div className="absolute top-7 left-5">
-        <ProfilePicture
-          imageUrl={formData.display_image}
-          profileData={formData}
-          editable={true}
-          setProfileData={setFormData}
-        />
-      </div>
-      <div className="flex flex-col lg:flex-row flex-wrap mt-6" id="form">
+      <div
+        className="flex flex-col lg:flex-row flex-wrap mt-5 lg:mt-6"
+        id="form"
+      >
         {fields.map((props, id) =>
           (id + 1) % 3 === 0 ? (
             <>
@@ -300,7 +307,7 @@ const EditProfile = ({ handleClose }) => {
               containerId={id}
               key={id}
               containerClassName={`mt-3 w-full lg:w-1/2 ${
-                (id - 1) % 3 === 0 ? "pl-1" : "pr-1"
+                (id - 1) % 3 === 0 ? "lg:pl-1" : "lg:pr-1"
               }`}
               // fieldClassName="mr-2"
             />

@@ -35,7 +35,7 @@ const CrbtList = () => {
   }, [token]);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="lg:container mx-auto p-4 px-0 lg:px-4">
       <table className="table-auto w-full border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
@@ -87,7 +87,7 @@ const CrbtList = () => {
             ))}
           </tbody>
         ) : (
-          <p className="py-2 text-center w-[200%]">Loading...</p>
+          <p className="py-2 text-center lg:w-[200%]">Loading...</p>
         )}
       </table>
     </div>

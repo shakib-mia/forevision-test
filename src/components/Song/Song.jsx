@@ -213,43 +213,49 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
       </div>
 
       {/* Accordion for mobile view */}
-      {(isFirst || isAccordionOpen) && openSongId === song._id && (
-        <div className="lg:hidden flex justify-end gap-2 my-2">
-          <button
-            className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <AiFillLike className="text-heading-6 text-white" />
-          </button>
-          <button
-            className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <AiFillDislike className="text-heading-6 text-white" />
-          </button>
-          <button
-            className="cursor-pointer hover:opacity-80 transition-opacity z-20"
-            onClick={(e) => {
-              e.stopPropagation();
-              setEditId(_id);
-            }}
-          >
-            <RiEditBoxFill className="text-heading-6 text-white" />
-          </button>
-          <button
-            disabled={
-              !(apple || amazon || spotify || gaana || wynk || jiosaavn)
-            }
-            className="cursor-pointer hover:opacity-80 transition-opacity z-20 disabled:opacity-25 disabled:cursor-not-allowed"
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/share/${userData._id}/${_id}`);
-            }}
-          >
-            <FaShareNodes className="text-heading-6 text-white" />
-          </button>
-        </div>
-      )}
+      {/* {(isFirst || isAccordionOpen) && openSongId === song._id && ( */}
+      <div
+        className="lg:hidden flex justify-end gap-2 overflow-hidden transition-[height]"
+        style={{
+          height:
+            (isFirst || isAccordionOpen) && openSongId === song._id
+              ? "21.31px"
+              : "0",
+        }}
+      >
+        <button
+          className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <AiFillLike className="text-heading-6 text-white" />
+        </button>
+        <button
+          className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <AiFillDislike className="text-heading-6 text-white" />
+        </button>
+        <button
+          className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+          onClick={(e) => {
+            e.stopPropagation();
+            setEditId(_id);
+          }}
+        >
+          <RiEditBoxFill className="text-heading-6 text-white" />
+        </button>
+        <button
+          disabled={!(apple || amazon || spotify || gaana || wynk || jiosaavn)}
+          className="cursor-pointer hover:opacity-80 transition-opacity z-20 disabled:opacity-25 disabled:cursor-not-allowed"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/share/${userData._id}/${_id}`);
+          }}
+        >
+          <FaShareNodes className="text-heading-6 text-white" />
+        </button>
+      </div>
+      {/* )} */}
 
       {editId && <EditSong setEditId={setEditId} songData={song} />}
     </div>

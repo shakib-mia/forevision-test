@@ -5,7 +5,7 @@ import YearlyPlanForm from "../../components/YearlyPlanForm/YearlyPlanForm";
 const YearlyPlan = () => {
   return (
     <div className="pb-4">
-      <div className="flex flex-col xl:flex-row gap-3 xl:gap-2 w-5/6 lg:w-3/4 shadow-xl mx-auto my-6 rounded-xl overflow-hidden bg-interactive-light">
+      <div className="flex flex-col xl:flex-row gap-3 xl:gap-2 w-5/6 lg:w-3/4 shadow-xl mx-auto mb-3 lg:mb-6 my-6 rounded-xl overflow-hidden bg-interactive-light">
         {/* <Form
         on
         heading="Yearly Plans"

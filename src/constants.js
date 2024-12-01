@@ -43,9 +43,10 @@ import { IoMdAnalytics, IoMdHome } from "react-icons/io";
 import Analytics from "./components/Analytics/Analytics";
 import BulkUpload from "./pages/BulkUpload/BulkUpload";
 import SocialLinks from "./pages/SocialLinks/SocialLinks";
-import { FaCrown } from "react-icons/fa6";
+import { FaArrowsSplitUpAndLeft, FaCrown } from "react-icons/fa6";
 import { TbDeviceMobileHeart } from "react-icons/tb";
 import CrbtCodes from "./pages/CrbtCodes/CrbtCodes";
+import RoyaltySplit from "./pages/RoyaltySplit/RoyaltySplit";
 
 // export const backendUrl = "http://localhost:5100/";
 export const backendUrl = "https://server.forevisiondigital.in/";
@@ -119,6 +120,12 @@ export const navItem = [
     icon: <BsFileMusicFill className="text-heading-6 text-center" />,
     text: "CRBT Codes",
     path: "/crbt-codes",
+  },
+
+  {
+    icon: <FaArrowsSplitUpAndLeft className="text-heading-6 text-center" />,
+    text: "Royalty Split",
+    path: "/royalty-split",
   },
 ];
 
@@ -468,5 +475,9 @@ export const routes = [
   {
     path: "/crbt-codes",
     page: <CrbtCodes />,
+  },
+  {
+    path: "/royalty-split",
+    page: <RoyaltySplit />,
   },
 ];

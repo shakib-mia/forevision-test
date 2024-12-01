@@ -96,8 +96,8 @@ const Profile = () => {
         <div className="w-full h-[12rem] lg:h-full">
           {location.pathname === "/profile" && (
             <div className="bg-gradient-to-bl from-black-secondary to-50% to-transparent absolute top-0 left-0 w-full h-full">
-              <div className="absolute top-2 right-2">
-                <div className="flex gap-2 items-center p-1">
+              <div className="absolute top-1 right-1 lg:top-2 lg:right-2">
+                <div className="flex gap-2 items-center lg:p-1">
                   {/* <img
                   className="cursor-pointer"
                   src={notification}
