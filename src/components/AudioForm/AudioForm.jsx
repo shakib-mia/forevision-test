@@ -1368,12 +1368,12 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 ) {
                   formData.songs[id].liveDate = newDate;
                   const newFormData = { ...formData };
-                  console.log(formData);
                   setFormData(newFormData);
                 } else {
                   // Update the releaseDate at the form level
-                  setFormData({ ...formData, releaseDate: newDate });
+                  setFormData({ ...formData, liveDate: newDate });
                 }
+                console.log(formData);
               }}
               note="Go Live Date"
             />
