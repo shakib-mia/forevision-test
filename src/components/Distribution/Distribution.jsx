@@ -110,7 +110,6 @@ const Distribution = () => {
     //   });
 
     // alert(isNaN(price));
-
     axios
       .post(backendUrl + "recent-uploads", formData, {
         headers: {
@@ -122,7 +121,7 @@ const Distribution = () => {
           // setCount(count + 1);
           // setScreen("preview");
           // : setCollapsed(true);
-          if (location.search.includes("foreVision-social") || isNaN(price)) {
+          if (location.search.includes("social") || isNaN(price)) {
             navigate("/");
             // alert("/");
           } else {
@@ -309,7 +308,7 @@ const Distribution = () => {
             </label>
           </div>
 
-          {location.search.includes("foreVision-social") ? (
+          {location.search.includes("social") ? (
             <div className="flex gap-2 justify-center">
               <Button
                 type={"button"}
@@ -331,7 +330,8 @@ const Distribution = () => {
             </div>
           ) : (
             <div className="flex gap-2 justify-center">
-              {userData.yearlyPlanEndDate ? (
+              {userData.yearlyPlanEndDate ||
+              location.pathname.includes("social") ? (
                 <Button
                   type={"button"}
                   onClick={handleSubmit}

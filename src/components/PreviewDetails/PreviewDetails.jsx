@@ -6,6 +6,7 @@ import { ScreenContext } from "../../contexts/ScreenContext";
 import { backendUrl, config } from "../../constants";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const PreviewDetails = ({ albumData }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -13,6 +14,13 @@ const PreviewDetails = ({ albumData }) => {
   const location = useLocation();
   const audioRef = useRef(null);
   const navigate = useNavigate();
+  const { token } = useContext(ProfileContext);
+
+  const config = {
+    headers: {
+      token,
+    },
+  };
 
   const togglePlay = () => {
     if (isPlaying) {
@@ -25,6 +33,7 @@ const PreviewDetails = ({ albumData }) => {
 
   const handleUpdate = () => {
     albumData.update = false;
+    console.log(albumData);
     axios.post(backendUrl + "edit-song", albumData, config).then(({ data }) => {
       if (data.insertedId.length > 0) {
         toast.success("Update Request Submitted");
@@ -249,7 +258,7 @@ const PreviewDetails = ({ albumData }) => {
               <p className="lg:mt-2 text-paragraph-1 text-black-tertiary">
                 {albumData.description}
               </p>
-              {!albumData.songs.length ? (
+              {!(albumData.songs && albumData.songs.length) ? (
                 <div className="mt-1 lg:mt-3 grid grid-cols-2 gap-1 lg:gap-2">
                   <div>
                     <span className="text-subtitle-2 text-black-secondary">
@@ -325,7 +334,7 @@ const PreviewDetails = ({ albumData }) => {
       </div>
 
       <div className="flex justify-center mt-5">
-        {location.pathname.includes("/edit-song") ? (
+        {location.pathname.includes("/edit") ? (
           <Button onClick={handleUpdate}>Confirm</Button>
         ) : (
           <Button onClick={() => setScreen("distribution")}>

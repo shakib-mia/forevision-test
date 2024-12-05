@@ -1,12 +1,14 @@
 import React, { useState, useRef, useContext } from "react";
 import Button from "../Button/Button";
 import { ScreenContext } from "../../contexts/ScreenContext";
+import { useLocation } from "react-router-dom";
 
 const AlbumPreview = ({ albumData }) => {
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const { setScreen } = useContext(ScreenContext);
   const audioRef = useRef(null);
+  const location = useLocation();
   // console.log(albumData);
   const togglePlay = (song) => {
     // song;
@@ -222,9 +224,13 @@ const AlbumPreview = ({ albumData }) => {
       </div>
 
       <div className="flex justify-center mt-5">
-        <Button onClick={() => setScreen("distribution")}>
-          Proceed to Checkout
-        </Button>
+        {location.pathname.includes("edit-album") ? (
+          <Button onClick={() => setScreen("distribution")}>
+            Proceed to Checkout
+          </Button>
+        ) : (
+          <Button onClick={() => setScreen("distribution")}>Confirm</Button>
+        )}
       </div>
     </div>
   );

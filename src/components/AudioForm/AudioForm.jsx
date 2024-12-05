@@ -57,7 +57,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
   const [description, setDescription] = useState("");
   const [songUrl, setSongUrl] = useState("");
   const [subGenreOptions, setSubGenreOptions] = useState([]);
-  // console.log(formData);
+  console.log(formData);
 
   useEffect(() => {
     if (

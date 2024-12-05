@@ -27,7 +27,9 @@ const Albums = () => {
   useEffect(() => {
     axios
       .get(backendUrl + "recent-uploads/album", config)
-      .then(({ data }) => setAlbums(data))
+      .then(({ data }) => {
+        setAlbums(data);
+      })
       .catch((err) => console.error(err));
   }, []);
 

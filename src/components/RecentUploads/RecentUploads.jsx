@@ -16,6 +16,7 @@ const RecentUploads = () => {
   const { userData, token } = useContext(ProfileContext);
 
   const [songs, setSongs] = useState([]);
+
   useEffect(() => {
     // if (location.pathname !== "/all-songs") {
     // const isrcs = userData?.isrc?.split(",");
@@ -32,7 +33,7 @@ const RecentUploads = () => {
     // }
   }, [userData.isrc, update]);
 
-  // console.log(songs);
+  console.log(songs.filter((item) => !item.songs));
 
   return (
     <div className="w-full bg-grey-light rounded-2xl p-2 lg:p-4 pb-0 text-grey-dark relative h-[688px] overflow-auto">
@@ -79,15 +80,17 @@ const RecentUploads = () => {
       >
         {activeTab === "songs" && (
           <div className="flex flex-col gap-2">
-            {songs.map((song, key) => (
-              <RecentUploadsItem
-                songData={song}
-                {...song}
-                key={key}
-                setUpdate={setUpdate}
-                update={update}
-              />
-            ))}
+            {songs
+              .filter((item) => !item.songs)
+              .map((song, key) => (
+                <RecentUploadsItem
+                  songData={song}
+                  {...song}
+                  key={key}
+                  setUpdate={setUpdate}
+                  update={update}
+                />
+              ))}
             {location.pathname === "/" && songs.length > 7 && (
               <div className="sticky bottom-0 left-0 w-full bg-grey-light flex justify-center py-2">
                 <Button onClick={() => navigate("/all-songs")}>
