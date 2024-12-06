@@ -4,6 +4,7 @@ import EditSongForm from "../EditSongForm/EditSongForm";
 import { backendUrl, config } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const EditSong = ({ setEditId, songData }) => {
   const [updatedData, setUpdatedData] = useState(songData);
@@ -22,6 +23,9 @@ const EditSong = ({ setEditId, songData }) => {
       .then(({ data }) => {
         if (data.insertedId.length > 0) {
           setEditId("");
+          toast.success("Edit Request Submitted for Review", {
+            position: "bottom-center",
+          });
         }
       });
   };
@@ -83,6 +87,7 @@ const EditSong = ({ setEditId, songData }) => {
   delete newFormData.parentalAdvisory;
   delete newFormData.songs;
   delete newFormData.S;
+  delete newFormData.splitAvailable;
 
   // console.log(updatedData);
 

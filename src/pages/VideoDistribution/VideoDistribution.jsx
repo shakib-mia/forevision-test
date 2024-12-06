@@ -87,12 +87,7 @@ const VideoDistribution = () => {
         }
       />
 
-      <Form
-        fields={fields}
-        uIdKey="video_user_id"
-        id="video-distribution"
-        // backendUrl="http://localhost:5100/submit-form"
-      />
+      <Form fields={fields} uIdKey="video_user_id" id="video-distribution" />
     </div>
   );
 };

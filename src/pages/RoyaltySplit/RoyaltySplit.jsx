@@ -51,7 +51,7 @@ const RoyaltySplit = () => {
     fetchSongs();
   }, [userData?.isrc, userData?.["user-id"], token, updated]);
 
-  useEffect(() => console.log(adding), [adding]);
+  // useEffect(() => console.log(adding), [adding]);
 
   return (
     <div className="xl:w-10/12 mx-auto mt-5 lg:mt-7 pb-5 lg:pb-7 p-3 shadow-xl rounded-lg text-grey-dark">
@@ -71,31 +71,36 @@ const RoyaltySplit = () => {
 
             <tbody className="border-t divide-y">
               {songs.length > 0 ? (
-                songs.map(({ ISRC, Song, _id, splitAvailable }, key) => (
-                  <tr
-                    key={_id}
-                    className={`divide-x text-center ${
-                      key % 2 ? "bg-grey-light divide-white" : "bg-white"
-                    }`}
-                  >
-                    <td className="p-2">{ISRC}</td>
-                    <td className="p-2">{Song}</td>
-                    <td className="flex justify-center items-center h-full">
-                      <Button
-                        className={"!py-1"}
-                        containerClassName={"mt-[4px]"}
-                        onClick={() => setSplitId(_id)}
-                        disabled={adding === _id || splitAvailable}
-                      >
-                        {splitAvailable ? (
-                          <>Requested</>
-                        ) : (
-                          <>Add{adding === _id ? "ing" : ""} Split</>
-                        )}
-                      </Button>
-                    </td>
-                  </tr>
-                ))
+                songs.map(
+                  (
+                    { ISRC, isrc, songName, Song, _id, splitAvailable },
+                    key
+                  ) => (
+                    <tr
+                      key={_id}
+                      className={`divide-x text-center ${
+                        key % 2 ? "bg-grey-light divide-white" : "bg-white"
+                      }`}
+                    >
+                      <td className="p-2">{ISRC || isrc}</td>
+                      <td className="p-2">{Song || songName}</td>
+                      <td className="flex justify-center items-center h-full">
+                        <Button
+                          className={"!py-1"}
+                          containerClassName={"mt-[4px]"}
+                          onClick={() => setSplitId(_id)}
+                          disabled={adding === _id || splitAvailable}
+                        >
+                          {splitAvailable ? (
+                            <>Requested</>
+                          ) : (
+                            <>Add{adding === _id ? "ing" : ""} Split</>
+                          )}
+                        </Button>
+                      </td>
+                    </tr>
+                  )
+                )
               ) : (
                 <tr>
                   <td></td>

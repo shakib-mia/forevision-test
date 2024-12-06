@@ -66,7 +66,10 @@ const DynamicSongPlans = () => {
     () => (price) => {
       if (!price) return "Free";
 
-      const isIndian = userData.billing_country === "India";
+      const isIndian =
+        userData.billing_country === "India" ||
+        !userData ||
+        !userData.billing_country;
       const currency = isIndian ? "₹" : "$";
       const amount = isIndian
         ? price / 100

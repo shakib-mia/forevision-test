@@ -29,6 +29,8 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
     _id,
   } = song;
 
+  console.log(song);
+
   // Special styling for first item
   const firstItemStyles = isFirst
     ? {
