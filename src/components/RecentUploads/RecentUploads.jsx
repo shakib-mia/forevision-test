@@ -33,7 +33,7 @@ const RecentUploads = () => {
     // }
   }, [userData.isrc, update]);
 
-  console.log(songs.filter((item) => !item.songs));
+  console.log(songs);
 
   return (
     <div className="w-full bg-grey-light rounded-2xl p-2 lg:p-4 pb-0 text-grey-dark relative h-[688px] overflow-auto">

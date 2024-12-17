@@ -199,8 +199,10 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
 
     const audioLength = await getAudioDuration(file);
     // console.log(`Audio length: ${audioLength} seconds`);
+    // console.log();
 
-    // Check if the file length is greater than 60 seconds
+    // Check if the file length is greater than 50 MB
+    // if (file.size / (1024 * 1024) <= 50) {
     if (audioLength > 60) {
       const toastId = toast.loading("Uploading audio...", {
         position: "bottom-center",
@@ -261,10 +263,18 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
       }
     } else {
       Swal.fire({
+        icon: "error",
         title: "Audio must be greater than 60 seconds",
         confirmButtonColor: "#2B52DD",
       });
     }
+    // } else {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Audio file is too large",
+    //     confirmButtonColor: "#2B52DD",
+    //   });
+    // }
 
     // Create a new Audio object to get the duration
     const audio = new Audio(songUrl);
@@ -291,11 +301,11 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
       // console.log(formData);
       formData.emailId = formData.userEmail;
       formData.updated = false;
-      axios
-        .post(backendUrl + "edit-song", formData, config)
-        .then(({ data }) => {
-          console.log(data);
-        });
+      // axios
+      //   .post(backendUrl + "edit-song", formData, config)
+      //   .then(({ data }) => {
+      setScreen("preview");
+      // });
     } else {
       if (
         location.pathname === "/album-upload" ||
@@ -980,7 +990,13 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
               }}
             />
             <SelectOptions
-              value={formData.language}
+              value={
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location.pathname.includes("edit-album")
+                  ? formData.songs[id].language
+                  : formData.language
+              }
               options={languagesInIndia}
               label={"Language"}
               placeholder={"Select..."}

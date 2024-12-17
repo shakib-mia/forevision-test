@@ -134,7 +134,7 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
     }
   }, []);
 
-  // console.log(data);
+  // console.log(formData);
 
   // useEffect(() => {
   //   console.log(screen);

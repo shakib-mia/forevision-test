@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
 import SelectOptions from "../SelectOptions/SelectOptions";
 import axios from "axios";
 import { backendUrl, config } from "../../constants";
 import { camelCaseToNormalText } from "../../utils/camelCaseToNormalText";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const EditSongForm = ({ updatedData, setUpdatedData }) => {
   const [recordLabels, setRecordLabels] = useState([]);
+  const { token } = useContext(ProfileContext);
+
+  const config = {
+    headers: {
+      token,
+    },
+  };
 
   useEffect(() => {
     axios
@@ -87,6 +95,12 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
       });
     }
   }, [updatedSelectedPlatforms, updatedSelectedPlatforms?.length]);
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   console.log(updatedData);
+  // };
 
   return (
     <>
@@ -175,7 +189,7 @@ const EditSongForm = ({ updatedData, setUpdatedData }) => {
       })}
 
       <div className="flex justify-center mt-5">
-        <Button type={"submit"}>Request Edit</Button>
+        <Button type={"submit"} value="Request Edit"></Button>
       </div>
     </>
   );

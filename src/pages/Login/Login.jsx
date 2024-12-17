@@ -138,7 +138,7 @@ const Login = () => {
             setShowMessage(true);
             setIsLoading(false);
             // navigate("/");
-            setTimeout(() => navigate("/"), 10000);
+            setTimeout(() => navigate("/"), 5000);
             setUserData(data.details);
 
             // const config = {

@@ -83,7 +83,7 @@ const Revenue = () => {
 
     songs?.forEach((music) => {
       const { isrc, splitPercentage = 100 } = music; // Assuming `splitPercentage` is provided in `music`
-
+      console.log(splitPercentage);
       // Calculate grand total
       if (grand_total.hasOwnProperty(isrc)) {
         grand_total[isrc] += parseFloat(music["final revenue"]);

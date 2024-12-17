@@ -20,7 +20,7 @@ const Preview = () => {
     }));
   }, [filteredSongs.length]);
 
-  // console.log(formData);
+  console.log();
 
   // const createAlbumTable = (album) => {
   //   const createRow = (label, value) => (

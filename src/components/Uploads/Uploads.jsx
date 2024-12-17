@@ -13,7 +13,7 @@ const Uploads = () => {
   const [songs, setSongs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
-
+  console.log(songs);
   const { userData, token } = useContext(ProfileContext);
 
   useEffect(() => {

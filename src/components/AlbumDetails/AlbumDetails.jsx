@@ -21,7 +21,6 @@ const AlbumDetails = () => {
   const [filmBanner, setFilmBanner] = useState({});
   const [showRecordLabelForm, setShowRecordLabelForm] = useState(false);
   const location = useLocation();
-  console.log({ recordLabels });
 
   const handleDetailSubmit = () => {
     // formData;
@@ -31,10 +30,13 @@ const AlbumDetails = () => {
     } else {
       // setFileError(true)
       // console.log();
-
-      toast.error("File is empty", {
-        position: "bottom-center",
-      });
+      if (!location.pathname.includes("edit")) {
+        toast.error("File is empty", {
+          position: "bottom-center",
+        });
+      } else {
+        setScreen("platform");
+      }
     }
   };
 
@@ -48,11 +50,18 @@ const AlbumDetails = () => {
     if (data) {
       albumArt.append("file", e.target.files[0]);
 
-      axios
-        .post(backendUrl + "upload-art-work", albumArt)
-        .then(({ data }) =>
-          setFormData({ ...formData, artWork: data.artWorkUrl })
-        );
+      axios.post(backendUrl + "upload-art-work", albumArt).then(({ data }) => {
+        if (
+          location.pathname === "/album-upload" ||
+          location.search.split("?")[1] === "yearly-plan" ||
+          location?.pathname.includes("edit-album")
+        ) {
+          formData.artwork = data.artWorkUrl;
+          setFormData({ ...formData });
+        } else {
+          setFormData({ ...formData, artwork: data.artWorkUrl });
+        }
+      });
     } else {
       // toast.error("Image size should be 3000x3000");
       Swal.fire({
@@ -82,6 +91,7 @@ const AlbumDetails = () => {
   };
 
   // alert(location.pathname);
+  console.log(formData);
 
   return (
     <div className="pb-7">
@@ -90,9 +100,18 @@ const AlbumDetails = () => {
           <SelectOptions
             placeholder={"Select..."}
             label={"Content Type"}
-            onChange={(e) =>
-              setFormData({ ...formData, contentType: e.target.value })
-            }
+            onChange={(e) => {
+              if (
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
+              ) {
+                formData.contentType = e.target.value;
+                setFormData({ ...formData });
+              } else {
+                setFormData({ ...formData, contentType: e.target.value });
+              }
+            }}
             name={"contentType"}
             required
             options={["Album", "Film"]}
@@ -110,8 +129,16 @@ const AlbumDetails = () => {
             value={formData.UPC}
             label={" "}
             onChange={(e) => {
-              setFormData({ ...formData, UPC: e.target.value });
-              // formData;
+              if (
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
+              ) {
+                formData.UPC = e.target.value;
+                setFormData({ ...formData });
+              } else {
+                setFormData({ ...formData, UPC: e.target.value });
+              }
             }}
             note={
               "If you have one put it here, if you don't one will be provided"
@@ -130,27 +157,54 @@ const AlbumDetails = () => {
             // accept={"image/*"}
             placeholder={filmBanner?.name || "Film Banner"}
             value={formData.filmBanner}
-            onChange={(e) =>
-              setFormData({ ...formData, filmBanner: e.target.value })
-            }
+            onChange={(e) => {
+              if (
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
+              ) {
+                formData.filmBanner = e.target.value;
+                setFormData({ ...formData });
+              } else {
+                setFormData({ ...formData, filmBanner: e.target.value });
+              }
+            }}
           />
           <InputField
             required
             name={"filmProducer"}
             type={"text"}
             placeholder={"Film Producer"}
-            onChange={(e) =>
-              setFormData({ ...formData, filmProducer: e.target.value })
-            }
+            onChange={(e) => {
+              if (
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
+              ) {
+                formData.filmProducer = e.target.value;
+                setFormData({ ...formData });
+              } else {
+                setFormData({ ...formData, filmProducer: e.target.value });
+              }
+            }}
           />
           <InputField
             required
             name={"actor"}
             type={"text"}
             placeholder={"Actor"}
-            onChange={(e) =>
-              setFormData({ ...formData, actor: e.target.value })
-            }
+            onChange={(e) => {
+              if (
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
+              ) {
+                formData.actor = e.target.value;
+                setFormData({ ...formData });
+              } else {
+                setFormData({ ...formData, actor: e.target.value });
+              }
+            }}
           />
           <InputField
             required
@@ -158,18 +212,36 @@ const AlbumDetails = () => {
             name={"director"}
             type={"text"}
             placeholder={"Director"}
-            onChange={(e) =>
-              setFormData({ ...formData, director: e.target.value })
-            }
+            onChange={(e) => {
+              if (
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
+              ) {
+                formData.director = e.target.value;
+                setFormData({ ...formData });
+              } else {
+                setFormData({ ...formData, director: e.target.value });
+              }
+            }}
           />
           <InputField
             required
             name={"movieReleaseDate"}
             type={"date"}
             label={"Movie Release Date"}
-            onChange={(e) =>
-              setFormData({ ...formData, movieReleaseDate: e.target.value })
-            }
+            onChange={(e) => {
+              if (
+                location.pathname === "/album-upload" ||
+                location.search.split("?")[1] === "yearly-plan" ||
+                location?.pathname.includes("edit-album")
+              ) {
+                formData.movieReleaseDate = e.target.value;
+                setFormData({ ...formData });
+              } else {
+                setFormData({ ...formData, movieReleaseDate: e.target.value });
+              }
+            }}
           />
         </div>
       )}
@@ -187,9 +259,18 @@ const AlbumDetails = () => {
               required={true}
               // labelClassName={"opacity-0"}
               value={formData.albumTitle}
-              onChange={(e) =>
-                setFormData({ ...formData, albumTitle: e.target.value })
-              }
+              onChange={(e) => {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
+                ) {
+                  formData.albumTitle = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({ ...formData, albumTitle: e.target.value });
+                }
+              }}
             />
           </div>
           <div className="w-full lg:w-1/2">
@@ -206,9 +287,18 @@ const AlbumDetails = () => {
                   : ["Album", "Single", "Compilation", "Remix"]
               }
               value={formData.albumType}
-              onChange={(e) =>
-                setFormData({ ...formData, albumType: e.target.value })
-              }
+              onChange={(e) => {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
+                ) {
+                  formData.albumType = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({ ...formData, albumType: e.target.value });
+                }
+              }}
             />
           </div>
           {/* </div> */}
@@ -251,9 +341,18 @@ const AlbumDetails = () => {
               note={
                 "If you don't have any you can use our name or you can create your own"
               }
-              onChange={(e) =>
-                setFormData({ ...formData, recordLabel: e.target.value })
-              }
+              onChange={(e) => {
+                if (
+                  location.pathname === "/album-upload" ||
+                  location.search.split("?")[1] === "yearly-plan" ||
+                  location?.pathname.includes("edit-album")
+                ) {
+                  formData.recordLabel = e.target.value;
+                  setFormData({ ...formData });
+                } else {
+                  setFormData({ ...formData, recordLabel: e.target.value });
+                }
+              }}
               options={recordLabels}
             />
           </div>
@@ -306,9 +405,18 @@ const AlbumDetails = () => {
             "If you don't have any you can use our name or you can create your own"
           }
           value={formData.publisher}
-          onChange={(e) =>
-            setFormData({ ...formData, publisher: e.target.value })
-          }
+          onChange={(e) => {
+            if (
+              location.pathname === "/album-upload" ||
+              location.search.split("?")[1] === "yearly-plan" ||
+              location?.pathname.includes("edit-album")
+            ) {
+              formData.publisher = e.target.value;
+              setFormData({ ...formData });
+            } else {
+              setFormData({ ...formData, publisher: e.target.value });
+            }
+          }}
           name={"publisher"}
           options={recordLabels}
         />

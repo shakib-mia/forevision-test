@@ -68,7 +68,9 @@ const SongListItem = ({
         <div className="flex gap-1 text-heading-6 items-center">
           <RiEditBoxLine
             className="cursor-pointer"
-            onClick={() => setEditId(_id)}
+            onClick={() =>
+              Song ? setEditId(_id) : navigate(`/edit-song/${_id}`)
+            }
             title="Edit"
             data-tooltip-id={"edit" + _id}
             data-tooltip-content={`Edit`}

@@ -7,6 +7,8 @@ import { backendUrl, config } from "../../constants";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import Swal from "sweetalert2";
+import { checkTheDateIsBefore } from "../../utils/checkTheDateIsBefore";
 
 const PreviewDetails = ({ albumData }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -14,7 +16,7 @@ const PreviewDetails = ({ albumData }) => {
   const location = useLocation();
   const audioRef = useRef(null);
   const navigate = useNavigate();
-  const { token } = useContext(ProfileContext);
+  const { token, userData, setToken } = useContext(ProfileContext);
 
   const config = {
     headers: {
@@ -32,14 +34,60 @@ const PreviewDetails = ({ albumData }) => {
   };
 
   const handleUpdate = () => {
-    albumData.update = false;
-    console.log(albumData);
-    axios.post(backendUrl + "edit-song", albumData, config).then(({ data }) => {
-      if (data.insertedId.length > 0) {
-        toast.success("Update Request Submitted");
-        navigate("/");
-      }
-    });
+    albumData.updated = false;
+    albumData.requested = true;
+
+    if (
+      albumData.paymentDate ||
+      parseFloat(albumData.price) === 0 ||
+      !isNaN(parseFloat(checkTheDateIsBefore(userData.yearlyPlanEndDate)))
+    ) {
+      axios
+        .post(backendUrl + "edit-song", albumData, config)
+        .then(({ data }) => {
+          if (data.insertedId.length > 0) {
+            toast.success("Update Request Submitted");
+            navigate("/");
+          }
+        });
+    } else {
+      axios
+        .put(backendUrl + "songs/" + albumData._id, albumData, config)
+        .then(({ data }) => {
+          if (data.acknowledged) {
+            // console.log("object");
+            Swal.fire({
+              title: `Song Updated Successfully`,
+              confirmButtonText: `Let's go to home`,
+              icon: "success",
+              confirmButtonColor: "#22683E",
+              allowOutsideClick: false,
+              allowEscapeKey: false,
+              // text:"You may proceed to next "
+            }).then((res) => res.isConfirmed && navigate("/"));
+            // axios
+            //   .post(backendUrl + "send-song-status", updated)
+            //   .then(({ data }) => {
+            //     // if (data.acknowledged) {
+            //     Swal.close();
+            //     setRefetch((ref) => !ref);
+
+            //     // }
+            //   });
+          }
+        })
+        .catch((err) => {
+          // console.log(err.response);
+          if (err.response.status === 401) {
+            setToken("");
+            sessionStorage.removeItem("token");
+            // toast.error("Token has expired", {
+            //   position: "bottom-center",
+            // });
+            navigate("/login");
+          }
+        });
+    }
   };
 
   const renderArtists = (artists) => (
@@ -113,12 +161,68 @@ const PreviewDetails = ({ albumData }) => {
         </div>
 
         <div className="px-4 pb-2">
-          <ul className="flex flex-col ">
-            {song.artists?.map(({ name, role }) => (
-              <li>
-                {name} - {role}
-              </li>
-            ))}
+          <ul className="flex flex-col">
+            {song.artists?.map((artist, index) => {
+              console.log(artist);
+              const {
+                name,
+                role,
+                appleArtist,
+                facebookUrl,
+                instagramUrl,
+                spotifyUrl,
+              } = artist;
+              return (
+                <li key={index} className="mb-2 flex gap-1 items-center">
+                  <span className="font-bold">{name}</span> - {role}
+                  <div className="flex divide-x">
+                    {appleArtist && (
+                      <a
+                        href={appleArtist}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline px-1"
+                      >
+                        Apple Music
+                      </a>
+                    )}
+                    {facebookUrl && (
+                      <a
+                        href={facebookUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline px-1"
+                      >
+                        Facebook
+                      </a>
+                    )}
+                    {instagramUrl && (
+                      <a
+                        href={instagramUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline px-1"
+                      >
+                        Instagram
+                      </a>
+                    )}
+
+                    {spotifyUrl ? (
+                      <a
+                        href={spotifyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline px-1"
+                      >
+                        Spotify
+                      </a>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
 

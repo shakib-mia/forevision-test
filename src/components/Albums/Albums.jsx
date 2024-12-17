@@ -96,8 +96,9 @@ const Albums = () => {
             {/* Right: Icons and Buttons */}
             <div className="flex items-center gap-2 justify-between w-full lg:w-fit">
               {/* Pay Now Button */}
-              {userData.yearlyPlanEndDate &&
-              checkTheDateIsBefore(userData.yearlyPlanEndDate) ? (
+              {album.payment_id ||
+              (userData.yearlyPlanEndDate &&
+                checkTheDateIsBefore(userData.yearlyPlanEndDate)) ? (
                 <></>
               ) : (
                 <Button

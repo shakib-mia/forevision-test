@@ -9,14 +9,29 @@ import { toast } from "react-toastify";
 const EditSong = ({ setEditId, songData }) => {
   const [updatedData, setUpdatedData] = useState(songData);
   //   const [editId, setEditId] = useState("");
-  //   console.log(updatedData);
+  // console.log(updatedData);
 
-  const { userData } = useContext(ProfileContext);
+  const { userData, token } = useContext(ProfileContext);
+  // alert(token);
 
   const edit = (e) => {
     e.preventDefault();
 
     updatedData.emailId = userData.emailId;
+    updatedData.updated = false;
+    updatedData.requested = true;
+
+    const config = {
+      headers: {
+        token,
+      },
+    };
+
+    if (Object.keys(updatedData).includes("approved")) {
+      delete updatedData.approved;
+    }
+
+    // console.log(updatedData);
 
     axios
       .post(backendUrl + "edit-song", updatedData, config)
@@ -94,9 +109,6 @@ const EditSong = ({ setEditId, songData }) => {
   return (
     <AuthBody
       heading="Edit Song"
-      // altDescription="Already Have an Account?"
-      // altText="Log in"
-      // altLink="/login"
       onSubmit={edit}
       className="backdrop-blur fixed top-0 left-0 z-[99999999999]"
       id="edit-song"
