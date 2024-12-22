@@ -166,7 +166,7 @@ const Revenue = () => {
         };
         // Create a promise for each axios.get call
         const promise = axios
-          .get(backendUrl + `user-revenue/${item}`, config)
+          .get(`https://api.forevisiondigital.in/user-revenue/${item}`, config)
           .then(({ data }) => {
             if (data) {
               data.revenues.forEach((song, index) => {

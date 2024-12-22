@@ -37,6 +37,8 @@ const Uploads = () => {
           config
         );
 
+        console.log(response.data);
+
         setSongs(response.data);
       } catch (error) {
         console.error("Error fetching songs:", error);
