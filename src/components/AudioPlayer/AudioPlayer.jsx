@@ -105,9 +105,9 @@ function AudioPlayer({ src, id }) {
         </div>
       )} */}
       <div className="flex flex-col gap-2">
-        {formData.artWork && (
+        {(formData.artWork || formData.artwork) && (
           <img
-            src={formData.artWork}
+            src={formData.artWork || formData.artwork}
             alt="album-art"
             className="w-full aspect-square mx-auto rounded-xl"
           />

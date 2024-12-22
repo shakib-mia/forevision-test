@@ -1,5 +1,5 @@
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaApple, FaChevronDown, FaMusic } from "react-icons/fa";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -29,8 +29,6 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
     _id,
   } = song;
 
-  console.log(song);
-
   // Special styling for first item
   const firstItemStyles = isFirst
     ? {
@@ -42,7 +40,30 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
   const isAccordionOpen = isFirst
     ? openSongId === "" || openSongId === _id
     : openSongId === _id;
-  // console.log(song);
+
+  function hasLinkWithoutUrlOrArtWork(song) {
+    console.log(song);
+    // Iterate through the song object keys
+    for (const key of Object.keys(song)) {
+      const value = song[key]; // Get the value for each key
+      console.log(`Key: ${key}, Value: ${value}`);
+
+      // Check if the value includes a link and 'songUrl' or 'artWork' is missing
+      if (
+        typeof value === "string" &&
+        value.includes("http") &&
+        (!song.songUrl || !song.artWork)
+      ) {
+        return true; // Found a link without 'songUrl' or 'artWork'
+      }
+    }
+    return false; // No invalid fields found
+  }
+
+  // useEffect(() => {
+  //   hasLinkWithoutUrlOrArtWork(song);
+  // }, []);
+
   return (
     <div
       className="lg:px-2 py-1"
@@ -160,6 +181,23 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
                 />
               </a>
             )}
+
+            {song["YouTube-Music"] && (
+              <a
+                href={song["YouTube-Music"]}
+                target="_blank"
+                rel="noreferrer"
+                className="cursor-pointer hover:opacity-80 transition-opacity z-20"
+                style={{ display: "block" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src="https://api.forevisiondigital.in/uploads/platforms/youtube-music.png"
+                  alt="Amazon Music"
+                  className="w-2 lg:w-3"
+                />
+              </a>
+            )}
           </div>
 
           {/* Accordion Toggle Button (visible only on mobile) */}
@@ -199,9 +237,7 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
               </button>
             )}
             <button
-              disabled={
-                !(apple || amazon || spotify || gaana || wynk || jiosaavn)
-              }
+              disabled={!hasLinkWithoutUrlOrArtWork(song)}
               className="cursor-pointer hover:opacity-80 transition-opacity z-20 disabled:opacity-25 disabled:cursor-not-allowed"
               onClick={(e) => {
                 e.stopPropagation();
@@ -247,7 +283,7 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
           <RiEditBoxFill className="text-heading-6 text-white" />
         </button>
         <button
-          disabled={!(apple || amazon || spotify || gaana || wynk || jiosaavn)}
+          disabled={!hasLinkWithoutUrlOrArtWork(song)}
           className="cursor-pointer hover:opacity-80 transition-opacity z-20 disabled:opacity-25 disabled:cursor-not-allowed"
           onClick={(e) => {
             e.stopPropagation();

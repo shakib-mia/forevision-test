@@ -347,7 +347,7 @@ const PreviewDetails = ({ albumData }) => {
           <div className="w-full lg:w-1/4 ">
             <img
               className="object-cover w-full h-full aspect-square"
-              src={albumData.artWork}
+              src={albumData.artWork || albumData.artwork}
               alt={albumData.albumTitle}
             />
           </div>

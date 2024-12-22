@@ -926,7 +926,10 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                   ? formData?.songs[id]?.isrc
                   : formData.isrc
               }
-              // disabled={!alreadyHaveIsrc}
+              disabled={
+                location.pathname.includes("edit") &&
+                (formData?.songs[id]?.isrc || formData.isrc)
+              }
             />
             {/* <div className="flex"></div> */}
             {/* <InputField
@@ -1106,9 +1109,9 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
                 : !formData?.songName?.length
             }
             id={"audioUpload_" + id}
-            note={
-              "Ensure your audio files are in WAV or MP3 formats only (Max 50MB). For bigger file mail us directly at content@forevisiondigital.com"
-            }
+            // note={
+            //   "Ensure your audio files are in WAV or MP3 formats only (Max 50MB). For bigger file mail us directly at content@forevisiondigital.com"
+            // }
             dangerNote
             required={!location.pathname.includes("edit-song")}
             placeholder={
