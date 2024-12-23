@@ -108,12 +108,12 @@ const YearlyPlanForm = () => {
       type: "number",
     },
     {
-      placeholder: "Number of songs uploaded till date through Forevision",
+      placeholder: "Number of songs uploaded till date through ForeVision",
       required: true,
       hideRequired: true,
-      name: "songsTillDateThroughForevision",
-      id: "songsTillDateThroughForevision",
-      label: "Number of songs uploaded till date through Forevision",
+      name: "songsTillDateThroughForeVision",
+      id: "songsTillDateThroughForeVision",
+      label: "Number of songs uploaded till date through ForeVision",
     },
   ];
 

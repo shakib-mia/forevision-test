@@ -1,6 +1,6 @@
 [
   {
-    "name": "Forevision Social",
+    "name": "ForeVision Social",
     "planName": "ForeVision-social",
     "price": 0,
     "features": [
@@ -19,7 +19,7 @@
     "monthly-sales": []
   },
   {
-    "name": "Forevision CRBT+",
+    "name": "ForeVision CRBT+",
     "planName": "CRBT+",
     "price": 69900,
     "features": [
@@ -45,7 +45,7 @@
     "monthly-sales": []
   },
   {
-    "name": "Forevision Pro",
+    "name": "ForeVision Pro",
     "planName": "ForeVision Pro",
     "price": 49800,
     "features": [
@@ -67,7 +67,7 @@
     "monthly-sales": []
   },
   {
-    "name": "Forevision CRBT",
+    "name": "ForeVision CRBT",
     "planName": "CRBT",
     "price": 49900,
     "features": [

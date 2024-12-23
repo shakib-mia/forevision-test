@@ -107,6 +107,7 @@ const Form = forwardRef(
             position: "bottom-right",
             autoClose: 5000,
           });
+          e.target.reset();
         } else {
           throw new Error(response.data.message || "Submission failed");
         }
@@ -123,39 +124,40 @@ const Form = forwardRef(
 
     const handleChange = (e) => {
       const { name, value } = e.target;
+
+      // Update formData
       formData[name] = value;
 
-      // console.log(name);
-      //  if (e.target.checked) {
-      //(e.target.name);
-      //  }
-
+      // Handle special cases like multi-select fields
       for (const field of fields) {
         if (field.disabled) {
           formData[field.name] = field.value;
         }
 
-        // console.log(field);
         if (field.type === "multi-select") {
           const selected = field.selectItems.filter(
             (item) => item.selected === true
           );
-          const concatenatedText = selected
-            .map(function (obj) {
-              return obj.text;
-            })
-            .join(", ");
+          const concatenatedText = selected.map((obj) => obj.text).join(", ");
           formData[field.name] = concatenatedText;
-
-          // console.log(formData);
         }
       }
 
-      const entries = Object.values(formData).every(
-        (value) => value.length > 0
-      );
-      // console.log(Object.values(formData));
-      setDisabled(!entries);
+      // Check if all required fields are filled
+      const isValid = fields
+        .filter((field) => field.required)
+        .every((field) => {
+          const fieldValue = formData[field.name];
+          return (
+            fieldValue &&
+            (Array.isArray(fieldValue)
+              ? fieldValue.length > 0
+              : fieldValue.trim() !== "")
+          );
+        });
+
+      // Update the disabled state
+      setDisabled(!isValid);
     };
 
     return (

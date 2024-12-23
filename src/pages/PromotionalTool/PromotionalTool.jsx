@@ -346,6 +346,7 @@ const PromotionalTool = () => {
       formDataObject[key] = value;
     }
     formData.promotional_tool_upload_artwork = artwork;
+    formDataObject.id = "promotional-tool";
     // console.log(formDataObject);
     axios
       .post(backendUrl + "submit-form", formDataObject)

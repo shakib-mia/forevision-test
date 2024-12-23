@@ -31,12 +31,11 @@ const RecentUploadsItem = (props) => {
     status,
     songData,
   } = props;
-  console.log(status);
   const { token } = useContext(ProfileContext);
   const [reason, setReason] = useState("");
   const [editId, setEditId] = useState("");
   const [takedownId, setTakedownId] = useState("");
-  // console.log(orderId);
+  console.log(status);
 
   const handleRefundRequest = () => {
     const updated = { ...props };
@@ -180,7 +179,7 @@ const RecentUploadsItem = (props) => {
           >
             {status.includes("-") ? status.split("-").join(" ") : status}
           </p>
-        ) : (
+        ) : price ? (
           <Button
             containerClassName={"mx-auto"}
             small={true}
@@ -191,6 +190,8 @@ const RecentUploadsItem = (props) => {
           >
             Pay Now
           </Button>
+        ) : (
+          <p className="mx-auto">{status}</p>
         )}
       </aside>
 

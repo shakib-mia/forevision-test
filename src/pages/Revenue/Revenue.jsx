@@ -83,7 +83,7 @@ const Revenue = () => {
 
     songs?.forEach((music) => {
       const { isrc, splitPercentage = 100 } = music; // Assuming `splitPercentage` is provided in `music`
-      console.log(splitPercentage);
+      // console.log(splitPercentage);
       // Calculate grand total
       if (grand_total.hasOwnProperty(isrc)) {
         grand_total[isrc] += parseFloat(music["final revenue"]);
@@ -108,6 +108,7 @@ const Revenue = () => {
       // Calculate revenue after split
       const revenueSplit =
         (parseFloat(music["final revenue"]) * splitPercentage) / 100;
+      // console.log();
       if (revenue_after_split.hasOwnProperty(isrc)) {
         revenue_after_split[isrc] += revenueSplit;
       } else {
@@ -166,7 +167,10 @@ const Revenue = () => {
         };
         // Create a promise for each axios.get call
         const promise = axios
-          .get(`https://api.forevisiondigital.in/user-revenue/${item}`, config)
+          .get(
+            `https://server.forevisiondigital.in/user-revenue/${item}`,
+            config
+          )
           .then(({ data }) => {
             if (data) {
               data.revenues.forEach((song, index) => {

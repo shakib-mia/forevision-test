@@ -8,25 +8,31 @@ const YoutubeClaimRelease = () => {
       label: "User Name",
       placeholder: "Name",
       type: "text",
-      name: "name",
+      name: "youtube_claim_release_name",
       required: true,
     },
     {
       label: "Email Address",
       placeholder: "Email",
       type: "email",
+      name: "youtube_claim_release_email",
+
       required: true,
     },
     {
       label: "Phone",
       placeholder: "Phone",
       type: "tel",
+      name: "youtube_claim_release_phone",
+
       required: false,
     },
     {
       label: "Song Name",
       placeholder: "Song Name",
       type: "text",
+      name: "youtube_claim_release_song_name",
+
       required: true,
     },
     {
@@ -34,6 +40,7 @@ const YoutubeClaimRelease = () => {
       placeholder: "E.g. https://www.youtube.com/Zs8LFaaLa/",
       type: "text",
       required: true,
+      name: "youtube_claim_release_youTube_video_url",
     },
   ];
 

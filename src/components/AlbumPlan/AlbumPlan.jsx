@@ -17,7 +17,7 @@ const AlbumPlan = () => {
         >
           🔥 New 🔥
         </div>
-        <h4 className="text-heading-4 font-bold">Forevision Album</h4>
+        <h4 className="text-heading-4 font-bold">ForeVision Album</h4>
         <h5 className="text-heading-5-bold text-grey-light mt-2">&#8377;999</h5>
 
         <ul className="flex flex-col gap-1 mt-4">

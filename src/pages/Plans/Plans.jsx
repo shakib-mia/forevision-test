@@ -154,15 +154,11 @@ const DynamicSongPlans = () => {
       price: plan.price || 0,
     }));
 
-    navigate(
-      `/song-upload?${plan.planName.toLowerCase().replace(" ", "-")}?${
-        price * 100 || 0
-      }`
-    );
+    navigate(`/song-upload?${plan.name.replace(" ", "-")}?${price * 100 || 0}`);
   };
 
   const renderPlan = (plan, index) => {
-    const isHighlighted = plan.name === "Forevision CRBT+";
+    const isHighlighted = plan.name === "ForeVision CRBT+";
     const containerClass = isHighlighted
       ? "!h-full p-4 rounded-lg mx-2 bg-gradient-to-br from-secondary to-interactive-light-focus text-white shadow-[0_13px_20px_#aaa] relative -top-3"
       : "!h-full p-4 shadow-lg mx-2 relative";

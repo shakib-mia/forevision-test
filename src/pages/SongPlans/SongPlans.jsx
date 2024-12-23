@@ -112,7 +112,7 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
           </div>
           <div className="h-full flex flex-col justify-between">
             <aside>
-              <h4 className="text-heading-4 font-bold">Forevision Social</h4>
+              <h4 className="text-heading-4 font-bold">ForeVision Social</h4>
               <h5 className="text-heading-5-bold text-grey mt-2">Free</h5>
 
               <ul className="flex flex-col gap-1 mt-4">
@@ -202,7 +202,7 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
 
           <div className="h-full flex flex-col justify-between">
             <aside>
-              <h4 className="text-heading-4 font-bold">Forevision CRBT+</h4>
+              <h4 className="text-heading-4 font-bold">ForeVision CRBT+</h4>
               <h5 className="text-heading-5-bold text-grey-light mt-2">
                 &#8377;699
               </h5>
@@ -335,7 +335,7 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
           </div>
           <div className="flex h-full flex-col justify-between">
             <aside>
-              <h4 className="text-heading-4 font-bold">Forevision Pro</h4>
+              <h4 className="text-heading-4 font-bold">ForeVision Pro</h4>
               <h5 className="text-heading-5-bold text-grey mt-2">&#8377;498</h5>
 
               <ul className="flex flex-col gap-1 mt-4">
@@ -420,7 +420,7 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
               text={"Get Started"}
               onClick={() => {
                 setPrice(49800);
-                setPlanName("Forevision Pro");
+                setPlanName("ForeVision Pro");
                 setPlanStore((prev) => ({
                   ...prev,
                   planName: "ForeVision Pro",
@@ -447,7 +447,7 @@ const SongPlans = ({ handleRazorpayPayment, setPlanName }) => {
           </div>
           <div className="h-full flex flex-col justify-between">
             <aside>
-              <h4 className="text-heading-4 font-bold">Forevision CRBT</h4>
+              <h4 className="text-heading-4 font-bold">ForeVision CRBT</h4>
               <h5 className="text-heading-5-bold text-grey mt-2">&#8377;499</h5>
 
               <ul className="flex flex-col gap-1 mt-4">

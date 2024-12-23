@@ -6,7 +6,7 @@ const CrbtCodes = () => {
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <div className="xl:w-10/12 mx-auto mt-5 lg:mt-7 pb-5 lg:pb-7 p-3 shadow-xl rounded-lg text-grey-dark">
+    <div className="xl:w-10/12 mx-auto mt-5 lg:mt-7 mb-7 lg:mb-0 pb-7 lg:pb-7 p-3 shadow-xl rounded-lg text-grey-dark">
       <h3 className="text-heading-4-bold lg:text-heading-3-bold mb-2">
         CRBT Codes
       </h3>

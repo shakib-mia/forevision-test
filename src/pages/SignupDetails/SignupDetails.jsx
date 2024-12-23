@@ -22,10 +22,18 @@ const SignupDetails = () => {
   const [originalData] = useState(userData); // Store the initial user data for comparison
   const [countries, setCountries] = useState([]);
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch("https://restcountries.com/v3.1/all");
+      const data = await response.json();
+      setCountries(data.map((item) => item.name.common));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get("https://restcountries.com/v3.1/all")
-      .then(({ data }) => setCountries(data));
+    fetchData();
   }, []);
 
   const checkForChanges = (updatedFormData) => {

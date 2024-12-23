@@ -89,7 +89,7 @@ const RoyaltySplit = () => {
                           className={"!py-1"}
                           containerClassName={"mt-[4px]"}
                           onClick={() => setSplitId(_id)}
-                          disabled={adding === _id || splitAvailable}
+                          disabled={adding === _id || splitAvailable || Song}
                         >
                           {splitAvailable ? (
                             <>Requested</>

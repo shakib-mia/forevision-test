@@ -48,8 +48,8 @@ import { TbDeviceMobileHeart } from "react-icons/tb";
 import CrbtCodes from "./pages/CrbtCodes/CrbtCodes";
 import RoyaltySplit from "./pages/RoyaltySplit/RoyaltySplit";
 
-// export const backendUrl = "http://localhost:5100/";
-export const backendUrl = "https://server.forevisiondigital.in/";
+export const backendUrl = "http://localhost:5100/";
+// export const backendUrl = "https://server.forevisiondigital.in/";
 export const currencyAPI = "https://api.frankfurter.app/latest";
 
 export const navItem = [
@@ -63,28 +63,28 @@ export const navItem = [
     text: "Revenue",
     path: "/revenue",
   },
-  // {
-  //   icon: <FaWpforms className="text-[24px]" />,
-  //   text: "Forms",
-  //   dropdownItem: [
-  //     { dropdownPath: "/promotional-tool", text: "Promotional Tool" },
-  //     { dropdownPath: "/youtube-oac", text: "YouTube OAC" },
-  //     { dropdownPath: "/youtube-claim-release", text: "YouTube Claim Release" },
-  //     // { dropdownPath: "/video-distribution", text: "Video Distribution" },
-  //     {
-  //       dropdownPath: "/link-facebook-and-instagram-profile-with-songs",
-  //       text: "Link Facebook & Instagram Profiles with Songs",
-  //     },
-  //     {
-  //       dropdownPath: "/facebook-insta-whitelisting",
-  //       text: "Facebook & Instagram Whitelisting",
-  //     },
-  //     {
-  //       dropdownPath: "/youtube-video-takedown",
-  //       text: "YouTube Video Takedown",
-  //     },
-  //   ],
-  // },
+  {
+    icon: <FaWpforms className="text-[24px]" />,
+    text: "Forms",
+    dropdownItem: [
+      { dropdownPath: "/promotional-tool", text: "Promotional Tool" },
+      { dropdownPath: "/youtube-oac", text: "YouTube OAC" },
+      { dropdownPath: "/youtube-claim-release", text: "YouTube Claim Release" },
+      // { dropdownPath: "/video-distribution", text: "Video Distribution" },
+      {
+        dropdownPath: "/link-facebook-and-instagram-profile-with-songs",
+        text: "Link Facebook & Instagram Profiles with Songs",
+      },
+      {
+        dropdownPath: "/facebook-insta-whitelisting",
+        text: "Facebook & Instagram Whitelisting",
+      },
+      {
+        dropdownPath: "/youtube-video-takedown",
+        text: "YouTube Video Takedown",
+      },
+    ],
+  },
   {
     icon: <BsUpload className="text-heading-6" />,
     text: "Song Upload",

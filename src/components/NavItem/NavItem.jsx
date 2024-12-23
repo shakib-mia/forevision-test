@@ -59,6 +59,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
       ) : (
         <div
           // to={path}
+          className="overflow-x-hidden"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >

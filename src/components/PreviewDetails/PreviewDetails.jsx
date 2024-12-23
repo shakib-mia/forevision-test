@@ -130,7 +130,7 @@ const PreviewDetails = ({ albumData }) => {
   );
 
   const renderSongDetails = (song) => {
-    // console.log(song);
+    console.log(song, albumData);
     return (
       <div key={song?.isrc || "single"}>
         <div className="px-4 py-3">
@@ -147,16 +147,23 @@ const PreviewDetails = ({ albumData }) => {
               src={song.songUrl || albumData.songUrl}
               className="ml-3"
             />
-            <span className="ml-3 text-subtitle-2 text-black-secondary">
-              Start Time: {song.startMinutes || albumData.startMinutes}:
-              {(song.startSeconds || albumData.startSeconds)
-                ?.toString()
-                ?.padStart(2, "0")}{" "}
-              - {song.startMinutes2 || albumData.startMinutes2}:
-              {(song.startSeconds2 || albumData.startSeconds2)
-                ?.toString()
-                ?.padStart(2, "0")}
-            </span>
+            <aside>
+              <div className="ml-3 text-subtitle-2 text-black-secondary">
+                Caller Tune Start Time 1:{" "}
+                {song.startMinutes || albumData.startMinutes}:
+                {(song.startSeconds2 || albumData.startSeconds2)
+                  ?.toString()
+                  ?.padStart(2, "0")}
+              </div>
+
+              <div className="ml-3 text-subtitle-2 text-black-secondary">
+                Caller Tune Start Time 2:{" "}
+                {song.startMinutes2 || albumData.startMinutes2}:
+                {(song.startSeconds2 || albumData.startSeconds2)
+                  ?.toString()
+                  ?.padStart(2, "0")}
+              </div>
+            </aside>
           </div>
         </div>
 

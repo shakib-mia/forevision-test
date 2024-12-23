@@ -94,22 +94,10 @@ const Distribution = () => {
 
     formData.orderId = orderId;
     formData.userEmail = userData.emailId;
+    formData.status = "pending";
 
-    // axios
-    //   .post(backendUrl + "upload-song/upload-song-data", formData, config)
-    //   .then(({ data }) => {
-    //     if (data.acknowledged) {
-    //       navigate(
-    //         `/payment?price=${
-    //           discountData.discountPercentage
-    //             ? discountPrice
-    //             : location.search.split("?")[2]
-    //         }?id=${orderId}`
-    //       );
-    //     }
-    //   });
+    console.log(formData);
 
-    // alert(isNaN(price));
     axios
       .post(backendUrl + "recent-uploads", formData, {
         headers: {

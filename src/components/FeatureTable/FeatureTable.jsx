@@ -28,7 +28,7 @@ const features = [
 
 const plans = [
   {
-    name: "Forevision Social",
+    name: "ForeVision Social",
     features: [
       true,
       true,
@@ -52,7 +52,7 @@ const plans = [
     ],
   },
   {
-    name: "Forevision CRBT",
+    name: "ForeVision CRBT",
     features: [
       true,
       true,
@@ -76,7 +76,7 @@ const plans = [
     ],
   },
   {
-    name: "Forevision CRBT+",
+    name: "ForeVision CRBT+",
     features: [
       true,
       true,
@@ -100,7 +100,7 @@ const plans = [
     ],
   },
   {
-    name: "Forevision Pro",
+    name: "ForeVision Pro",
     features: [
       true,
       true,
