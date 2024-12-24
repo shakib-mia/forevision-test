@@ -109,7 +109,7 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
     axios
       .get(backendUrl + `crbt-codes/${result[0].isrc}`)
       .then(({ data }) => setCrbtCodes(data));
-  }, [result[0], result[0].isrc]);
+  }, [result[0].isrc]);
 
   return (
     <>

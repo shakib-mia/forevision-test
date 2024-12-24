@@ -32,7 +32,7 @@ const SocialLinks = () => {
   console.log(window.location);
 
   return (
-    <div className="py-7 flex justify-center">
+    <div className="py-7 pb-[256px] lg:pb-7 flex justify-center">
       <div className="shadow-md p-3 text-grey-dark w-11/12 lg:w-1/4">
         <FaChevronLeft
           className="cursor-pointer"

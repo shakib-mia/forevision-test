@@ -49,7 +49,7 @@ import CrbtCodes from "./pages/CrbtCodes/CrbtCodes";
 import RoyaltySplit from "./pages/RoyaltySplit/RoyaltySplit";
 
 // export const backendUrl = "http://localhost:5100/";
-export const backendUrl = "https://server.forevisiondigital.in/";
+export const backendUrl = "https://api.forevisiondigital.in/";
 export const currencyAPI = "https://api.frankfurter.app/latest";
 
 export const navItem = [
