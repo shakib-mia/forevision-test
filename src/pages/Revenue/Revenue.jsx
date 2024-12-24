@@ -33,6 +33,8 @@ const Revenue = () => {
   const navigate = useNavigate();
   const [bestSong, setBestSong] = useState("Loading...");
   const [loaded, setLoaded] = useState(false);
+  // const { token } = useContext(ProfileContext);
+  // console.log(store);
   // const pdfBody = useRef(null);
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   const [filterValue, setFilterValue] = useState("song_name");
@@ -155,7 +157,9 @@ const Revenue = () => {
       for (const [isrcIndex, item] of isrcs.entries()) {
         // Create a promise for each axios.get call
         const promise = axios
-          .get(`https://api.forevisiondigital.in/user-revenue/${item}`)
+          .get(backendUrl + `user-revenue/${item}`, {
+            headers: { token },
+          })
           .then(({ data }) => {
             if (data) {
               data.revenues.forEach((song, index) => {
