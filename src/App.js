@@ -139,9 +139,10 @@ function App() {
   }, [token, updated]);
 
   useEffect(() => {
-    if (userData.emailId) {
+    console.log(userData);
+    if (userData.user_email) {
       axios
-        .get(backendUrl + "check-requested/" + userData.emailId)
+        .get(backendUrl + "check-requested/" + userData.user_email)
         .then(({ data }) => setFoundRequested(data));
     }
   }, [userData, refetch]);

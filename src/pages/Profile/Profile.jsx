@@ -33,6 +33,8 @@ import { IoMdShareAlt } from "react-icons/io";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FaLink } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
+import { CiEdit } from "react-icons/ci";
+import { MdModeEdit } from "react-icons/md";
 
 const Profile = () => {
   const { userData } = useContext(ProfileContext);
@@ -146,7 +148,7 @@ const Profile = () => {
             </div>
             <aside className="text-white lg:mt-[8rem] lg:w-11/12">
               <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-5">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center flex-col lg:flex-row gap-2">
                   {profileData.first_name ? (
                     <h5 className="text-heading-5 underline">
                       {profileData.first_name} {profileData.last_name}
@@ -158,11 +160,15 @@ const Profile = () => {
                   {route[route.length - 1] === "profile" &&
                   profileData.first_name ? (
                     <div className="flex items-center space-x-2">
-                      <img
+                      {/* <img
                         src={profileEdit}
                         onClick={() => setEdit(true)}
                         className="w-[21px] h-[21px] cursor-pointer"
                         alt="edit"
+                      /> */}
+                      <MdModeEdit
+                        onClick={() => setEdit(true)}
+                        className="cursor-pointer text-heading-6 focus:outline-none"
                       />
                       <CopyToClipboard
                         text={

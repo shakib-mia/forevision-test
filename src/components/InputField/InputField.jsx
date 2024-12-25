@@ -138,7 +138,7 @@ const InputField = (props) => {
                   <>
                     <label
                       htmlFor={id}
-                      className={`px-2 py-[12px] flex justify-between cursor-pointer ${
+                      className={`px-2 py-[12px] whitespace-nowrap overflow-hidden flex justify-between cursor-pointer ${
                         disabled ? "cursor-not-allowed" : "cursor-pointer"
                       }`}
                     >

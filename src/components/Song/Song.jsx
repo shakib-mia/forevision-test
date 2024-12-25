@@ -77,7 +77,7 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
         style={firstItemStyles}
       >
         <div className="flex items-center gap-[4px] lg:gap-[12px]">
-          <FaMusic className="text-white" />
+          <FaMusic className="text-white hidden lg:block" />
           <h6 className="text-white lg:text-heading-6">{Song || songName}</h6>
         </div>
 
@@ -161,7 +161,7 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
                 style={{ display: "block" }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <FaApple className="text-white text-heading-5" />
+                <FaApple className="text-white text-[20px] lg:text-heading-5" />
               </a>
             )}
 
@@ -253,7 +253,9 @@ const SongItem = ({ song, isFirst, openSongId, setOpenSongId }) => {
       {/* Accordion for mobile view */}
       {/* {(isFirst || isAccordionOpen) && openSongId === song._id && ( */}
       <div
-        className="lg:hidden flex justify-end gap-2 overflow-hidden transition-[height]"
+        className={`lg:hidden flex justify-end gap-2 ${
+          (isFirst || isAccordionOpen) && openSongId === song._id ? "mt-2" : ""
+        } overflow-hidden transition-[height_margin-top]`}
         style={{
           height:
             (isFirst || isAccordionOpen) && openSongId === song._id

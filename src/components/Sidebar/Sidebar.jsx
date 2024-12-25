@@ -103,7 +103,7 @@ const Sidebar = () => {
           />
         ) : (
           <img
-            className={`w-full aspect-square object-cover`}
+            className={`w-[40px] aspect-square object-cover`}
             src={profile}
             alt="Demo"
           />

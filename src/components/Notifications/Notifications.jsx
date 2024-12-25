@@ -7,7 +7,7 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { token, tokenDetails } = useContext(ProfileContext);
+  const { token, refetch } = useContext(ProfileContext);
   const [modifiedCount, setModifiedCount] = useState(0);
   // console.log(tokenDetails.iat, notifications[0].date);
 
@@ -34,7 +34,7 @@ const Notifications = () => {
     return () => {
       setLoading(false);
     };
-  }, [token, modifiedCount]); // Dependency array to prevent infinite loops
+  }, [refetch]); // Dependency array to prevent infinite loops
 
   const markAsRead = (_id, notification) => {
     if (!notification.read) {

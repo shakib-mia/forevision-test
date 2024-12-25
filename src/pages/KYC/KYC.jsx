@@ -81,7 +81,7 @@ const KYC = () => {
   // console.log(govtId.name);
 
   return (
-    <div className="pb-3 lg:pb-0 pt-6 lg:pt-7">
+    <div className="pb-3 lg:pb-7 pt-6 lg:pt-7">
       <h3 className="text-heading-3-bold text-grey-dark text-center mb-4">
         KYC
       </h3>

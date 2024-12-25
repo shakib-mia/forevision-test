@@ -3,10 +3,10 @@ import balanceBG from "../../assets/images/balance-bg.svg";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
+import RequestWithdraw from "../RequestWithdraw/RequestWithdraw";
 
 const AccountBalance = () => {
   const { userData, foundRequested, dollarRate } = useContext(ProfileContext);
-  const navigate = useNavigate();
   const location = useLocation();
   return (
     <div
@@ -32,30 +32,36 @@ const AccountBalance = () => {
           Account <br className="2xl:hidden" /> Balance
         </h4>
         <h4 className="text-heading-4-bold text-grey mt-5 flex items-center gap-2 relative">
-          {!userData.lifetimeRevenue && !userData.lifetimeDisbursed ? (
+          {!userData.lifetimeRevenue?.toFixed(2) &&
+          !userData.lifetimeDisbursed?.toFixed(2) ? (
             // Fancy "Nothing to show" message when no data is available
             <span className="text-grey italic">Nothing to show</span>
           ) : (
             <>
               {isNaN(
-                userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                userData.lifetimeRevenue?.toFixed(2) -
+                  (userData.lifetimeDisbursed?.toFixed(2)
+                    ? userData.lifetimeDisbursed?.toFixed(2)
+                    : 0)
               ) || userData.billing_country === "India" ? (
                 <>&#8377;</>
               ) : (
                 "$"
               )}{" "}
               {isNaN(
-                userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                userData.lifetimeRevenue?.toFixed(2) -
+                  (userData.lifetimeDisbursed?.toFixed(2) || 0)
               )
                 ? "Loading..."
                 : userData.billing_country === "India"
                 ? (
-                    userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
+                    userData.lifetimeRevenue?.toFixed(2) -
+                    (userData.lifetimeDisbursed?.toFixed(2) || 0)
                   ).toFixed(2)
                 : (
-                    (userData.lifetimeRevenue.toFixed(2) -
+                    (userData.lifetimeRevenue?.toFixed(2) -
                       (userData.lifetimeDisbursed
-                        ? userData.lifetimeDisbursed.toFixed()
+                        ? userData.lifetimeDisbursed?.toFixed()
                         : 0)) *
                     dollarRate
                   ).toFixed(2)}
@@ -65,16 +71,7 @@ const AccountBalance = () => {
       </aside>
 
       <div className="flex justify-center">
-        <Button
-          onClick={() => navigate("/revenue-form")}
-          disabled={
-            (
-              userData.lifetimeRevenue - (userData.lifetimeDisbursed || 0)
-            ).toFixed(2) < 1000 ||
-            (foundRequested !== null && foundRequested._id)
-          }
-          text={"Request Withdraw"}
-        ></Button>
+        <RequestWithdraw />
       </div>
     </div>
   );

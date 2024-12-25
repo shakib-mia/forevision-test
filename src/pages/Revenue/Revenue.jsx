@@ -22,6 +22,7 @@ import * as XLSX from "xlsx";
 import { IoMdDownload } from "react-icons/io";
 import generatePDF, { usePDF } from "react-to-pdf";
 import AccountBalance from "../../components/AccountBalance/AccountBalance";
+import RequestWithdraw from "../../components/RequestWithdraw/RequestWithdraw";
 
 const Revenue = () => {
   const [songs, setSongs] = useState([]);
@@ -532,7 +533,7 @@ const Revenue = () => {
                   <h6 className="text-heading-6-bold text-white mb-1">
                     Revenue Analytics
                   </h6>
-                  <Button
+                  {/* <Button
                     className="px-2 py-1"
                     disabled={
                       (
@@ -541,9 +542,10 @@ const Revenue = () => {
                       ).toFixed(2) < 1000 ||
                       (foundRequested !== null && foundRequested._id)
                     }
-                    onClick={() => navigate("/revenue-form")}
+                    onClick={handleRevenueWithdraw}
                     text="Request Withdraw"
-                  />
+                  /> */}
+                  <RequestWithdraw />
                 </div>
                 <p className="text-subtitle-1 text-interactive-dark-destructive-active tracking-[0.5px] mt-1 italic">
                   * Updated Till May 2024
