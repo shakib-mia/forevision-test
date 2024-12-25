@@ -64,28 +64,6 @@ export const navItem = [
     path: "/revenue",
   },
   {
-    icon: <FaWpforms className="text-[24px]" />,
-    text: "Forms",
-    dropdownItem: [
-      { dropdownPath: "/promotional-tool", text: "Promotional Tool" },
-      { dropdownPath: "/youtube-oac", text: "YouTube OAC" },
-      { dropdownPath: "/youtube-claim-release", text: "YouTube Claim Release" },
-      // { dropdownPath: "/video-distribution", text: "Video Distribution" },
-      {
-        dropdownPath: "/link-facebook-and-instagram-profile-with-songs",
-        text: "Link Facebook & Instagram Profiles with Songs",
-      },
-      {
-        dropdownPath: "/facebook-insta-whitelisting",
-        text: "Facebook & Instagram Whitelisting",
-      },
-      {
-        dropdownPath: "/youtube-video-takedown",
-        text: "YouTube Video Takedown",
-      },
-    ],
-  },
-  {
     icon: <BsUpload className="text-heading-6" />,
     text: "Song Upload",
     path: "/song-upload",
@@ -126,6 +104,28 @@ export const navItem = [
     icon: <FaArrowsSplitUpAndLeft className="text-heading-6 text-center" />,
     text: "Royalty Split",
     path: "/royalty-split",
+  },
+  {
+    icon: <FaWpforms className="text-[24px]" />,
+    text: "Forms",
+    dropdownItem: [
+      { dropdownPath: "/promotional-tool", text: "Promotional Tool" },
+      { dropdownPath: "/youtube-oac", text: "YouTube OAC" },
+      { dropdownPath: "/youtube-claim-release", text: "YouTube Claim Release" },
+      // { dropdownPath: "/video-distribution", text: "Video Distribution" },
+      {
+        dropdownPath: "/link-facebook-and-instagram-profile-with-songs",
+        text: "Link Facebook & Instagram Profiles with Songs",
+      },
+      {
+        dropdownPath: "/facebook-insta-whitelisting",
+        text: "Facebook & Instagram Whitelisting",
+      },
+      {
+        dropdownPath: "/youtube-video-takedown",
+        text: "YouTube Video Takedown",
+      },
+    ],
   },
 ];
 
