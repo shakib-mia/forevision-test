@@ -40,6 +40,8 @@ const AlbumDetails = () => {
     }
   };
 
+  // console.log(formData.artwork);
+
   const handleArtFileChange = async (e) => {
     setFile(e.target.files[0]);
     // setFormData({ ...formData, albumArt: e.target.files[0] });
@@ -314,8 +316,8 @@ const AlbumDetails = () => {
             required={true}
             placeholder={
               file?.name ||
-              formData.artWork?.split("-")[
-                formData.artWork?.split("-").length - 1
+              formData.artwork?.split("/")[
+                formData.artwork?.split("/").length - 1
               ] ||
               "Album Art"
             }

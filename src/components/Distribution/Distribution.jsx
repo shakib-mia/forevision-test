@@ -109,8 +109,20 @@ const Distribution = () => {
           // setCount(count + 1);
           // setScreen("preview");
           // : setCollapsed(true);
-          if (location.search.includes("social") || isNaN(price)) {
-            navigate("/");
+          console.log(price);
+          if (location.search.includes("Social") || isNaN(price)) {
+            axios
+              .get(`${backendUrl}plans/monthly-sales/${price}`, {
+                headers: {
+                  token,
+                },
+              })
+              .then(({ data }) => {
+                console.log(data);
+                if (data.acknowledged) {
+                  navigate("/");
+                }
+              });
             // alert("/");
           } else {
             navigate(

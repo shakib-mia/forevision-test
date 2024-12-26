@@ -37,6 +37,7 @@ const Revenue = () => {
   // const pdfBody = useRef(null);
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   const [filterValue, setFilterValue] = useState("song_name");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (currentTime >= 0 && currentTime < 12) {
@@ -168,10 +169,7 @@ const Revenue = () => {
         };
         // Create a promise for each axios.get call
         const promise = axios
-          .get(
-            `https://server.forevisiondigital.in/user-revenue/${item}`,
-            config
-          )
+          .get(`${backendUrl}user-revenue/${item}`, config)
           .then(({ data }) => {
             if (data) {
               data.revenues.forEach((song, index) => {
@@ -181,6 +179,7 @@ const Revenue = () => {
 
                 if (isLastSong && isrcIndex === isrcs.length - 1) {
                   // Resolve the promise when the last song is processed
+                  setIsLoading(false);
                   return Promise.resolve();
                 }
               });
@@ -885,9 +884,11 @@ const Revenue = () => {
                 </OwlCarousel>
               </div>
             ) : (
-              <div className="w-full flex justify-center py-7">
-                <VscLoading className="animate-spin text-secondary-light text-heading-1" />
-              </div>
+              isLoading && (
+                <div className="w-full flex justify-center py-7">
+                  <VscLoading className="animate-spin text-secondary-light text-heading-1" />
+                </div>
+              )
             ))}
           {/* details item modal */}
           {details?.length ? (
@@ -901,8 +902,8 @@ const Revenue = () => {
             <></>
           )}
 
-          {isrcs.length === 0 && (
-            <div className="text-grey text-center 2xl:w-1/2 mx-auto 2xl:text-white 2xl:hidden">
+          {aggregatedMusicData.length !== 0 || isLoading || (
+            <div className="text-grey text-center 2xl:w-1/2 mx-auto 2xl:text-white">
               <img src={notFound} className="w-full 2xl:w-1/2 mx-auto" alt="" />
               <h6 className="text-heading-6-bold mb-2">
                 Ooopps.. There is Nothing to show yet !! Upload your content and

@@ -25,7 +25,7 @@ const RecentUploads = () => {
         token: sessionStorage.getItem("token") || token,
       },
     };
-    if (userData && userData.isrc) {
+    if (userData) {
       axios
         .get(backendUrl + "recent-uploads", config)
         .then(({ data }) => setSongs(data));

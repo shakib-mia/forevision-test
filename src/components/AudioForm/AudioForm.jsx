@@ -1284,6 +1284,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
           label={"Description"}
           placeholder={"Description"}
           required={false}
+          textarea
           value={
             location.pathname === "/album-upload" ||
             location.search.split("?")[1] === "yearly-plan" ||

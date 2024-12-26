@@ -19,8 +19,6 @@ const RoyaltySplit = () => {
 
   useEffect(() => {
     const fetchSongs = async () => {
-      // console.log(!userData?.isrc);
-      // If there's no ISRC, set loading false and return
       if (!userData?.isrc) {
         setIsLoading(false);
         return;
@@ -51,8 +49,6 @@ const RoyaltySplit = () => {
     fetchSongs();
   }, [userData?.isrc, userData?.["user-id"], token, updated]);
 
-  // useEffect(() => console.log(adding), [adding]);
-
   return (
     <div className="xl:w-10/12 mx-auto mt-5 lg:mt-7 pb-5 lg:pb-7 p-3 shadow-xl rounded-lg text-grey-dark">
       <h3 className="text-heading-4-bold lg:text-heading-3-bold mb-2">
@@ -63,14 +59,21 @@ const RoyaltySplit = () => {
         <aside></aside>
         <aside className="border">
           <table className="w-full rounded-md overflow-hidden shadow-lg">
-            <tr className="divide-x bg-grey text-white">
-              <th className="p-2">Song</th>
-              <th className="p-2">ISRC</th>
-              <th className="p-2"></th>
-            </tr>
-
+            <thead>
+              <tr className="divide-x bg-grey text-white">
+                <th className="p-2">ISRC</th>
+                <th className="p-2">Song</th>
+                <th className="p-2"></th>
+              </tr>
+            </thead>
             <tbody className="border-t divide-y">
-              {songs.length > 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan="3" className="text-center p-2">
+                    Loading...
+                  </td>
+                </tr>
+              ) : songs.length > 0 ? (
                 songs.map(
                   (
                     { ISRC, isrc, songName, Song, _id, splitAvailable },
@@ -89,7 +92,7 @@ const RoyaltySplit = () => {
                           className={"!py-1"}
                           containerClassName={"mt-[4px]"}
                           onClick={() => setSplitId(_id)}
-                          disabled={adding === _id || splitAvailable || Song}
+                          disabled={adding === _id || splitAvailable}
                         >
                           {splitAvailable ? (
                             <>Requested</>
@@ -103,9 +106,9 @@ const RoyaltySplit = () => {
                 )
               ) : (
                 <tr>
-                  <td></td>
-                  <td className="text-center p-2">Loading...</td>
-                  <td></td>
+                  <td colSpan="3" className="text-center p-2">
+                    No Splits Found
+                  </td>
                 </tr>
               )}
             </tbody>
@@ -113,7 +116,7 @@ const RoyaltySplit = () => {
         </aside>
       </div>
 
-      {splitId.length ? (
+      {splitId.length > 0 && (
         <Modal handleClose={() => setSplitId("")}>
           <AddSplitModal
             setSplitId={setSplitId}
@@ -121,8 +124,6 @@ const RoyaltySplit = () => {
             setAdding={setAdding}
           />
         </Modal>
-      ) : (
-        <></>
       )}
     </div>
   );

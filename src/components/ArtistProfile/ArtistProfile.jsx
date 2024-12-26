@@ -18,7 +18,7 @@ const ArtistProfile = ({
   const { setScreen, setFormData, formData } = useContext(ScreenContext);
   const [showPlats, setShowPlats] = useState(false);
   const location = useLocation();
-  // console.log(formData);
+  console.log(formData);
 
   // const handlePlatformUrl = (e, profile) => {
   //   console.log(

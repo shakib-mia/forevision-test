@@ -77,7 +77,7 @@ const Takedown = ({ setEditId, songData }) => {
         <Button
           containerClassName={"border-interactive-light-destructive"}
           className={
-            "bg-interactive-light-destructive hover:bg-interactive-light-destructive-hover active:bg-interactive-light-destructive-active focus:bg-interactive-light-destructive-focus"
+            "bg-interactive-light-destructive hover:!bg-interactive-light-destructive-hover active:!bg-interactive-light-destructive-active focus:!bg-interactive-light-destructive-focus"
           }
           type={"submit"}
           // onClick={() => console.log(platformsToDelete)}
