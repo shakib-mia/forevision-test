@@ -38,6 +38,7 @@ const Revenue = () => {
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   const [filterValue, setFilterValue] = useState("song_name");
   const [isLoading, setIsLoading] = useState(true);
+  const [lastUpload, setLastUpload] = useState("");
 
   useEffect(() => {
     if (currentTime >= 0 && currentTime < 12) {
@@ -482,6 +483,12 @@ const Revenue = () => {
 
   // console.log(agg);
 
+  useEffect(() => {
+    axios
+      .get(backendUrl + "upload-date")
+      .then(({ data }) => setLastUpload(data.latestDate));
+  }, []);
+
   return (
     <SongsContext.Provider value={{ songs }}>
       <div
@@ -546,9 +553,11 @@ const Revenue = () => {
                   /> */}
                   <RequestWithdraw />
                 </div>
-                <p className="text-subtitle-1 text-interactive-dark-destructive-active tracking-[0.5px] mt-1 italic">
-                  * Updated Till May 2024
-                </p>
+                {setLastUpload.length && (
+                  <p className="text-subtitle-1 text-white tracking-[0.5px] mt-1 italic">
+                    * Updated Till {lastUpload}
+                  </p>
+                )}
               </div>
 
               <div className="mt-[32px] mb-3 2xl:mb-0 grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
