@@ -465,8 +465,14 @@ const Revenue = () => {
   const handleSortChange = (e) => {
     setFilterValue(e.target.value);
   };
+  const [lastUpload, setLastUpload] = useState("");
 
-  // console.log(agg);
+  useEffect(() => {
+    axios
+      .get("https://server.forevisiondigital.in/upload-date")
+      .then(({ data }) => setLastUpload(data.latestDate));
+  }, []);
+  // console.log(lastUpload);
 
   return (
     <SongsContext.Provider value={{ songs }}>
@@ -530,7 +536,7 @@ const Revenue = () => {
                   />
                 </div>
                 <p className="text-subtitle-1 text-interactive-dark-destructive-active tracking-[0.5px] mt-1 italic">
-                  * Updated Till May 2024
+                  * Updated Till {lastUpload}
                 </p>
               </div>
 
