@@ -8,7 +8,7 @@ const Header = ({ header, subheader }) => {
         {header === "Resso Profile Verification" && (
           <img className="w-5 h-5" src={resso} alt="" />
         )}
-        <h1 className="text-center text-grey-dark text-heading-3-bold">
+        <h1 className="text-center capitalize text-grey-dark text-heading-3-bold">
           {header}
         </h1>
       </div>

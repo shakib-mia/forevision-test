@@ -8,19 +8,16 @@ import React, {
 } from "react";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
-import axios from "axios";
-import { toast } from "react-toastify";
-import Chat from "../Chat/Chat";
-// import { config } from "../../constants";
 import SelectOptions from "../SelectOptions/SelectOptions";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Form = forwardRef(
   (
     {
       fields,
       instruction,
-      // backendUrl,
       uIdKey,
       submitFromParent,
       id,
@@ -30,8 +27,12 @@ const Form = forwardRef(
     },
     ref
   ) => {
+    // console.log(fields.find((item) => item.type === "file"));
     const [disabled, setDisabled] = useState(true);
-    const toastId = React.useRef(null);
+    const [selectedCode, setSelectedCode] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [fullPhoneNumber, setFullPhoneNumber] = useState("");
+    // console.log(fields);
 
     const { profileData } = useContext(ProfileContext);
 
@@ -42,106 +43,46 @@ const Form = forwardRef(
     const formRef = useRef(null);
 
     useEffect(() => {
-      setTimeout(() => {
-        const inputFields = document.getElementsByClassName("input-field");
-        for (const inputField of inputFields) {
-          formData[inputField.name] = "";
-        }
-      }, 0);
-    }, [formData]);
-
-    const user = JSON.parse(sessionStorage.getItem("user"));
+      // Combine phone number and selected code
+      setFullPhoneNumber(`${selectedCode}${phoneNumber}`);
+    }, [selectedCode, phoneNumber]);
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const formData = {};
 
-      for (const field of fields) {
-        if (Object.keys(field).includes("selectItems")) {
-          const selected = field.selectItems
-            .filter((item) => item.selected)
-            .map((item) => item.text);
-          formData[field.name] = selected.join(", ");
-        } else if (e.target[field.name]?.type !== "file") {
-          formData[field.name] = e.target[field.name]?.value;
-        } else {
-          // For file inputs, we can't send the file directly in JSON
-          // You might need to handle file uploads separately
-          formData[field.name] = e.target[field.name].files[0]?.name || "";
-        }
-      }
+      // Prepare the form data
+      const dataToSubmit = { ...formData, phone: fullPhoneNumber };
+      console.log(dataToSubmit);
 
-      if (id === "video-distribution") {
-        const selectItems = fields[5].selectItems.filter(
-          (item) => item.selected === true
-        );
-        const selectedItems = selectItems.map((item) => item.text);
-        formData["video_distribution_content_type"] = selectedItems.join(", ");
-      }
+      // try {
+      //   const response = await axios.post(
+      //     "https://api.forevisiondigital.in/submit-form",
+      //     dataToSubmit,
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: `Bearer ${profileData.user_token}`,
+      //       },
+      //     }
+      //   );
 
-      formData.id = id; // Include the form id
-
-      toastId.current = toast("Loading...", {
-        autoClose: false,
-        position: "bottom-right",
-      });
-
-      // "Sending data:", formData;
-
-      try {
-        const response = await axios.post(
-          "https://api.forevisiondigital.in/submit-form",
-          formData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${profileData.user_token}`,
-            },
-          }
-        );
-
-        if (response.data.insertedId.length) {
-          toast.update(toastId.current, {
-            type: toast.TYPE.SUCCESS,
-            render: "Success",
-            position: "bottom-right",
-            autoClose: 5000,
-          });
-          e.target.reset();
-        } else {
-          throw new Error(response.data.message || "Submission failed");
-        }
-      } catch (error) {
-        console.error("Error submitting form:", error);
-        toast.update(toastId.current, {
-          type: toast.TYPE.ERROR,
-          render: `Error: ${error.message || "An unexpected error occurred"}`,
-          position: "bottom-right",
-          autoClose: 5000,
-        });
-      }
+      //   if (response.data.insertedId.length) {
+      //     toast.success("Form submitted successfully!");
+      //     e.target.reset();
+      //   } else {
+      //     throw new Error(response.data.message || "Submission failed");
+      //   }
+      // } catch (error) {
+      //   console.error("Error submitting form:", error);
+      //   toast.error(`Error: ${error.message || "Unexpected error occurred"}`);
+      // }
     };
 
     const handleChange = (e) => {
       const { name, value } = e.target;
 
-      // Update formData
+      // Update formData dynamically
       formData[name] = value;
-
-      // Handle special cases like multi-select fields
-      for (const field of fields) {
-        if (field.disabled) {
-          formData[field.name] = field.value;
-        }
-
-        if (field.type === "multi-select") {
-          const selected = field.selectItems.filter(
-            (item) => item.selected === true
-          );
-          const concatenatedText = selected.map((obj) => obj.text).join(", ");
-          formData[field.name] = concatenatedText;
-        }
-      }
 
       // Check if all required fields are filled
       const isValid = fields
@@ -156,7 +97,6 @@ const Form = forwardRef(
           );
         });
 
-      // Update the disabled state
       setDisabled(!isValid);
     };
 
@@ -179,14 +119,28 @@ const Form = forwardRef(
           {fields.map((props, key) =>
             props.type === "dropdown" ? (
               <div className="mt-[32px]">
-                <SelectOptions {...props} key={props} />
+                <SelectOptions
+                  {...props}
+                  key={props.name}
+                  onChange={(e) => setSelectedCode(e.target.value)} // Update selected code
+                />
               </div>
-            ) : (
+            ) : props.type === "file" ? (
               <InputField
                 {...props}
                 key={key}
                 id={`input${key}`}
                 containerClassName="mt-[23px] input"
+              />
+            ) : (
+              <InputField
+                {...props}
+                key={key}
+                id={`input${key}`}
+                selectedCode={selectedCode}
+                setSelectedCode={setSelectedCode}
+                containerClassName="mt-[23px] input"
+                onChange={handleChange} // Update phone number or other fields
               />
             )
           )}
@@ -194,10 +148,9 @@ const Form = forwardRef(
           <div className="mt-6">{instruction}</div>
 
           <div className="w-fit mx-auto mt-[70px]">
-            <Button type="submit" text="submit" disabled={disabled} />
+            <Button type="submit" text="Submit" />
           </div>
         </form>
-        {/* <Chat /> */}
       </>
     );
   }

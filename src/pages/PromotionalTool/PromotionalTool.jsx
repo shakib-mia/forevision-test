@@ -12,7 +12,6 @@ const PromotionalTool = () => {
 
   const handleUploadArtwork = (e) => {
     const file = e.target.files[0];
-    // console.log(e.target);
 
     if (file) {
       // console.log("file select", setProfileData);
@@ -53,7 +52,7 @@ const PromotionalTool = () => {
             axios
               .post(backendUrl + "upload-art-work", formData, config)
               .then(({ data }) => {
-                setArtwork(data.artWorkUrl);
+                setArtwork(e.target.files[0].name);
                 // e.target.name
                 // if (setProfileData) {
                 //   setProfileData({ ...profileData, display_image: data.url });
@@ -158,11 +157,12 @@ const PromotionalTool = () => {
 
     {
       label: "Upload Artwork",
-      placeholder: artwork || "E.g. https://m.resso.com/Zs8LFaaLa/",
+      placeholder: artwork || "Upload Your Artwork File",
       name: "promotional_tool_upload_artwork",
       type: "file",
+      accept: "images/*",
       required: true,
-      onChange: handleUploadArtwork,
+      onChange: (e) => handleUploadArtwork(e),
       // value: artwork,
     },
 

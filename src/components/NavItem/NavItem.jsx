@@ -24,7 +24,7 @@ const NavItem = ({ icon, hovered, text, dropdownItem, path }) => {
               {<h2>{text}</h2>}
             </div>
 
-            {dropdownItem && hovered ? (
+            {dropdownItem ? (
               // <img
               //   src={downArrow}
               //   alt="downarrow"

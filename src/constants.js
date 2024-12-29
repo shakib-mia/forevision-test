@@ -47,6 +47,8 @@ import { FaArrowsSplitUpAndLeft, FaCrown } from "react-icons/fa6";
 import { TbDeviceMobileHeart } from "react-icons/tb";
 import CrbtCodes from "./pages/CrbtCodes/CrbtCodes";
 import RoyaltySplit from "./pages/RoyaltySplit/RoyaltySplit";
+import FreshProfile from "./pages/FreshProfile/FreshProfile";
+import Pitch from "./pages/Pitch/Pitch";
 
 // export const backendUrl = "http://localhost:5100/";
 export const backendUrl = "https://server.forevisiondigital.in/";
@@ -124,6 +126,27 @@ export const navItem = [
       {
         dropdownPath: "/youtube-video-takedown",
         text: "YouTube Video Takedown",
+      },
+      {
+        dropdownPath: "/spotify-fresh-profile",
+        text: "Spotify Profile Relocate",
+      },
+
+      {
+        dropdownPath: "/jiosaavn-fresh-profile",
+        text: "JioSaavn Profile Relocate",
+      },
+      {
+        dropdownPath: "/apple-music-fresh-profile",
+        text: "Apple Music Profile Relocate",
+      },
+      {
+        dropdownPath: "/gaana-fresh-profile",
+        text: "Gaana Profile Relocate",
+      },
+      {
+        dropdownPath: "/pitch-for-editorial-playlist",
+        text: "Pitch For Editorial Playlist",
       },
     ],
   },
@@ -479,5 +502,25 @@ export const routes = [
   {
     path: "/royalty-split",
     page: <RoyaltySplit />,
+  },
+  {
+    path: "/spotify-fresh-profile",
+    page: <FreshProfile />,
+  },
+  {
+    path: "/jiosaavn-fresh-profile",
+    page: <FreshProfile />,
+  },
+  {
+    path: "/apple-music-fresh-profile",
+    page: <FreshProfile />,
+  },
+  {
+    path: "/gaana-fresh-profile",
+    page: <FreshProfile />,
+  },
+  {
+    path: "/pitch-for-editorial-playlist",
+    page: <Pitch />,
   },
 ];
