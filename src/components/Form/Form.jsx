@@ -12,6 +12,8 @@ import SelectOptions from "../SelectOptions/SelectOptions";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { data } from "jquery";
+import { useLocation } from "react-router-dom";
 
 const Form = forwardRef(
   (
@@ -32,57 +34,93 @@ const Form = forwardRef(
     const [selectedCode, setSelectedCode] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [fullPhoneNumber, setFullPhoneNumber] = useState("");
+    const location = useLocation();
     // console.log(fields);
 
     const { profileData } = useContext(ProfileContext);
 
-    const formData = useMemo(() => {
-      return {};
-    }, []);
+    const [formData, setFormData] = useState({});
 
     const formRef = useRef(null);
 
-    useEffect(() => {
-      // Combine phone number and selected code
-      setFullPhoneNumber(`${selectedCode}${phoneNumber}`);
-    }, [selectedCode, phoneNumber]);
+    // useEffect(() => {
+    //   // Combine phone number and selected code
+    //   setFullPhoneNumber(`${selectedCode}${phoneNumber}`);
+    // }, [selectedCode, phoneNumber]);
+    console.log(formData);
 
     const handleSubmit = async (e) => {
       e.preventDefault();
 
       // Prepare the form data
-      const dataToSubmit = { ...formData, phone: fullPhoneNumber };
-      console.log(dataToSubmit);
+      const dataToSubmit = {
+        ...formData,
+        [`${location.pathname
+          .split("/")[1]
+          .replace(/-/g, "_")}_phone_ext`]: `${selectedCode}${fullPhoneNumber}`,
+      };
+      dataToSubmit.id = id;
+      // console.log(dataToSubmit);
 
-      // try {
-      //   const response = await axios.post(
-      //     "https://api.forevisiondigital.in/submit-form",
-      //     dataToSubmit,
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         Authorization: `Bearer ${profileData.user_token}`,
-      //       },
-      //     }
-      //   );
+      try {
+        const response = await axios.post(
+          "http://localhost:5100/submit-form",
+          dataToSubmit,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${profileData.user_token}`,
+            },
+          }
+        );
 
-      //   if (response.data.insertedId.length) {
-      //     toast.success("Form submitted successfully!");
-      //     e.target.reset();
-      //   } else {
-      //     throw new Error(response.data.message || "Submission failed");
-      //   }
-      // } catch (error) {
-      //   console.error("Error submitting form:", error);
-      //   toast.error(`Error: ${error.message || "Unexpected error occurred"}`);
-      // }
+        if (response.data.insertedId.length) {
+          toast.success("Form submitted successfully!");
+          e.target.reset();
+        } else {
+          throw new Error(response.data.message || "Submission failed");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        toast.error(`Error: ${error.message || "Unexpected error occurred"}`);
+      }
     };
 
     const handleChange = (e) => {
-      const { name, value } = e.target;
-
+      const { name, value, checked, placeholder, options } = e.target;
       // Update formData dynamically
-      formData[name] = value;
+      console.log(name);
+
+      if (name.split("-")[0] === "isrc") {
+        if (
+          !formData[
+            `${location.pathname.split("/")[1].replace(/-/g, "_")}_isrc`
+          ]
+        ) {
+          // console.log();
+          formData[
+            `${location.pathname.split("/")[1].replace(/-/g, "_")}_isrc`
+          ] = ""; // Initialize as an empty string if undefined
+        }
+
+        if (e.target.checked) {
+          formData[
+            `${location.pathname.split("/")[1].replace(/-/g, "_")}_isrc`
+          ] = formData[
+            `${location.pathname.split("/")[1].replace(/-/g, "_")}_isrc`
+          ]
+            ? formData[
+                `${location.pathname.split("/")[1].replace(/-/g, "_")}_isrc`
+              ] +
+              "," +
+              name.split("-")[1]
+            : name.split("-")[1];
+        }
+      } else {
+        formData[name] = value;
+      }
+
+      setFormData({ ...formData });
 
       // Check if all required fields are filled
       const isValid = fields
@@ -107,6 +145,7 @@ const Form = forwardRef(
           onChange={handleChange}
           id={id || "myForm"}
           ref={ref || formRef}
+          autoComplete="off"
           className={`mt-[90px] rounded-[15px] shadow-lg pt-[29px] px-[50px] 2xl:px-[60px] 3xl:px-[101px] pb-[80px] bg-white-secondary w-7/12 mx-auto ${containerClassName}`}
         >
           {heading && (

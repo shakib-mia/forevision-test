@@ -22,6 +22,7 @@ const SelectInput = ({ id, item }) => {
       <input
         type="checkbox"
         id={item.name + "_" + id}
+        name={item.name}
         className="hidden"
         onChange={(e) => handleChange(e.target.checked)}
       />

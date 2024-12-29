@@ -56,7 +56,6 @@ const FreshProfile = () => {
     },
     {
       label: "ISRC",
-      placeholder: "ISRC",
       name:
         location.pathname
           .split("-fresh-profile")[0]
@@ -67,6 +66,7 @@ const FreshProfile = () => {
       selectItems: isrcArray.map((item) => ({
         text: item.trim(),
         selected: false,
+        name: "isrc-" + item.trim(),
       })),
       required: true,
     },
@@ -146,7 +146,7 @@ const FreshProfile = () => {
 
       <Form
         fields={fields}
-        uIdKey={"youtube_user_id"}
+        uIdKey={location.pathname.split("/")[1] + "_user_id"}
         id={location.pathname.split("/")[1]}
         // backendUrl="http://adztronaut.com/music/admin/api/addYouTubeOac"
       />
