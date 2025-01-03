@@ -55,7 +55,11 @@ const Distribution = () => {
     e.preventDefault();
 
     axios
-      .get(backendUrl + `coupon-codes/${e.target.couponCode.value}`)
+      .get(backendUrl + `coupon-codes/${e.target.couponCode.value}`, {
+        headers: {
+          planName: planStore.planName.split("-").join(" "),
+        },
+      })
       .then(({ data }) => setDiscountData(data))
       .catch((error) => {
         setError(true);
