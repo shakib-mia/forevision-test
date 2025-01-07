@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import check from "./../../assets/icons/checkbox.webp";
 import { useLocation } from "react-router-dom";
 import SelectInput from "../SelectInput/SelectInput";
@@ -8,6 +8,7 @@ import codes from "country-calling-code";
 import CountryCodeItem from "../CountryCodeItem/CountryCodeItem";
 import downArrow from "../../assets/icons/down-arrow.webp";
 import countryCodes from "country-codes-list";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const InputField = (props) => {
   const [checked, setChecked] = useState(false);
@@ -49,8 +50,9 @@ const InputField = (props) => {
     successNote,
     maxLength,
   } = props;
-
   // console.log(label, hideRequired);
+  const { userData } = useContext(ProfileContext);
+  // console.log(value);
 
   const inputType =
     type === "password" ? (passwordVisible ? "text" : "password") : type;
@@ -182,7 +184,7 @@ const InputField = (props) => {
                 ) : type === "multi-select" ? (
                   // multi check selects
                   selectItems.map((item, id) => (
-                    <SelectInput item={item} id={id} key={id} />
+                    <SelectInput item={item} id={item.id} key={id} />
                   ))
                 ) : type === "tel" ? (
                   <div className="relative h-full flex items-center">
@@ -227,6 +229,7 @@ const InputField = (props) => {
                       name={name}
                       className={`border border-surface-white-line text-[12px] rounded-[4px] bg-surface-white-surface-1 w-full pl-6 pr-[16px] py-[12px] focus:outline-interactive-light-focus placeholder:text-black-secondary text-paragraph-2 input-field focus:bg-surface-white ${fieldClassName}`}
                       id={id}
+                      value={value}
                     />
                   </div>
                 ) : (

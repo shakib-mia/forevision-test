@@ -1,31 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../../components/Header/Header";
 import Form from "../../components/Form/Form";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const YoutubeClaimRelease = () => {
+  const { userData } = useContext(ProfileContext);
+
   const fields = [
     {
       label: "User Name",
       placeholder: "Name",
       type: "text",
       name: "youtube_claim_release_name",
-      required: true,
+      value: userData["user-id"],
+      disabled: userData["user-id"]?.length,
     },
     {
       label: "Email Address",
       placeholder: "Email",
       type: "email",
       name: "youtube_claim_release_email",
-
-      required: true,
+      value: userData.emailId,
+      disabled: userData.emailId?.length,
     },
     {
       label: "Phone",
       placeholder: "Phone",
-      type: "tel",
+      type: "text",
       name: "youtube_claim_release_phone",
-
-      required: false,
+      value: userData?.phone_no,
+      disabled: userData?.phone_no?.length,
     },
     {
       label: "Song Name",

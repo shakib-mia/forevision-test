@@ -18,7 +18,7 @@ const FreshProfile = () => {
 
   const fields = [
     {
-      label: "Name",
+      label: "User Name",
       placeholder: "Name",
       name:
         location.pathname
@@ -28,6 +28,8 @@ const FreshProfile = () => {
           .join("_") + "_fresh_profile_name",
       type: "text",
       required: true,
+      value: userData["user-id"],
+      disabled: userData["user-id"]?.length,
     },
     {
       label: "Email Address",
@@ -40,6 +42,8 @@ const FreshProfile = () => {
           .join("_") + "_fresh_profile_email",
       type: "email",
       required: true,
+      value: userData.emailId,
+      disabled: userData.emailId?.length,
     },
     {
       label: "UPC",

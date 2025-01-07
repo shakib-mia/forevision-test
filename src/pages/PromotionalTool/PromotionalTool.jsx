@@ -7,8 +7,9 @@ import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const PromotionalTool = () => {
-  const { token } = useContext(ProfileContext);
+  const { token, userData } = useContext(ProfileContext);
   const [artwork, setArtwork] = useState("");
+  const [artworkUrl, setArtworkUrl] = useState("");
 
   const handleUploadArtwork = (e) => {
     const file = e.target.files[0];
@@ -53,6 +54,8 @@ const PromotionalTool = () => {
               .post(backendUrl + "upload-art-work", formData, config)
               .then(({ data }) => {
                 setArtwork(e.target.files[0].name);
+                setArtworkUrl(data.artWorkUrl);
+                // console.log(data);
                 // e.target.name
                 // if (setProfileData) {
                 //   setProfileData({ ...profileData, display_image: data.url });
@@ -71,25 +74,28 @@ const PromotionalTool = () => {
 
   const fields = [
     {
-      label: "Your Name",
+      label: "User Name",
       placeholder: "Your Name",
       name: "promotional_tool_name",
       type: "text",
-      required: true,
+      value: userData["user-id"],
+      disabled: userData["user-id"]?.length,
     },
     {
       label: "Email Address",
       placeholder: "Email Address",
       name: "promotional_tool_email",
       type: "email",
-      required: true,
+      value: userData.emailId,
+      disabled: userData.emailId?.length,
     },
     {
       label: "Phone",
       placeholder: "Phone",
       name: "promotional_tool_phone",
-      type: "tel",
-      required: true,
+      type: "text",
+      value: userData.phone_no,
+      disabled: userData.phone_no?.length,
     },
     {
       label: "Order Number",
@@ -171,7 +177,7 @@ const PromotionalTool = () => {
       placeholder: "Artist Facebook URL",
       name: "promotional_tool_artist_fb_url",
       type: "text",
-      required: true,
+      required: false,
     },
 
     {
@@ -179,7 +185,7 @@ const PromotionalTool = () => {
       placeholder: "Artist Facebook URL",
       name: "promotional_tool_artist2_fb_url",
       type: "text",
-      required: true,
+      required: false,
     },
 
     {
@@ -187,7 +193,7 @@ const PromotionalTool = () => {
       placeholder: "Artist Facebook URL",
       name: "promotional_tool_artist3_fb_url",
       type: "text",
-      required: true,
+      required: false,
     },
 
     {
@@ -195,7 +201,7 @@ const PromotionalTool = () => {
       placeholder: "Artist Facebook URL",
       name: "promotional_tool_artist4_fb_url",
       type: "text",
-      required: true,
+      required: false,
     },
 
     {
@@ -203,7 +209,7 @@ const PromotionalTool = () => {
       placeholder: "Artist Instagram URL",
       name: "promotional_tool_artist_instra_url",
       type: "text",
-      required: true,
+      required: false,
     },
 
     {
@@ -211,7 +217,7 @@ const PromotionalTool = () => {
       placeholder: "Artist Instagram URL",
       name: "promotional_tool_artist_instra2_url",
       type: "text",
-      required: true,
+      required: false,
     },
 
     {
@@ -219,7 +225,7 @@ const PromotionalTool = () => {
       placeholder: "Artist Instagram URL",
       name: "promotional_tool_artist_instra3_url",
       type: "text",
-      required: true,
+      required: false,
     },
 
     {
@@ -227,7 +233,7 @@ const PromotionalTool = () => {
       placeholder: "Artist Instagram URL",
       name: "promotional_tool_artist_instra4_url",
       type: "text",
-      required: true,
+      required: false,
     },
 
     {
@@ -235,7 +241,7 @@ const PromotionalTool = () => {
       placeholder: "Artist Twitter URL",
       name: "promotional_tool_artist_twiter_url",
       type: "text",
-      required: true,
+      required: false,
     },
 
     {
@@ -257,18 +263,20 @@ const PromotionalTool = () => {
     {
       label: "Promotion Type",
       placeholder: "Promotion Type",
-      name: "promotional_tool_artist_type",
+      name: "promotional_tool_promotion_type",
       type: "multi-select",
       onChange: (e) => console.log(e.target.value),
       selectItems: [
         {
           text: "Editors Daily",
-          name: "promotional_tool_artist_type",
+          name: "promotional_tool_promotion_type",
+          id: "Editors Daily",
           selected: false,
         },
         {
           text: "New Release",
-          name: "promotional_tool_artist_type",
+          name: "promotional_tool_promotion_type",
+          id: "New Release",
           selected: false,
         },
         // {
@@ -338,16 +346,16 @@ const PromotionalTool = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    formData.set("promotional_tool_upload_artwork", artwork);
+    formData.set("promotional_tool_upload_artwork", artworkUrl);
 
     // Convert FormData to a plain object for easier logging
     const formDataObject = {};
     for (let [key, value] of formData.entries()) {
       formDataObject[key] = value;
     }
-    formData.promotional_tool_upload_artwork = artwork;
+
     formDataObject.id = "promotional-tool";
-    // console.log(formDataObject);
+
     axios
       .post(backendUrl + "submit-form", formDataObject)
       .then(({ data }) => console.log(data));

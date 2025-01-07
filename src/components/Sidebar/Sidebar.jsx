@@ -13,8 +13,14 @@ import ReactGA from "react-ga4";
 
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
-  const { setProfileData, userData, logoutTime, loginTime, setLogoutTime } =
-    useContext(ProfileContext);
+  const {
+    setProfileData,
+    userData,
+    logoutTime,
+    setUserData,
+    loginTime,
+    setLogoutTime,
+  } = useContext(ProfileContext);
   // console.log(userData);
   const navigate = useNavigate();
 
@@ -35,6 +41,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     setProfileData({});
+    setUserData({});
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
     navigate("/login");

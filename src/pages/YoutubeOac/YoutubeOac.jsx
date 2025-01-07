@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../../components/Header/Header";
 import Form from "../../components/Form/Form";
+import { ProfileContext } from "../../contexts/ProfileContext";
 // import axios from "axios";
 
 const YoutubeOac = () => {
+  const { userData } = useContext(ProfileContext);
+
+  // console.log(userData.phone_no.split(""));
+
   const fields = [
     {
-      label: "Name",
+      label: "User Name",
       placeholder: "Name",
       name: "youtube_oac_name",
       type: "text",
       required: true,
+      value: userData["user-id"],
+      disabled: userData["user-id"]?.length,
     },
     {
       label: "Email Address",
@@ -18,13 +25,17 @@ const YoutubeOac = () => {
       name: "youtube_oac_email",
       type: "email",
       required: true,
+      value: userData.emailId,
+      disabled: userData.emailId?.length,
     },
     {
       label: "Phone",
       placeholder: "Phone",
       name: "youtube_oac_phone",
-      type: "tel",
+      type: "text",
       required: true,
+      value: userData?.phone_no,
+      disabled: userData?.phone_no?.length,
       // pattern: /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g,
     },
     {
@@ -36,14 +47,16 @@ const YoutubeOac = () => {
     },
     {
       label: "Artist YT Channel",
-      placeholder: "E.g. https://www.youtube.com/Zs8LFaaLa/",
+      placeholder:
+        "E.g. https://www.youtube.com/channel/UCSEjFhl6mzoVnJdMGwO5KZA",
       name: "youtube_oac_yt_channel",
       type: "text",
       required: true,
     },
     {
       label: "Artist Topic Channel",
-      placeholder: "E.g. https://m.resso.com/Zs8LFaaLa/",
+      placeholder:
+        "E.g. https://www.youtube.com/channel/UCSEjFhl6mzoVnJdMGwO5KZA",
       name: "youtube_oac_topic_channel",
       type: "text",
       required: true,

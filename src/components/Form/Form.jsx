@@ -37,7 +37,7 @@ const Form = forwardRef(
     const location = useLocation();
     // console.log(fields);
 
-    const { profileData } = useContext(ProfileContext);
+    const { profileData, userData } = useContext(ProfileContext);
 
     const [formData, setFormData] = useState({});
 
@@ -47,7 +47,6 @@ const Form = forwardRef(
     //   // Combine phone number and selected code
     //   setFullPhoneNumber(`${selectedCode}${phoneNumber}`);
     // }, [selectedCode, phoneNumber]);
-    console.log(formData);
 
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -60,73 +59,75 @@ const Form = forwardRef(
           .replace(/-/g, "_")}_phone_ext`]: `${selectedCode}${fullPhoneNumber}`,
       };
       dataToSubmit.id = id;
-      // console.log(dataToSubmit);
+      console.log(dataToSubmit);
 
-      try {
-        const response = await axios.post(
-          "http://localhost:5100/submit-form",
-          dataToSubmit,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${profileData.user_token}`,
-            },
-          }
-        );
+      // try {
+      //   const response = await axios.post(
+      //     "http://localhost:5100/submit-form",
+      //     dataToSubmit,
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: `Bearer ${profileData.user_token}`,
+      //       },
+      //     }
+      //   );
 
-        if (response.data.insertedId.length) {
-          toast.success("Form submitted successfully!");
-          e.target.reset();
-        } else {
-          throw new Error(response.data.message || "Submission failed");
-        }
-      } catch (error) {
-        console.error("Error submitting form:", error);
-        toast.error(`Error: ${error.message || "Unexpected error occurred"}`);
-      }
+      //   if (response.data.insertedId.length) {
+      //     toast.success("Form submitted successfully!");
+      //     e.target.reset();
+      //   } else {
+      //     throw new Error(response.data.message || "Submission failed");
+      //   }
+      // } catch (error) {
+      //   console.error("Error submitting form:", error);
+      //   toast.error(`Error: ${error.message || "Unexpected error occurred"}`);
+      // }
     };
 
     const handleChange = (e) => {
-      const { name, value, checked, placeholder, options } = e.target;
-      // Update formData dynamically
-      console.log(name);
+      const { name, value, checked, type } = e.target;
+
+      const newFormData = { ...formData };
 
       if (name.split("-")[0] === "isrc") {
-        if (
-          !formData[
-            `${location.pathname.split("/")[1].replace(/-/g, "_")}_isrc`
-          ]
-        ) {
-          // console.log();
-          formData[
-            `${location.pathname.split("/")[1].replace(/-/g, "_")}_isrc`
-          ] = ""; // Initialize as an empty string if undefined
-        }
+        const isrcKey = `${location.pathname
+          .split("/")[1]
+          .replace(/-/g, "_")}_isrc`;
+        newFormData[isrcKey] = newFormData[isrcKey] || "";
 
-        if (e.target.checked) {
-          formData[
-            `${location.pathname.split("/")[1].replace(/-/g, "_")}_isrc`
-          ] = formData[
-            `${location.pathname.split("/")[1].replace(/-/g, "_")}_isrc`
-          ]
-            ? formData[
-                `${location.pathname.split("/")[1].replace(/-/g, "_")}_isrc`
-              ] +
-              "," +
-              name.split("-")[1]
+        if (checked) {
+          newFormData[isrcKey] = newFormData[isrcKey]
+            ? `${newFormData[isrcKey]},${name.split("-")[1]}`
             : name.split("-")[1];
         }
+      } else if (type === "checkbox") {
+        newFormData[name] = Array.isArray(newFormData[name])
+          ? [...newFormData[name]]
+          : [];
+
+        if (checked) {
+          newFormData[name].push(
+            e.target.id.split("_")[e.target.id.split("_").length - 1]
+          );
+        } else {
+          newFormData[name] = newFormData[name].filter(
+            (item) =>
+              item !== e.target.id.split("_")[e.target.id.split("_").length - 1]
+          );
+        }
+
+        setFormData(newFormData);
       } else {
-        formData[name] = value;
+        newFormData[name] = value;
       }
 
-      setFormData({ ...formData });
+      setFormData(newFormData);
 
-      // Check if all required fields are filled
       const isValid = fields
         .filter((field) => field.required)
         .every((field) => {
-          const fieldValue = formData[field.name];
+          const fieldValue = newFormData[field.name];
           return (
             fieldValue &&
             (Array.isArray(fieldValue)
@@ -137,6 +138,35 @@ const Form = forwardRef(
 
       setDisabled(!isValid);
     };
+
+    useEffect(() => {
+      // Capture autofilled values when the form loads or fields update
+      const autofilledData = {};
+      fields.forEach((field) => {
+        const inputElement = document.getElementsByName(field.name)[0];
+        if (inputElement) {
+          autofilledData[field.name] = inputElement.value || "";
+        }
+      });
+
+      // Update formData with autofilled values
+      setFormData((prev) => ({ ...prev, ...autofilledData }));
+
+      // Check if all required fields are filled for validation
+      const isValid = fields
+        .filter((field) => field.required)
+        .every((field) => {
+          const fieldValue = autofilledData[field.name] || formData[field.name];
+          return (
+            fieldValue &&
+            (Array.isArray(fieldValue)
+              ? fieldValue.length > 0
+              : fieldValue.trim() !== "")
+          );
+        });
+
+      // setDisabled(!isValid);
+    }, [fields]);
 
     return (
       <>

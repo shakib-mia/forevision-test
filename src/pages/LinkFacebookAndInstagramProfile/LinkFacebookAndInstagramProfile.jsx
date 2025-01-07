@@ -33,8 +33,8 @@ const LinkFacebookAndInstagramProfile = () => {
       required: true,
     },
     {
-      label: "Instagram",
-      placeholder: "Instagram",
+      label: "Instagram Handle",
+      placeholder: "Enter Your Instagram Handle Here",
       name: "link_facebook_insta_song_insta",
       type: "text",
       required: true,

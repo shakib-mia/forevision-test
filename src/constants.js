@@ -123,10 +123,10 @@ export const navItem = [
         dropdownPath: "/facebook-insta-whitelisting",
         text: "Facebook & Instagram Whitelisting",
       },
-      {
-        dropdownPath: "/youtube-video-takedown",
-        text: "YouTube Video Takedown",
-      },
+      // {
+      //   dropdownPath: "/youtube-video-takedown",
+      //   text: "YouTube Video Takedown",
+      // },
       {
         dropdownPath: "/spotify-fresh-profile",
         text: "Spotify Profile Relocate",

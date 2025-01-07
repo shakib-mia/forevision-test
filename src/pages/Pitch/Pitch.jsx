@@ -1,30 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../../components/Header/Header";
 import Form from "../../components/Form/Form";
+import { ProfileContext } from "../../contexts/ProfileContext";
 // import axios from "axios";
 
 const Pitch = () => {
+  const { userData } = useContext(ProfileContext);
+
   const fields = [
     {
-      label: "Name",
+      label: "User Name",
       placeholder: "Name",
       name: "pitch_name",
       type: "text",
-      required: true,
+      value: userData["user-id"],
+      disabled: userData["user-id"]?.length,
     },
     {
       label: "Email Address",
       placeholder: "Email Address",
       name: "pitch_email",
       type: "email",
-      required: true,
+      value: userData.emailId,
+      disabled: userData.emailId?.length,
     },
     {
       label: "Phone",
       placeholder: "Enter Your Phone Number Here",
       name: "pitch_phone",
-      type: "tel",
-      required: true,
+      type: "text",
+      value: userData?.phone_no,
+      disabled: userData?.phone_no?.length,
       // pattern: /^((\+91)?|91|91\s|\+91\s)?[789][0-9]{9}/g,
     },
     {
