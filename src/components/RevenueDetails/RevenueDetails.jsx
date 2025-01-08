@@ -15,7 +15,7 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
   const detailsRef = useRef(null);
   const [preview, showPreview] = useState(false);
   const { userData } = useContext(ProfileContext);
-  const [crbtCodes, setCrbtCodes] = useState([]);
+  // const [crbtCodes, setCrbtCodes] = useState([]);
   // console.log(userData);
   const items = songs
     .filter((song) => song.isrc === details)
@@ -105,11 +105,11 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
     jsonToExcel(newItems, `Revenue_Details_of_${result[0].song_name}.xlsx`);
   };
 
-  useEffect(() => {
-    axios
-      .get(backendUrl + `crbt-codes/${result[0].isrc}`)
-      .then(({ data }) => setCrbtCodes(data));
-  }, [result[0], result[0].isrc]);
+  // useEffect(() => {
+  //   axios
+  //     .get(backendUrl + `crbt-codes/${result[0].isrc}`)
+  //     .then(({ data }) => setCrbtCodes(data));
+  // }, [result[0], result[0].isrc]);
 
   return (
     <>
@@ -156,7 +156,7 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
               {result[0].isrc}
             </p>
 
-            <ul className="flex flex-col gap-1 pl-3 mt-4 flex-wrap">
+            {/* <ul className="flex flex-col gap-1 pl-3 mt-4 flex-wrap">
               {crbtCodes.length > 0 ? (
                 crbtCodes.map((item) => (
                   <li key={item._id}>
@@ -171,7 +171,7 @@ const RevenueDetails = ({ setDetails, songs, details }) => {
               ) : (
                 <></>
               )}
-            </ul>
+            </ul> */}
           </div>
           {/* //  list heading  */}
           <ul className="grid grid-cols-3 gap-3 mt-5 mb-2 text-subtitle-1 xl:text-heading-6-bold text-grey-dark items-center">
