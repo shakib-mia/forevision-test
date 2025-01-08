@@ -67,7 +67,11 @@ const SelectOptions = ({
             MozAppearance: "none",
           }}
         >
-          {placeholder && <option key={0}>{placeholder}</option>}
+          {placeholder && (
+            <option selected disabled key={0}>
+              {placeholder}
+            </option>
+          )}
           {options.map((option, key) => (
             <option
               key={key + 1}

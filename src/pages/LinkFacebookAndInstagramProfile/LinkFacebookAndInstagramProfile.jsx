@@ -1,21 +1,67 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import Form from "../../components/Form/Form";
+import { ProfileContext } from "../../contexts/ProfileContext";
+import axios from "axios";
+import { backendUrl } from "../../constants";
 
 const LinkFacebookAndInstagramProfile = () => {
+  const { token, userData } = useContext(ProfileContext);
+  const [songs, setSongs] = useState([]);
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      console.log(!userData?.isrc);
+      // If there's no ISRC, set loading false and return
+      if (!userData?.isrc) {
+        // setIsLoading(false);
+        return;
+      }
+
+      try {
+        const config = {
+          headers: {
+            token: sessionStorage.getItem("token") || token,
+          },
+        };
+
+        const response = await axios.get(
+          `${backendUrl}songs/by-user-id/${userData["user-id"]}`,
+          config
+        );
+
+        setSongs(
+          response.data.map((item) => {
+            return { songName: item.Song || item.songName, ISRC: item.ISRC };
+          })
+        );
+
+        // setSongs(response.data);
+      } catch (error) {
+        console.error("Error fetching songs:", error);
+        // setSongs([]);
+      } finally {
+        // setIsLoading(false);
+      }
+    };
+
+    fetchSongs();
+  }, [userData?.isrc, userData?.["user-id"], token]);
+
   const fields = [
+    // {
+    //   label: "Song Name",
+    //   placeholder: "Song Name",
+    //   name: "link_facebook_insta_song_name",
+    //   type: "text",
+    //   required: true,
+    // },
     {
-      label: "Song Name",
-      placeholder: "Song Name",
-      name: "link_facebook_insta_song_name",
-      type: "text",
-      required: true,
-    },
-    {
-      label: "ISRC Code",
-      placeholder: "ISRC Code",
+      label: "ISRC",
+      placeholder: "ISRC",
       name: "link_facebook_insta_song_isrc",
-      type: "text",
+      type: userData.isrc?.length && "dropdown",
+      options: userData.isrc?.split(","),
       required: true,
     },
     {
@@ -23,7 +69,8 @@ const LinkFacebookAndInstagramProfile = () => {
       placeholder: "Email Address",
       name: "link_facebook_insta_song_email",
       type: "email",
-      required: true,
+      value: userData.emailId,
+      disabled: userData.emailId?.length,
     },
     {
       label: "FB Artist Page URL",

@@ -52,7 +52,7 @@ const InputField = (props) => {
   } = props;
   // console.log(label, hideRequired);
   const { userData } = useContext(ProfileContext);
-  // console.log(value);
+  // console.log(onChange);
 
   const inputType =
     type === "password" ? (passwordVisible ? "text" : "password") : type;
@@ -202,7 +202,11 @@ const InputField = (props) => {
                       <input
                         type="checkbox"
                         className="hidden"
-                        onChange={(e) => setShowCodes(e.target.checked)}
+                        onChange={(e) => {
+                          onChange
+                            ? onChange(e)
+                            : setShowCodes(e.target.checked);
+                        }}
                       />
                       {showCodes && (
                         <div className="absolute top-4 h-7 overflow-y-auto w-7 bg-white p-2 shadow-xl z-10">

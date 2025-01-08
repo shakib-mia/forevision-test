@@ -4,7 +4,7 @@ import Form from "../../components/Form/Form";
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const FbInstaWhitelisting = () => {
-  const { userData } = useContext(ProfileContext);
+  const { userData, recordLabels } = useContext(ProfileContext);
 
   const fields = [
     {
@@ -38,6 +38,8 @@ const FbInstaWhitelisting = () => {
       type: "text",
       name: "rfacebook_insta_whitelisting_record_label",
       required: true,
+      type: "dropdown",
+      options: recordLabels,
     },
     {
       label: "URL of the Facebook Page to be linked",

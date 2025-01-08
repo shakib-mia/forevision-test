@@ -26,6 +26,7 @@ const Form = forwardRef(
       containerClassName,
       headingSize,
       heading,
+      children,
     },
     ref
   ) => {
@@ -185,13 +186,16 @@ const Form = forwardRef(
               {heading}
             </h3>
           )}
+
+          {children}
+
           {fields.map((props, key) =>
             props.type === "dropdown" ? (
               <div className="mt-[32px]">
                 <SelectOptions
                   {...props}
                   key={props.name}
-                  onChange={(e) => setSelectedCode(e.target.value)} // Update selected code
+                  // onChange={(e) => setSelectedCode(e.target.value)} // Update selected code
                 />
               </div>
             ) : props.type === "file" ? (

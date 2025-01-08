@@ -7,8 +7,6 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 const YoutubeOac = () => {
   const { userData } = useContext(ProfileContext);
 
-  // console.log(userData.phone_no.split(""));
-
   const fields = [
     {
       label: "User Name",

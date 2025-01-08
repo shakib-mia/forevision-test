@@ -1,15 +1,27 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import Form from "../../components/Form/Form";
 import { backendUrl } from "../../constants";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const PromotionalTool = () => {
   const { token, userData } = useContext(ProfileContext);
   const [artwork, setArtwork] = useState("");
   const [artworkUrl, setArtworkUrl] = useState("");
+  const navigate = useNavigate();
+  // const [selectedIsrc, setSelectedIsrc] = useState("");
+  console.log(userData);
+
+  // useEffect(() => {
+  //   // console.log(selectedIsrc);
+  //   axios
+  //     .get(backendUrl + "songs/by-isrc/" + selectedIsrc)
+  //     .then(({ data }) => console.log(data));
+  // }, [selectedIsrc]);
 
   const handleUploadArtwork = (e) => {
     const file = e.target.files[0];
@@ -98,11 +110,13 @@ const PromotionalTool = () => {
       disabled: userData.phone_no?.length,
     },
     {
-      label: "Order Number",
-      placeholder: "Order No.",
-      name: "promotional_tool_order_no",
-      type: "number",
+      label: "ISRC",
+      placeholder: "ISRC.",
+      name: "promotional_tool_isrc",
+      type: userData.isrc?.length && "dropdown",
+      options: userData.isrc?.split(","),
       required: true,
+      // onChange: (e) => setSelectedIsrc(e.target.value),
     },
     {
       label: "Artist Name",
@@ -356,9 +370,15 @@ const PromotionalTool = () => {
 
     formDataObject.id = "promotional-tool";
 
-    axios
-      .post(backendUrl + "submit-form", formDataObject)
-      .then(({ data }) => console.log(data));
+    axios.post(backendUrl + "submit-form", formDataObject).then(({ data }) => {
+      if (data.insertedId.length) {
+        toast.success("Form submitted successfully!");
+        e.target.reset();
+        navigate("/");
+      } else {
+        throw new Error(data.message || "Submission failed");
+      }
+    });
   };
 
   return (

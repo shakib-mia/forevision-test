@@ -50,8 +50,8 @@ import RoyaltySplit from "./pages/RoyaltySplit/RoyaltySplit";
 import FreshProfile from "./pages/FreshProfile/FreshProfile";
 import Pitch from "./pages/Pitch/Pitch";
 
-// export const backendUrl = "http://localhost:5100/";
-export const backendUrl = "https://server.forevisiondigital.in/";
+export const backendUrl = "http://localhost:5100/";
+// export const backendUrl = "https://server.forevisiondigital.in/";
 export const currencyAPI = "https://api.frankfurter.app/latest";
 
 export const navItem = [

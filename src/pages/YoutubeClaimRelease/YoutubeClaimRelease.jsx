@@ -1,10 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import Form from "../../components/Form/Form";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import axios from "axios";
+import { backendUrl } from "../../constants";
 
 const YoutubeClaimRelease = () => {
   const { userData } = useContext(ProfileContext);
+  const [songs, setSongs] = useState([]);
+
+  useEffect(() => {
+    if (userData["user-id"]) {
+      axios
+        .get(backendUrl + "songs/by-user-id/" + userData["user-id"])
+        .then(({ data }) =>
+          setSongs(data.map((item) => item.Song || item.songName))
+        );
+    }
+  }, []);
 
   const fields = [
     {
@@ -34,9 +47,9 @@ const YoutubeClaimRelease = () => {
     {
       label: "Song Name",
       placeholder: "Song Name",
-      type: "text",
+      type: "dropdown",
+      options: songs,
       name: "youtube_claim_release_song_name",
-
       required: true,
     },
     {
