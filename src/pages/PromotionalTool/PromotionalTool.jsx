@@ -276,20 +276,19 @@ const PromotionalTool = () => {
 
     {
       label: "Promotion Type",
-      placeholder: "Promotion Type",
       name: "promotional_tool_promotion_type",
       type: "multi-select",
       onChange: (e) => console.log(e.target.value),
       selectItems: [
         {
           text: "Editors Daily",
-          name: "promotional_tool_promotion_type",
+          name: "Editors Daily",
           id: "Editors Daily",
           selected: false,
         },
         {
           text: "New Release",
-          name: "promotional_tool_promotion_type",
+          name: "New Release",
           id: "New Release",
           selected: false,
         },
@@ -368,6 +367,7 @@ const PromotionalTool = () => {
       formDataObject[key] = value;
     }
 
+    formDataObject.promotional_tool_upload_user_email = userData.emailId;
     formDataObject.id = "promotional-tool";
 
     axios.post(backendUrl + "submit-form", formDataObject).then(({ data }) => {
