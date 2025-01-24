@@ -21,6 +21,7 @@ const AlbumDetails = () => {
   const [filmBanner, setFilmBanner] = useState({});
   const [showRecordLabelForm, setShowRecordLabelForm] = useState(false);
   const location = useLocation();
+  console.log(recordLabels);
 
   const handleDetailSubmit = () => {
     // formData;

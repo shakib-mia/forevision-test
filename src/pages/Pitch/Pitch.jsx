@@ -165,9 +165,10 @@ const Pitch = () => {
     },
     {
       label: "ISRC",
-      placeholder: "Enter ISRC",
+      placeholder: "ISRC",
       name: "pitch_isrc",
-      type: "text",
+      type: userData.isrc?.length && "dropdown",
+      options: userData.isrc?.split(","),
       required: true,
     },
     {

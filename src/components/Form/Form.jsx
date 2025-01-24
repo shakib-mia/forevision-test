@@ -60,30 +60,30 @@ const Form = forwardRef(
           .replace(/-/g, "_")}_phone_ext`]: `${selectedCode}${fullPhoneNumber}`,
       };
       dataToSubmit.id = id;
-      console.log(dataToSubmit);
+      // console.log(dataToSubmit);
 
-      // try {
-      //   const response = await axios.post(
-      //     "http://localhost:5100/submit-form",
-      //     dataToSubmit,
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         Authorization: `Bearer ${profileData.user_token}`,
-      //       },
-      //     }
-      //   );
+      try {
+        const response = await axios.post(
+          "http://localhost:5100/submit-form",
+          dataToSubmit,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${profileData.user_token}`,
+            },
+          }
+        );
 
-      //   if (response.data.insertedId.length) {
-      //     toast.success("Form submitted successfully!");
-      //     e.target.reset();
-      //   } else {
-      //     throw new Error(response.data.message || "Submission failed");
-      //   }
-      // } catch (error) {
-      //   console.error("Error submitting form:", error);
-      //   toast.error(`Error: ${error.message || "Unexpected error occurred"}`);
-      // }
+        if (response.data.insertedId.length) {
+          toast.success("Form submitted successfully!");
+          e.target.reset();
+        } else {
+          throw new Error(response.data.message || "Submission failed");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        toast.error(`Error: ${error.message || "Unexpected error occurred"}`);
+      }
     };
 
     const handleChange = (e) => {

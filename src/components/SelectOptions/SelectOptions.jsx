@@ -16,6 +16,7 @@ const SelectOptions = ({
   selected,
   hideRequired,
 }) => {
+  console.log(options);
   return (
     <div className={`input ${containerClassName}`}>
       <div className="flex justify-between">

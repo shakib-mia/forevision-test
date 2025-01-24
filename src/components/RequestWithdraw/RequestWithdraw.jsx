@@ -18,6 +18,7 @@ const RequestWithdraw = () => {
       setLoading(false); // Data has been loaded
     }
   }, [userData, foundRequested]);
+  console.log(userData);
 
   const handleRevenueWithdraw = () => {
     if (userData.kycFilled) {
@@ -32,7 +33,7 @@ const RequestWithdraw = () => {
         }
       });
     } else {
-      // navigate("/revenue-form");
+      navigate("/revenue-form");
     }
   };
 

@@ -114,7 +114,10 @@ const Distribution = () => {
           // setScreen("preview");
           // : setCollapsed(true);
           console.log(price);
-          if (location.search.includes("Social") || isNaN(price)) {
+          if (
+            location.search.toLocaleLowerCase().includes("social") ||
+            isNaN(price)
+          ) {
             axios
               .get(`${backendUrl}plans/monthly-sales/${price}`, {
                 headers: {
@@ -123,9 +126,9 @@ const Distribution = () => {
               })
               .then(({ data }) => {
                 console.log(data);
-                if (data.acknowledged) {
-                  navigate("/");
-                }
+                // if (data.acknowledged) {
+                navigate("/");
+                // }
               });
             // alert("/");
           } else {
