@@ -123,9 +123,9 @@ const Pitch = () => {
 
   const fields = [
     {
-      label: "Name",
+      label: "User Name",
       placeholder: "Enter Your Name",
-      name: "pitch_name",
+      name: "pitch_user_name",
       type: "text",
       value: userData["user-id"],
       disabled: userData["user-id"]?.length,
@@ -275,8 +275,9 @@ const Pitch = () => {
       formDataObject[key] = value;
     }
 
-    formDataObject.pitch_upload_user_email = userData.emailId;
-    formDataObject.id = "promotional-tool";
+    formDataObject.pitch_name = `${userData.first_name} ${userData.last_name}`;
+    formDataObject.emailId = userData.emailId;
+    formDataObject.id = "pitch-for-editorial-playlist";
     delete formDataObject.pitch_artist_image;
     delete formDataObject.pitch_artwork_psd;
 

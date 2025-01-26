@@ -32,7 +32,7 @@ const YoutubeClaimRelease = () => {
       label: "Email Address",
       placeholder: "Email",
       type: "email",
-      name: "youtube_claim_release_email",
+      name: "emailId",
       value: userData.emailId,
       disabled: userData.emailId?.length,
     },

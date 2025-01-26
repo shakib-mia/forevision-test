@@ -67,7 +67,7 @@ const LinkFacebookAndInstagramProfile = () => {
     {
       label: "Email Address",
       placeholder: "Email Address",
-      name: "link_facebook_insta_song_email",
+      name: "emailId",
       type: "email",
       value: userData.emailId,
       disabled: userData.emailId?.length,

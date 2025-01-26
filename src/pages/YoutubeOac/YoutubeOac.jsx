@@ -20,7 +20,7 @@ const YoutubeOac = () => {
     {
       label: "Email Address",
       placeholder: "Email Address",
-      name: "youtube_oac_email",
+      name: "emailId",
       type: "email",
       required: true,
       value: userData.emailId,

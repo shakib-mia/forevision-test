@@ -108,7 +108,7 @@ const FreshProfile = () => {
       {
         label: "Email Address",
         placeholder: "Email Address",
-        name: getFieldName("_fresh_profile_email"),
+        name: "emailId",
         type: "email",
         required: true,
         value: userData.emailId || "",
@@ -236,7 +236,7 @@ const FreshProfile = () => {
     console.log(formDataObject);
 
     const response = await axios.post(
-      "http://localhost:5100/submit-form",
+      backendUrl + "submit-form",
       formDataObject,
       {
         headers: {

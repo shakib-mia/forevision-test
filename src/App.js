@@ -41,6 +41,7 @@ function App() {
   const [logoutTime, setLogoutTime] = useState(null);
   const [updated, setUpdated] = useState(false);
   const [sessionDuration, setSessionDuration] = useState(0);
+  console.log(recordLabels);
 
   /* Working api calls starts here */
 

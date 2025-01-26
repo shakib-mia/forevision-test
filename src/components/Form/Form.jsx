@@ -13,7 +13,8 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { data } from "jquery";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { backendUrl } from "../../constants";
 
 const Form = forwardRef(
   (
@@ -36,10 +37,11 @@ const Form = forwardRef(
     const [phoneNumber, setPhoneNumber] = useState("");
     const [fullPhoneNumber, setFullPhoneNumber] = useState("");
     const location = useLocation();
+    const navigate = useNavigate();
     // console.log(fields);
 
     const { profileData, userData } = useContext(ProfileContext);
-
+    console.log(profileData);
     const [formData, setFormData] = useState({});
 
     const formRef = useRef(null);
@@ -64,7 +66,7 @@ const Form = forwardRef(
 
       try {
         const response = await axios.post(
-          "http://localhost:5100/submit-form",
+          backendUrl + "submit-form",
           dataToSubmit,
           {
             headers: {
@@ -77,6 +79,7 @@ const Form = forwardRef(
         if (response.data.insertedId.length) {
           toast.success("Form submitted successfully!");
           e.target.reset();
+          navigate("/");
         } else {
           throw new Error(response.data.message || "Submission failed");
         }

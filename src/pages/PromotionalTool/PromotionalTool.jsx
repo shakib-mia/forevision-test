@@ -96,10 +96,10 @@ const PromotionalTool = () => {
     {
       label: "Email Address",
       placeholder: "Email Address",
-      name: "promotional_tool_email",
+      name: "emailId",
       type: "email",
-      value: userData.emailId,
-      disabled: userData.emailId?.length,
+      value: userData.emailId || userData.user_email,
+      disabled: userData.emailId?.length || userData.user_email?.length,
     },
     {
       label: "Phone",
@@ -126,9 +126,45 @@ const PromotionalTool = () => {
       required: true,
     },
     {
+      label: "Artist Facebook URL",
+      placeholder: "Artist Facebook URL",
+      name: "promotional_tool_artist_fb_url",
+      type: "text",
+      required: false,
+    },
+    {
+      label: "Artist Instagram URL",
+      placeholder: "Artist Instagram URL",
+      name: "promotional_tool_artist_instra_url",
+      type: "text",
+      required: false,
+    },
+    {
+      label: "Artist Twitter URL",
+      placeholder: "Artist Twitter URL",
+      name: "promotional_tool_artist_twiter_url",
+      type: "text",
+      required: false,
+    },
+
+    {
       label: "Artist Name 2",
       placeholder: "Artist Name 2",
       name: "promotional_tool_artist_nm2",
+      type: "text",
+      required: false,
+    },
+    {
+      label: "Artist 2 Facebook URL",
+      placeholder: "Artist Facebook URL",
+      name: "promotional_tool_artist2_fb_url",
+      type: "text",
+      required: false,
+    },
+    {
+      label: "Artist 2 Instagram URL",
+      placeholder: "Artist Instagram URL",
+      name: "promotional_tool_artist_instra2_url",
       type: "text",
       required: false,
     },
@@ -139,6 +175,22 @@ const PromotionalTool = () => {
       type: "text",
       required: false,
     },
+
+    {
+      label: "Artist 3 Facebook URL",
+      placeholder: "Artist Facebook URL",
+      name: "promotional_tool_artist3_fb_url",
+      type: "text",
+      required: false,
+    },
+    {
+      label: "Artist 3 Instagram URL",
+      placeholder: "Artist Instagram URL",
+      name: "promotional_tool_artist_instra3_url",
+      type: "text",
+      required: false,
+    },
+
     {
       label: "Artist Name 4",
       placeholder: "Artist Name 4",
@@ -147,12 +199,36 @@ const PromotionalTool = () => {
       required: false,
     },
     {
+      label: "Artist 4 Facebook URL",
+      placeholder: "Artist Facebook URL",
+      name: "promotional_tool_artist4_fb_url",
+      type: "text",
+      required: false,
+    },
+
+    {
+      label: "Artist 4 Instagram URL",
+      placeholder: "Artist Instagram URL",
+      name: "promotional_tool_artist_instra4_url",
+      type: "text",
+      required: false,
+    },
+
+    {
       label: "Others Artist",
       placeholder: "Others Artist",
       name: "promotional_tool_other_artist",
       type: "text",
       required: false,
     },
+    {
+      label: "Others URL",
+      placeholder: "Use comma (,) for multiple",
+      name: "promotional_tool_artist_other_url",
+      type: "text",
+      required: true,
+    },
+
     {
       label: "Song Name",
       placeholder: "Song Name",
@@ -184,86 +260,6 @@ const PromotionalTool = () => {
       required: true,
       onChange: (e) => handleUploadArtwork(e),
       // value: artwork,
-    },
-
-    {
-      label: "Artist Facebook URL",
-      placeholder: "Artist Facebook URL",
-      name: "promotional_tool_artist_fb_url",
-      type: "text",
-      required: false,
-    },
-
-    {
-      label: "Artist 2 Facebook URL",
-      placeholder: "Artist Facebook URL",
-      name: "promotional_tool_artist2_fb_url",
-      type: "text",
-      required: false,
-    },
-
-    {
-      label: "Artist 3 Facebook URL",
-      placeholder: "Artist Facebook URL",
-      name: "promotional_tool_artist3_fb_url",
-      type: "text",
-      required: false,
-    },
-
-    {
-      label: "Artist 4 Facebook URL",
-      placeholder: "Artist Facebook URL",
-      name: "promotional_tool_artist4_fb_url",
-      type: "text",
-      required: false,
-    },
-
-    {
-      label: "Artist Instagram URL",
-      placeholder: "Artist Instagram URL",
-      name: "promotional_tool_artist_instra_url",
-      type: "text",
-      required: false,
-    },
-
-    {
-      label: "Artist 2 Instagram URL",
-      placeholder: "Artist Instagram URL",
-      name: "promotional_tool_artist_instra2_url",
-      type: "text",
-      required: false,
-    },
-
-    {
-      label: "Artist 3 Instagram URL",
-      placeholder: "Artist Instagram URL",
-      name: "promotional_tool_artist_instra3_url",
-      type: "text",
-      required: false,
-    },
-
-    {
-      label: "Artist 4 Instagram URL",
-      placeholder: "Artist Instagram URL",
-      name: "promotional_tool_artist_instra4_url",
-      type: "text",
-      required: false,
-    },
-
-    {
-      label: "Artist Twitter URL",
-      placeholder: "Artist Twitter URL",
-      name: "promotional_tool_artist_twiter_url",
-      type: "text",
-      required: false,
-    },
-
-    {
-      label: "Others URL",
-      placeholder: "Use comma (,) for multiple",
-      name: "promotional_tool_artist_other_url",
-      type: "text",
-      required: true,
     },
 
     {
@@ -367,7 +363,7 @@ const PromotionalTool = () => {
       formDataObject[key] = value;
     }
 
-    formDataObject.promotional_tool_upload_user_email = userData.emailId;
+    formDataObject.emailId = userData.emailId || userData.user_email;
     formDataObject.id = "promotional-tool";
 
     axios.post(backendUrl + "submit-form", formDataObject).then(({ data }) => {
