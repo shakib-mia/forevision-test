@@ -363,8 +363,22 @@ const PromotionalTool = () => {
       formDataObject[key] = value;
     }
 
+    const selectedKeys = Object.keys(formDataObject)
+      .filter((key) => formDataObject[key] === "on")
+      .map((item) => item.split("-")[1]);
+
     formDataObject.emailId = userData.emailId || userData.user_email;
     formDataObject.id = "promotional-tool";
+    formDataObject.promotionTypes = Object.keys(formDataObject).filter(
+      (key) => formDataObject[key] === "on"
+    );
+    Object.keys(formDataObject).forEach((key) => {
+      if (formDataObject[key] === "on") {
+        delete formDataObject[key];
+      }
+    });
+
+    // console.log(formDataObject);
 
     axios.post(backendUrl + "submit-form", formDataObject).then(({ data }) => {
       if (data.insertedId.length) {
