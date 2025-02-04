@@ -460,7 +460,7 @@ const Distribution = () => {
                   type={"button"}
                   onClick={handleSubmit}
                   containerClassName={"mt-4"}
-                  // disabled={!accepted || !signature.length}
+                  disabled={!accepted || !signature.length}
                 >
                   Submit
                 </Button>
