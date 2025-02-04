@@ -76,7 +76,15 @@ const RoyaltySplit = () => {
               ) : songs.length > 0 ? (
                 songs.map(
                   (
-                    { ISRC, isrc, songName, Song, _id, splitAvailable },
+                    {
+                      ISRC,
+                      isrc,
+                      songName,
+                      Song,
+                      _id,
+                      splitAvailable,
+                      splitDetails,
+                    },
                     key
                   ) => (
                     <tr
@@ -89,13 +97,28 @@ const RoyaltySplit = () => {
                       <td className="p-2">{Song || songName}</td>
                       <td className="flex justify-center items-center h-full">
                         <Button
-                          className={"!py-1"}
+                          className={`!py-1 ${
+                            splitDetails?.confirmed
+                              ? "!bg-interactive-light-confirmation-disabled"
+                              : splitDetails?.denied
+                              ? "!bg-interactive-light-destructive-disabled"
+                              : splitAvailable
+                              ? "!bg-interactive-light-disabled"
+                              : "!bg-interactive-light"
+                          }`}
                           containerClassName={"mt-[4px]"}
                           onClick={() => setSplitId(_id)}
                           disabled={adding === _id || splitAvailable}
                         >
                           {splitAvailable ? (
-                            <>Requested</>
+                            // <>Requested</>
+                            splitDetails?.confirmed ? (
+                              "Confirmed"
+                            ) : splitDetails?.denied ? (
+                              "Denied"
+                            ) : (
+                              "Requested"
+                            )
                           ) : (
                             <>Add{adding === _id ? "ing" : ""} Split</>
                           )}

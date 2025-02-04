@@ -1,30 +1,29 @@
-import React, { useEffect, useState } from "react";
-import styles from "./TimerCircle.module.css"; // Import the CSS module
+import React from "react";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { BsExclamationTriangle } from "react-icons/bs";
 
 const TimerCircle = () => {
-  const [timeLeft, setTimeLeft] = useState(5);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <div className={styles.timerContainer}>
-      <div className={styles.circle}>
-        <div className={`${styles.mask} ${styles.full}`}>
-          <div className={styles.fill}></div>
-        </div>
-        <div className={`${styles.mask} ${styles.half}`}>
-          <div className={styles.fill}></div>
-          <div className={`${styles.fill} ${styles.fix}`}></div>
-        </div>
-        <div className={styles.insideCircle}>
-          {timeLeft} {/* Display the remaining time */}
-        </div>
+    <div style={{ textAlign: "center" }}>
+      <BsExclamationTriangle className="text-interactive-light-destructive mx-auto text-[5rem] mb-3" />
+      <p>
+        Your yearly plan has expired. You will be redirected to the plans page.
+      </p>
+      <div className="flex justify-center">
+        <CountdownCircleTimer
+          isPlaying
+          duration={5}
+          colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+          colorsTime={[7, 5, 2, 0]}
+          strokeWidth={8}
+          size={100}
+        >
+          {({ remainingTime }) => (
+            <span className="text-heading-4-bold text-grey-dark">
+              {remainingTime}
+            </span>
+          )}
+        </CountdownCircleTimer>
       </div>
     </div>
   );

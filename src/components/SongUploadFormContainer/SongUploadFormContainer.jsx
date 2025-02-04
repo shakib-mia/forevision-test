@@ -10,12 +10,14 @@ import Preview from "../Preview/Preview";
 import { PlanContext } from "../../contexts/PlanContext";
 import axios from "axios";
 import { backendUrl } from "../../constants";
+import { toast } from "react-toastify";
 
 const SongUploadFormContainer = ({ screen, setScreen }) => {
   const [artistCount, setArtistCount] = useState(1);
   const location = useLocation();
   const { planStore } = useContext(PlanContext);
   const [data, setData] = useState({});
+  // console.log();
 
   const intiFormData = JSON.parse(localStorage.getItem("song-data"))?.artists
     ? JSON.parse(localStorage.getItem("song-data"))
@@ -28,6 +30,7 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
         ],
         selectedPlatforms: [],
         file: {},
+        price: location.search.split("?")[2],
       }
     : [
         {
@@ -130,7 +133,8 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
     if (location.pathname.includes("edit-song")) {
       axios
         .get(backendUrl + "songs/" + location.pathname.split("/")[2])
-        .then(({ data }) => setFormData(data));
+        .then(({ data }) => setFormData(data))
+        .catch((data) => toast.error(data.response.data.message));
     }
   }, []);
 

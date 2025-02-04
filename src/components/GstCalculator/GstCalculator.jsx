@@ -18,7 +18,7 @@ const GSTCalculator = ({ location }) => {
   const totalPrice =
     userData.billing_country === "India"
       ? totalPriceInPaisa / 100
-      : totalPriceInPaisa;
+      : totalPriceInPaisa / 100;
 
   // Define the GST rate
   const gstRate = 18;

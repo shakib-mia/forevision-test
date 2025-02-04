@@ -70,7 +70,7 @@ function App() {
   }, [token]);
 
   useEffect(() => {
-    if (token && location.pathname !== "/login") {
+    if (token) {
       const config = {
         headers: {
           token,

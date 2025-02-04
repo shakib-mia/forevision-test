@@ -39,17 +39,19 @@ const CountrySelector = ({ setSelectedCountry, selectedCountry }) => {
   };
 
   return (
-    <SelectOptions
-      id="country-select"
-      label="Select a Country"
-      options={countries}
-      onChange={handleCountryChange}
-      value={selectedCountry}
-      placeholder="Choose a country"
-      required={true}
-      name="country"
-      hideRequired={true}
-    />
+    <>
+      <SelectOptions
+        id="country-select"
+        label="Select a Country"
+        options={countries}
+        onChange={handleCountryChange}
+        value={selectedCountry}
+        placeholder="Choose a country"
+        required={true}
+        name="country"
+        hideRequired={true}
+      />
+    </>
   );
 };
 

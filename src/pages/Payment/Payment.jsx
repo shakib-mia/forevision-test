@@ -48,7 +48,7 @@ const Payment = () => {
   const handleRazorpayPayment = async (params) => {
     axios
       .post(backendUrl + "razorpay", {
-        amount: parseFloat(location.search.split("?")[1].split("=")[1]),
+        amount: parseFloat(formData.price),
         currency: userData.billing_country === "India" ? "INR" : "USD",
       }) // ============  *** Need to set amount dynamically here ***  ================
       .then(({ data }) => initPayment(data))
@@ -99,25 +99,15 @@ const Payment = () => {
             songData.status = "paid";
             songData.paymentDate = formatDate(new Date());
             axios
-              .put(
-                backendUrl +
-                  "songs/by-order-id/" +
-                  location.search.split("?")[2].split("=")[1],
-                songData
-              )
+              .put(backendUrl + "songs/by-order-id/" + formData.price, songData)
               .then(({ data }) => {
                 if (data.acknowledged) {
                   axios
-                    .get(
-                      `${backendUrl}plans/monthly-sales/${
-                        location.search.split("?")[1].split("=")[1]
-                      }`,
-                      {
-                        headers: {
-                          token,
-                        },
-                      }
-                    )
+                    .get(`${backendUrl}plans/monthly-sales/${formData.price}`, {
+                      headers: {
+                        token,
+                      },
+                    })
                     .then(({ data }) => console.log(data));
                   navigate("/payment-success");
                 }
@@ -226,13 +216,13 @@ const Payment = () => {
           >
             <img src={razorpay} alt="razorpay" className="w-1/3" />
           </button>
-
+          {/* 
           <PayPalScriptProvider options={initialOptions}>
             <PayPalButtons
               onApprove={handleApprove}
               createOrder={createOrder}
             />
-          </PayPalScriptProvider>
+          </PayPalScriptProvider> */}
         </div>
       </div>
     </div>

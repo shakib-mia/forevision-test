@@ -1,5 +1,3 @@
-/* TimerCircle.module.css */
-
 /* Container for the timer */
 .timerContainer {
   display: flex;
@@ -74,6 +72,7 @@
   align-items: center;
   font-size: 2em;
   color: #3498db;
+  animation: reverse-rotate 5s linear infinite; /* Apply reverse rotation with the same speed */
 }
 
 /* Animation for rotating the outer circle */
@@ -87,5 +86,12 @@
 @keyframes maskRotate {
   100% {
     transform: rotate(360deg);
+  }
+}
+
+/* Animation for reverse rotating the number */
+@keyframes reverse-rotate {
+  100% {
+    transform: rotate(-360deg);
   }
 }

@@ -12,6 +12,9 @@ import { ScreenContext } from "../../contexts/ScreenContext";
 import GSTCalculator from "../GstCalculator/GstCalculator";
 import { PlanContext } from "../../contexts/PlanContext";
 import Agreement from "../Agreement/Agreement";
+import logo from "../../assets/icons/logo.PNG";
+import { formatDate } from "../../utils/formatDate";
+import useRazorpay from "react-razorpay";
 
 const Distribution = () => {
   const location = useLocation();
@@ -24,8 +27,11 @@ const Distribution = () => {
   const { formData, setScreen } = useContext(ScreenContext);
 
   const [orderId, setOrderId] = useState("XXXXX");
-  const { planStore } = useContext(PlanContext);
+  const { setPlanStore, planStore } = useContext(PlanContext);
   const [showAgreement, setShowAgreement] = useState(false);
+  const [Razorpay] = useRazorpay();
+  // const { setPlanStore, planStore } = useContext(PlanContext);
+  // console.log();
 
   // console.log();
   const config = {
@@ -70,7 +76,7 @@ const Distribution = () => {
       });
   };
 
-  console.log(location.search);
+  // console.log();
 
   const handlePayLater = () => {
     // console.log(formData);
@@ -92,6 +98,94 @@ const Distribution = () => {
       });
   };
 
+  const handleRazorpayPayment = async (params) => {
+    // console.log();
+    axios
+      .post(backendUrl + "razorpay", {
+        amount: parseFloat(formData.price),
+        currency: userData.billing_country === "India" ? "INR" : "USD",
+      }) // ============  *** Need to set amount dynamically here ***  ================
+      .then(({ data }) => initPayment(data))
+      .catch((error) => console.log(error));
+  };
+  // console.log(location);
+  const initPayment = (data) => {
+    const options = {
+      // key: "rzp_live_hbtXvHKqIxw2XQ",
+      key: "rzp_test_VWlIF0sBVpBClm",
+      amount: data.amount,
+      // currency: data.currency,
+      name: data.name,
+      currency: userData.billing_country === "India" ? "INR" : "USD",
+      description: "Test",
+      image: logo,
+      order_id: data.id,
+      handler: async (response) => {
+        // response.songId =
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+          response;
+        try {
+          const verifyUrl = backendUrl + "razorpay/verify";
+          const config = {
+            headers: {
+              token,
+            },
+          };
+          // console.log(config);
+          const res = await axios.post(
+            verifyUrl,
+            { ...response, price: data.amount },
+            config
+          );
+          // res;
+
+          if (res.data.insertCursor.acknowledged) {
+            setPlanStore((prev) => ({
+              ...prev,
+              order_id: orderId,
+              payment_id: razorpay_payment_id,
+            }));
+            // navigate("/payment-success");
+            // clg;
+            // songData, razorpay_order_id;
+            formData.order_id = razorpay_order_id;
+            formData.payment_id = razorpay_payment_id;
+            formData.status = "paid";
+            formData.paymentDate = formatDate(new Date());
+            formData.planName = location.search.split("?")[1];
+
+            axios
+              .put(
+                backendUrl + "songs/by-order-id/" + formData.orderId,
+                formData
+              )
+              .then((res) => {
+                if (res.data.acknowledged) {
+                  axios
+                    .get(`${backendUrl}plans/monthly-sales/${data.amount}`, {
+                      headers: {
+                        token,
+                      },
+                    })
+                    .then(({ data }) => console.log(data));
+                  navigate("/payment-success");
+                }
+              })
+              .catch((error) => console.log(error));
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      theme: {
+        color: "#064088",
+      },
+    };
+
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+  };
+
   // console.log(location.search.split("?")[2]);
   const handleSubmit = () => {
     const price = parseFloat(location.search.split("?")[2]) / 100;
@@ -99,6 +193,8 @@ const Distribution = () => {
     formData.orderId = orderId;
     formData.userEmail = userData.emailId;
     formData.status = "pending";
+    formData.planName = planStore.planName;
+    formData.price = price * 100;
 
     console.log(formData);
 
@@ -110,14 +206,12 @@ const Distribution = () => {
       })
       .then(({ data }) => {
         if (data.acknowledged && !location.search.includes("yearly-plan")) {
-          // setCount(count + 1);
-          // setScreen("preview");
-          // : setCollapsed(true);
-          console.log(price);
+          // if yearly (that's why isNaN logic added) of free plan
           if (
             location.search.toLocaleLowerCase().includes("social") ||
             isNaN(price)
           ) {
+            // axios.put(backendUrl+)
             axios
               .get(`${backendUrl}plans/monthly-sales/${price}`, {
                 headers: {
@@ -125,20 +219,43 @@ const Distribution = () => {
                 },
               })
               .then(({ data }) => {
-                console.log(data);
-                // if (data.acknowledged) {
-                navigate("/");
+                formData.planName = location.search.split("?")[1];
+
+                axios
+                  .put(
+                    backendUrl + "songs/by-order-id/" + formData.orderId,
+                    formData
+                  )
+                  .then((res) => {
+                    if (res.data.acknowledged) {
+                      axios
+                        .get(
+                          `${backendUrl}plans/monthly-sales/${
+                            data.amount || formData.price
+                          }`,
+                          {
+                            headers: {
+                              token,
+                            },
+                          }
+                        )
+                        .then(({ data }) => console.log(data));
+                      navigate("/");
+                    }
+                  })
+                  .catch((error) => console.log(error));
                 // }
               });
             // alert("/");
           } else {
-            navigate(
-              `/payment?price=${
-                discountData.discountPercentage
-                  ? discountPrice
-                  : location.search.split("?")[2]
-              }?id=${orderId}`
-            );
+            handleRazorpayPayment();
+            // navigate(
+            //   `/payment?price=${
+            //     discountData.discountPercentage
+            //       ? discountPrice
+            //       : location.search.split("?")[2]
+            //   }?id=${orderId}`
+            // );
           }
         }
 
@@ -338,12 +455,12 @@ const Distribution = () => {
           ) : (
             <div className="flex gap-2 justify-center">
               {userData.yearlyPlanEndDate ||
-              location.pathname.includes("social") ? (
+              location.search.toLowerCase().includes("social") ? (
                 <Button
                   type={"button"}
                   onClick={handleSubmit}
                   containerClassName={"mt-4"}
-                  disabled={!accepted || !signature.length}
+                  // disabled={!accepted || !signature.length}
                 >
                   Submit
                 </Button>

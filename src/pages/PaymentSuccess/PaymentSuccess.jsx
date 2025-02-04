@@ -14,7 +14,7 @@ const PaymentSuccess = () => {
       className="h-screen w-screen flex justify-center items-center bg-cover bg-no-repeat"
       style={{ backgroundImage: `url(${bg})` }}
     >
-      <div className="max-w-lg rounded-md bg-white shadow-lg p-3">
+      <div className="max-w-xl rounded-md bg-white shadow-lg p-3">
         <div className="bg-success relative w-5 h-5 rounded-full flex justify-center items-center text-white text-heading-5 mx-auto">
           <FaCheck className="absolute z-20" />
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success z-0 opacity-75"></span>
@@ -25,18 +25,12 @@ const PaymentSuccess = () => {
         <div className="grid grid-cols-2 mt-5 divide-x divide-y divide-grey border border-grey">
           <h6 className="p-2 text-heading-6">Plan Name</h6>
           <h6 className="p-2 text-heading-6-bold !border-t-0">
-            {planStore.planName.split("=")[1] === "69900"
-              ? "ForeVision CRBT+"
-              : planStore.planName.split("=")[1] === "49800"
-              ? "ForeVision Pro"
-              : planStore.planName.split("=")[1] === "49900"
-              ? "ForeVision CRBT"
-              : "ForeVision Social"}
+            {planStore.planName}
           </h6>
           <h6 className="p-2 text-heading-6 !border-l-0">Price</h6>
           <h6 className="p-2 text-heading-6-bold flex items-center gap-1">
             <FaRupeeSign />
-            {parseFloat(planStore.planName.split("=")[1]) / 100}
+            {parseFloat(planStore.price) / 100}
           </h6>
 
           <h6 className="p-2 text-heading-6 !border-l-0">Payment ID</h6>

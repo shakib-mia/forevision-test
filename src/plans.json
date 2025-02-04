@@ -86,5 +86,11 @@
     ],
     "specialTag": "Airtel, BSNL, Vi, Jio",
     "monthly-sales": []
+  },
+  {
+    "name": "ForeVision Digital Yearly Plan",
+    "planName": "Yearly",
+    "price": 429900,
+    "monthly-sales": []
   }
 ]

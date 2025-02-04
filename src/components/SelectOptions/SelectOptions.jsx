@@ -16,7 +16,6 @@ const SelectOptions = ({
   selected,
   hideRequired,
 }) => {
-  console.log(options);
   return (
     <div className={`input ${containerClassName}`}>
       <div className="flex justify-between">
@@ -76,7 +75,7 @@ const SelectOptions = ({
           {options.map((option, key) => (
             <option
               key={key + 1}
-              selected={option.selected || false}
+              selected={option?.selected || false}
               value={options.length === 0 ? "Loading..." : option}
               className="border-[1px] p-2 text-paragraph-2"
             >
@@ -89,7 +88,7 @@ const SelectOptions = ({
         </div>
       </div>
 
-      <p className="text-subtitle-2 text-grey-dark">{note}</p>
+      {note && <p className="text-subtitle-2 text-grey-dark">{note}</p>}
     </div>
   );
 };

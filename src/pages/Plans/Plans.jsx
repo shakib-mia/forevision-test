@@ -38,6 +38,7 @@ const DynamicSongPlans = () => {
   const [plans, setPlans] = useState([]);
   // const [dollarRate * 1.5, setDollarRate] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  // console.log(plans.);
 
   // Fetch plans data
   useEffect(() => {
@@ -50,7 +51,7 @@ const DynamicSongPlans = () => {
           },
         });
         const data = await response.json();
-        setPlans(data);
+        setPlans(data.slice(0, 4));
       } catch (error) {
         console.error("Error fetching plans:", error);
       } finally {
@@ -223,27 +224,28 @@ const DynamicSongPlans = () => {
           <p>Album</p>
         </div>
       )}
-      {isLoading || (
-        <div className="flex gap-3 justify-center items-center w-fit mx-auto">
-          <Button
-            containerClassName="!h-fit !w-fit flex items-center z-10"
-            className="text-white w-4 h-4 lg:w-6 lg:!h-6 !px-0 !py-0 flex items-center justify-center"
-            onClick={handlePrevClick}
-            id="plans-prev"
-          >
-            <FaChevronLeft className="text-heading-6" />
-          </Button>
-          <p>Swipe For More</p>
-          <Button
-            containerClassName="!h-fit !w-fit flex items-center z-10"
-            className="text-white w-4 h-4 lg:w-6 lg:!h-6 !px-0 !py-0 flex items-center justify-center"
-            onClick={handleNextClick}
-            id="plans-next"
-          >
-            <FaChevronRight className="text-heading-6" />
-          </Button>
-        </div>
-      )}
+      {isLoading ||
+        (!checked && (
+          <div className="flex gap-3 justify-center items-center w-fit mx-auto">
+            <Button
+              containerClassName="!h-fit !w-fit flex items-center z-10"
+              className="text-white w-4 h-4 lg:w-6 lg:!h-6 !px-0 !py-0 flex items-center justify-center"
+              onClick={handlePrevClick}
+              id="plans-prev"
+            >
+              <FaChevronLeft className="text-heading-6" />
+            </Button>
+            <p>Swipe For More</p>
+            <Button
+              containerClassName="!h-fit !w-fit flex items-center z-10"
+              className="text-white w-4 h-4 lg:w-6 lg:!h-6 !px-0 !py-0 flex items-center justify-center"
+              onClick={handleNextClick}
+              id="plans-next"
+            >
+              <FaChevronRight className="text-heading-6" />
+            </Button>
+          </div>
+        ))}
 
       {checked ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 lg:mt-5 gap-4">

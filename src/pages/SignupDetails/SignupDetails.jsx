@@ -9,6 +9,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { backendUrl, user } from "../../constants";
 import SelectOptions from "../../components/SelectOptions/SelectOptions";
+import CountrySelector from "../../components/CountrySelector/CountrySelector";
 
 const SignupDetails = () => {
   const [checked, setChecked] = useState(false);
@@ -21,6 +22,15 @@ const SignupDetails = () => {
   const [signupDetailsData, setSignupDetailsData] = useState(userData);
   const [originalData] = useState(userData); // Store the initial user data for comparison
   const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    // console.log(token);
+    axios
+      .get(backendUrl + "token-time", {
+        headers: { token },
+      })
+      .then(({ data }) => setUserData({ ...userData, user_email: data.email }));
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -204,7 +214,7 @@ const SignupDetails = () => {
       type: "text",
       value: userData.gst_no,
       onChange: (e) => setUserData({ ...userData, gst_no: e.target.value }),
-      hideRequired: false,
+      hideRequired: true,
     },
     {
       id: "userId",
@@ -217,6 +227,7 @@ const SignupDetails = () => {
       required: true,
       note: hideNote || (available ? "Available" : "Already in Use"),
       dangerNote: !available,
+      hideRequired: true,
       successNote: available,
     },
   ];
@@ -254,17 +265,11 @@ const SignupDetails = () => {
       .post(backendUrl + "post-user-details", userDetailsData, config)
       .then((res) => {
         if (res.data.acknowledged) {
-          // console.log(res.data);
-
           navigate("/");
           window.location.reload();
         }
       })
       .catch((err) => console.log(err));
-
-    // console.log(userDetailsData);
-
-    // console.log(phoneValidity.test(e.target.phone.value));
   };
 
   return (
@@ -337,25 +342,33 @@ const SignupDetails = () => {
                 />
               </>
             ) : props.name === "billing_country" ? (
-              <SelectOptions
-                containerClassName={`mt-3 w-1/2`}
-                label={"Country"}
-                options={countries.map((item) => item.name?.common)}
-                onChange={(e) => {
-                  setUserData({ ...userData, [props.name]: e.target.value });
-                  const country = countries.find(
-                    (item) => item.name.common === e.target.value
-                  );
-
-                  setSelectedCode(
-                    (country.idd.root + country.idd.suffixes[0]).slice(
-                      1,
-                      (country.idd.root + country.idd.suffixes[0]).length
-                    )
-                  );
-                }}
-              />
+              <div className="w-1/2 mt-3">
+                <CountrySelector
+                  selectedCountry={userData.billing_country}
+                  setSelectedCountry={(country) =>
+                    setUserData({ ...userData, [props.name]: country })
+                  }
+                />
+              </div>
             ) : (
+              // <SelectOptions
+              //   containerClassName={`mt-3 w-1/2`}
+              //   label={"Country"}
+              //   options={countries.map((item) => item.name?.common)}
+              //   onChange={(e) => {
+              //     setUserData({ ...userData, [props.name]: e.target.value });
+              //     const country = countries.find(
+              //       (item) => item.name.common === e.target.value
+              //     );
+
+              //     setSelectedCode(
+              //       (country.idd.root + country.idd.suffixes[0]).slice(
+              //         1,
+              //         (country.idd.root + country.idd.suffixes[0]).length
+              //       )
+              //     );
+              //   }}
+              // />
               <InputField
                 {...props}
                 containerId={id}

@@ -1,13 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import axios from "axios";
 import { backendUrl, config } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import { PlanContext } from "../../contexts/PlanContext";
+import { useLocation, useNavigate } from "react-router-dom";
+import { formatDate } from "../../utils/formatDate";
+import logo from "../../assets/icons/logo.PNG";
+import useRazorpay from "react-razorpay";
 
 const YearlyPlanForm = () => {
-  const { userData, token } = useContext(ProfileContext);
-  console.log(userData);
+  const { userData, token, dollarRate } = useContext(ProfileContext);
+  const [orderId, setOrderId] = useState("XXXXX");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { setPlanStore, planStore } = useContext(PlanContext);
+  const [Razorpay] = useRazorpay();
+  console.clear();
+  console.log(dollarRate);
+
+  useEffect(() => {
+    axios
+      .get(backendUrl + "generate-order-id", config)
+      .then(({ data }) => setOrderId(data.orderId));
+  }, []);
+
   const fields = [
     {
       placeholder: "Enter Yor Email ID",
@@ -117,22 +135,111 @@ const YearlyPlanForm = () => {
     },
   ];
 
+  const handleRazorpayPayment = async (formData) => {
+    // console.log();
+    axios
+      .post(backendUrl + "razorpay", {
+        amount:
+          userData.billing_country === "India"
+            ? parseFloat(429900)
+            : parseInt(429900 * dollarRate),
+        currency: userData.billing_country === "India" ? "INR" : "USD",
+      }) // ============  *** Need to set amount dynamically here ***  ================
+      .then(({ data }) => initPayment(data, formData))
+      .catch((error) => console.log(error));
+  };
+  // console.log(location);
+  const initPayment = (data, formData) => {
+    const options = {
+      // key: "rzp_live_hbtXvHKqIxw2XQ",
+      key: "rzp_test_VWlIF0sBVpBClm",
+      amount:
+        userData.billing_country === "India"
+          ? parseFloat(429900)
+          : parseInt(429900 * dollarRate),
+      // currency: data.currency,
+      name: data.name,
+      currency: userData.billing_country === "India" ? "INR" : "USD",
+      description: "Test",
+      image: logo,
+      order_id: data.id,
+      handler: async (response) => {
+        // response.songId =
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+          response;
+        try {
+          const verifyUrl = backendUrl + "razorpay/verify/yearly";
+          const config = {
+            headers: {
+              token,
+            },
+          };
+          // console.log(config);
+          const res = await axios.post(
+            verifyUrl,
+            { ...response, price: 429900 },
+            config
+          );
+          // res;
+
+          if (res.data.insertCursor.acknowledged) {
+            setPlanStore((prev) => ({
+              planName: "ForeVision Digital Yearly Plan",
+              price: 429900,
+              order_id: orderId,
+              payment_id: razorpay_payment_id,
+            }));
+            // navigate("/payment-success");
+            // clg;
+            // songData, razorpay_order_id;
+            formData.orderId = orderId;
+            formData.order_id = razorpay_order_id;
+            formData.payment_id = razorpay_payment_id;
+            formData.status = "paid";
+            formData.paymentDate = formatDate(new Date());
+            formData.planName = location.search.split("?")[1];
+
+            axios
+              .get(`${backendUrl}plans/monthly-sales/${429900}`, {
+                headers: {
+                  token,
+                },
+              })
+              .then(({ data }) => console.log(data));
+            navigate("/payment-success");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      theme: {
+        color: "#064088",
+      },
+    };
+
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const planData = {};
 
     fields.map((item) => (planData[item.name] = e.target[item.name].value));
+    handleRazorpayPayment(planData);
 
     // console.log(planData);
-    axios
-      .post(backendUrl + "yearly-plans", planData, {
-        headers: { token },
-      })
-      .then(({ data }) => {
-        if (data.acknowledged) {
-          e.target.reset();
-        }
-      });
+
+    // console.log(planData);
+    // axios
+    //   .post(backendUrl + "yearly-plans", planData, {
+    //     headers: { token },
+    //   })
+    //   .then(({ data }) => {
+    //     if (data.acknowledged) {
+    //       e.target.reset();
+    //     }
+    //   });
   };
 
   return (
