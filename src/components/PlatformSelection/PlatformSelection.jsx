@@ -18,9 +18,9 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
   // console.log();
   const freeLogic =
     location.search.split("?")[1] !== "yearly-plan" &&
-    (location.search.split("?")[2] === "0" || formData.price === "0");
+    (location.search.split("?")[2] === "0" || parseFloat(formData.price) === 0);
 
-  console.log(freeLogic);
+  console.log(formData.price);
 
   const freePlatformsArray = platforms
     .find(({ platformType }) => platformType === "International")

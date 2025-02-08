@@ -150,7 +150,9 @@ const Distribution = () => {
             // songData, razorpay_order_id;
             formData.order_id = razorpay_order_id;
             formData.payment_id = razorpay_payment_id;
-            formData.status = "paid";
+            if (razorpay_order_id.length) {
+              formData.status = "paid";
+            }
             formData.paymentDate = formatDate(new Date());
             formData.planName = location.search.split("?")[1];
 
@@ -196,8 +198,6 @@ const Distribution = () => {
     formData.planName = planStore.planName;
     formData.price = price * 100;
 
-    console.log(formData);
-
     axios
       .post(backendUrl + "recent-uploads", formData, {
         headers: {
@@ -228,6 +228,9 @@ const Distribution = () => {
                   )
                   .then((res) => {
                     if (res.data.acknowledged) {
+                      toast.success("Song has been uploaded successfully", {
+                        position: "bottom-center",
+                      });
                       axios
                         .get(
                           `${backendUrl}plans/monthly-sales/${

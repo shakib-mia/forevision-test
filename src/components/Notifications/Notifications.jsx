@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { backendUrl } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import { useNavigate } from "react-router-dom";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -9,6 +10,7 @@ const Notifications = () => {
   const [error, setError] = useState(null);
   const { token, refetch } = useContext(ProfileContext);
   const [modifiedCount, setModifiedCount] = useState(0);
+  const navigate = useNavigate();
   // console.log(tokenDetails.iat, notifications[0].date);
 
   useEffect(() => {
@@ -28,6 +30,7 @@ const Notifications = () => {
         // err;
         setError("Failed to fetch notifications.");
         setLoading(false);
+        navigate("/login");
       });
 
     // Ensure cleanup if component unmounts during a pending request

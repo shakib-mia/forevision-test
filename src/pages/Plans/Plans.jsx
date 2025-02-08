@@ -51,7 +51,7 @@ const DynamicSongPlans = () => {
           },
         });
         const data = await response.json();
-        setPlans(data.slice(0, 4));
+        setPlans(data.slice(0, data.length - 1));
       } catch (error) {
         console.error("Error fetching plans:", error);
       } finally {
@@ -308,13 +308,27 @@ const DynamicSongPlans = () => {
               navigation="true"
               nav
               responsive={{
-                0: { items: 1, startPosition: 1 },
+                0: {
+                  items: 1,
+                  startPosition: 1,
+                  startPosition: plans.findIndex(
+                    (item) => item.planName === "ForeVision CRBT+"
+                  ), // Set the default active item
+                },
                 768: { items: 2 },
-                1280: { items: 3 },
+                1280: {
+                  items: 3,
+                  startPosition:
+                    plans.findIndex(
+                      (item) => item.planName === "ForeVision CRBT+"
+                    ) - 1,
+                },
               }}
               className="py-6 !overflow-hidden text-grey-dark xl:!w-5/6 mx-auto"
             >
-              {plans.map(renderPlan)}
+              {plans
+                .filter((item) => !item.name.includes("ForeVision Album"))
+                .map(renderPlan)}
             </ReactOwlCarousel>
           )}
         </>

@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 
 const Preview = () => {
   const { formData, setFormData } = useContext(ScreenContext);
+  console.log(formData);
   const location = useLocation();
   const filteredSongs =
     location.pathname === "/album-upload" &&
@@ -19,8 +20,6 @@ const Preview = () => {
       songs: filteredSongs,
     }));
   }, [filteredSongs.length]);
-
-  console.log();
 
   // const createAlbumTable = (album) => {
   //   const createRow = (label, value) => (

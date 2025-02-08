@@ -17,7 +17,7 @@ import html2canvas from "html2canvas";
 
 const Agreement = ({ handleClose, formData }) => {
   const date = new Date();
-  const { userData, token } = useContext(ProfileContext);
+  const { userData, token, setRefetch } = useContext(ProfileContext);
   // console.log(userData);
   const location = useLocation();
   const [audioDuration, setAudioDuration] = useState(0);
@@ -200,6 +200,7 @@ const Agreement = ({ handleClose, formData }) => {
 
           if (insertResponse.data.acknowledged) {
             Swal.close();
+            setRefetch((ref) => !ref);
             Swal.fire({
               title: "You're done",
               text: "Feel free to continue to checkout or save your work as a draft.",

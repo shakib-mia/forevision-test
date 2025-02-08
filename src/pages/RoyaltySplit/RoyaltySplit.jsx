@@ -100,22 +100,25 @@ const RoyaltySplit = () => {
                           className={`!py-1 ${
                             splitDetails?.confirmed
                               ? "!bg-interactive-light-confirmation-disabled"
-                              : splitDetails?.denied
-                              ? "!bg-interactive-light-destructive-disabled"
                               : splitAvailable
-                              ? "!bg-interactive-light-disabled"
+                              ? splitDetails?.denied
+                                ? "bg-interactive-light"
+                                : "!bg-interactive-light-disabled"
                               : "!bg-interactive-light"
                           }`}
                           containerClassName={"mt-[4px]"}
                           onClick={() => setSplitId(_id)}
-                          disabled={adding === _id || splitAvailable}
+                          disabled={
+                            adding === _id ||
+                            (splitAvailable && !splitDetails?.denied)
+                          }
                         >
                           {splitAvailable ? (
                             // <>Requested</>
                             splitDetails?.confirmed ? (
                               "Confirmed"
                             ) : splitDetails?.denied ? (
-                              "Denied"
+                              "Add Split"
                             ) : (
                               "Requested"
                             )

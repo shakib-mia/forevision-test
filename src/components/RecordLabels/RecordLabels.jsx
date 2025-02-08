@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import axios from "axios";
 import { backendUrl } from "../../constants";
+import { useNavigate } from "react-router-dom";
 
 const RecordLabels = () => {
   const [labels, setLabels] = useState([]);
   const { token } = useContext(ProfileContext);
+  const navigate = useNavigate();
 
   //   console.log(token);
 
@@ -18,7 +20,8 @@ const RecordLabels = () => {
 
     axios
       .get(backendUrl + "record-labels", config)
-      .then(({ data }) => setLabels(data));
+      .then(({ data }) => setLabels(data))
+      .catch((err) => navigate("/login"));
   }, []);
 
   return (

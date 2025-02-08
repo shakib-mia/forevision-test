@@ -28,7 +28,8 @@ const RecentUploads = () => {
     if (userData) {
       axios
         .get(backendUrl + "recent-uploads", config)
-        .then(({ data }) => setSongs(data));
+        .then(({ data }) => setSongs(data))
+        .catch((error) => navigate("/login"));
     }
     // }
   }, [userData.isrc, update]);
