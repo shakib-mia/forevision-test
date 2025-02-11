@@ -20,6 +20,7 @@ const SongUploadNew = () => {
   useEffect(() => {
     if (location.pathname.split("/")[1] !== "edit-song") {
       if (userData?.user_email) {
+        console.log(userData);
         if (userData.yearlyPlanEndDate) {
           if (checkTheDateIsBefore(userData.yearlyPlanEndDate)) {
             navigate("/album-upload");

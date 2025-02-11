@@ -1,12 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { FaCheck } from "react-icons/fa";
 import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
 import { PlanContext } from "../../contexts/PlanContext";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const AlbumPlan = () => {
   const { setPlanStore } = useContext(PlanContext);
   const navigate = useNavigate();
+  const { userData, dollarRate } = useContext(ProfileContext);
+  console.log({ dollarRate });
+
+  // Memoized price calculation
+  const calculatePrice = useMemo(
+    () => (price) => {
+      if (!price) return "Free";
+
+      const isIndian =
+        userData.billing_country === "India" ||
+        !userData ||
+        !userData.billing_country;
+      const currency = isIndian ? "₹" : "$";
+      const amount = isIndian
+        ? price / 100
+        : ((price * dollarRate * 1.5) / 100).toFixed(2);
+
+      return `${currency}${amount}`;
+    },
+    [userData.billing_country, dollarRate]
+  );
+
   return (
     <>
       <div className="!h-fit p-4 rounded-lg mb-7 bg-gradient-to-br from-secondary to-interactive-light-focus text-white shadow-[0_13px_20px_#aaa] relative w-11/12 md:w-1/2 xl:w-10/12 mx-auto">
@@ -18,13 +41,16 @@ const AlbumPlan = () => {
           🔥 New 🔥
         </div>
         <h4 className="text-heading-4 font-bold">ForeVision Album</h4>
-        <h5 className="text-heading-5-bold text-grey-light mt-2">&#8377;999</h5>
+        <h5 className="text-heading-5-bold text-grey-light mt-2">
+          {calculatePrice(99900)}
+        </h5>
 
         <ul className="flex flex-col gap-1 mt-4">
           <li className="flex gap-2 text-paragraph-1 items-center">
             <FaCheck className="w-1/12" />
             <aside className="font-semibold">
-              Unlimited song under 1 (one) UPC
+              25 Audios under 1 (one) UPC
+              {/* Unlimited song under 1 (one) UPC */}
             </aside>
           </li>
           <li className="flex gap-2 text-paragraph-1 items-center">

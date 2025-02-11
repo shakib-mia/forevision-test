@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import SongListItem from "../SongListItem/SongListItem";
 import Button from "../Button/Button";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { backendUrl } from "../../constants";
 import { CiStreamOn } from "react-icons/ci";
 import { VscLoading } from "react-icons/vsc";
+import { FaArrowUp } from "react-icons/fa";
 
 const Uploads = () => {
   const navigate = useNavigate();
@@ -18,7 +19,6 @@ const Uploads = () => {
 
   useEffect(() => {
     const fetchSongs = async () => {
-      console.log(!userData?.isrc);
       // If there's no ISRC, set loading false and return
       if (!userData?.isrc) {
         setIsLoading(false);
@@ -52,20 +52,20 @@ const Uploads = () => {
   }, [userData?.isrc, userData?.["user-id"], token]);
 
   const renderContent = () => {
-    // If no ISRC, show "no songs" message
-    // if (!userData?.isrc) {
-    //   return (
-    //     <div className="flex justify-center items-center h-full">
-    //       <VscLoading className="animate-spin text-heading-1 text-interactive-light" />
-    //     </div>
-    //   );
-    // }
-
-    // Show loading only when there's an ISRC and data is being fetched
-    if (!userData.first_name || (userData.isrc && songs.length === 0)) {
+    // Show loading spinner if ISRC is found and data is being fetched
+    if (isLoading) {
       return (
         <div className="flex justify-center items-center h-full">
           <VscLoading className="animate-spin text-heading-1 text-interactive-light" />
+        </div>
+      );
+    }
+
+    // Show "No songs found" if user has ISRC but no songs
+    if (userData.isrc && songs.length === 0) {
+      return (
+        <div className="flex justify-center items-center h-full text-grey-dark text-heading-5">
+          No songs found
         </div>
       );
     }
@@ -80,17 +80,22 @@ const Uploads = () => {
         </div>
       );
     }
-    // if() {
 
-    // }
-    // Fallback if there are no songs but user has ISRC
-    if (userData.first_name && !userData?.isrc?.length) {
-      return (
-        <div className="flex justify-center items-center h-full text-grey-dark text-heading-5">
-          No songs found
+    // Fallback for users who don't have ISRC
+    return (
+      <div className="flex justify-center items-center h-full text-grey-dark text-heading-5 text-center">
+        <div className="flex flex-col items-center gap-1">
+          Upload Your First Song <br />
+          <Button
+            // small={true}
+            onClick={() => navigate("/plans")}
+            className="text-interactive-light flex gap-2 items-center"
+          >
+            Get Started <FaArrowUp className="rotate-45" />
+          </Button>
         </div>
-      );
-    }
+      </div>
+    );
   };
 
   return (
@@ -113,7 +118,6 @@ const Uploads = () => {
           <h5 className="text-heading-6-bold lg:text-heading-4-bold text-grey-dark">
             Your Uploads
           </h5>
-
           <Button onClick={() => navigate("/revenue")} text="Visit Dashboard" />
         </div>
       )}

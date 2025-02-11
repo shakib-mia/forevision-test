@@ -31,7 +31,7 @@ const AlbumPreview = ({ albumData }) => {
           <img
             className="w-full lg:w-1/6 object-cover aspect-square"
             //   className="object-cover"
-            src={albumData.artWork}
+            src={albumData.artwork}
             alt={albumData.albumTitle}
           />
           {/* </div> */}

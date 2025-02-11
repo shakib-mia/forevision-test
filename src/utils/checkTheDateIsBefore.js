@@ -4,10 +4,12 @@ export const checkTheDateIsBefore = (date) => {
 
   if (date) {
     // Split the string into day, month, and year
-    const [day, month, year] = date.split("/");
+    const [year, month, day] = date.split("/");
+    console.log({ day, month, year });
 
     // Create a Date object for the previous date
     const previousDate = new Date(year, month - 1, day); // month - 1 because months are zero-indexed in JavaScript
+    console.log({ previousDate });
 
     // Get the current date
     const currentDate = new Date();

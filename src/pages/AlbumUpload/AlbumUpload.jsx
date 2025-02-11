@@ -78,8 +78,22 @@ const AlbumUpload = () => {
     }
   }, [previousFormData, initFormData, location.pathname, formData]);
 
+  const config = {
+    headers: { token },
+  };
+
+  useEffect(() => {
+    if (!location.pathname.includes("edit-song")) {
+      axios
+        .get(backendUrl + "generate-order-id", config)
+        .then(({ data }) => (formData.orderId = data.orderId));
+    }
+  }, []);
+
+  console.log(formData);
+
   return (
-    <div className="lg:w-11/12 ml-auto pt-5 h-full">
+    <div className="lg:w-11/12 ml-auto pt-5 h-full pb-7">
       <SongUploadProgress screen={screen} setScreen={setScreen} />
       <div className={`mt-2 px-2 lg:mt-5 lg:px-5 lg:py-6 shadow`}>
         <h4 className="text-heading-4-bold text-grey capitalize mb-4">

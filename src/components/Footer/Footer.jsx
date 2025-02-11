@@ -33,7 +33,7 @@ const Footer = () => {
   return (
     <div
       className={`w-full bg-[#000] z-[999] ${
-        isFixed ? "fixed left-0 bottom-0" : "relative"
+        isFixed ? "xl:fixed left-0 bottom-0" : "relative"
       }`}
     >
       <footer className="text-center py-2 flex flex-col md:flex-row md:justify-between items-center text-grey w-10/12 mx-auto pb-[70px] lg:pb-2">

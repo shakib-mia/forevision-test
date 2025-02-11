@@ -11,10 +11,12 @@ import { PlanContext } from "../../contexts/PlanContext";
 import axios from "axios";
 import { backendUrl } from "../../constants";
 import { toast } from "react-toastify";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const SongUploadFormContainer = ({ screen, setScreen }) => {
   const [artistCount, setArtistCount] = useState(1);
   const location = useLocation();
+  const { token } = useContext(ProfileContext);
   const { planStore } = useContext(PlanContext);
   const [data, setData] = useState({});
   // console.log();
@@ -138,8 +140,6 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
     }
   }, []);
 
-  // console.log(formData);
-
   // useEffect(() => {
   //   console.log(screen);
   // }, [screen]);
@@ -150,6 +150,30 @@ const SongUploadFormContainer = ({ screen, setScreen }) => {
     // navigate("/plans");
     return <Navigate to={"/plans"} state={{ from: location }} replace />;
   }
+
+  const config = {
+    headers: { token },
+  };
+
+  // useEffect(() => {
+  const fetchData = async () => {
+    if (!location.pathname.includes("edit-song")) {
+      try {
+        const { data } = await axios.get(
+          backendUrl + "generate-order-id",
+          config
+        );
+        formData.orderId = data.orderId;
+      } catch (error) {
+        console.error("Error generating order ID:", error);
+      }
+    }
+  };
+
+  fetchData(); // Calling the async function
+  // }, [location.pathname]);
+
+  console.log(formData);
 
   return (
     <div className={`mt-5 px-2 lg:px-5 lg:py-6 lg:shadow`}>

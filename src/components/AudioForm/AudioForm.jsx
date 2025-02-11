@@ -191,6 +191,17 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
 
   const handleAudioChange = async (event, _id) => {
     const file = event.target.files[0]; // Get the file
+
+    // Check if the filename contains #
+    if (file.name.includes("#")) {
+      Swal.fire({
+        icon: "error",
+        title: "Filename should not contain #",
+        confirmButtonColor: "#2B52DD",
+      });
+      return;
+    }
+
     setFile(file);
     const data = await fileToBase64(file);
     setAudioUrl(data);
@@ -237,6 +248,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
               songUrl: response.data.songUrl,
             };
           } else {
+            console.log(response.data);
             // Single song upload logic
             formData.songUrl = response.data.songUrl;
             setSongUrl(response.data.songUrl);
@@ -315,9 +327,9 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
         formData.songs[id].status = "pending";
         formData.songs[id].userEmail = userData.user_email;
 
-        const SongFile = new FormData();
+        // const SongFile = new FormData();
 
-        SongFile.append("file", formData.songs[id]?.file);
+        // SongFile.append("file", formData.songs[id]?.file);
 
         // Perform the file upload
         // axios
@@ -329,28 +341,29 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
         //     console.error("Error uploading file:", error);
         //   });
 
-        delete formData.user_email;
-        delete formData.audioUrl;
-        delete formData.file;
-        delete formData.status;
+        //   delete formData.user_email;
+        //   delete formData.audioUrl;
+        //   delete formData.file;
+        //   delete formData.status;
 
-        formData.price = 99900;
+        //   formData.price = 99900;
 
-        axios
-          .post(backendUrl + "recent-uploads", formData, config)
-          .then(({ data }) => {
-            if (data.acknowledged) {
-              // setCount(count + 1);
-              location.pathname !== "/album-upload"
-                ? setScreen("distribution")
-                : setCollapsed(true);
-            }
-          });
-      } else {
+        //   axios
+        //     .post(backendUrl + "recent-uploads", formData, config)
+        //     .then(({ data }) => {
+        //       if (data.acknowledged) {
+        //         // setCount(count + 1);
+        //         location.pathname !== "/album-upload"
+        //           ? setScreen("distribution")
+        //           : setCollapsed(true);
+        //       }
+        //     });
+        // } else {
         formData.status = "pending";
         formData.userEmail = userData.user_email;
 
         // formData;
+        console.log(formData);
 
         const SongFile = new FormData();
 
@@ -386,6 +399,8 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
         //         : setCollapsed(true);
         //     }
         //   });
+      } else {
+        setScreen("preview");
       }
     }
   };
@@ -868,7 +883,7 @@ const AudioForm = ({ setArtistCount, setCount, count, setCollapsed, id }) => {
   // console.log(formData);
 
   return (
-    <form onSubmit={handleSubmit} className="pb-6 lg:pb-0">
+    <form onSubmit={handleSubmit} className="pb-3 lg:pb-0">
       {/* {id} */}
       <div className="flex flex-col lg:flex-row gap-2">
         <div className="w-full lg:w-2/3">

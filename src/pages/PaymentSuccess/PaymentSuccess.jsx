@@ -4,11 +4,13 @@ import { PlanContext } from "../../contexts/PlanContext";
 import { FaCheck, FaRupeeSign } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const PaymentSuccess = () => {
   const { planStore } = useContext(PlanContext);
+  const { userData } = useContext(ProfileContext);
   const navigate = useNavigate();
-  console.log(planStore);
+
   return (
     <div
       className="h-screen w-screen flex justify-center items-center bg-cover bg-no-repeat"
@@ -28,8 +30,8 @@ const PaymentSuccess = () => {
             {planStore.planName}
           </h6>
           <h6 className="p-2 text-heading-6 !border-l-0">Price</h6>
-          <h6 className="p-2 text-heading-6-bold flex items-center gap-1">
-            <FaRupeeSign />
+          <h6 className="p-2 text-heading-6-bold flex items-center gap-0">
+            {userData.billing_country === "India" ? <FaRupeeSign /> : "$"}
             {parseFloat(planStore.price) / 100}
           </h6>
 

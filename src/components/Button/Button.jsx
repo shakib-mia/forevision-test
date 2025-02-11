@@ -16,20 +16,17 @@ const Button = ({
   children,
   onFocus,
   onBlur,
+  borderColor = "border-white", // Default color
   title,
 }) => {
   const [focus, setFocus] = useState(false);
-  // console.log(containerClassName);
-  // console.log(disabled);
-  // console.log(className?.includes('px'));
+
   return (
     <>
       {type !== "submit" && (
         <div
           className={`border-[2px] ${containerClassName} ${
-            focus && !disabled
-              ? "border-interactive-light-focus"
-              : "border-transparent"
+            focus && !disabled ? borderColor : "border-transparent"
           } rounded-full ${paddingZero ? "p-0" : "p-[4px]"}`}
         >
           <button
@@ -46,21 +43,19 @@ const Button = ({
             type={type}
             onFocus={() => {
               setFocus(true);
-              onFocus !== undefined && onFocus();
+              onFocus && onFocus();
             }}
             onBlur={() => {
               setFocus(false);
-              onFocus !== undefined && onBlur();
+              onBlur && onBlur();
             }}
           >
-            {leftIcon ? (
+            {leftIcon && (
               <img src={arrow} className="rotate-180" alt="left-icon" />
-            ) : (
-              <></>
             )}
             {text && <div>{text}</div>}
             {children}
-            {rightIcon ? <img src={arrow} alt="right-icon" /> : <></>}
+            {rightIcon && <img src={arrow} alt="right-icon" />}
           </button>
         </div>
       )}
@@ -68,9 +63,7 @@ const Button = ({
       {type === "submit" && (
         <div
           className={`border-[2px] cursor-pointer inline-block ${containerClassName} ${
-            focus && !disabled
-              ? "border-interactive-light-focus"
-              : "border-transparent"
+            focus && !disabled ? borderColor : "border-transparent"
           } rounded-full p-[4px]`}
         >
           <input

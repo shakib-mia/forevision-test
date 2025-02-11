@@ -21,7 +21,6 @@ const AlbumDetails = () => {
   const [filmBanner, setFilmBanner] = useState({});
   const [showRecordLabelForm, setShowRecordLabelForm] = useState(false);
   const location = useLocation();
-  console.log(recordLabels);
 
   const handleDetailSubmit = () => {
     // formData;
@@ -44,38 +43,71 @@ const AlbumDetails = () => {
   // console.log(formData.artwork);
 
   const handleArtFileChange = async (e) => {
-    setFile(e.target.files[0]);
-    // setFormData({ ...formData, albumArt: e.target.files[0] });
-    const albumArt = new FormData();
-    const data = await checkImageDimensions(e.target.files[0], 3000, 3000);
+    const file = e.target.files[0];
+    setFile(file);
 
-    // console.log(data);
-    if (data) {
-      albumArt.append("file", e.target.files[0]);
+    const data = await checkImageDimensions(file, 3000, 3000);
 
-      axios.post(backendUrl + "upload-art-work", albumArt).then(({ data }) => {
-        if (
-          location.pathname === "/album-upload" ||
-          location.search.split("?")[1] === "yearly-plan" ||
-          location?.pathname.includes("edit-album")
-        ) {
-          formData.artwork = data.artWorkUrl;
-          setFormData({ ...formData });
-        } else {
-          setFormData({ ...formData, artwork: data.artWorkUrl });
-        }
-      });
-    } else {
-      // toast.error("Image size should be 3000x3000");
+    if (!data) {
       Swal.fire({
         title: "Size mismatch!",
-        html: `
-          Image size should be 3000&times;3000
-        `,
+        html: "Image size should be 3000×3000",
         icon: "error",
         confirmButtonText: "Got It",
       });
+      return;
     }
+
+    // Show confirmation dialog with image preview
+    Swal.fire({
+      title: "Confirm Upload",
+      html: `
+        <p>Are you sure you want to upload this artwork?</p>
+        <img src="${URL.createObjectURL(file)}" alt="Selected Image" 
+          style="width: 100%; max-height: 300px; object-fit: contain; border-radius: 5px; margin-top: 10px;">
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Yes, Upload",
+      cancelButtonText: "Cancel",
+      icon: "info",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const uploadToastId = toast.loading("Uploading..."); // Show uploading toast
+
+        const albumArt = new FormData();
+        albumArt.append("file", file);
+
+        axios
+          .post(backendUrl + "upload-art-work", albumArt)
+          .then(({ data }) => {
+            toast.update(uploadToastId, {
+              render: "Upload Successful 🎉",
+              type: "success",
+              isLoading: false,
+              autoClose: 3000,
+            });
+
+            if (
+              location.pathname === "/album-upload" ||
+              location.search.split("?")[1] === "yearly-plan" ||
+              location?.pathname.includes("edit-album")
+            ) {
+              formData.artwork = data.artWorkUrl;
+              setFormData({ ...formData });
+            } else {
+              setFormData({ ...formData, artwork: data.artWorkUrl });
+            }
+          })
+          .catch(() => {
+            toast.update(uploadToastId, {
+              render: "Upload Failed ❌",
+              type: "error",
+              isLoading: false,
+              autoClose: 3000,
+            });
+          });
+      }
+    });
   };
 
   const handleBannerFileChange = async (e) => {
@@ -92,9 +124,6 @@ const AlbumDetails = () => {
         setFormData({ ...formData, filmBanner: data.artWorkUrl })
       );
   };
-
-  // alert(location.pathname);
-  console.log(formData);
 
   return (
     <div className="pb-7">

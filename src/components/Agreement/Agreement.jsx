@@ -122,6 +122,7 @@ const Agreement = ({ handleClose, formData }) => {
           text: "Wrapping things up now, just a moment!",
           icon: "info",
           showConfirmButton: false,
+          allowOutsideClick: false,
           willOpen: () => {
             Swal.showLoading();
           },

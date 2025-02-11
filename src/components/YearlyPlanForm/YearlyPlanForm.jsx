@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { formatDate } from "../../utils/formatDate";
 import logo from "../../assets/icons/logo.PNG";
 import useRazorpay from "react-razorpay";
+import { toast } from "react-toastify";
 
 const YearlyPlanForm = () => {
   const { userData, token, dollarRate } = useContext(ProfileContext);
@@ -207,6 +208,17 @@ const YearlyPlanForm = () => {
               })
               .then(({ data }) => console.log(data));
             navigate("/payment-success");
+
+            axios
+              .post(backendUrl + "yearly-plans", formData, {
+                headers: { token },
+              })
+              .then(({ data }) => {
+                if (data.acknowledged) {
+                  // e.target.reset();
+                  toast.success("Yearly Plan Activated");
+                }
+              });
           }
         } catch (error) {
           console.log(error);
@@ -231,15 +243,6 @@ const YearlyPlanForm = () => {
     // console.log(planData);
 
     // console.log(planData);
-    // axios
-    //   .post(backendUrl + "yearly-plans", planData, {
-    //     headers: { token },
-    //   })
-    //   .then(({ data }) => {
-    //     if (data.acknowledged) {
-    //       e.target.reset();
-    //     }
-    //   });
   };
 
   return (

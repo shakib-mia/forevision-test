@@ -14,7 +14,7 @@ const AlbumAudioForm = (props) => {
         onClick={() => setCollapsed(!collapsed)}
       >
         <h5 className="text-heading-5-bold text-grey-dark uppercase">
-          Song:{props.id + 1}
+          Audio:{props.id + 1}
         </h5>
         <FaChevronDown
           className={`transition ${collapsed ? "-rotate-90" : ""}`}

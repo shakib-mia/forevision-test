@@ -49,6 +49,7 @@ import CrbtCodes from "./pages/CrbtCodes/CrbtCodes";
 import RoyaltySplit from "./pages/RoyaltySplit/RoyaltySplit";
 import FreshProfile from "./pages/FreshProfile/FreshProfile";
 import Pitch from "./pages/Pitch/Pitch";
+import CustomPlan from "./pages/CustomPlan/CustomPlan";
 
 // export const backendUrl = "http://localhost:5000/";
 export const backendUrl = "https://server.forevisiondigital.in/";
@@ -86,8 +87,8 @@ export const navItem = [
     icon: (
       <FaCrown className="text-heading-6 text-yellow-300 group-hover:text-black" />
     ),
-    text: "Yearly Plan Request",
-    path: "/yearly-plan",
+    text: "Custom Plan",
+    path: "/custom-plans",
   },
 
   {
@@ -278,10 +279,10 @@ export const routes = [
   },
 
   {
-    path: "/yearly-plan",
+    path: "/custom-plans",
     page: (
       <RequireAuth>
-        <YearlyPlan />
+        <CustomPlan />
       </RequireAuth>
     ),
   },
@@ -296,6 +297,10 @@ export const routes = [
   {
     path: "/plans",
     page: <Plans />,
+  },
+  {
+    path: "/custom-plans",
+    page: <CustomPlan />,
   },
   // {
   //   path: "/verified-on-resso",

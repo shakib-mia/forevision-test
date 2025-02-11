@@ -17,43 +17,44 @@ import { formatDate } from "../../utils/formatDate";
 import useRazorpay from "react-razorpay";
 
 const Distribution = () => {
+  const { formData, setScreen } = useContext(ScreenContext);
   const location = useLocation();
   const navigate = useNavigate();
   const [hasCouponCode, setHasCouponCode] = useState(false);
   const [error, setError] = useState(false);
   const [discountData, setDiscountData] = useState({});
   const { userData, token } = useContext(ProfileContext);
-  const [signature, setSignature] = useState("");
-  const { formData, setScreen } = useContext(ScreenContext);
+  const [signature, setSignature] = useState(formData.signature || "");
+  // console.log(formData);
 
-  const [orderId, setOrderId] = useState("XXXXX");
+  // const [orderId, setOrderId] = useState("XXXXX");
   const { setPlanStore, planStore } = useContext(PlanContext);
   const [showAgreement, setShowAgreement] = useState(false);
   const [Razorpay] = useRazorpay();
   // const { setPlanStore, planStore } = useContext(PlanContext);
-  // console.log();
+  // console.log(planStore);
 
   // console.log();
-  const config = {
-    headers: { token },
-  };
+  // const config = {
+  //   headers: { token },
+  // };
 
-  useEffect(() => {
-    axios
-      .get(backendUrl + "generate-order-id", config)
-      .then(({ data }) => setOrderId(data.orderId));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(backendUrl + "generate-order-id", config)
+  //     .then(({ data }) => setOrderId(data.orderId));
+  // }, []);
 
   const [accepted, setAccepted] = useState(false);
   const discountPrice = discountData.discountPercentage
-    ? (parseFloat(location.search.split("?")[2]) / 100 -
-        (parseFloat(location.search.split("?")[2]) / 100) *
+    ? (parseFloat(location.search.split("?")[2] || planStore.price) / 100 -
+        (parseFloat(location.search.split("?")[2] || planStore.price) / 100) *
           (parseFloat(discountData.discountPercentage) / 100)) *
       100
-    : parseFloat(location.search.split("?")[2]);
+    : parseFloat(location.search.split("?")[2] || planStore.price);
 
   const saved = discountData.discountPercentage
-    ? (parseFloat(location.search.split("?")[2]) / 100) *
+    ? (parseFloat(location.search.split("?")[2] || planStore.price) / 100) *
       (discountData.discountPercentage / 100)
     : 0;
   // console.log(discountData.discountPercentage);
@@ -82,7 +83,7 @@ const Distribution = () => {
     // console.log(formData);
     formData.planName = location.search.split("?")[1];
     formData.status = "pending";
-    formData.orderId = orderId;
+    // formData.orderId = orderId;
     formData.userEmail = userData.emailId;
     delete formData.file;
     // formData;
@@ -101,10 +102,14 @@ const Distribution = () => {
   const handleRazorpayPayment = async (params) => {
     // console.log();
     axios
-      .post(backendUrl + "razorpay", {
-        amount: parseFloat(formData.price),
-        currency: userData.billing_country === "India" ? "INR" : "USD",
-      }) // ============  *** Need to set amount dynamically here ***  ================
+      .post(
+        backendUrl + "razorpay",
+        {
+          amount: parseFloat(formData.price),
+          currency: userData.billing_country === "India" ? "INR" : "USD",
+        },
+        config
+      ) // ============  *** Need to set amount dynamically here ***  ================
       .then(({ data }) => initPayment(data))
       .catch((error) => console.log(error));
   };
@@ -142,7 +147,7 @@ const Distribution = () => {
           if (res.data.insertCursor.acknowledged) {
             setPlanStore((prev) => ({
               ...prev,
-              order_id: orderId,
+              order_id: formData.orderId,
               payment_id: razorpay_payment_id,
             }));
             // navigate("/payment-success");
@@ -188,15 +193,18 @@ const Distribution = () => {
     rzp1.open();
   };
 
-  // console.log(location.search.split("?")[2]);
+  console.log(planStore);
   const handleSubmit = () => {
-    const price = parseFloat(location.search.split("?")[2]) / 100;
+    const price =
+      parseFloat(location.search.split("?")[2] || planStore.price) / 100;
 
-    formData.orderId = orderId;
+    // formData.orderId = orderId;
     formData.userEmail = userData.emailId;
     formData.status = "pending";
     formData.planName = planStore.planName;
     formData.price = price * 100;
+
+    console.log(formData);
 
     axios
       .post(backendUrl + "recent-uploads", formData, {
@@ -209,17 +217,18 @@ const Distribution = () => {
           // if yearly (that's why isNaN logic added) of free plan
           if (
             location.search.toLocaleLowerCase().includes("social") ||
-            isNaN(price)
+            isNaN(location.search.split("?")[2])
           ) {
             // axios.put(backendUrl+)
             axios
-              .get(`${backendUrl}plans/monthly-sales/${price}`, {
+              .get(`${backendUrl}plans/monthly-sales/${price * 100}`, {
                 headers: {
                   token,
                 },
               })
               .then(({ data }) => {
-                formData.planName = location.search.split("?")[1];
+                formData.planName =
+                  location.search.split("?")[1] || planStore.planName;
 
                 axios
                   .put(
@@ -256,7 +265,7 @@ const Distribution = () => {
             //   `/payment?price=${
             //     discountData.discountPercentage
             //       ? discountPrice
-            //       : location.search.split("?")[2]
+            //       : location.search.split("?")[2] || planStore.price
             //   }?id=${orderId}`
             // );
           }
@@ -299,8 +308,8 @@ const Distribution = () => {
                   {/* <aside className="w-1/2 p-2 flex items-center">
                 <FaRupeeSign className="text-subtitle-2" />{" "}
                 <span className="font-bold flex items-center">
-                  {location.search.split("?")[2] / 100} (Includes {"   "}
-                  <FaRupeeSign /> {(location.search.split("?")[2] * 0.18) /
+                  {location.search.split("?")[2] || planStore.price / 100} (Includes {"   "}
+                  <FaRupeeSign /> {(location.search.split("?")[2] || planStore.price * 0.18) /
                     100}{" "}
                   18% GST )
                 </span>
@@ -312,7 +321,7 @@ const Distribution = () => {
 
             <div className="flex divide-x divide-[#ddd] bg-grey-light">
               <aside className="w-1/2 p-2">Order ID</aside>
-              <aside className="w-1/2 p-2">{orderId}</aside>
+              <aside className="w-1/2 p-2">{formData.orderId}</aside>
             </div>
 
             <div className="flex divide-x divide-[#ddd]">
@@ -327,8 +336,11 @@ const Distribution = () => {
               <aside className="w-1/2 p-2">{userData.user_email}</aside>
             </div> */}
 
-            {location.search.includes("social") ||
-              location.search.includes("yearly-plan") || (
+            {userData.yearlyPlanStartDate ? (
+              <></>
+            ) : (
+              location.search.toLowerCase().includes("social") ||
+              location.search.toLowerCase().includes("yearly-plan") || (
                 <form
                   className="flex gap-2 items-end p-2"
                   onSubmit={verifyCouponCode}
@@ -351,7 +363,8 @@ const Distribution = () => {
                     Apply
                   </Button>
                 </form>
-              )}
+              )
+            )}
 
             {location.search.includes("social") ||
               (discountData.discountPercentage && (
@@ -411,6 +424,7 @@ const Distribution = () => {
               className="border-b resize-none text-heading-5 w-full focus:outline-none signature placeholder:font-sans text-center pb-3"
               // id=""
               // cols="1"
+              value={signature}
               rows="1"
             ></textarea>
             <label className="cursor-pointer">
@@ -422,6 +436,7 @@ const Distribution = () => {
                   formData.accepted = e.target.checked;
                   setShowAgreement(true);
                 }}
+                checked={formData.accepted}
               />{" "}
               I Accept the{" "}
               <Link
@@ -441,7 +456,10 @@ const Distribution = () => {
                 type={"button"}
                 onClick={handleSubmit}
                 containerClassName={"mt-4"}
-                disabled={!accepted || !signature.length}
+                disabled={
+                  !location.pathname.includes("edit") &&
+                  (!formData.accepted || !signature.length)
+                }
               >
                 Submit
               </Button>
@@ -450,7 +468,7 @@ const Distribution = () => {
                 type={"button"}
                 onClick={handlePayLater}
                 containerClassName={"mt-4"}
-                disabled={!accepted || !signature.length}
+                disabled={!formData.accepted || !signature.length}
               >
                 Save As Draft
               </Button>
@@ -492,14 +510,14 @@ const Distribution = () => {
         </div>
       </div>
 
-      {/* {showAgreement ? ( */}
-      <Agreement
-        formData={formData}
-        handleClose={() => setShowAgreement(false)}
-      />
-      {/* ) : (
+      {showAgreement ? (
+        <Agreement
+          formData={formData}
+          handleClose={() => setShowAgreement(false)}
+        />
+      ) : (
         <></>
-      )} */}
+      )}
     </>
   );
 };

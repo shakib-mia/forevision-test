@@ -49,7 +49,7 @@ const CrbtList = () => {
               <React.Fragment key={song._id}>
                 {/* Table Row */}
                 <tr
-                  className="hover:bg-gray-50 cursor-pointer"
+                  className="hover:bg-gray-50 cursor-pointer divide-x-2"
                   onClick={() => toggleAccordion(song._id)}
                 >
                   <td className="px-4 py-2">{song.Song}</td>
@@ -60,7 +60,7 @@ const CrbtList = () => {
                 <tr>
                   <td colSpan="5" className="px-4 bg-gray-50">
                     <div
-                      className={`transition-all ease-in-out duration-700 overflow-hidden ${
+                      className={`transition-all ease-in-out duration-300 overflow-hidden ${
                         openAccordion === song._id ? "h-[250px] py-4" : "h-0"
                       }`}
                     >

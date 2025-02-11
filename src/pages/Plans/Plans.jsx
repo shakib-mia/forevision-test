@@ -28,6 +28,7 @@ import razorpay from "../../assets/icons/razorpay.png";
 import LoadingPulse from "../../components/LoadingPulse/LoadingPulse";
 import Steps from "../../components/Steps/Steps";
 import Faq from "../../components/Faq/Faq";
+import YearlyPlanText from "../../components/YearlyPlanText/YearlyPlanText";
 
 const DynamicSongPlans = () => {
   const navigate = useNavigate();
@@ -333,7 +334,9 @@ const DynamicSongPlans = () => {
           )}
         </>
       )}
-
+      <div className="max-w-4xl rounded-lg overflow-hidden lg:w-5/6 mx-auto shadow-xl">
+        <YearlyPlanText />
+      </div>
       <Steps />
 
       <FeatureTable />

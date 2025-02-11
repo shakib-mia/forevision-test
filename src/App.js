@@ -91,7 +91,7 @@ function App() {
           }
         });
     }
-  }, [token]);
+  }, [token, refetch]);
 
   const store = {
     userData,

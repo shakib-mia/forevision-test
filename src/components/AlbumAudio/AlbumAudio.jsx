@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AlbumAudioForm from "../AlbumAudioForm/AlbumAudioForm";
 import Button from "../Button/Button";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AlbumAudio = (props) => {
   const location = useLocation();
@@ -47,11 +48,15 @@ const AlbumAudio = (props) => {
 
     const newForm = { ...newSong, id: newId };
     // console.log(formData);
-    formData.songs.push(newSong);
+    if (formData.songs.length < 25) {
+      formData.songs.push(newSong);
 
-    // setInitFormData((prevFormData) => [...prevFormData, newForm]);
-    setFormData({ ...formData });
-    setForms((prevForms) => [...prevForms, newForm]);
+      // setInitFormData((prevFormData) => [...prevFormData, newForm]);
+      setFormData({ ...formData });
+      setForms((prevForms) => [...prevForms, newForm]);
+    } else {
+      toast.error("Maximum number of audio limit reached");
+    }
   };
 
   return (
@@ -68,12 +73,12 @@ const AlbumAudio = (props) => {
 
       <div className="flex justify-center gap-2">
         <Button
-          containerClassName={"w-fit mt-5"}
+          containerClassName={"w-fit xl:mt-5"}
           onClick={addMoreForm}
           text={"Add More"}
         />
         <Button
-          containerClassName={"w-fit mt-5"}
+          containerClassName={"w-fit xl:mt-5"}
           onClick={() => props.setScreen("preview")}
           text={"Finish"}
         />

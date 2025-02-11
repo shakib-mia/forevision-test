@@ -37,20 +37,9 @@ const PreviewDetails = ({ albumData }) => {
     albumData.updated = false;
     albumData.requested = true;
 
-    if (
-      albumData.paymentDate ||
-      parseFloat(albumData.price) === 0 ||
-      !isNaN(parseFloat(checkTheDateIsBefore(userData.yearlyPlanEndDate)))
-    ) {
-      axios
-        .post(backendUrl + "edit-song", albumData, config)
-        .then(({ data }) => {
-          if (data.insertedId.length > 0) {
-            toast.success("Update Request Submitted");
-            navigate("/");
-          }
-        });
-    } else {
+    console.log(albumData.status !== "submitted");
+
+    if (albumData.status === "submitted") {
       axios
         .put(backendUrl + "songs/" + albumData._id, albumData, config)
         .then(({ data }) => {
@@ -87,6 +76,58 @@ const PreviewDetails = ({ albumData }) => {
             navigate("/login");
           }
         });
+    } else {
+      if (
+        albumData.paymentDate ||
+        parseFloat(albumData.price) === 0 ||
+        !isNaN(parseFloat(checkTheDateIsBefore(userData.yearlyPlanEndDate)))
+      ) {
+        axios
+          .post(backendUrl + "edit-song", albumData, config)
+          .then(({ data }) => {
+            if (data.insertedId.length > 0) {
+              toast.success("Update Request Submitted");
+              navigate("/");
+            }
+          });
+      } else {
+        axios
+          .put(backendUrl + "songs/" + albumData._id, albumData, config)
+          .then(({ data }) => {
+            if (data.acknowledged) {
+              // console.log("object");
+              Swal.fire({
+                title: `Song Updated Successfully`,
+                confirmButtonText: `Let's go to home`,
+                icon: "success",
+                confirmButtonColor: "#22683E",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                // text:"You may proceed to next "
+              }).then((res) => res.isConfirmed && navigate("/"));
+              // axios
+              //   .post(backendUrl + "send-song-status", updated)
+              //   .then(({ data }) => {
+              //     // if (data.acknowledged) {
+              //     Swal.close();
+              //     setRefetch((ref) => !ref);
+
+              //     // }
+              //   });
+            }
+          })
+          .catch((err) => {
+            // console.log(err.response);
+            if (err.response.status === 401) {
+              setToken("");
+              sessionStorage.removeItem("token");
+              // toast.error("Token has expired", {
+              //   position: "bottom-center",
+              // });
+              navigate("/login");
+            }
+          });
+      }
     }
   };
 

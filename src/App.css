@@ -232,7 +232,7 @@ input[type="range"]:focus {
 
 .swal2-container {
   /* z-index: 1050;  Set the desired z-index for the modal */
-  @apply !z-[9999];
+  @apply !z-[999999999999999999999999999999999];
 }
 
 /* HTML: <div class="loader"></div> */

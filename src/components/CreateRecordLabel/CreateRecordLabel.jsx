@@ -15,8 +15,8 @@ import Swal from "sweetalert2";
 
 const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
   const [selectedCode, setSelectedCode] = useState("91");
-  const [isPerpetual, setIsPerpetual] = useState(false);
-  const { token, userData } = useContext(ProfileContext);
+  // const [isPerpetual, setIsPerpetual] = useState(false);
+  const { token, userData, setRefetch } = useContext(ProfileContext);
   const [recordLabelData, setRecordLabelData] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const letterHeadRef = useRef(null);
@@ -96,7 +96,10 @@ const CreateRecordLabel = ({ setShowRecordLabelForm }) => {
             confirmButton: "custom-class-settings",
           },
         });
-        window.location.reload();
+
+        setRefetch((ref) => !ref);
+        setShowRecordLabelForm(false);
+        // window.location.reload();
       }
     } catch (error) {
       toast.error(

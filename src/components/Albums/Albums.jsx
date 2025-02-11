@@ -69,7 +69,7 @@ const Albums = () => {
               onClick={() => toggleDropdown(album._id)}
             >
               <img
-                src={album.artWork}
+                src={album.artwork}
                 alt={album.albumTitle}
                 className="w-7 aspect-square object-cover rounded-lg shadow-md"
               />
