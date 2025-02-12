@@ -7,6 +7,7 @@ const GSTCalculator = ({ location }) => {
   // Extract the total price in paise from the URL
   const { planStore } = useContext(PlanContext);
   const { userData } = useContext(ProfileContext);
+  console.log(planStore);
   const totalPriceInPaisa = parseInt(
     userData.billing_country === "India"
       ? planStore.price

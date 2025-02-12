@@ -15,6 +15,7 @@ const YearlyPlanText = () => {
   const { userData, token, dollarRate, setToken } = useContext(ProfileContext);
   const [orderId, setOrderId] = useState("XXXXX");
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setPlanStore, planStore } = useContext(PlanContext);
   const [Razorpay] = useRazorpay();
@@ -128,6 +129,7 @@ const YearlyPlanText = () => {
               .then(({ data }) => {
                 if (data.acknowledged) {
                   // e.target.reset();
+                  setLoading(false);
                   navigate("/payment-success");
 
                   toast.success("Yearly Plan Activated");
@@ -138,11 +140,15 @@ const YearlyPlanText = () => {
         } catch (error) {
           // console.log(error);
           setToken("");
+          setLoading(false);
           toast.error(error.response.data, { position: "bottom-center" });
         }
       },
       theme: {
         color: "#064088",
+      },
+      modal: {
+        ondismiss: () => setLoading(false),
       },
     };
 
@@ -153,6 +159,7 @@ const YearlyPlanText = () => {
   const handleSubmit = (e) => {
     // e.preventDefault();
     const planData = {};
+    setLoading(true);
 
     // fields.map((item) => (planData[item.name] = e.target[item.name].value));
     handleRazorpayPayment(planData);
@@ -163,7 +170,7 @@ const YearlyPlanText = () => {
   };
 
   return (
-    <div className="relative bg-interactive-light text-white p-4">
+    <div className="relative bg-interactive-light selection:bg-white selection:text-interactive-light text-white p-4">
       <div className="sticky top-0 left-0 py-4">
         <h3 className="text-heading-4-bold xl:text-[55px] text-white text-center xl:text-left">
           ForeVision Digital
@@ -177,127 +184,116 @@ const YearlyPlanText = () => {
           Unlock Unlimited Potential with Our Yearly Plan
         </h5>
         <h5 className="text-heading-5-bold text-grey-light mt-2">
-          {calculatePrice(249900)}
+          {calculatePrice(429900)}
         </h5>
       </div>
-      <p className="font-bold">What’s Included in the Yearly Plan?</p>
-      <ul className="flex flex-col gap-1 mt-4">
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="font-semibold">
-            Unlimited Audios all over the year
-            {/* Unlimited song under 1 (one) UPC */}
-          </aside>
+      <h6 className="text-heading-6-bold mb-1">
+        Why Choose ForeVision Digital?
+      </h6>
+      <p>
+        ForeVision Digital is India’s largest music distribution service
+        provider, offering seamless distribution, automated royalty management,
+        and exclusive caller tune services—all at an affordable yearly cost.
+      </p>
+
+      <h6 className="text-heading-6-bold mb-1 mt-4">
+        Plan Features & Benefits:
+      </h6>
+      <ol type="1" className="flex flex-col gap-1 list-decimal ml-3">
+        <li className="text-paragraph-1">
+          Unlimited Audios all over the year
+          <ul className="list-disc ml-2">
+            <li>
+              Get your music released on major platforms like Spotify, Apple
+              Music, JioSaavn, Wynk, Gaana, Amazon Music, YouTube Music,
+              Boomplay, and more.
+            </li>
+            <li>
+              Global reach, ensuring your music is accessible to audiences
+              worldwide.
+            </li>
+            <li>
+              Fast processing and delivery for a hassle-free release experience.
+            </li>
+          </ul>
         </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">
-            All Indian Apps Covered: Gaana, Hungama, Wynk & Jiosaavn
-          </aside>
+        <li className="text-paragraph-1">
+          Caller Tune (CRBT) Services
+          <ul className="list-disc ml-2">
+            <li>
+              Set your song as a caller tune on all major telecom operators.
+            </li>
+            <li>Available under ForeVision CRBT, CRBT+, and Album+ plans.</li>
+            <li>Receive unique CRBT codes for easy promotion and sharing.</li>
+          </ul>
         </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">
-            Caller Tunes On JIO, Vi, BSNL, Airtel
-          </aside>
+        <li className="text-paragraph-1">
+          Royalty Earnings & Payouts
+          <ul className="list-disc ml-2">
+            <li>
+              80% of your earnings go to you—ForeVision Digital takes a 20% flat
+              commission from revenues.
+            </li>
+            <li>
+              Royalty reports are provided periodically for full transparency.
+            </li>
+            <li>
+              Withdraw your earnings via bank transfer or other supported
+              methods.
+            </li>
+          </ul>
         </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Your Music Will Be Live Everywhere</aside>
+
+        <li className="text-paragraph-1">
+          Lyrics Monetization & Licensing
+          <ul className="list-disc ml-2">
+            <li>
+              Get your lyrics featured on platforms like LyricFind & Musixmatch.
+            </li>
+            <li>Additional revenue streams through lyric licensing. </li>
+          </ul>
         </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Caller Tune Facility</aside>
+
+        <li className="text-paragraph-1">
+          Dedicated Support & Insights
+          <ul className="list-disc ml-2">
+            <li>Live chat support for quick assistance.</li>
+            <li>
+              Analytics & insights on your music’s performance, listener
+              demographics, and streaming trends.
+            </li>
+          </ul>
         </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">All International Apps Covered</aside>
+      </ol>
+
+      <h6 className="text-heading-6-bold mb-1 mt-4">Pricing & Subscription</h6>
+      <ul>
+        <li className="flex gap-1 items-center">
+          <FaCheck /> ₹4,299/year – One-time payment for a full year of
+          distribution.
         </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Upload Music In Specific Stores</aside>
+        <li className="flex gap-1 items-center">
+          <FaCheck /> Flat 20% revenue share—no hidden costs.
         </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Get 90% Lifetime Royalties</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Schedule Your Own Release Date</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Free Custom Label</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">100% Copyright Will Be Yours</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">YouTube Content ID & YouTube Music</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">ForeVision Dashboard</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Lifetime Support</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">
-            Get Your Music In Facebook & Instagram
-          </aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Earn With Facebook And Instagram</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Song Migration Accepted</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Previously Released Songs Accepted</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">
-            Quarterly Report Directly On Dashboard
-          </aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Approval Within 3-4 Hrs</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Availability Lifetime</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Zero Yearly Fee</aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">
-            Including ForeVision Special Service
-          </aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">
-            Get Lyrics In Facebook, Instagram, Spotify, JioSaavn, Google & More
-          </aside>
-        </li>
-        <li className="flex gap-2 text-paragraph-1 items-center">
-          <FaCheck className="w-1/12" />
-          <aside className="w-11/12">Platform Playlist Pitch</aside>
+        <li className="flex gap-1 items-center">
+          <FaCheck /> Easy payouts & detailed earnings reports.
         </li>
       </ul>
+
+      <h6 className="text-heading-6-bold mb-1 mt-4">How to Get Started?</h6>
+      <ol className="list-decimal ml-2">
+        <li>Sign up for free on the ForeVision Digital platform.</li>
+        <li>Upload your music with the necessary metadata.</li>
+        <li>Select your distribution & caller tune preferences.</li>
+        <li>Go live on all platforms and start earning!</li>
+      </ol>
+
+      <p className="py-2">Join ForeVision Digital Today!</p>
+
+      <p>
+        Distribute. Monetize. Grow. <br />
+        Visit ForeVision Digital to get started!
+      </p>
 
       <Button
         className={
@@ -305,8 +301,9 @@ const YearlyPlanText = () => {
         }
         containerClassName={"mt-7"}
         onClick={handleSubmit}
+        disabled={loading}
       >
-        Get started
+        Get{loading ? "ting" : ""} started
       </Button>
     </div>
   );

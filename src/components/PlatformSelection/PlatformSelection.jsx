@@ -7,6 +7,7 @@ import Button from "../Button/Button";
 import { ScreenContext } from "../../contexts/ScreenContext";
 import { useLocation } from "react-router-dom";
 import PlatformSelectionItem from "../PlatformSelectionItem/PlatformSelectionItem";
+import { backendUrl } from "../../constants";
 
 const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
   const [platforms, setPlatforms] = useState([]);
@@ -108,7 +109,7 @@ const PlatformSelection = ({ selectedPlatforms, setSelectedPlatforms }) => {
       headers: { token: sessionStorage.getItem("token") || token },
     };
     axios
-      .get("https://api.forevisiondigital.in/platforms", config)
+      .get(backendUrl + "platforms", config)
       .then(({ data }) => {
         setPlatforms(data);
       })

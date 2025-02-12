@@ -103,6 +103,7 @@ const EditSong = ({ setEditId, songData }) => {
   delete newFormData.songs;
   delete newFormData.S;
   delete newFormData.splitAvailable;
+  delete newFormData.splitDetails;
 
   // console.log(updatedData);
 

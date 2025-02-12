@@ -153,7 +153,7 @@ function App() {
       ? "Yearly Plan"
       : location.search?.split("?")[1],
     price: userData.yearlyPlanStartDate
-      ? 99900
+      ? 249900
       : location.search?.split("?")[2],
   });
 
@@ -189,7 +189,7 @@ function App() {
         ? "Yearly Plan"
         : location.search?.split("?")[1],
       price: userData.yearlyPlanStartDate
-        ? 99900
+        ? 249900
         : location.search?.split("?")[2],
     });
   }, [userData]);

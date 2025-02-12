@@ -6,6 +6,7 @@ import RecentUploadsItem from "../RecentUploadsItem/RecentUploadsItem";
 import Button from "../Button/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import Albums from "../Albums/Albums";
+import { FaArrowUp } from "react-icons/fa";
 
 const RecentUploads = () => {
   const [update, setUpdate] = useState(false);
@@ -38,7 +39,14 @@ const RecentUploads = () => {
 
   return (
     <div className="w-full bg-grey-light rounded-2xl p-2 !pt-0 lg:p-4 pb-0 text-grey-dark relative h-[688px] overflow-auto">
-      <div className="sticky top-0 left-0 bg-grey-light pt-2 lg:pt-4">
+      <div
+        className={`${
+          activeTab === "songs" &&
+          songs.filter((item) => !item.songs).length === 0
+            ? "absolute left-0 right-0 mx-auto px-3"
+            : "sticky"
+        } top-0 left-0 bg-grey-light pt-2 lg:pt-4 z-[999]`}
+      >
         <h5 className="text-heading-5-bold 2xl:text-heading-4-bold text-grey-dark mb-3">
           Recent Uploads
         </h5>
@@ -75,23 +83,40 @@ const RecentUploads = () => {
 
       {/* Tab Content */}
       <div
-        className={`h-fit overflow-y-auto ${
+        className={`${
+          songs.length ? "absolute w-full top-0 left-0" : "relative"
+        } overflow-y-auto ${
           location.pathname === "/" ? "h-[622px]" : "h-full"
         }`}
       >
         {activeTab === "songs" && (
-          <div className="flex flex-col gap-2">
-            {songs
-              .filter((item) => !item.songs)
-              .map((song, key) => (
-                <RecentUploadsItem
-                  songData={song}
-                  {...song}
-                  key={key}
-                  setUpdate={setUpdate}
-                  update={update}
-                />
-              ))}
+          <div className="flex flex-col gap-2 h-full justify-center">
+            {songs.filter((item) => !item.songs).length > 0 ? (
+              songs
+                .filter((item) => !item.songs)
+                .map((song, key) => (
+                  <RecentUploadsItem
+                    songData={song}
+                    {...song}
+                    key={key}
+                    setUpdate={setUpdate}
+                    update={update}
+                  />
+                ))
+            ) : (
+              <div className="flex justify-center items-center h-full text-grey-dark text-heading-5 text-center absolute left-0 right-0 top-0 bottom-0 m-auto">
+                <div className="flex flex-col items-center gap-1">
+                  Upload Your First Song <br />
+                  <Button
+                    // small={true}
+                    onClick={() => navigate("/plans")}
+                    className="text-interactive-light flex gap-2 items-center"
+                  >
+                    Get Started <FaArrowUp className="rotate-45" />
+                  </Button>
+                </div>
+              </div>
+            )}
             {location.pathname === "/" && songs.length > 7 && (
               <div className="sticky bottom-0 left-0 w-full bg-grey-light flex justify-center py-2">
                 <Button onClick={() => navigate("/all-songs")}>
