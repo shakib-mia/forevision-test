@@ -142,8 +142,8 @@ function App() {
 
   return (
     <div className="bg-white w-screen h-screen">
-      {/* <Construction /> */}
-      <ProfileContext.Provider value={store}>
+      <Construction />
+      {/* <ProfileContext.Provider value={store}>
         <PlanContext.Provider value={{ planStore, setPlanStore }}>
           {token ? token.length && <BottomBar /> : <></>}
           {location.pathname !== "/login" &&
@@ -163,7 +163,7 @@ function App() {
           </Routes>
           <ToastContainer />
         </PlanContext.Provider>
-      </ProfileContext.Provider>
+      </ProfileContext.Provider> */}
     </div>
   );
 }
