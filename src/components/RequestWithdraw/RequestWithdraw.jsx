@@ -47,14 +47,14 @@ const RequestWithdraw = () => {
   return (
     <Button
       onClick={handleRevenueWithdraw}
-      // disabled={
-      //   loading || // Disable the button while loading
-      //   (
-      //     (userData.lifetimeRevenue?.toFixed(2) || 0) -
-      //     (userData.lifetimeDisbursed?.toFixed(2) || 0)
-      //   ).toFixed(2) < 1000 ||
-      //   (foundRequested !== null && foundRequested._id)
-      // }
+      disabled={
+        loading || // Disable the button while loading
+        (
+          (userData.lifetimeRevenue?.toFixed(2) || 0) -
+          (userData.lifetimeDisbursed?.toFixed(2) || 0)
+        ).toFixed(2) < 1000 ||
+        (foundRequested !== null && foundRequested._id)
+      }
       // disabled={false}
       text={
         foundRequested !== null && foundRequested._id
