@@ -7,7 +7,7 @@ import profile from "./../../assets/images/profile.png";
 
 import { imageDomain, navItem } from "../../constants";
 import { ProfileContext } from "../../contexts/ProfileContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import ReactGA from "react-ga4";
 
@@ -116,23 +116,22 @@ const Sidebar = () => {
           />
         )}
         <>
-          {/* <Link to={"/profile"} className="overflow-hidden whitespace-nowrap">
-              <h1 className="text-subtitle-1-bold">
-                {userData?.partner_name ||
-                  userData?.first_name + " " + userData?.last_name}
-              </h1>
-              <p className="text-button">
-                {userData?.user_email || userData?.emailId}
-              </p>
-            </Link> */}
-          <div className="overflow-hidden whitespace-nowrap">
+          <Link to={"/profile"} className="overflow-hidden whitespace-nowrap">
             <h1 className="text-subtitle-1-bold">
               {userData?.first_name + " " + userData?.last_name}
             </h1>
             <p className="text-button">
               {userData?.user_email || userData?.emailId}
             </p>
-          </div>
+          </Link>
+          {/* <div className="overflow-hidden whitespace-nowrap">
+            <h1 className="text-subtitle-1-bold">
+              {userData?.first_name + " " + userData?.last_name}
+            </h1>
+            <p className="text-button">
+              {userData?.user_email || userData?.emailId}
+            </p>
+          </div> */}
           {/* <img
               src={logout}
               alt=""

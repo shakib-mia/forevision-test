@@ -41,7 +41,7 @@ function App() {
   const [logoutTime, setLogoutTime] = useState(null);
   const [updated, setUpdated] = useState(false);
   const [sessionDuration, setSessionDuration] = useState(0);
-  console.log(recordLabels);
+  const [albumToggled, setAlbumToggled] = useState(false);
 
   /* Working api calls starts here */
 
@@ -118,6 +118,8 @@ function App() {
     setLogoutTime,
     updated,
     setUpdated,
+    albumToggled,
+    setAlbumToggled,
   };
 
   useEffect(() => {

@@ -33,9 +33,10 @@ import YearlyPlanText from "../../components/YearlyPlanText/YearlyPlanText";
 const DynamicSongPlans = () => {
   const navigate = useNavigate();
   const { setPlanStore } = useContext(PlanContext);
-  const { token, userData, dollarRate } = useContext(ProfileContext);
+  const { token, userData, dollarRate, albumToggled } =
+    useContext(ProfileContext);
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(albumToggled);
   const [plans, setPlans] = useState([]);
   // const [dollarRate * 1.5, setDollarRate] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -262,8 +263,8 @@ const DynamicSongPlans = () => {
 
             <ul className="mt-2 flex flex-col gap-1">
               <li>
-                <b>Unlimited Releases:</b> Release as many tracks as you want
-                under this album package.
+                <b>Unlimited Releases:</b> Release 25 tracks under this album
+                package.
               </li>
               <li>
                 <b>Comprehensive Analytics:</b> Access detailed reports on your
@@ -322,7 +323,7 @@ const DynamicSongPlans = () => {
                   startPosition:
                     plans.findIndex(
                       (item) => item.planName === "ForeVision CRBT+"
-                    ) - 1,
+                    ) + 1,
                 },
               }}
               className="py-6 !overflow-hidden text-grey-dark xl:!w-5/6 mx-auto"
@@ -334,7 +335,7 @@ const DynamicSongPlans = () => {
           )}
         </>
       )}
-      <div className="max-w-4xl rounded-lg overflow-hidden lg:w-5/6 mx-auto shadow-xl">
+      <div className="xl:w-5/6 mx-auto">
         <YearlyPlanText />
       </div>
       <Steps />

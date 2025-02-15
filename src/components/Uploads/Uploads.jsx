@@ -15,7 +15,7 @@ const Uploads = () => {
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   console.log(songs);
-  const { userData, token } = useContext(ProfileContext);
+  const { userData, token, setAlbumToggled } = useContext(ProfileContext);
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -88,7 +88,10 @@ const Uploads = () => {
           Upload Your First Song <br />
           <Button
             // small={true}
-            onClick={() => navigate("/plans")}
+            onClick={() => {
+              navigate("/plans");
+              setAlbumToggled(false);
+            }}
             className="text-interactive-light flex gap-2 items-center"
           >
             Get Started <FaArrowUp className="rotate-45" />
